@@ -194,3 +194,13 @@ describe("admin route contracts", () => {
     },
   );
 });
+
+describe("homepage version safety contracts", () => {
+  it("requires the shared confirmation dialog before rolling back a published version", () => {
+    const source = readProjectFile("src/components/admin/HomeWorkspace.tsx");
+
+    expect(source).toContain('import { ConfirmDialog } from "./ConfirmDialog"');
+    expect(source).toContain("setRollbackRequest(version)");
+    expect(source).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="确认回滚"/);
+  });
+});

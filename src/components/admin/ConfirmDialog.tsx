@@ -12,6 +12,7 @@ interface ConfirmDialogProps {
   description: string;
   busy?: boolean;
   confirmLabel?: string;
+  busyLabel?: string;
   triggerRef?: RefObject<HTMLElement | null>;
   onConfirm: () => void;
   onCancel: () => void;
@@ -24,6 +25,7 @@ export function ConfirmDialog({
   description,
   busy = false,
   confirmLabel = "确认删除",
+  busyLabel = "删除中",
   triggerRef,
   onConfirm,
   onCancel,
@@ -61,7 +63,7 @@ export function ConfirmDialog({
         <button type="button" onClick={onCancel} disabled={busy}>取消</button>
         <button type="button" className={styles.dangerButton} onClick={onConfirm} disabled={busy}>
           {busy ? <LoaderCircle className={styles.spin} size={17} /> : null}
-          {busy ? "删除中" : confirmLabel}
+          {busy ? busyLabel : confirmLabel}
         </button>
       </div>
     </dialog>

@@ -1,10 +1,11 @@
 "use client";
 
 import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
 import { adminRequest } from "./request";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
@@ -26,6 +27,8 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
   const [draft, setDraft] = useState(initialDraft);
   const [draftText, setDraftText] = useState(() => JSON.stringify(initialDraft.content, null, 2));
   const [versions, setVersions] = useState(initialVersions);
+  const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
+  const rollbackTriggerRef = useRef<HTMLElement | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
 
   async function fetchHomeData() {
@@ -57,11 +60,20 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
     }, "主页已发布");
   }
 
-  async function rollback(versionId: string) {
-    await runAction(`home:rollback:${versionId}`, async () => {
+  function requestRollback(event: MouseEvent<HTMLButtonElement>, version: SiteVersionData) {
+    rollbackTriggerRef.current = event.currentTarget;
+    setRollbackRequest(version);
+  }
+
+  async function confirmRollback() {
+    if (!rollbackRequest) return;
+    const versionId = rollbackRequest.id;
+    const result = await runAction(`home:rollback:${versionId}`, async () => {
       await adminRequest("/api/admin/site/rollback", jsonRequest("POST", { id: versionId }));
       await fetchHomeData();
+      return true;
     }, "版本已回滚并发布");
+    if (result) setRollbackRequest(null);
   }
 
   const refreshBusy = isBusy("home:refresh");
@@ -118,7 +130,7 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
             <div className={styles.listRow} key={version.id}>
               <span><strong>v{version.version}</strong><small>{version.status}</small></span>
               <time>{formatVersionDate(version)}</time>
-              <button type="button" onClick={() => rollback(version.id)} disabled={version.id === draft.id || isBusy(busyKey)}>
+              <button type="button" onClick={(event) => requestRollback(event, version)} disabled={version.id === draft.id || isBusy(busyKey)}>
                 {isBusy(busyKey) ? <LoaderCircle className={styles.spin} size={16} /> : <RotateCcw size={16} />}
                 {isBusy(busyKey) ? "回滚中" : "回滚"}
               </button>
@@ -132,6 +144,18 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
           />
         )}
       </section>
+      <ConfirmDialog
+        open={Boolean(rollbackRequest)}
+        title="确认回滚主页版本"
+        target={rollbackRequest ? `v${rollbackRequest.version}` : ""}
+        description="确认后该版本会立即成为公开主页内容，当前已发布版本将进入历史记录。"
+        busy={rollbackRequest ? isBusy(`home:rollback:${rollbackRequest.id}`) : false}
+        confirmLabel="确认回滚"
+        busyLabel="回滚中"
+        triggerRef={rollbackTriggerRef}
+        onConfirm={confirmRollback}
+        onCancel={() => setRollbackRequest(null)}
+      />
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
     </section>
   );
