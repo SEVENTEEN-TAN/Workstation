@@ -886,24 +886,118 @@
 
 .loginPage {
   display: grid;
-  min-height: 100vh;
+  min-height: 100svh;
   place-items: center;
-  padding: 24px;
+  padding: 18px;
   background: #0d1116;
   color: #f7f8f7;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
 }
 
-.loginPanel {
-  width: min(430px, 100%);
-  padding: 28px;
+.authFrame {
+  display: grid;
+  width: min(1160px, 100%);
+  min-height: min(690px, calc(100svh - 36px));
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background: #14181f;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
 }
 
-.loginPanel h1 {
-  margin: 7px 0 0;
-  font-size: 25px;
+.authIdentity {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 36px;
+  padding: 26px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #10141a;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.authBrandLine {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.authBrandLine strong {
+  max-width: 260px;
+  color: #eef1f2;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.authIdentityCopy {
+  position: relative;
+  z-index: 1;
+}
+
+.authIdentityCopy h1 {
+  margin: 10px 0 0;
+  color: #ffffff;
+  font-size: clamp(42px, 11vw, 66px);
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+
+.authIdentityCopy p {
+  max-width: 480px;
+  margin: 18px 0 0;
+  color: #9aa3ad;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.authRole {
+  position: relative;
+  z-index: 1;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.authRole span,
+.authRole strong {
+  display: block;
+}
+
+.authRole span {
+  color: #68727d;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.authRole strong {
+  margin-top: 5px;
+  color: #00df8f;
+  font-size: 12px;
+}
+
+.authAccess {
+  display: grid;
+  min-width: 0;
+  place-items: center;
+  padding: 34px 24px;
+}
+
+.loginPanel {
+  width: min(420px, 100%);
+}
+
+.loginPanel h2 {
+  margin: 8px 0 0;
+  color: #ffffff;
+  font-size: 28px;
   letter-spacing: 0;
 }
 
@@ -916,8 +1010,80 @@
 
 .form {
   display: grid;
-  gap: 13px;
-  margin-top: 20px;
+  gap: 15px;
+  margin-top: 26px;
+}
+
+.form label,
+.formField {
+  gap: 8px;
+  color: #a7afb8;
+  font-size: 12px;
+}
+
+.formField {
+  display: grid;
+}
+
+.form input {
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.form input:disabled,
+.passwordToggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.passwordField {
+  position: relative;
+  display: block;
+}
+
+.passwordField input {
+  padding-right: 50px;
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: inline-grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #7f8995;
+  cursor: pointer;
+}
+
+.passwordToggle:hover {
+  color: #00df8f;
+}
+
+.fieldHint {
+  margin: -5px 0 0;
+  color: #747e89;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.authSubmit {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 2px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.authSubmit:disabled {
+  cursor: wait;
+  opacity: 0.62;
 }
 
 .error {
@@ -938,6 +1104,21 @@
   .workspace { padding: 34px 26px 64px; }
   .metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .panel { padding: 22px; }
+}
+
+@media (min-width: 900px) {
+  .loginPage { padding: 28px; }
+  .authFrame {
+    grid-template-columns: minmax(430px, 1.08fr) minmax(390px, 0.92fr);
+    min-height: min(690px, calc(100svh - 56px));
+  }
+  .authIdentity {
+    padding: 38px 42px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 0;
+  }
+  .authIdentityCopy h1 { font-size: clamp(58px, 6vw, 84px); }
+  .authAccess { padding: 44px; }
 }
 
 @media (min-width: 1024px) {
@@ -1001,6 +1182,20 @@
   .emptyAction { grid-column: 1 / -1; justify-self: stretch; }
   .emptyAction > * { width: 100%; }
   .confirmActions { display: grid; grid-template-columns: 1fr 1fr; }
+  .loginPage { place-items: stretch; padding: 0; }
+  .authFrame {
+    min-height: 100svh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .authIdentity { gap: 24px; padding: 20px; }
+  .authBrandLine .brandMark { width: 38px; height: 38px; flex-basis: 38px; }
+  .authIdentityCopy h1 { font-size: clamp(39px, 13vw, 54px); }
+  .authIdentityCopy p { margin-top: 13px; font-size: 13px; }
+  .authRole { padding-top: 12px; }
+  .authAccess { place-items: start stretch; padding: 30px 20px 42px; }
+  .loginPanel { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

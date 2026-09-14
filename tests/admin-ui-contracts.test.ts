@@ -62,6 +62,34 @@ describe("admin return-path contracts", () => {
   });
 });
 
+describe("administrator entry contracts", () => {
+  it("keeps throttling distinct while hiding every credential failure detail", async () => {
+    const loginModule = await import("../src/app/admin/login/LoginForm");
+    expect("getLoginErrorMessage" in loginModule).toBe(true);
+
+    const getLoginErrorMessage = Reflect.get(loginModule, "getLoginErrorMessage") as
+      | ((status: number) => string)
+      | undefined;
+
+    expect(getLoginErrorMessage?.(429)).toBe("尝试次数过多，请稍后再试。");
+    expect(getLoginErrorMessage?.(401)).toBe("用户名或密码错误。");
+    expect(getLoginErrorMessage?.(500)).toBe("用户名或密码错误。");
+  });
+
+  it("passes only the sanitized return path into the login form", () => {
+    const source = readProjectFile("src/app/admin/login/page.tsx");
+
+    expect(source).toContain("sanitizeAdminReturnPath");
+    expect(source).toMatch(/<LoginForm\s+nextPath=\{[^}]+\}/);
+  });
+
+  it("preserves the requested admin query string through the login redirect", () => {
+    const source = readProjectFile("src/proxy.ts");
+
+    expect(source).toMatch(/request\.nextUrl\.pathname\s*\+\s*request\.nextUrl\.search/);
+  });
+});
+
 describe("admin feedback contracts", () => {
   it("announces success non-urgently", () => {
     expect(createFeedback("success", "草稿已保存")).toEqual({
