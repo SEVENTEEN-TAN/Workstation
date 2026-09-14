@@ -1,0 +1,177 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  username     String        @unique
+  passwordHash String        @map("password_hash")
+  isActive     Boolean       @default(true) @map("is_active")
+  lastLoginAt  DateTime?     @map("last_login_at")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  sessions     Session[]
+  siteVersions SiteVersion[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  ipAddress String?   @map("ip_address")
+  userAgent String?   @map("user_agent")
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@map("sessions")
+}
+
+model SiteVersion {
+  id          String    @id @default(cuid())
+  version     Int       @unique
+  status      String    @default("DRAFT")
+  content     Json
+  createdById String?   @map("created_by_id")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  createdBy   User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([status, publishedAt])
+  @@map("site_versions")
+}
+
+model Asset {
+  id               String   @id @default(cuid())
+  originalFilename String   @map("original_filename")
+  storagePath      String   @unique @map("storage_path")
+  mimeType         String   @map("mime_type")
+  width            Int?
+  height           Int?
+  sizeBytes        Int      @map("size_bytes")
+  sha256           String
+  altTextZh        String?  @map("alt_text_zh")
+  altTextEn        String?  @map("alt_text_en")
+  isReferenced     Boolean  @default(false) @map("is_referenced")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([sha256])
+  @@map("assets")
+}
+
+model OkrCycle {
+  id         String      @id @default(cuid())
+  nameZh     String      @map("name_zh")
+  nameEn     String?     @map("name_en")
+  type       String
+  startDate  DateTime    @map("start_date")
+  endDate    DateTime    @map("end_date")
+  status     String      @default("DRAFT")
+  visibility String      @default("PRIVATE")
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+  objectives Objective[]
+  reviews    Review[]
+
+  @@index([status, startDate, endDate])
+  @@map("okr_cycles")
+}
+
+model Objective {
+  id          String      @id @default(cuid())
+  cycleId     String      @map("cycle_id")
+  titleZh     String      @map("title_zh")
+  titleEn     String?     @map("title_en")
+  descriptionZh String?   @map("description_zh")
+  descriptionEn String?   @map("description_en")
+  status      String      @default("NOT_STARTED")
+  visibility  String      @default("PRIVATE")
+  sortOrder   Int         @default(0) @map("sort_order")
+  startDate   DateTime?   @map("start_date")
+  endDate     DateTime?   @map("end_date")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  cycle       OkrCycle    @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  keyResults  KeyResult[]
+  reviews     Review[]
+
+  @@index([cycleId, sortOrder])
+  @@index([visibility, status])
+  @@map("objectives")
+}
+
+model KeyResult {
+  id             String             @id @default(cuid())
+  objectiveId    String             @map("objective_id")
+  titleZh        String             @map("title_zh")
+  titleEn        String?            @map("title_en")
+  descriptionZh  String?            @map("description_zh")
+  descriptionEn  String?            @map("description_en")
+  progressMode   String             @map("progress_mode")
+  startValue     Float?             @map("start_value")
+  currentValue   Float?             @map("current_value")
+  targetValue    Float?             @map("target_value")
+  unit           String?
+  manualProgress Float?             @map("manual_progress")
+  weight         Float              @default(1)
+  status         String             @default("NOT_STARTED")
+  sortOrder      Int                @default(0) @map("sort_order")
+  createdAt      DateTime           @default(now()) @map("created_at")
+  updatedAt      DateTime           @updatedAt @map("updated_at")
+  objective      Objective          @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  progressUpdates KrProgressUpdate[]
+
+  @@index([objectiveId, sortOrder])
+  @@map("key_results")
+}
+
+model KrProgressUpdate {
+  id             String    @id @default(cuid())
+  keyResultId    String    @map("key_result_id")
+  currentValue   Float?    @map("current_value")
+  manualProgress Float?    @map("manual_progress")
+  calculatedProgress Float @map("calculated_progress")
+  noteZh         String?   @map("note_zh")
+  noteEn         String?   @map("note_en")
+  recordedAt     DateTime  @default(now()) @map("recorded_at")
+  keyResult      KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+
+  @@index([keyResultId, recordedAt])
+  @@map("kr_progress_updates")
+}
+
+model Review {
+  id            String     @id @default(cuid())
+  cycleId       String     @map("cycle_id")
+  objectiveId   String?    @map("objective_id")
+  achievementsZh String    @map("achievements_zh")
+  achievementsEn String?   @map("achievements_en")
+  problemsZh    String     @map("problems_zh")
+  problemsEn    String?    @map("problems_en")
+  lessonsZh     String     @map("lessons_zh")
+  lessonsEn     String?    @map("lessons_en")
+  nextActionsZh String     @map("next_actions_zh")
+  nextActionsEn String?    @map("next_actions_en")
+  score         Float?
+  visibility    String     @default("PRIVATE")
+  reviewedAt    DateTime   @default(now()) @map("reviewed_at")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  cycle         OkrCycle   @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  objective     Objective? @relation(fields: [objectiveId], references: [id], onDelete: SetNull)
+
+  @@index([cycleId, reviewedAt])
+  @@index([objectiveId])
+  @@index([visibility])
+  @@map("reviews")
+}
