@@ -16,6 +16,8 @@ export type SiteVersionRecord = {
 
 type TransactionRepository = {
   findVersion(id: string): Promise<SiteVersionRecord | null>;
+  findDraft(): Promise<SiteVersionRecord | null>;
+  updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
   archivePublished(): Promise<unknown>;
   publishVersion(id: string, publishedAt: Date): Promise<SiteVersionRecord>;
   latestVersionNumber(): Promise<number>;
@@ -33,6 +35,8 @@ export type SiteContentRepository = {
 function prismaTransactionRepository(transaction: Prisma.TransactionClient): TransactionRepository {
   return {
     findVersion: (id) => transaction.siteVersion.findUnique({ where: { id } }),
+    findDraft: () => transaction.siteVersion.findFirst({ where: { status: "DRAFT" }, orderBy: { version: "desc" } }),
+    updateDraft: (id, content) => transaction.siteVersion.update({ where: { id }, data: { content: content as Prisma.InputJsonValue } }),
     archivePublished: () => transaction.siteVersion.updateMany({ where: { status: "PUBLISHED" }, data: { status: "ARCHIVED" } }),
     publishVersion: (id, publishedAt) => transaction.siteVersion.update({ where: { id }, data: { status: "PUBLISHED", publishedAt } }),
     async latestVersionNumber() {
@@ -100,12 +104,13 @@ export function createSiteContentService(repository: SiteContentRepository) {
         const source = await transaction.findVersion(sourceId);
         if (!source) throw new Error("内容版本不存在");
         const content = siteContentSchema.parse(source.content);
-        await transaction.archivePublished();
+        const draft = await transaction.findDraft();
+        if (draft) return transaction.updateDraft(draft.id, content);
         return transaction.createVersion({
           version: (await transaction.latestVersionNumber()) + 1,
-          status: "PUBLISHED",
+          status: "DRAFT",
           content,
-          publishedAt: new Date(),
+          publishedAt: null,
           createdById,
         });
       });

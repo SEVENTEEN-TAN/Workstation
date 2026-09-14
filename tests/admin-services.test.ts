@@ -20,6 +20,8 @@ describe("site publishing", () => {
         transactions += 1;
         return run({
           async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
+          async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
+          async updateDraft() { throw new Error("not used"); },
           async archivePublished() { versions.filter((item) => item.status === "PUBLISHED").forEach((item) => { item.status = "ARCHIVED"; }); },
           async publishVersion(id, publishedAt) { const item = versions.find((entry) => entry.id === id)!; item.status = "PUBLISHED"; item.publishedAt = publishedAt; return item; },
           async latestVersionNumber() { return Math.max(...versions.map((item) => item.version)); },
@@ -40,6 +42,77 @@ describe("site publishing", () => {
       { id: "draft", status: "PUBLISHED" },
     ]);
     expect(siteContentSchema.safeParse(versions[1].content).success).toBe(true);
+  });
+});
+
+describe("site rollback", () => {
+  it("overwrites the existing draft without changing the published version", async () => {
+    const sourceContent = structuredClone(fallbackSiteContent);
+    sourceContent.en.hero.lineOne = "RESTORED SOURCE";
+    const versions = [
+      { id: "published", version: 3, status: "PUBLISHED", content: fallbackSiteContent, publishedAt: new Date("2026-09-01") },
+      { id: "source", version: 1, status: "ARCHIVED", content: sourceContent, publishedAt: new Date("2026-08-01") },
+      { id: "draft", version: 4, status: "DRAFT", content: fallbackSiteContent, publishedAt: null },
+    ];
+    const service = createSiteContentService({
+      async transaction(run) {
+        return run({
+          async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
+          async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
+          async updateDraft(id, content) { const item = versions.find((entry) => entry.id === id)!; item.content = content; return item; },
+          async archivePublished() { throw new Error("rollback must not archive published versions"); },
+          async publishVersion() { throw new Error("rollback must not publish versions"); },
+          async latestVersionNumber() { return Math.max(...versions.map((item) => item.version)); },
+          async createVersion() { throw new Error("not used"); },
+        });
+      },
+      async listVersions() { return versions; },
+      async findPublished() { return versions.find((item) => item.status === "PUBLISHED") ?? null; },
+      async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
+      async updateDraft() { throw new Error("not used"); },
+    });
+
+    const restored = await service.rollback("source", "author-1");
+
+    expect(restored).toMatchObject({ id: "draft", version: 4, status: "DRAFT", publishedAt: null, content: sourceContent });
+    expect(versions[0]).toMatchObject({ id: "published", version: 3, status: "PUBLISHED" });
+  });
+
+  it("creates the next draft with no publication date and retains the author when no draft exists", async () => {
+    const sourceContent = structuredClone(fallbackSiteContent);
+    sourceContent.zh.hero.lineOne = "恢复的历史内容";
+    const publishedAt = new Date("2026-09-01");
+    const versions = [
+      { id: "published", version: 4, status: "PUBLISHED", content: fallbackSiteContent, publishedAt },
+      { id: "source", version: 2, status: "ARCHIVED", content: sourceContent, publishedAt: new Date("2026-08-01") },
+    ];
+    let createdInput: unknown;
+    const service = createSiteContentService({
+      async transaction(run) {
+        return run({
+          async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
+          async findDraft() { return null; },
+          async updateDraft() { throw new Error("not used"); },
+          async archivePublished() { throw new Error("rollback must not archive published versions"); },
+          async publishVersion() { throw new Error("rollback must not publish versions"); },
+          async latestVersionNumber() { return Math.max(...versions.map((item) => item.version)); },
+          async createVersion(input) {
+            createdInput = input;
+            return { id: "new-draft", ...input, publishedAt: input.publishedAt ?? null };
+          },
+        });
+      },
+      async listVersions() { return versions; },
+      async findPublished() { return versions.find((item) => item.status === "PUBLISHED") ?? null; },
+      async findDraft() { return null; },
+      async updateDraft() { throw new Error("not used"); },
+    });
+
+    const restored = await service.rollback("source", "author-2");
+
+    expect(restored).toMatchObject({ id: "new-draft", version: 5, status: "DRAFT", publishedAt: null, content: sourceContent });
+    expect(createdInput).toMatchObject({ version: 5, status: "DRAFT", publishedAt: null, createdById: "author-2", content: sourceContent });
+    expect(versions[0]).toMatchObject({ id: "published", version: 4, status: "PUBLISHED", publishedAt });
   });
 });
 
