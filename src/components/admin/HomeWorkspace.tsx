@@ -1,9 +1,17 @@
 "use client";
 
 import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lucide-react";
-import { useRef, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
+import { HomepageEditor } from "./home/HomepageEditor";
+import {
+  isSiteContentDirty,
+  type SiteLocale,
+  type SiteSectionId,
+  validateSiteContent,
+} from "./home/content-editor";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
@@ -25,29 +33,67 @@ function formatVersionDate(version: SiteVersionData) {
 
 export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspaceProps) {
   const [draft, setDraft] = useState(initialDraft);
-  const [draftText, setDraftText] = useState(() => JSON.stringify(initialDraft.content, null, 2));
+  const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
+  const [content, setContent] = useState<SiteContent>(initialContent);
+  const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
+  const [locale, setLocale] = useState<SiteLocale>("zh");
+  const [section, setSection] = useState<SiteSectionId>("meta");
   const [versions, setVersions] = useState(initialVersions);
   const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
   const rollbackTriggerRef = useRef<HTMLElement | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
+  const validation = useMemo(() => validateSiteContent(content), [content]);
+  const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
 
-  async function fetchHomeData() {
+  useEffect(() => {
+    if (!dirty) return;
+
+    function warnBeforeUnload(event: BeforeUnloadEvent) {
+      event.preventDefault();
+    }
+
+    function confirmSameOriginNavigation(event: globalThis.MouseEvent) {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const anchor = target.closest("a[href]");
+      if (!(anchor instanceof HTMLAnchorElement) || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+
+      const destination = new URL(anchor.href, window.location.href);
+      if (destination.origin !== window.location.origin || destination.href === window.location.href) return;
+      if (!window.confirm("当前有未保存修改，确定离开此页面吗？")) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+
+    window.addEventListener("beforeunload", warnBeforeUnload);
+    document.addEventListener("click", confirmSameOriginNavigation, true);
+    return () => {
+      window.removeEventListener("beforeunload", warnBeforeUnload);
+      document.removeEventListener("click", confirmSameOriginNavigation, true);
+    };
+  }, [dirty]);
+
+  async function fetchHomeData(): Promise<void> {
     const [nextDraft, nextVersions] = await Promise.all([
       adminRequest<SiteVersionData>("/api/admin/site/draft"),
       adminRequest<SiteVersionData[]>("/api/admin/site/versions"),
     ]);
+    const nextContent = siteContentSchema.parse(nextDraft.content);
     setDraft(nextDraft);
-    setDraftText(JSON.stringify(nextDraft.content, null, 2));
+    setContent(nextContent);
+    setSavedContent(nextContent);
     setVersions(nextVersions);
   }
 
   async function refreshHome() {
+    if (dirty && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
     await runAction("home:refresh", fetchHomeData, "主页内容已更新");
   }
 
   async function saveDraft() {
     await runAction("home:save", async () => {
-      const content = JSON.parse(draftText) as unknown;
       await adminRequest("/api/admin/site/draft", jsonRequest("PUT", { id: draft.id, content }));
       await fetchHomeData();
     }, "草稿已保存");
@@ -69,20 +115,29 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
     if (!rollbackRequest) return;
     const versionId = rollbackRequest.id;
     const result = await runAction(`home:rollback:${versionId}`, async () => {
-      await adminRequest("/api/admin/site/rollback", jsonRequest("POST", { id: versionId }));
-      await fetchHomeData();
+      const nextDraft = await adminRequest<SiteVersionData>("/api/admin/site/rollback", jsonRequest("POST", { id: versionId }));
+      const nextVersions = await adminRequest<SiteVersionData[]>("/api/admin/site/versions");
+      const nextContent = siteContentSchema.parse(nextDraft.content);
+      setDraft(nextDraft);
+      setContent(nextContent);
+      setSavedContent(nextContent);
+      setVersions(nextVersions);
       return true;
-    }, "版本已回滚并发布");
+    }, "已恢复为草稿，请预览后发布");
     if (result) setRollbackRequest(null);
   }
 
   const refreshBusy = isBusy("home:refresh");
+  const saveBusy = isBusy("home:save");
+  const publishBusy = isBusy("home:publish");
+  const zhIssues = Object.keys(validation.fieldErrors).filter((path) => path.startsWith("zh.")).length;
+  const enIssues = Object.keys(validation.fieldErrors).filter((path) => path.startsWith("en.")).length;
 
   return (
     <section>
       <PageHeader
         title="主页 CMS"
-        description="维护公开主页的完整双语内容快照。结构化表单将在下一轮接入。"
+        description="维护公开主页的完整双语内容，保存、预览确认后再发布。"
         action={(
           <button type="button" className={styles.iconTextButton} onClick={refreshHome} disabled={refreshBusy}>
             {refreshBusy ? <LoaderCircle className={styles.spin} size={18} /> : <RefreshCw size={18} />}
@@ -95,31 +150,50 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
         <div className={styles.editorToolbar}>
           <div>
             <span className={styles.kicker}>DRAFT v{draft.version}</span>
-            <h2>内容快照</h2>
+            <h2>结构化内容</h2>
           </div>
           <div className={styles.actions}>
-            <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={isBusy("home:save")}>
-              {isBusy("home:save") ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}
-              {isBusy("home:save") ? "保存中" : "保存草稿"}
+            <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={!dirty || !validation.valid || saveBusy}>
+              {saveBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}
+              {saveBusy ? "保存中" : "保存草稿"}
             </button>
             <button type="button" onClick={() => window.open(`/preview?id=${draft.id}`, "_blank", "noopener,noreferrer")}>
               <ExternalLink size={17} />预览页面
             </button>
-            <button type="button" onClick={publishDraft} disabled={isBusy("home:publish")}>
-              {isBusy("home:publish") ? <LoaderCircle className={styles.spin} size={17} /> : <Send size={17} />}
-              {isBusy("home:publish") ? "发布中" : "发布"}
+            <button type="button" onClick={publishDraft} disabled={!validation.valid || dirty || publishBusy}>
+              {publishBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Send size={17} />}
+              {publishBusy ? "发布中" : "发布"}
             </button>
           </div>
         </div>
-        <label className={styles.editorLabel}>
-          <span>完整双语内容 JSON</span>
-          <textarea
-            className={styles.editor}
-            value={draftText}
-            onChange={(event) => setDraftText(event.target.value)}
-            spellCheck={false}
-          />
-        </label>
+        <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
+          <div>
+            <span className={styles.kicker}>READINESS</span>
+            <h2 id="publish-readiness-title">发布就绪</h2>
+          </div>
+          <dl>
+            <div><dt>中文</dt><dd>{zhIssues ? `${zhIssues} 个问题` : "完整"}</dd></div>
+            <div><dt>English</dt><dd>{enIssues ? `${enIssues} 个问题` : "完整"}</dd></div>
+            <div><dt>总计</dt><dd>{validation.errorCount ? `${validation.errorCount} 个问题` : "无问题"}</dd></div>
+            <div><dt>状态</dt><dd>{dirty ? "有未保存修改" : "已保存"}</dd></div>
+          </dl>
+          <p>
+            {validation.valid
+              ? dirty
+                ? "可保存；预览仍使用当前已保存草稿，不包含未保存修改。"
+                : "当前已保存草稿可预览并发布。"
+              : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
+          </p>
+        </section>
+        <HomepageEditor
+          content={content}
+          locale={locale}
+          section={section}
+          validation={validation}
+          onContentChange={setContent}
+          onLocaleChange={setLocale}
+          onSectionChange={setSection}
+        />
       </section>
 
       <section className={styles.panel}>
@@ -132,7 +206,7 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
               <time>{formatVersionDate(version)}</time>
               <button type="button" onClick={(event) => requestRollback(event, version)} disabled={version.id === draft.id || isBusy(busyKey)}>
                 {isBusy(busyKey) ? <LoaderCircle className={styles.spin} size={16} /> : <RotateCcw size={16} />}
-                {isBusy(busyKey) ? "回滚中" : "回滚"}
+                {isBusy(busyKey) ? "恢复中" : "恢复为草稿"}
               </button>
             </div>
           );
@@ -146,12 +220,12 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
       </section>
       <ConfirmDialog
         open={Boolean(rollbackRequest)}
-        title="确认回滚主页版本"
+        title="确认恢复主页版本为草稿"
         target={rollbackRequest ? `v${rollbackRequest.version}` : ""}
-        description="确认后该版本会立即成为公开主页内容，当前已发布版本将进入历史记录。"
+        description="当前未保存修改将被替换，公开内容保持不变。恢复后仍需明确预览并发布。"
         busy={rollbackRequest ? isBusy(`home:rollback:${rollbackRequest.id}`) : false}
-        confirmLabel="确认回滚"
-        busyLabel="回滚中"
+        confirmLabel="恢复为草稿"
+        busyLabel="恢复中"
         triggerRef={rollbackTriggerRef}
         onConfirm={confirmRollback}
         onCancel={() => setRollbackRequest(null)}
