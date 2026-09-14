@@ -21,12 +21,12 @@ Personal Workstation is a continuously updated online career profile and its pri
 
 ### Iteration V1.1 - Admin Experience Foundation
 
-- [ ] Replace the generic login card with the approved Dark Studio branded login composition.
-- [ ] Split the admin workspace into route-addressable modules while preserving authentication checks.
-- [ ] Add a consistent admin shell with navigation, page headers, breadcrumbs, and account actions.
-- [ ] Add reusable loading, success, failure, empty, and destructive-confirmation patterns.
-- [ ] Preserve the existing dashboard, CMS, OKR, and media behavior during the shell migration.
-- [ ] Verify desktop, tablet, and mobile navigation and form layouts.
+- [x] Replace the generic login card with the approved Dark Studio branded login composition.
+- [x] Split the admin workspace into route-addressable modules while preserving authentication checks.
+- [x] Add a consistent admin shell with navigation, page headers, breadcrumbs, and account actions.
+- [x] Add reusable loading, success, failure, empty, and destructive-confirmation patterns.
+- [x] Preserve the existing dashboard, CMS, OKR, and media behavior during the shell migration.
+- [x] Verify desktop, tablet, and mobile navigation and form layouts.
 
 ### Iteration V1.2 - Structured Homepage CMS
 
