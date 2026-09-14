@@ -148,13 +148,13 @@ git commit -m "feat: add admin interaction contracts"
 ### Task 3: Build The Authenticated Admin Shell And Route Modules
 
 **Files:**
-- Create: `src/app/admin/layout.tsx`
-- Create: `src/app/admin/loading.tsx`
-- Create: `src/app/admin/error.tsx`
-- Create: `src/app/admin/overview/page.tsx`
-- Create: `src/app/admin/home/page.tsx`
-- Create: `src/app/admin/okr/page.tsx`
-- Create: `src/app/admin/media/page.tsx`
+- Create: `src/app/admin/(workspace)/layout.tsx`
+- Create: `src/app/admin/(workspace)/loading.tsx`
+- Create: `src/app/admin/(workspace)/error.tsx`
+- Create: `src/app/admin/(workspace)/overview/page.tsx`
+- Create: `src/app/admin/(workspace)/home/page.tsx`
+- Create: `src/app/admin/(workspace)/okr/page.tsx`
+- Create: `src/app/admin/(workspace)/media/page.tsx`
 - Create: `src/components/admin/AdminShell.tsx`
 - Create: `src/components/admin/PageHeader.tsx`
 - Create: `src/components/admin/FeedbackCenter.tsx`
@@ -186,7 +186,7 @@ Expected: FAIL because the shell and route modules are absent.
 
 - [ ] **Step 3: Implement the shared shell**
 
-`src/app/admin/layout.tsx` must call `currentSession()` once and redirect unauthenticated users to `/admin/login`. `AdminShell` must use `usePathname()` for active navigation, render `aria-current="page"`, provide a 40px menu button below 1024px, close the menu after route selection, and preserve the current UI when logout fails.
+`src/app/admin/(workspace)/layout.tsx` must call `currentSession()` once and redirect unauthenticated users to `/admin/login`. The route group must leave `/admin/login` and `/admin/setup` outside the authenticated shell while preserving the public URLs. `AdminShell` must use `usePathname()` for active navigation, render `aria-current="page"`, provide a 40px menu button below 1024px, close the menu after route selection, and preserve the current UI when logout fails.
 
 - [ ] **Step 4: Implement reusable feedback, empty, loading and confirmation UI**
 

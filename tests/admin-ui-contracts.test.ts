@@ -1,3 +1,8 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -7,6 +12,14 @@ import {
 } from "../src/components/admin/navigation";
 import { AdminRequestError, adminRequest } from "../src/components/admin/request";
 import { createFeedback } from "../src/components/admin/useAdminAction";
+import { EmptyState } from "../src/components/admin/EmptyState";
+import { PageHeader } from "../src/components/admin/PageHeader";
+
+const projectRoot = resolve(import.meta.dirname, "..");
+
+function readProjectFile(path: string) {
+  return readFileSync(resolve(projectRoot, path), "utf8");
+}
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -106,4 +119,50 @@ describe("admin request contracts", () => {
     await expect(adminRequest("/api/admin/okr")).rejects.toMatchObject({ status: 401 });
     expect(redirectedTo).toBe("/admin/login?next=%2Fadmin%2Fokr%3Fcycle%3Dq4");
   });
+});
+
+describe("admin shell markup contracts", () => {
+  it("renders a page title and optional description", () => {
+    const markup = renderToStaticMarkup(
+      createElement(PageHeader, {
+        title: "OKR 管理",
+        description: "聚焦目标、关键结果与复盘。",
+      }),
+    );
+
+    expect(markup).toContain("OKR 管理");
+    expect(markup).toContain("聚焦目标、关键结果与复盘。");
+  });
+
+  it("renders exactly one relevant empty-state action", () => {
+    const markup = renderToStaticMarkup(
+      createElement(EmptyState, {
+        title: "还没有媒体资源",
+        description: "上传第一张图片后，可在主页内容中引用。",
+        action: createElement("button", { type: "button" }, "上传图片"),
+      }),
+    );
+
+    expect(markup).toContain("还没有媒体资源");
+    expect(markup).toContain("上传图片");
+    expect(markup.match(/<button/g)).toHaveLength(1);
+  });
+});
+
+describe("admin route contracts", () => {
+  it("redirects the admin index to the overview route", () => {
+    const source = readProjectFile("src/app/admin/page.tsx");
+
+    expect(source).toContain('redirect("/admin/overview")');
+    expect(source).not.toContain("AdminWorkspace");
+  });
+
+  it.each(["overview", "home", "okr", "media"])(
+    "provides a server page for the %s module",
+    (moduleName) => {
+      const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
+
+      expect(source).toMatch(/export default async function/);
+    },
+  );
 });
