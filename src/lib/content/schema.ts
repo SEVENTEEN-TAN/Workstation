@@ -109,4 +109,5 @@ export const siteContentSchema = z.object({
   zh: localizedSiteContentSchema,
 });
 
+export type LocalizedSiteContent = z.infer<typeof localizedSiteContentSchema>;
 export type SiteContent = z.infer<typeof siteContentSchema>;
