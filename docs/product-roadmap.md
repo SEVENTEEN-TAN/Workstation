@@ -67,7 +67,7 @@ Personal Workstation is a continuously updated online career profile and its pri
 - [x] Reorganize `/admin/home` into `个人与首屏`, `能力展示`, `项目展示`, and `联系与导航` without changing the `SiteContent` snapshot or public renderer.
 - [x] Show paired Chinese and English fields for each concept, and move accessibility labels and interaction prompts into a collapsed `高级文案` area without losing data or validation.
 - [x] Keep save, preview, and publish in one stable action bar, and move version history into a secondary `发布记录` view while preserving restore-to-draft safety.
-- [ ] Reuse the V1.5 structured-project module as the project editing source; let the homepage select and order projects, then materialize their presentation into the immutable published `SiteVersion` snapshot.
+- [x] Reuse the V1.5 structured-project module as the project editing source; let the homepage select and order projects, then materialize their presentation into the immutable published `SiteVersion` snapshot.
 - [ ] Confirm no WorkStation source, test, script, or deployment documentation depends on the independent HomePage project, and pass data, asset, desktop, and mobile regression checks.
 - [ ] After the acceptance checks pass, request separate approval to archive or delete the independent HomePage project.
 
