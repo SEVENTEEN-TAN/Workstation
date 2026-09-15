@@ -105,4 +105,4 @@
 - [x] Test admin login and all three OKR routes with `admin / admin` at desktop and mobile widths.
 - [x] Verify Action Item completion leaves KR progress unchanged.
 - [x] Mark delivered V1.3 TODO items complete and document any deliberately deferred edge.
-- [ ] Run `git diff --check`, review the branch diff, commit, push, and open a stacked pull request.
+- [x] Run `git diff --check`, review the branch diff, commit, push, and open a stacked pull request.
