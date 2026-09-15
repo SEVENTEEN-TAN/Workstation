@@ -6,12 +6,7 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import styles from "../../app/admin/admin.module.css";
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { HomepageEditor } from "./home/HomepageEditor";
-import {
-  isSiteContentDirty,
-  type SiteLocale,
-  type SiteSectionId,
-  validateSiteContent,
-} from "./home/content-editor";
+import { isSiteContentDirty, validateSiteContent } from "./home/content-editor";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
@@ -37,8 +32,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, assets }: HomeWor
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
   const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
-  const [locale, setLocale] = useState<SiteLocale>("zh");
-  const [section, setSection] = useState<SiteSectionId>("meta");
+  const [view, setView] = useState<"edit" | "history">("edit");
   const [versions, setVersions] = useState(initialVersions);
   const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
   const rollbackTriggerRef = useRef<HTMLElement | null>(null);
@@ -149,7 +143,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, assets }: HomeWor
       />
 
       <section className={styles.panel}>
-        <div className={styles.editorToolbar}>
+        <div className={styles.homeActionBar} id="homeActionBar">
           <div>
             <span className={styles.kicker}>DRAFT v{draft.version}</span>
             <h2>结构化内容</h2>
@@ -167,58 +161,62 @@ export function HomeWorkspace({ initialDraft, initialVersions, assets }: HomeWor
               {publishBusy ? "发布中" : "发布"}
             </button>
           </div>
-        </div>
-        <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
-          <div>
-            <span className={styles.kicker}>READINESS</span>
-            <h2 id="publish-readiness-title">发布就绪</h2>
+          <div className={styles.workspaceTabs} role="tablist" aria-label="主页管理视图">
+            <button type="button" role="tab" aria-selected={view === "edit"} onClick={() => setView("edit")}>编辑内容</button>
+            <button type="button" role="tab" aria-selected={view === "history"} onClick={() => setView("history")}>发布记录</button>
           </div>
-          <dl>
-            <div><dt>中文</dt><dd>{zhIssues ? `${zhIssues} 个问题` : "完整"}</dd></div>
-            <div><dt>English</dt><dd>{enIssues ? `${enIssues} 个问题` : "完整"}</dd></div>
-            <div><dt>总计</dt><dd>{validation.errorCount ? `${validation.errorCount} 个问题` : "无问题"}</dd></div>
-            <div><dt>状态</dt><dd>{dirty ? "有未保存修改" : "已保存"}</dd></div>
-          </dl>
-          <p>
-            {validation.valid
-              ? dirty
-                ? "可保存；预览仍使用当前已保存草稿，不包含未保存修改。"
-                : "当前已保存草稿可预览并发布。"
-              : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
-          </p>
-        </section>
-        <HomepageEditor
-          assets={assets}
-          content={content}
-          locale={locale}
-          section={section}
-          validation={validation}
-          onContentChange={setContent}
-          onLocaleChange={setLocale}
-          onSectionChange={setSection}
-        />
-      </section>
-
-      <section className={styles.panel}>
-        <div className={styles.sectionHeading}><div><span className={styles.kicker}>HISTORY</span><h2>版本历史</h2></div></div>
-        {versions.length ? versions.map((version) => {
-          const busyKey = `home:rollback:${version.id}`;
-          return (
-            <div className={styles.listRow} key={version.id}>
-              <span><strong>v{version.version}</strong><small>{version.status}</small></span>
-              <time>{formatVersionDate(version)}</time>
-              <button type="button" onClick={(event) => requestRollback(event, version)} disabled={version.id === draft.id || isBusy(busyKey)}>
-                {isBusy(busyKey) ? <LoaderCircle className={styles.spin} size={16} /> : <RotateCcw size={16} />}
-                {isBusy(busyKey) ? "恢复中" : "恢复为草稿"}
-              </button>
-            </div>
-          );
-        }) : (
-          <EmptyState
-            title="还没有版本记录"
-            description="保存当前草稿后，版本会出现在这里。"
-            action={<button type="button" className={styles.secondaryButton} onClick={saveDraft}>保存当前草稿</button>}
-          />
+        </div>
+        {view === "edit" ? (
+          <>
+            <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
+              <div>
+                <span className={styles.kicker}>READINESS</span>
+                <h2 id="publish-readiness-title">发布就绪</h2>
+              </div>
+              <dl>
+                <div><dt>中文</dt><dd>{zhIssues ? `${zhIssues} 个问题` : "完整"}</dd></div>
+                <div><dt>English</dt><dd>{enIssues ? `${enIssues} 个问题` : "完整"}</dd></div>
+                <div><dt>总计</dt><dd>{validation.errorCount ? `${validation.errorCount} 个问题` : "无问题"}</dd></div>
+                <div><dt>状态</dt><dd>{dirty ? "有未保存修改" : "已保存"}</dd></div>
+              </dl>
+              <p>
+                {validation.valid
+                  ? dirty
+                    ? "可保存；预览仍使用当前已保存草稿，不包含未保存修改。"
+                    : "当前已保存草稿可预览并发布。"
+                  : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
+              </p>
+            </section>
+            <HomepageEditor
+              assets={assets}
+              content={content}
+              validation={validation}
+              onContentChange={setContent}
+            />
+          </>
+        ) : (
+          <>
+            <div className={styles.sectionHeading}><div><span className={styles.kicker}>HISTORY</span><h2>发布记录</h2></div></div>
+            {versions.length ? versions.map((version) => {
+              const busyKey = `home:rollback:${version.id}`;
+              return (
+                <div className={styles.listRow} key={version.id}>
+                  <span><strong>v{version.version}</strong><small>{version.status}</small></span>
+                  <time>{formatVersionDate(version)}</time>
+                  <button type="button" onClick={(event) => requestRollback(event, version)} disabled={version.id === draft.id || isBusy(busyKey)}>
+                    {isBusy(busyKey) ? <LoaderCircle className={styles.spin} size={16} /> : <RotateCcw size={16} />}
+                    {isBusy(busyKey) ? "恢复中" : "恢复为草稿"}
+                  </button>
+                </div>
+              );
+            }) : (
+              <EmptyState
+                title="还没有版本记录"
+                description="保存当前草稿后，版本会出现在这里。"
+                action={<button type="button" className={styles.secondaryButton} onClick={saveDraft}>保存当前草稿</button>}
+              />
+            )}
+          </>
         )}
       </section>
       <ConfirmDialog

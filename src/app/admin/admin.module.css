@@ -1244,23 +1244,36 @@
   min-width: 0;
 }
 
-.languageSwitch {
+.homeActionBar {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.homeActionBar .actions {
+  justify-content: flex-start;
+}
+
+.workspaceTabs {
   display: inline-grid;
-  grid-template-columns: repeat(2, minmax(92px, 1fr));
+  grid-template-columns: repeat(2, minmax(104px, 1fr));
+  gap: 4px;
   padding: 3px;
   border: 1px solid rgba(255, 255, 255, 0.11);
   border-radius: 7px;
   background: #0f141a;
 }
 
-.languageSwitch button {
-  min-height: 40px;
+.workspaceTabs button {
+  min-height: 38px;
   border: 0;
   background: transparent;
   color: #8e98a4;
 }
 
-.languageSwitch button[aria-pressed="true"] {
+.workspaceTabs button[aria-selected="true"] {
   background: rgba(0, 223, 143, 0.09);
   color: #00df8f;
 }
@@ -1326,6 +1339,65 @@
 
 .homeFormGrid {
   gap: 14px;
+}
+
+.homeTaskContent {
+  display: grid;
+  min-width: 0;
+  gap: 24px;
+}
+
+.homeSection {
+  min-width: 0;
+}
+
+.homeSection > h3 {
+  margin: 0 0 14px;
+  color: #f4f6f5;
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.pairedFields {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pairedFieldLabel {
+  grid-column: 1 / -1;
+  margin-top: -4px;
+  color: #77818d;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.advancedCopy {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.advancedCopy > summary {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  color: #9da5af;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.advancedCopy[open] > summary {
+  margin-bottom: 12px;
+  color: #00df8f;
+}
+
+.advancedCopy .homeFormGrid {
+  margin: 0;
 }
 
 .homeField {
@@ -1402,6 +1474,28 @@
 .collectionHeading {
   display: flex;
   align-items: center;
+}
+
+.collectionActions {
+  display: grid;
+  gap: 5px;
+  align-items: center;
+}
+
+.collectionControlsGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #77818d;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.statEditor,
+.serviceEditor {
+  display: grid;
+  min-width: 0;
+  gap: 10px;
 }
 
 .collectionControls {
@@ -2132,6 +2226,7 @@
   .sectionRail { display: grid; align-content: start; overflow: visible; padding: 0; }
   .sectionRail button { min-width: 0; width: 100%; }
   .homeFormSurface { padding-left: 22px; border-left: 1px solid rgba(255, 255, 255, 0.08); }
+  .homeActionBar { grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; }
 }
 
 @media (min-width: 1024px) {
@@ -2174,6 +2269,9 @@
   .assetPreview { min-height: 280px; }
   .objectiveRow { grid-template-columns: minmax(0, 1fr) minmax(130px, 0.5fr); }
   .objectiveRow .rowActions { grid-column: 1 / -1; justify-content: flex-end; }
+  .homeActionBar { grid-template-columns: minmax(0, 1fr); }
+  .homeActionBar .actions { width: 100%; }
+  .workspaceTabs { width: 100%; }
 }
 
 @media (max-width: 639px) {
@@ -2190,6 +2288,18 @@
   .entityHead { align-items: flex-start; }
   .editorToolbar,
   .entityHead { flex-direction: column; }
+  .sectionRail {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding-bottom: 0;
+  }
+  .sectionRail button { width: 100%; min-width: 0; }
+  .pairedFields { grid-template-columns: minmax(0, 1fr); }
+  .pairedFieldLabel { margin-top: 2px; }
+  .collectionItem,
+  .assetFieldControl { grid-template-columns: minmax(0, 1fr); }
+  .collectionActions { justify-content: flex-start; }
   .entityHead .actions { width: 100%; }
   .progressRow { grid-template-columns: minmax(0, 1fr) 50px; gap: 8px; padding-block: 10px; }
   .progressRow > div { grid-column: 1 / -1; grid-row: 2; }
@@ -2224,7 +2334,6 @@
   .authRole { padding-top: 12px; }
   .authAccess { place-items: start stretch; padding: 30px 20px 42px; }
   .loginPanel { width: 100%; }
-  .languageSwitch { display: grid; width: 100%; }
   .tupleFields,
   .tripleFields { grid-template-columns: 1fr; }
   .assetFieldControl { grid-template-columns: 1fr; }

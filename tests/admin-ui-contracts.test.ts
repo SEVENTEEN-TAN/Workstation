@@ -352,15 +352,34 @@ describe("admin route contracts", () => {
 describe("homepage version safety contracts", () => {
   const workspaceSource = readProjectFile("src/components/admin/HomeWorkspace.tsx");
   const editorSource = readOptionalProjectFile("src/components/admin/home/HomepageEditor.tsx");
+  const adminStyles = readProjectFile("src/app/admin/admin.module.css");
   const homepageCmsSource = `${workspaceSource}\n${editorSource}`;
 
-  it("provides the complete ordered homepage sections and bilingual controls", () => {
+  it("organizes homepage editing around four resume tasks with paired bilingual fields", () => {
     for (const section of ["meta", "nav", "hero", "about", "works", "services", "footer", "projects"]) {
       expect(homepageCmsSource).toContain(`id: "${section}"`);
     }
 
-    expect(homepageCmsSource).toContain("中文");
-    expect(homepageCmsSource).toContain("English");
+    for (const group of ["个人与首屏", "能力展示", "项目展示", "联系与导航"]) {
+      expect(editorSource).toContain(group);
+    }
+    expect(editorSource).toContain("中文内容");
+    expect(editorSource).toContain("English content");
+    expect(editorSource).not.toContain("编辑语言");
+  });
+
+  it("keeps rare copy collapsed and separates editing from publication history", () => {
+    expect(editorSource).toContain("高级文案");
+    expect(editorSource).toContain("<details");
+    expect(workspaceSource).toContain("编辑内容");
+    expect(workspaceSource).toContain("发布记录");
+    expect(workspaceSource).toContain("homeActionBar");
+  });
+
+  it("keeps all four homepage task tabs visible on narrow screens", () => {
+    expect(adminStyles).toMatch(
+      /@media \(max-width: 639px\)[\s\S]*\.sectionRail\s*\{[\s\S]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,
+    );
   });
 
   it("replaces JSON editing and placeholder copy with publish readiness", () => {
