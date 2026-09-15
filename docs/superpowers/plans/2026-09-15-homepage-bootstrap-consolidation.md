@@ -181,6 +181,6 @@ Render `/` at `1440x1100` and `390x844`, compare against Task 1 screenshots, and
 
 Check off only the Stage 0/Stage 1 V1.4.1 items proven by this iteration. Leave the admin information architecture, structured project publishing, full retirement audit, and sibling-directory deletion items open.
 
-- [ ] **Step 6: Commit, fast-forward merge, verify on main, and push**
+- [x] **Step 6: Commit, fast-forward merge, verify on main, and push**
 
 Commit the scoped change, merge it into `main` only after verification remains green, run the full test suite on merged `main`, push `main`, verify local/remote SHAs match, and delete the feature branch.
