@@ -19,7 +19,6 @@ type TransactionRepository = {
   findVersion(id: string): Promise<SiteVersionRecord | null>;
   findDraft(): Promise<SiteVersionRecord | null>;
   updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
-  findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
   archivePublished(): Promise<unknown>;
   publishVersion(id: string, publishedAt: Date): Promise<SiteVersionRecord>;
   latestVersionNumber(): Promise<number>;
@@ -32,6 +31,7 @@ export type SiteContentRepository = {
   findPublished(): Promise<SiteVersionRecord | null>;
   findDraft(): Promise<SiteVersionRecord | null>;
   updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
+  findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
 };
 
 function prismaTransactionRepository(transaction: Prisma.TransactionClient): TransactionRepository {

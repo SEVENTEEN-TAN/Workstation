@@ -9,12 +9,14 @@ function isSelectableProject(project: PortfolioProjectRecord) {
 
 function toLocalizedProject(project: PortfolioProjectRecord, locale: "en" | "zh") {
   const title = locale === "zh" ? project.titleZh : project.titleEn;
+  const description = locale === "zh" ? project.summaryZh : project.summaryEn;
+  if (!title || !description) throw new Error("主页引用的项目不存在或不可公开");
   return {
     slug: project.slug,
     image: project.coverImage ?? "",
     category: project.technologies[0] ?? (locale === "zh" ? "项目" : "Project"),
     title,
-    description: locale === "zh" ? project.summaryZh : project.summaryEn,
+    description,
     tags: project.technologies.slice(0, 4),
     alt: (locale === "zh" ? project.coverAltZh : project.coverAltEn) ?? title,
   };
