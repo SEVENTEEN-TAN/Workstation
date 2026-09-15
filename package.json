@@ -1,0 +1,45 @@
+{
+  "name": "personal-workstation",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:backup": "tsx scripts/backup.ts",
+    "db:restore": "tsx scripts/restore.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.2",
+    "argon2": "0.44.0",
+    "framer-motion": "13.2.0",
+    "lucide-react": "0.468.0",
+    "motion-dom": "12.23.23",
+    "motion-utils": "12.23.6",
+    "next": "16.3.5",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.1.18",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.3.5",
+    "postcss": "8.5.6",
+    "prisma": "6.19.2",
+    "tailwindcss": "4.1.18",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vitest": "4.0.16"
+  }
+}
