@@ -130,9 +130,31 @@ model KeyResult {
   updatedAt      DateTime           @updatedAt @map("updated_at")
   objective      Objective          @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
   progressUpdates KrProgressUpdate[]
+  actionItems     ActionItem[]
 
   @@index([objectiveId, sortOrder])
   @@map("key_results")
+}
+
+model ActionItem {
+  id                 String    @id @default(cuid())
+  keyResultId        String    @map("key_result_id")
+  titleZh            String    @map("title_zh")
+  titleEn            String?   @map("title_en")
+  status             String    @default("TODO")
+  dueDate            DateTime? @map("due_date")
+  sortOrder          Int       @default(0) @map("sort_order")
+  recurrenceType     String    @default("NONE") @map("recurrence_type")
+  recurrenceInterval Int       @default(1) @map("recurrence_interval")
+  recurrenceDays     String?   @map("recurrence_days")
+  completedAt        DateTime? @map("completed_at")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  keyResult          KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+
+  @@index([keyResultId, sortOrder])
+  @@index([status, dueDate])
+  @@map("action_items")
 }
 
 model KrProgressUpdate {
