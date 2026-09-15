@@ -75,6 +75,10 @@ cp -a prisma "$release_app/prisma"
 在切流前，用待发布源码对持久化数据库执行迁移。只包含向后兼容迁移时可以保持旧版本运行；若迁移会让旧版本无法继续读写，先进入维护窗口并停止 `personal-workstation.service`，再执行下面的命令：
 
 ```bash
+install -d -o personal-workstation -g personal-workstation -m 0750 /var/lib/personal-workstation
+if [ ! -e /var/lib/personal-workstation/workstation.db ]; then
+  install -o personal-workstation -g personal-workstation -m 0640 /dev/null /var/lib/personal-workstation/workstation.db
+fi
 set -a
 . /etc/personal-workstation.env
 set +a
