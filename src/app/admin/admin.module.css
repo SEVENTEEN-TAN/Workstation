@@ -2091,6 +2091,20 @@
 }
 .projectLinkRow button { width: 40px; min-height: 40px; }
 
+.capabilitySkillEditor {
+  display: grid;
+  gap: 14px;
+  padding-block: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.capabilityEvidenceEditor {
+  display: grid;
+  gap: 12px;
+  padding: 14px 0 14px 14px;
+  border-left: 2px solid rgba(0, 223, 143, 0.28);
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

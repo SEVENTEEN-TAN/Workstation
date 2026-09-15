@@ -44,6 +44,7 @@ describe("admin navigation contracts", () => {
       { id: "activities", href: "/admin/activities" },
       { id: "projects", href: "/admin/projects" },
       { id: "experience", href: "/admin/experience" },
+      { id: "skills", href: "/admin/skills" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -316,6 +317,35 @@ describe("admin route contracts", () => {
     }
     expect(workspace).toContain("ConfirmDialog");
     expect(workspace).toContain("FeedbackCenter");
+  });
+
+  it("protects skill APIs and provides the capability evidence form", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/skills/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/skills/[id]/route.ts");
+    const workspace = readProjectFile("src/components/admin/SkillAreasWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    for (const field of [
+      "nameZh",
+      "nameEn",
+      "descriptionZh",
+      "descriptionEn",
+      "visibility",
+      "sortOrder",
+    ]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
+    expect(workspace).toContain("ConfirmDialog");
+    expect(workspace).toContain("FeedbackCenter");
+    expect(workspace).toContain('projects.length ? "PROJECT" : "ARTICLE"');
+    expect(workspace).toContain("暂无项目，可先使用文章证据");
+  });
+
+  it("links the homepage skill summary to the structured capability page", () => {
+    const about = readProjectFile("src/components/public/About.tsx");
+
+    expect(about).toContain('href="/skills"');
   });
 });
 

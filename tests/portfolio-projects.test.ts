@@ -93,6 +93,7 @@ describe("portfolio project service", () => {
       async createProject(value) { calls.push({ type: "create", value }); return { id: "project-1", ...value }; },
       async updateProject(id, value) { calls.push({ type: `update:${id}`, value }); return { id, ...value }; },
       async deleteProject(id) { calls.push({ type: `delete:${id}` }); return { id }; },
+      async countSkillEvidence() { return 0; },
     });
 
     await service.create(completeProject);
@@ -117,10 +118,29 @@ describe("portfolio project service", () => {
       async createProject() { throw new Error("not used"); },
       async updateProject() { throw new Error("not used"); },
       async deleteProject() { throw new Error("not used"); },
+      async countSkillEvidence() { return 0; },
     });
 
     await expect(service.listPublic()).resolves.toMatchObject([{ id: "public" }, { id: "later" }]);
     await expect(service.getPublicBySlug("personal-workstation")).resolves.toMatchObject({ id: "public" });
     await expect(service.getPublicBySlug("private")).resolves.toBeNull();
+  });
+
+  it("prevents deleting a project that is used as skill evidence", async () => {
+    const service = createPortfolioProjectService({
+      async listProjects() { return []; },
+      async listPublicProjects() { return []; },
+      async findProject() { return null; },
+      async findPublicProjectBySlug() { return null; },
+      async createProject() { throw new Error("not used"); },
+      async updateProject() { throw new Error("not used"); },
+      async deleteProject() { throw new Error("project should not be deleted"); },
+      async countSkillEvidence(projectId) {
+        expect(projectId).toBe("project-1");
+        return 1;
+      },
+    });
+
+    await expect(service.delete("project-1")).rejects.toThrow("项目仍被能力证据引用");
   });
 });

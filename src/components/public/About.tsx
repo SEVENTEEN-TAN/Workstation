@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { useI18n } from "./i18n";
@@ -7,7 +9,7 @@ import { reveal } from "./motion";
 
 export function About() {
   const reduceMotion = useReducedMotion();
-  const { copy } = useI18n();
+  const { copy, locale } = useI18n();
 
   return (
     <section id="about" className="scroll-mt-20 border-y border-white/[0.06] bg-[#0b0f14] py-24 sm:py-32">
@@ -35,6 +37,9 @@ export function About() {
               </motion.span>
             ))}
           </div>
+          <Link href="/skills" className="focus-ring mt-8 inline-flex items-center gap-2 text-sm font-bold text-accent transition-colors hover:text-white">
+            {locale === "zh" ? "查看能力证据" : "View capability evidence"}<ArrowUpRight className="size-4" />
+          </Link>
           <div className="mt-12 grid grid-cols-[auto_1fr] items-center gap-5 border-t border-white/10 pt-7"><span className="flex size-11 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-sm font-bold text-accent">Z</span><p className="text-sm leading-relaxed text-gray-500">{copy.about.quote}</p></div>
         </motion.div>
       </div>

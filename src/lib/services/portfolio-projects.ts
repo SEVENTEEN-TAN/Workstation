@@ -17,6 +17,7 @@ export type PortfolioProjectRepository = {
   createProject(value: PortfolioProjectInput): Promise<unknown>;
   updateProject(id: string, value: Partial<PortfolioProjectInput>): Promise<unknown>;
   deleteProject(id: string): Promise<unknown>;
+  countSkillEvidence(projectId: string): Promise<number>;
 };
 
 export function parsePortfolioProjectRecord(record: unknown): PortfolioProjectRecord {
@@ -72,6 +73,9 @@ function defaultRepository(): PortfolioProjectRepository {
     deleteProject(id) {
       return getDatabase().then((database) => database.portfolioProject.delete({ where: { id } }));
     },
+    countSkillEvidence(projectId) {
+      return getDatabase().then((database) => database.skillEvidence.count({ where: { projectId } }));
+    },
   };
 }
 
@@ -95,7 +99,12 @@ export function createPortfolioProjectService(repository?: PortfolioProjectRepos
       const values = Object.fromEntries(Object.keys(patch).map((key) => [key, complete[key as keyof PortfolioProjectInput]]));
       return source.updateProject(id, values);
     },
-    delete: (id: string) => source.deleteProject(id),
+    async delete(id: string) {
+      if (await source.countSkillEvidence(id)) {
+        throw new Error("项目仍被能力证据引用，请先移除对应证据");
+      }
+      return source.deleteProject(id);
+    },
     async listPublic() {
       return (await source.listPublicProjects()).filter(isPublicReady).sort((left, right) => (
         Number(right.featured) - Number(left.featured)

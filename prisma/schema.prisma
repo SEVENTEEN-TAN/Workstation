@@ -108,6 +108,7 @@ model PortfolioProject {
   coverAltEn       String?   @map("cover_alt_en")
   technologies     Json
   links            Json
+  skillEvidence    SkillEvidence[]
   visibility       String    @default("PRIVATE")
   featured         Boolean   @default(false)
   sortOrder        Int       @default(0) @map("sort_order")
@@ -143,6 +144,60 @@ model ExperienceRecord {
 
   @@index([visibility, featured, isCurrent, sortOrder, startedAt])
   @@map("experience_records")
+}
+
+model SkillArea {
+  id             String        @id @default(cuid())
+  nameZh         String        @map("name_zh")
+  nameEn         String?       @map("name_en")
+  descriptionZh  String        @map("description_zh")
+  descriptionEn  String?       @map("description_en")
+  visibility     String        @default("PRIVATE")
+  sortOrder      Int           @default(0) @map("sort_order")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  skills         Skill[]
+
+  @@index([visibility, sortOrder])
+  @@map("skill_areas")
+}
+
+model Skill {
+  id          String          @id @default(cuid())
+  areaId      String          @map("area_id")
+  nameZh      String          @map("name_zh")
+  nameEn      String?         @map("name_en")
+  summaryZh   String          @map("summary_zh")
+  summaryEn   String?         @map("summary_en")
+  visibility  String          @default("PRIVATE")
+  sortOrder   Int             @default(0) @map("sort_order")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  area        SkillArea       @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  evidence    SkillEvidence[]
+
+  @@index([areaId, sortOrder])
+  @@index([visibility, sortOrder])
+  @@map("skills")
+}
+
+model SkillEvidence {
+  id         String           @id @default(cuid())
+  skillId    String           @map("skill_id")
+  kind       String
+  projectId  String?          @map("project_id")
+  titleZh    String?          @map("title_zh")
+  titleEn    String?          @map("title_en")
+  url        String?
+  sortOrder  Int              @default(0) @map("sort_order")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  updatedAt  DateTime         @updatedAt @map("updated_at")
+  skill      Skill            @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  project    PortfolioProject? @relation(fields: [projectId], references: [id], onDelete: Restrict)
+
+  @@index([skillId, sortOrder])
+  @@index([projectId])
+  @@map("skill_evidence")
 }
 
 model OkrCycle {

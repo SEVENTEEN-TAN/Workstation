@@ -237,4 +237,53 @@ export interface ExperienceRecordData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ProjectSkillEvidenceData {
+  id: string;
+  kind: "PROJECT";
+  projectId: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ArticleSkillEvidenceData {
+  id: string;
+  kind: "ARTICLE";
+  titleZh: string;
+  titleEn: string | null;
+  url: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type SkillEvidenceData = ProjectSkillEvidenceData | ArticleSkillEvidenceData;
+
+export interface SkillData {
+  id: string;
+  areaId: string;
+  nameZh: string;
+  nameEn: string | null;
+  summaryZh: string;
+  summaryEn: string | null;
+  visibility: "PUBLIC" | "PRIVATE";
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+  evidence: SkillEvidenceData[];
+}
+
+export interface SkillAreaData {
+  id: string;
+  nameZh: string;
+  nameEn: string | null;
+  descriptionZh: string;
+  descriptionEn: string | null;
+  visibility: "PUBLIC" | "PRIVATE";
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+  skills: SkillData[];
+}
 import type { SiteContent } from "../../lib/content/schema";
