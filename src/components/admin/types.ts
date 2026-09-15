@@ -177,4 +177,42 @@ export interface CareerActivityData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface PortfolioProjectLinkData {
+  kind: "WEBSITE" | "SOURCE" | "DEMO" | "ARTICLE";
+  labelZh: string;
+  labelEn: string | null;
+  url: string;
+}
+
+export interface PortfolioProjectData {
+  id: string;
+  slug: string;
+  titleZh: string;
+  titleEn: string | null;
+  summaryZh: string;
+  summaryEn: string | null;
+  contextZh: string;
+  contextEn: string | null;
+  responsibilityZh: string;
+  responsibilityEn: string | null;
+  challengeZh: string;
+  challengeEn: string | null;
+  approachZh: string;
+  approachEn: string | null;
+  resultZh: string;
+  resultEn: string | null;
+  coverImage: string | null;
+  coverAltZh: string | null;
+  coverAltEn: string | null;
+  technologies: string[];
+  links: PortfolioProjectLinkData[];
+  visibility: "PUBLIC" | "PRIVATE";
+  featured: boolean;
+  sortOrder: number;
+  startedAt: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 import type { SiteContent } from "../../lib/content/schema";

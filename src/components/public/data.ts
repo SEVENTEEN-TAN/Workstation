@@ -1,4 +1,5 @@
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
+import type { PortfolioProjectRecord } from "../../lib/services/portfolio-projects";
 import { calculateKeyResultProgress, calculateObjectiveProgress } from "../../lib/okr/progress";
 
 export type PublicOkrKeyResultRecord = {
@@ -75,6 +76,54 @@ export type PublicOkrView = {
     cycleCount: number;
     objectiveCount: number;
   };
+};
+
+export type PublicPortfolioProjectLink = {
+  kind: "WEBSITE" | "SOURCE" | "DEMO" | "ARTICLE";
+  labelZh: string;
+  labelEn: string;
+  url: string;
+};
+
+export type PublicPortfolioProject = {
+  id: string;
+  slug: string;
+  titleZh: string;
+  titleEn: string;
+  summaryZh: string;
+  summaryEn: string;
+  contextZh: string;
+  contextEn: string;
+  responsibilityZh: string;
+  responsibilityEn: string;
+  challengeZh: string;
+  challengeEn: string;
+  approachZh: string;
+  approachEn: string;
+  resultZh: string;
+  resultEn: string;
+  coverImage: string | null;
+  coverAltZh: string | null;
+  coverAltEn: string | null;
+  technologies: string[];
+  links: PublicPortfolioProjectLink[];
+  visibility: "PUBLIC";
+  featured: boolean;
+  sortOrder: number;
+  startedAt: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RecentProjectView = {
+  slug: string | null;
+  image: string | null;
+  category: string;
+  title: string;
+  description: string;
+  tags: string[];
+  alt: string;
 };
 
 type PublicDataSources = {
@@ -183,6 +232,84 @@ export function toPublicOkrView(records: PublicOkrCycleRecord[]): PublicOkrView 
       objectiveCount: objectives.length,
     },
   };
+}
+
+function isoValue(value: Date | string | null) {
+  return value == null ? null : new Date(value).toISOString();
+}
+
+export function toPublicPortfolioProject(source: PortfolioProjectRecord): PublicPortfolioProject {
+  if (source.visibility !== "PUBLIC") throw new Error("Only public projects can be rendered");
+  if (
+    !source.titleEn
+    || !source.summaryEn
+    || !source.contextEn
+    || !source.responsibilityEn
+    || !source.challengeEn
+    || !source.approachEn
+    || !source.resultEn
+  ) throw new Error("Public projects require complete English evidence");
+  if (source.coverImage && !source.coverAltEn) throw new Error("Public projects require English cover alt text");
+  if (source.links.some((link) => !link.labelEn)) throw new Error("Public project links require English labels");
+
+  return {
+    id: source.id,
+    slug: source.slug,
+    titleZh: source.titleZh,
+    titleEn: source.titleEn,
+    summaryZh: source.summaryZh,
+    summaryEn: source.summaryEn,
+    contextZh: source.contextZh,
+    contextEn: source.contextEn,
+    responsibilityZh: source.responsibilityZh,
+    responsibilityEn: source.responsibilityEn,
+    challengeZh: source.challengeZh,
+    challengeEn: source.challengeEn,
+    approachZh: source.approachZh,
+    approachEn: source.approachEn,
+    resultZh: source.resultZh,
+    resultEn: source.resultEn,
+    coverImage: source.coverImage,
+    coverAltZh: source.coverAltZh,
+    coverAltEn: source.coverAltEn,
+    technologies: source.technologies,
+    links: source.links.map((link) => ({ ...link, labelEn: link.labelEn ?? "" })),
+    visibility: "PUBLIC" as const,
+    featured: source.featured,
+    sortOrder: source.sortOrder,
+    startedAt: isoValue(source.startedAt),
+    completedAt: isoValue(source.completedAt),
+    createdAt: new Date(source.createdAt).toISOString(),
+    updatedAt: new Date(source.updatedAt).toISOString(),
+  };
+}
+
+export function toRecentProjectViews(
+  locale: "en" | "zh",
+  projects: PublicPortfolioProject[],
+  fallbackProjects: ReadonlyArray<SiteContent["en"]["projects"][number]>,
+): RecentProjectView[] {
+  if (projects.length) {
+    return projects.map((project) => ({
+      slug: project.slug,
+      image: project.coverImage,
+      category: project.technologies[0] ?? (locale === "zh" ? "项目" : "Project"),
+      title: locale === "zh" ? project.titleZh : project.titleEn,
+      description: locale === "zh" ? project.summaryZh : project.summaryEn,
+      tags: project.technologies.slice(0, 4),
+      alt: (locale === "zh" ? project.coverAltZh : project.coverAltEn) ?? project.titleEn,
+    }));
+  }
+
+  return fallbackProjects.map((project) => ({
+    slug: null,
+    image: project.image,
+    category: project.category,
+    title: project.title,
+    description: project.description,
+    tags: project.tags,
+    alt: project.alt,
+  }));
 }
 
 export function createPublicDataAdapter(sources: PublicDataSources = {}) {

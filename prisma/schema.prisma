@@ -86,6 +86,40 @@ model CareerActivity {
   @@map("career_activities")
 }
 
+model PortfolioProject {
+  id               String    @id @default(cuid())
+  slug             String    @unique
+  titleZh          String    @map("title_zh")
+  titleEn          String?   @map("title_en")
+  summaryZh        String    @map("summary_zh")
+  summaryEn        String?   @map("summary_en")
+  contextZh        String    @map("context_zh")
+  contextEn        String?   @map("context_en")
+  responsibilityZh String    @map("responsibility_zh")
+  responsibilityEn String?   @map("responsibility_en")
+  challengeZh      String    @map("challenge_zh")
+  challengeEn      String?   @map("challenge_en")
+  approachZh       String    @map("approach_zh")
+  approachEn       String?   @map("approach_en")
+  resultZh         String    @map("result_zh")
+  resultEn         String?   @map("result_en")
+  coverImage       String?   @map("cover_image")
+  coverAltZh       String?   @map("cover_alt_zh")
+  coverAltEn       String?   @map("cover_alt_en")
+  technologies     Json
+  links            Json
+  visibility       String    @default("PRIVATE")
+  featured         Boolean   @default(false)
+  sortOrder        Int       @default(0) @map("sort_order")
+  startedAt        DateTime? @map("started_at")
+  completedAt      DateTime? @map("completed_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@index([visibility, featured, sortOrder])
+  @@map("portfolio_projects")
+}
+
 model OkrCycle {
   id         String      @id @default(cuid())
   nameZh     String      @map("name_zh")

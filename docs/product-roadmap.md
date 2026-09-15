@@ -58,15 +58,28 @@ Personal Workstation is a continuously updated online career profile and its pri
 - [x] Prevent direct deletion of referenced assets.
 - [x] Support replacing an asset while preserving references.
 
+### Iteration V1.4.1 - HomePage Consolidation
+
+- [ ] Export the current published homepage, active draft, asset references, and media files, then capture desktop and mobile visual baselines before migration.
+- [ ] Move the preserved bilingual homepage content into one WorkStation-owned bootstrap fixture used only to initialize an empty database.
+- [ ] Remove seed and test imports of `HomePage/src/data/content.js` and `HomePage/src/data/projects.js`, then verify a WorkStation-only fresh install can migrate, seed, test, and build.
+- [ ] Remove the complete runtime homepage fallback after bootstrap independence is proven, and expose one explicit uninitialized state when no published version exists.
+- [ ] Reorganize `/admin/home` into `个人与首屏`, `能力展示`, `项目展示`, and `联系与导航` without changing the `SiteContent` snapshot or public renderer.
+- [ ] Show paired Chinese and English fields for each concept, and move accessibility labels and interaction prompts into a collapsed `高级文案` area without losing data or validation.
+- [ ] Keep save, preview, and publish in one stable action bar, and move version history into a secondary `发布记录` view while preserving restore-to-draft safety.
+- [ ] Reuse the V1.5 structured-project module as the project editing source; let the homepage select and order projects, then materialize their presentation into the immutable published `SiteVersion` snapshot.
+- [ ] Confirm no WorkStation source, test, script, or deployment documentation depends on the independent HomePage project, and pass data, asset, desktop, and mobile regression checks.
+- [ ] After the acceptance checks pass, request separate approval to archive or delete the independent HomePage project.
+
 ## V1.5 - Career Evidence
 
 - [x] Add structured career activities with public/private and featured states.
-- [ ] Add structured projects with context, responsibility, challenge, approach, result, links, and technology evidence.
+- [x] Add structured projects with context, responsibility, challenge, approach, result, links, and technology evidence.
 - [ ] Add work and education experience timelines.
 - [ ] Group skills by capability area and connect them to supporting projects or articles.
 - [ ] Add resume-file management and a printable resume view.
 - [ ] Recompose the public homepage as Identity, Now, Proof, Capability, Journey, and Contact without changing its visual language.
-- [ ] Add working project-list and project-detail routes before exposing project CTAs.
+- [x] Add working project-list and project-detail routes before exposing project CTAs.
 
 ## V2 - Obsidian Knowledge Assets
 

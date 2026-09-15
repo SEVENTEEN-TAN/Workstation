@@ -42,6 +42,7 @@ describe("admin navigation contracts", () => {
       { id: "home", href: "/admin/home" },
       { id: "okr", href: "/admin/okr" },
       { id: "activities", href: "/admin/activities" },
+      { id: "projects", href: "/admin/projects" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -216,7 +217,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "media"])(
+  it.each(["overview", "home", "okr", "activities", "projects", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -242,6 +243,45 @@ describe("admin route contracts", () => {
     for (const field of ["titleZh", "titleEn", "summaryZh", "summaryEn", "occurredAt", "visibility", "featured", "linkUrl"]) {
       expect(workspace).toContain(`name=\"${field}\"`);
     }
+    expect(workspace).toContain("ConfirmDialog");
+    expect(workspace).toContain("FeedbackCenter");
+  });
+
+  it("protects project APIs and provides the complete project evidence form", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/projects/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/projects/[id]/route.ts");
+    const workspace = readProjectFile("src/components/admin/PortfolioProjectsWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    for (const field of [
+      "slug",
+      "titleZh",
+      "titleEn",
+      "summaryZh",
+      "summaryEn",
+      "contextZh",
+      "contextEn",
+      "responsibilityZh",
+      "responsibilityEn",
+      "challengeZh",
+      "challengeEn",
+      "approachZh",
+      "approachEn",
+      "resultZh",
+      "resultEn",
+      "coverAltZh",
+      "coverAltEn",
+      "technologies",
+      "visibility",
+      "featured",
+      "sortOrder",
+      "startedAt",
+      "completedAt",
+    ]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
+    expect(workspace).toContain("AssetPicker");
     expect(workspace).toContain("ConfirmDialog");
     expect(workspace).toContain("FeedbackCenter");
   });
