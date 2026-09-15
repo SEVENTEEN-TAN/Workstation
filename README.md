@@ -33,6 +33,10 @@ npm run db:restore -- --from <备份目录>
 
 备份包含 SQLite 一致性快照、媒体目录和版本清单。执行恢复前先停止服务。生产环境应在 `.env` 中将 `DATABASE_URL`、`UPLOAD_DIR` 和 `BACKUP_DIR` 指向发布目录之外的持久化路径。
 
+## 部署与回滚
+
+生产发布、迁移、切流和回滚流程见 [docs/deployment.md](docs/deployment.md)。
+
 ## 主要入口
 
 - `/`：公开主页
