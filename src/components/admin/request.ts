@@ -47,6 +47,12 @@ function readErrorMessage(payload: unknown, issues: AdminRequestIssue[]): string
   return "请求失败，请稍后重试";
 }
 
+function redirectAfterUnauthorized() {
+  if (typeof window === "undefined") return;
+  const currentPath = sanitizeAdminReturnPath(`${window.location.pathname}${window.location.search}`);
+  window.location.replace(`/admin/login?next=${encodeURIComponent(currentPath)}`);
+}
+
 async function readJson(response: Response): Promise<unknown> {
   return response.json().catch(() => undefined);
 }
@@ -66,10 +72,30 @@ export async function adminRequest<T>(path: string, init?: RequestInit): Promise
   const issues = readIssues(payload);
   const error = new AdminRequestError(readErrorMessage(payload, issues), response.status, issues);
 
-  if (response.status === 401 && typeof window !== "undefined") {
-    const currentPath = sanitizeAdminReturnPath(`${window.location.pathname}${window.location.search}`);
-    window.location.replace(`/admin/login?next=${encodeURIComponent(currentPath)}`);
-  }
+  if (response.status === 401) redirectAfterUnauthorized();
 
   throw error;
+}
+
+export function uploadAdminAsset<T>(form: FormData, onProgress: (percent: number) => void): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+    request.open("POST", "/api/admin/assets");
+    request.responseType = "json";
+    request.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    });
+    request.addEventListener("error", () => reject(new AdminRequestError("网络请求失败，请稍后重试", 0)));
+    request.addEventListener("load", () => {
+      if (request.status >= 200 && request.status < 300) {
+        onProgress(100);
+        resolve(request.response as T);
+        return;
+      }
+      const issues = readIssues(request.response);
+      if (request.status === 401) redirectAfterUnauthorized();
+      reject(new AdminRequestError(readErrorMessage(request.response, issues), request.status, issues));
+    });
+    request.send(form);
+  });
 }

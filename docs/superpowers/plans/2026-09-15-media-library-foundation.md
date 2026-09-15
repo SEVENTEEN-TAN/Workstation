@@ -49,12 +49,12 @@
 - Produces: `uploadAdminAsset(form, onProgress)` with the same error semantics as `adminRequest`.
 - Consumes: `PATCH /api/admin/assets/[id]` from Task 1.
 
-- [ ] Add failing contract tests for search/type/alt filters, native progress markup, preview dialog, and shared upload error behavior.
-- [ ] Run `npm test -- tests/admin-ui-contracts.test.ts` and confirm expected failures.
-- [ ] Add the minimal XHR upload helper without a dependency.
-- [ ] Build combined client-side filtering, a filter-empty state, clickable cards, preview dialog, and bilingual alt-text form.
-- [ ] Add responsive styles using existing colors, radii, button sizing, and focus patterns.
-- [ ] Run focused and full tests.
+- [x] Add failing contract tests for search/type/alt filters, native progress markup, preview dialog, and shared upload error behavior.
+- [x] Run `npm test -- tests/admin-ui-contracts.test.ts` and confirm expected failures.
+- [x] Add the minimal XHR upload helper without a dependency.
+- [x] Build combined client-side filtering, a filter-empty state, clickable cards, preview dialog, and bilingual alt-text form.
+- [x] Add responsive styles using existing colors, radii, button sizing, and focus patterns.
+- [x] Run focused tests; run the full suite at the final verification gate.
 
 ### Task 3: Homepage Asset Picker
 
