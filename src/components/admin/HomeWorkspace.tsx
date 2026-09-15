@@ -17,13 +17,14 @@ import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
-import type { SiteVersionData } from "./types";
+import type { AssetData, SiteVersionData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
 
 interface HomeWorkspaceProps {
   initialDraft: SiteVersionData;
   initialVersions: SiteVersionData[];
+  assets: AssetData[];
 }
 
 function formatVersionDate(version: SiteVersionData) {
@@ -31,7 +32,7 @@ function formatVersionDate(version: SiteVersionData) {
   return value ? new Date(value).toLocaleString("zh-CN") : "未知时间";
 }
 
-export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspaceProps) {
+export function HomeWorkspace({ initialDraft, initialVersions, assets }: HomeWorkspaceProps) {
   const [draft, setDraft] = useState(initialDraft);
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
@@ -187,6 +188,7 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
           </p>
         </section>
         <HomepageEditor
+          assets={assets}
           content={content}
           locale={locale}
           section={section}

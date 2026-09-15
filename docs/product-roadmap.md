@@ -36,7 +36,7 @@ Personal Workstation is a continuously updated online career profile and its pri
 - [x] Add section-level validation and a publish-readiness summary.
 - [x] Keep draft, authenticated preview, atomic publish, version history, and rollback.
 - [x] Make rollback restore into the active draft that must be previewed and published explicitly.
-- [ ] Integrate an asset picker into image fields.
+- [x] Integrate an asset picker into image fields.
 
 ### Iteration V1.3 - OKR And Execution Workspace
 
@@ -52,8 +52,8 @@ Personal Workstation is a continuously updated online career profile and its pri
 
 ### Iteration V1.4 - Media Library
 
-- [ ] Add upload progress, empty state, search, filtering, and preview.
-- [ ] Edit bilingual alternative text.
+- [x] Add upload progress, empty state, search, filtering, and preview.
+- [x] Edit bilingual alternative text.
 - [ ] Track asset references and show their usage locations.
 - [ ] Prevent direct deletion of referenced assets.
 - [ ] Support replacing an asset while preserving references.
