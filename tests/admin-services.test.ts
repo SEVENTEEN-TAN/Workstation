@@ -186,7 +186,7 @@ describe("homepage project source snapshots", () => {
       async updateDraft(_id, content) { savedContent.push(content); return { ...selectedDraft, content }; },
       async findProjectsByIds(ids) {
         loadedIds.push(ids);
-        return ids.map((id) => structuredProject);
+        return ids.map(() => structuredProject);
       },
     } as never);
 
