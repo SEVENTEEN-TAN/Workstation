@@ -16,6 +16,15 @@ type UploadValidationInput = { bytes: Uint8Array; mimeType: string; filename: st
 type AssetAltTextInput = { altTextZh?: unknown; altTextEn?: unknown };
 type SiteVersionSource = { id: string; version: number; status: string; content: unknown };
 type StoredAsset = { id: string; storagePath: string };
+type AssetFileData = {
+  originalFilename: string;
+  storagePath: string;
+  mimeType: string;
+  width: null;
+  height: null;
+  sizeBytes: number;
+  sha256: string;
+};
 
 export type AssetReference = {
   versionId: string;
@@ -28,6 +37,7 @@ type AssetLibraryRepository<TAsset extends { id: string }> = {
   listAssets(): Promise<TAsset[]>;
   listSiteVersions(): Promise<SiteVersionSource[]>;
   findAsset(id: string): Promise<StoredAsset | null>;
+  updateAsset(id: string, data: AssetFileData): Promise<TAsset>;
   deleteAsset(id: string): Promise<unknown>;
 };
 
@@ -76,6 +86,7 @@ export function findAssetReferences(assetId: string, versions: SiteVersionSource
 export function createAssetLibraryService<TAsset extends { id: string }>(
   repository: AssetLibraryRepository<TAsset>,
   removeFile: (path: string) => Promise<void> = (path) => rm(path, { force: true }),
+  storeFile: (file: File) => Promise<AssetFileData> = writeImageFile,
 ) {
   return {
     async list() {
@@ -104,6 +115,36 @@ export function createAssetLibraryService<TAsset extends { id: string }>(
       await removeFile(asset.storagePath);
       return { id };
     },
+    async replace(id: string, file: File) {
+      const asset = await repository.findAsset(id);
+      if (!asset) {
+        throw new Response(JSON.stringify({ error: "媒体资源不存在" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        });
+      }
+
+      const previousStoragePath = asset.storagePath;
+      const stored = await storeFile(file);
+      let updated: TAsset;
+      try {
+        updated = await repository.updateAsset(id, stored);
+      } catch (error) {
+        try {
+          await removeFile(stored.storagePath);
+        } catch {
+          // Preserve the database failure; the new file is not referenced.
+        }
+        throw error;
+      }
+
+      try {
+        await removeFile(previousStoragePath);
+      } catch {
+        // The replacement is already live; an orphan is safer than a broken reference.
+      }
+      return updated;
+    },
   };
 }
 
@@ -116,6 +157,7 @@ export async function getAssetLibraryService() {
       select: { id: true, version: true, status: true, content: true },
     }),
     findAsset: (id) => database.asset.findUnique({ where: { id }, select: { id: true, storagePath: true } }),
+    updateAsset: (id, data) => database.asset.update({ where: { id }, data }),
     deleteAsset: (id) => database.asset.delete({ where: { id } }),
   });
 }
@@ -140,7 +182,7 @@ export function validateImageUpload(input: UploadValidationInput) {
   return { extension, sha256: createHash("sha256").update(input.bytes).digest("hex") };
 }
 
-export async function saveImageAsset(file: File, altTextZh?: string, altTextEn?: string) {
+async function writeImageFile(file: File): Promise<AssetFileData> {
   const bytes = new Uint8Array(await file.arrayBuffer());
   const validated = validateImageUpload({ bytes, mimeType: file.type, filename: file.name });
   const uploadRoot = resolve(/* turbopackIgnore: true */ process.env.UPLOAD_DIR ?? resolve(process.cwd(), "data", "uploads"));
@@ -149,15 +191,24 @@ export async function saveImageAsset(file: File, altTextZh?: string, altTextEn?:
   const destination = resolve(uploadRoot, filename);
   if (!destination.startsWith(`${uploadRoot}${sep}`)) throw new Error("无效的上传路径");
   await writeFile(destination, bytes, { flag: "wx" });
+  return {
+    originalFilename: file.name,
+    storagePath: destination,
+    mimeType: file.type,
+    width: null,
+    height: null,
+    sizeBytes: bytes.byteLength,
+    sha256: validated.sha256,
+  };
+}
+
+export async function saveImageAsset(file: File, altTextZh?: string, altTextEn?: string) {
+  const stored = await writeImageFile(file);
   const database = await getDatabase();
   const altText = normalizeAssetAltText({ altTextZh, altTextEn });
   return database.asset.create({
     data: {
-      originalFilename: file.name,
-      storagePath: destination,
-      mimeType: file.type,
-      sizeBytes: bytes.byteLength,
-      sha256: validated.sha256,
+      ...stored,
       ...altText,
     },
   });

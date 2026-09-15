@@ -1591,6 +1591,31 @@
   font-size: 11px;
 }
 
+.assetReplaceArea {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.assetReplaceArea h3,
+.assetReplaceArea p {
+  margin: 0;
+}
+
+.assetReplaceArea h3 {
+  color: #e8ebed;
+  font-size: 13px;
+}
+
+.assetReplaceArea p {
+  margin-top: 5px;
+  color: #7f8995;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
 .assetDeleteArea {
   display: flex;
   align-items: center;
@@ -2108,6 +2133,7 @@
   .mediaToolbar > span { grid-column: auto; }
   .assetDetails { padding: 18px; }
   .assetDetails dl { grid-template-columns: 1fr; }
+  .assetReplaceArea button { width: 100%; }
   .assetDeleteArea { align-items: stretch; flex-direction: column; }
   .collectionItem { grid-template-columns: 1fr; }
   .collectionControls { justify-content: flex-end; }

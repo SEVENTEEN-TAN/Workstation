@@ -14,6 +14,19 @@ export async function PATCH(request: Request, context: Context) {
   });
 }
 
+export async function PUT(request: Request, context: Context) {
+  return withAdminSession(async () => {
+    try {
+      const form = await request.formData();
+      const file = form.get("file");
+      if (!(file instanceof File)) throw new Error("请选择图片文件");
+      return Response.json(await (await getAssetLibraryService()).replace((await context.params).id, file));
+    } catch (error) {
+      return jsonError(error);
+    }
+  });
+}
+
 export async function DELETE(_request: Request, context: Context) {
   return withAdminSession(async () => {
     try {
