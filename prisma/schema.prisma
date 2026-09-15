@@ -69,6 +69,23 @@ model Asset {
   @@map("assets")
 }
 
+model CareerActivity {
+  id         String   @id @default(cuid())
+  titleZh    String   @map("title_zh")
+  titleEn    String?  @map("title_en")
+  summaryZh  String   @map("summary_zh")
+  summaryEn  String?  @map("summary_en")
+  occurredAt DateTime @map("occurred_at")
+  visibility String   @default("PRIVATE")
+  featured   Boolean  @default(false)
+  linkUrl    String?  @map("link_url")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([visibility, featured, occurredAt])
+  @@map("career_activities")
+}
+
 model OkrCycle {
   id         String      @id @default(cuid())
   nameZh     String      @map("name_zh")

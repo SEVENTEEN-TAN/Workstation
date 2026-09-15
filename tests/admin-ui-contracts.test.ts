@@ -36,11 +36,12 @@ afterEach(() => {
 });
 
 describe("admin navigation contracts", () => {
-  it("defines the four route-addressable administration modules", () => {
+  it("defines the route-addressable administration modules", () => {
     expect(ADMIN_NAV_ITEMS.map(({ id, href }) => ({ id, href }))).toEqual([
       { id: "overview", href: "/admin/overview" },
       { id: "home", href: "/admin/home" },
       { id: "okr", href: "/admin/okr" },
+      { id: "activities", href: "/admin/activities" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -215,7 +216,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "media"])(
+  it.each(["overview", "home", "okr", "activities", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -229,6 +230,20 @@ describe("admin route contracts", () => {
       .toContain("OkrCycleWorkspace");
     expect(readProjectFile("src/app/admin/(workspace)/okr/cycles/[cycleId]/objectives/[objectiveId]/page.tsx"))
       .toContain("ObjectiveWorkspace");
+  });
+
+  it("protects activity APIs and provides the complete activity form", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/activities/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/activities/[id]/route.ts");
+    const workspace = readProjectFile("src/components/admin/CareerActivitiesWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    for (const field of ["titleZh", "titleEn", "summaryZh", "summaryEn", "occurredAt", "visibility", "featured", "linkUrl"]) {
+      expect(workspace).toContain(`name=\"${field}\"`);
+    }
+    expect(workspace).toContain("ConfirmDialog");
+    expect(workspace).toContain("FeedbackCenter");
   });
 });
 

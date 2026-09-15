@@ -1,6 +1,6 @@
-import { BarChart3, FileJson, ImagePlus, Target, type LucideIcon } from "lucide-react";
+import { BarChart3, FileJson, ImagePlus, Newspaper, Target, type LucideIcon } from "lucide-react";
 
-export type AdminNavId = "overview" | "home" | "okr" | "media";
+export type AdminNavId = "overview" | "home" | "okr" | "activities" | "media";
 
 export interface AdminNavItem {
   id: AdminNavId;
@@ -13,6 +13,7 @@ export const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
   { id: "overview", href: "/admin/overview", label: "仪表盘", icon: BarChart3 },
   { id: "home", href: "/admin/home", label: "主页 CMS", icon: FileJson },
   { id: "okr", href: "/admin/okr", label: "OKR 管理", icon: Target },
+  { id: "activities", href: "/admin/activities", label: "职业动态", icon: Newspaper },
   { id: "media", href: "/admin/media", label: "媒体资源", icon: ImagePlus },
 ];
 

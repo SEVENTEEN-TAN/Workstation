@@ -163,4 +163,18 @@ export interface AssetReferenceData {
   status: string;
   path: string;
 }
+
+export interface CareerActivityData {
+  id: string;
+  titleZh: string;
+  titleEn: string | null;
+  summaryZh: string;
+  summaryEn: string | null;
+  occurredAt: string;
+  visibility: "PUBLIC" | "PRIVATE";
+  featured: boolean;
+  linkUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 import type { SiteContent } from "../../lib/content/schema";

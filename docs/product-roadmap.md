@@ -60,7 +60,7 @@ Personal Workstation is a continuously updated online career profile and its pri
 
 ## V1.5 - Career Evidence
 
-- [ ] Add structured career activities with public/private and featured states.
+- [x] Add structured career activities with public/private and featured states.
 - [ ] Add structured projects with context, responsibility, challenge, approach, result, links, and technology evidence.
 - [ ] Add work and education experience timelines.
 - [ ] Group skills by capability area and connect them to supporting projects or articles.
