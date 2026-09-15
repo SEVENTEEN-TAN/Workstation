@@ -19,7 +19,7 @@ export interface SiteVersionData {
   id: string;
   version: number;
   status: string;
-  content: unknown;
+  content: SiteContent;
   publishedAt: string | null;
   createdAt?: string;
   updatedAt?: string;
@@ -120,3 +120,4 @@ export interface AssetData {
   isReferenced: boolean;
   createdAt: string;
 }
+import type { SiteContent } from "../../lib/content/schema";

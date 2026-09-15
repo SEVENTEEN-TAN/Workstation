@@ -21,6 +21,14 @@ function readProjectFile(path: string) {
   return readFileSync(resolve(projectRoot, path), "utf8");
 }
 
+function readOptionalProjectFile(path: string) {
+  try {
+    return readProjectFile(path);
+  } catch {
+    return "";
+  }
+}
+
 afterEach(() => {
   vi.unstubAllGlobals();
 });
@@ -196,11 +204,39 @@ describe("admin route contracts", () => {
 });
 
 describe("homepage version safety contracts", () => {
-  it("requires the shared confirmation dialog before rolling back a published version", () => {
-    const source = readProjectFile("src/components/admin/HomeWorkspace.tsx");
+  const workspaceSource = readProjectFile("src/components/admin/HomeWorkspace.tsx");
+  const editorSource = readOptionalProjectFile("src/components/admin/home/HomepageEditor.tsx");
+  const homepageCmsSource = `${workspaceSource}\n${editorSource}`;
+
+  it("provides the complete ordered homepage sections and bilingual controls", () => {
+    for (const section of ["meta", "nav", "hero", "about", "works", "services", "footer", "projects"]) {
+      expect(homepageCmsSource).toContain(`id: "${section}"`);
+    }
+
+    expect(homepageCmsSource).toContain("中文");
+    expect(homepageCmsSource).toContain("English");
+  });
+
+  it("replaces JSON editing and placeholder copy with publish readiness", () => {
+    expect(homepageCmsSource).not.toContain("完整双语内容 JSON");
+    expect(homepageCmsSource).not.toContain("结构化表单将在下一轮接入");
+    expect(homepageCmsSource).toContain("发布就绪");
+  });
+
+  it("protects dirty homepage edits before browser navigation", () => {
+    expect(homepageCmsSource).toContain("beforeunload");
+  });
+
+  it("uses draft-only restore language throughout the version flow", () => {
+    expect(workspaceSource).toContain("恢复为草稿");
+    expect(workspaceSource).not.toMatch(/确认回滚|版本已回滚并发布|>回滚</);
+  });
+
+  it("requires the shared confirmation dialog before restoring a historical version", () => {
+    const source = workspaceSource;
 
     expect(source).toContain('import { ConfirmDialog } from "./ConfirmDialog"');
     expect(source).toContain("setRollbackRequest(version)");
-    expect(source).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="确认回滚"/);
+    expect(source).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="恢复为草稿"/);
   });
 });
