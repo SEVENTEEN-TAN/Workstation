@@ -58,6 +58,27 @@ export function updateContentAtPath(
   return updateValueAtPath(content, path, value) as SiteContent;
 }
 
+export function updateHomepageProjectSelection(
+  content: SiteContent,
+  selectedProjectIds: string[],
+): SiteContent {
+  return { ...content, selectedProjectIds };
+}
+
+export function moveHomepageProjectSelection(
+  content: SiteContent,
+  index: number,
+  direction: "up" | "down",
+): SiteContent {
+  const selectedProjectIds = content.selectedProjectIds ?? [];
+  const targetIndex = direction === "up" ? index - 1 : index + 1;
+  if (targetIndex < 0 || targetIndex >= selectedProjectIds.length) return content;
+
+  const nextIds = [...selectedProjectIds];
+  [nextIds[index], nextIds[targetIndex]] = [nextIds[targetIndex], nextIds[index]];
+  return updateHomepageProjectSelection(content, nextIds);
+}
+
 export function validateSiteContent(content: unknown): SiteContentValidation {
   const result = siteContentSchema.safeParse(content);
   if (result.success) {

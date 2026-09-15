@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   SITE_SECTION_IDS,
   isSiteContentDirty,
+  moveHomepageProjectSelection,
+  updateHomepageProjectSelection,
   updateContentAtPath,
   validateSiteContent,
 } from "../src/components/admin/home/content-editor";
@@ -146,6 +148,27 @@ describe("homepage content editor contracts", () => {
 
     expect(isSiteContentDirty(equalContent, savedContent)).toBe(false);
     expect(isSiteContentDirty(changedContent, savedContent)).toBe(true);
+  });
+
+  it("updates homepage project selection without changing materialized cards", () => {
+    const content = createContent();
+    const updated = updateHomepageProjectSelection(content, ["project-2", "project-1"]);
+
+    expect(updated.selectedProjectIds).toEqual(["project-2", "project-1"]);
+    expect(updated.zh.projects).toBe(content.zh.projects);
+    expect(updated.en.projects).toBe(content.en.projects);
+    expect(isSiteContentDirty(updated, content)).toBe(true);
+  });
+
+  it("moves a selected homepage project one position at a time", () => {
+    const content = updateHomepageProjectSelection(createContent(), ["project-1", "project-2", "project-3"]);
+
+    const movedUp = moveHomepageProjectSelection(content, 2, "up");
+    const invalidMove = moveHomepageProjectSelection(movedUp, 0, "up");
+
+    expect(movedUp.selectedProjectIds).toEqual(["project-1", "project-3", "project-2"]);
+    expect(invalidMove.selectedProjectIds).toEqual(["project-1", "project-3", "project-2"]);
+    expect(invalidMove).toBe(movedUp);
   });
 
   it("accepts a valid bilingual snapshot", () => {

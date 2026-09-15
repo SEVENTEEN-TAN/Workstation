@@ -12,13 +12,14 @@ import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
-import type { AssetData, SiteVersionData } from "./types";
+import type { AssetData, PortfolioProjectData, SiteVersionData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
 
 interface HomeWorkspaceProps {
   initialDraft: SiteVersionData;
   initialVersions: SiteVersionData[];
+  initialProjects: PortfolioProjectData[];
   assets: AssetData[];
 }
 
@@ -27,8 +28,9 @@ function formatVersionDate(version: SiteVersionData) {
   return value ? new Date(value).toLocaleString("zh-CN") : "未知时间";
 }
 
-export function HomeWorkspace({ initialDraft, initialVersions, assets }: HomeWorkspaceProps) {
+export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }: HomeWorkspaceProps) {
   const [draft, setDraft] = useState(initialDraft);
+  const projects = initialProjects;
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
   const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
@@ -188,7 +190,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, assets }: HomeWor
               </p>
             </section>
             <HomepageEditor
-              assets={assets}
+              projects={projects}
               content={content}
               validation={validation}
               onContentChange={setContent}

@@ -1,16 +1,18 @@
-import { ImageIcon, Plus } from "lucide-react";
-import { useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { ArrowDown, ArrowUp, ExternalLink, Plus, Trash2 } from "lucide-react";
+import { useState, type ChangeEvent, type ReactNode } from "react";
 
 import styles from "../../../app/admin/admin.module.css";
 import type { LocalizedSiteContent, SiteContent } from "../../../lib/content/schema";
-import type { AssetData } from "../types";
-import { AssetPicker } from "./AssetPicker";
+import type { PortfolioProjectData } from "../types";
+import { portfolioProjectInputSchema } from "../../../lib/validators/portfolio-projects";
 import { CollectionControls } from "./CollectionControls";
 import {
   type ContentPath,
   type SiteContentValidation,
   type SiteLocale,
   type SiteSectionId,
+  moveHomepageProjectSelection,
+  updateHomepageProjectSelection,
   updateContentAtPath,
 } from "./content-editor";
 import { FieldError } from "./FieldError";
@@ -155,7 +157,7 @@ const FOOTER_SCALARS: ScalarField[] = [
 ];
 
 interface HomepageEditorProps {
-  assets: AssetData[];
+  projects: PortfolioProjectData[];
   content: SiteContent;
   validation: SiteContentValidation;
   onContentChange: (content: SiteContent) => void;
@@ -176,10 +178,8 @@ function sectionDefinition(section: SiteSectionId) {
   return HOME_SECTION_DEFINITIONS.find((item) => item.id === section);
 }
 
-export function HomepageEditor({ assets, content, validation, onContentChange }: HomepageEditorProps) {
+export function HomepageEditor({ projects, content, validation, onContentChange }: HomepageEditorProps) {
   const [task, setTask] = useState<HomeTaskId>("identity");
-  const [assetPath, setAssetPath] = useState<{ path: ContentPath; locale: SiteLocale } | null>(null);
-  const assetPickerTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   function update(locale: SiteLocale, path: ContentPath, value: unknown) {
     onContentChange(updateContentAtPath(content, [locale, ...path], value));
@@ -213,24 +213,6 @@ export function HomepageEditor({ assets, content, validation, onContentChange }:
         {field("zh", path, "中文内容", valueAtPath(content.zh, path) as string, long)}
         {field("en", path, "English content", valueAtPath(content.en, path) as string, long)}
         <span className={styles.pairedFieldLabel}>{label}</span>
-      </div>
-    );
-  }
-
-  function imageField(locale: SiteLocale, path: ContentPath) {
-    return (
-      <div className={styles.assetFieldControl}>
-        {field(locale, path, "图片路径或 URL", valueAtPath(content[locale], path) as string)}
-        <button
-          type="button"
-          className={styles.secondaryButton}
-          onClick={(event) => {
-            assetPickerTriggerRef.current = event.currentTarget;
-            setAssetPath({ path, locale });
-          }}
-        >
-          <ImageIcon size={17} />选择媒体
-        </button>
       </div>
     );
   }
@@ -380,79 +362,143 @@ export function HomepageEditor({ assets, content, validation, onContentChange }:
   }
 
   function renderProjects() {
-    const blankProject = { image: "", category: "", title: "", description: "", tags: [""] as string[], alt: "" };
-    const projectCount = Math.max(content.zh.projects.length, content.en.projects.length);
-
-    if (projectCount === 0) {
+    if (!content.selectedProjectIds) {
+      const projectCount = Math.max(content.zh.projects.length, content.en.projects.length);
       return (
-        <div className={styles.emptyProjects}>
-          <p>当前内容还没有项目。</p>
+        <div className={styles.projectSelection}>
+          <div className={styles.projectSelectionHeading}>
+            <div>
+              <span className={styles.kicker}>LEGACY</span>
+              <h3>旧版项目快照</h3>
+            </div>
+            <a href="/admin/projects">维护结构化项目</a>
+          </div>
+          <p>
+            当前主页仍直接使用 {projectCount} 张内嵌项目卡片。迁移不会自动猜测对应关系；
+            迁移并保存后现有卡片会先清空，再从结构化项目中重新选择。
+          </p>
+          <div className={styles.projectSnapshotList}>
+            {content.zh.projects.map((project, index) => (
+              <article key={`${project.title}-${index}`}>
+                <strong>{project.title}</strong>
+                <small>{project.category}</small>
+                <p>{project.description}</p>
+              </article>
+            ))}
+          </div>
           <button
             type="button"
             className={styles.secondaryButton}
-            onClick={() => onContentChange({ ...content, zh: { ...content.zh, projects: [blankProject] }, en: { ...content.en, projects: [blankProject] } })}
+            onClick={() => onContentChange(updateHomepageProjectSelection(content, []))}
           >
-            <Plus size={17} />添加项目
+            <Plus size={17} />迁移为结构化项目
           </button>
         </div>
       );
     }
 
-    return Array.from({ length: projectCount }, (_, projectIndex) => {
-      const zhProject = content.zh.projects[projectIndex];
-      const enProject = content.en.projects[projectIndex];
+    const selectedIds = content.selectedProjectIds;
+    const selectedIdSet = new Set(selectedIds);
+    const projectsById = new Map(projects.map((project) => [project.id, project]));
+    const candidateProjects = projects.filter((project) => !selectedIdSet.has(project.id));
+    const projectReadiness = (project: PortfolioProjectData) => {
+      if (project.visibility !== "PUBLIC") return { label: "私密", canAdd: false };
+      if (!portfolioProjectInputSchema.safeParse(project).success) return { label: "信息待完善", canAdd: false };
+      return { label: "公开可展示", canAdd: true };
+    };
 
-      if (!zhProject || !enProject) {
-        const missingLocale: SiteLocale = zhProject ? "en" : "zh";
-        return (
-          <article className={styles.projectEditor} key={`project-${projectIndex}`}>
-            <h3>项目 {projectIndex + 1}</h3>
-            <p>该项目缺少{missingLocale === "zh" ? "中文" : "英文"}内容。</p>
-            <button
-              type="button"
-              className={styles.secondaryButton}
-              onClick={() => {
-                const projects = [...content[missingLocale].projects];
-                projects.splice(projectIndex, 0, blankProject);
-                onContentChange({ ...content, [missingLocale]: { ...content[missingLocale], projects } });
-              }}
-            >
-              <Plus size={17} />补充{missingLocale === "zh" ? "中文" : "英文"}项目
-            </button>
-          </article>
-        );
-      }
-
-      return (
-        <article className={styles.projectEditor} key={`project-${projectIndex}`}>
-          <h3>项目 {projectIndex + 1}</h3>
-          {pairedField(["projects", projectIndex, "title"], "项目标题")}
-          {pairedField(["projects", projectIndex, "category"], "项目类别")}
-          {pairedField(["projects", projectIndex, "description"], "项目描述", true)}
-          {pairedImageField(projectIndex)}
-          <details className={styles.advancedCopy}>
-            <summary>高级文案</summary>
-            {pairedField(["projects", projectIndex, "alt"], "图片替代文本")}
-          </details>
-          <div className={styles.collectionBlock}>
-            <h3>项目标签</h3>
-            {pairedCollection(["projects", projectIndex, "tags"], "项目标签", "", (locale, tagIndex) =>
-              field(locale, ["projects", projectIndex, "tags", tagIndex], locale === "zh" ? "中文内容" : "English content", valueAtPath(content[locale], ["projects", projectIndex, "tags", tagIndex]) as string))}
-          </div>
-          <div className={styles.collectionActions}>
-            {controls("zh", ["projects"], content.zh.projects, projectIndex, "项目", blankProject, 0)}
-            {controls("en", ["projects"], content.en.projects, projectIndex, "项目", blankProject, 0)}
-          </div>
-        </article>
-      );
-    });
-  }
-
-  function pairedImageField(projectIndex: number) {
     return (
-      <div className={styles.pairedFields}>
-        {imageField("zh", ["projects", projectIndex, "image"])}
-        {imageField("en", ["projects", projectIndex, "image"])}
+      <div className={styles.projectSelection}>
+        <div className={styles.projectSelectionHeading}>
+          <div>
+            <span className={styles.kicker}>SELECTION</span>
+            <h3>主页展示顺序</h3>
+          </div>
+          <a href="/admin/projects">编辑项目资料</a>
+        </div>
+        {selectedIds.length ? selectedIds.map((projectId, index) => {
+          const project = projectsById.get(projectId);
+          const readiness = project ? projectReadiness(project) : { label: "已不存在", canAdd: false };
+          const unavailable = !project || !readiness.canAdd;
+          return (
+            <article className={styles.projectSelectorRow} key={projectId}>
+              <div className={styles.projectSelectorCopy}>
+                <strong>{project?.titleZh ?? "项目不存在"}</strong>
+                <small>{project?.titleEn ?? project?.slug ?? projectId}</small>
+                <span className={unavailable ? styles.warningBadge : `${styles.statusBadge} ${styles.statusActive}`}>
+                  {readiness.label}
+                </span>
+              </div>
+              <div className={styles.projectSelectorActions}>
+                <button
+                  type="button"
+                  title={`上移项目 ${index + 1}`}
+                  aria-label={`上移项目 ${index + 1}`}
+                  onClick={() => onContentChange(moveHomepageProjectSelection(content, index, "up"))}
+                  disabled={index === 0}
+                >
+                  <ArrowUp size={16} />
+                </button>
+                <button
+                  type="button"
+                  title={`下移项目 ${index + 1}`}
+                  aria-label={`下移项目 ${index + 1}`}
+                  onClick={() => onContentChange(moveHomepageProjectSelection(content, index, "down"))}
+                  disabled={index === selectedIds.length - 1}
+                >
+                  <ArrowDown size={16} />
+                </button>
+                <button
+                  type="button"
+                  title={`移除项目 ${index + 1}`}
+                  aria-label={`移除项目 ${index + 1}`}
+                  onClick={() => onContentChange(updateHomepageProjectSelection(
+                    content,
+                    selectedIds.filter((id) => id !== projectId),
+                  ))}
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </article>
+          );
+        }) : (
+          <p className={styles.projectSelectionEmpty}>尚未选择主页项目。</p>
+        )}
+
+        <div className={styles.projectSelectionHeading}>
+          <div>
+            <span className={styles.kicker}>AVAILABLE</span>
+            <h3>可加入的项目</h3>
+          </div>
+        </div>
+        {candidateProjects.length ? candidateProjects.map((project) => {
+          const readiness = projectReadiness(project);
+          return (
+          <article className={styles.projectSelectorRow} key={project.id}>
+            <div className={styles.projectSelectorCopy}>
+              <strong>{project.titleZh}</strong>
+              <small>{project.titleEn ?? project.slug}</small>
+              <span className={readiness.canAdd ? `${styles.statusBadge} ${styles.statusActive}` : styles.warningBadge}>
+                {readiness.canAdd ? <ExternalLink size={12} /> : null}{readiness.label}
+              </span>
+            </div>
+            <div className={styles.projectSelectorActions}>
+              <button
+                type="button"
+                title={`加入项目 ${project.titleZh}`}
+                aria-label={`加入项目 ${project.titleZh}`}
+                onClick={() => onContentChange(updateHomepageProjectSelection(content, [...selectedIds, project.id]))}
+                disabled={!readiness.canAdd}
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          </article>
+          );
+        }) : (
+          <p className={styles.projectSelectionEmpty}>暂无可加入的项目。</p>
+        )}
       </div>
     );
   }
@@ -504,16 +550,6 @@ export function HomepageEditor({ assets, content, validation, onContentChange }:
           </div>
         </section>
       </div>
-      <AssetPicker
-        assets={assets}
-        open={Boolean(assetPath)}
-        triggerRef={assetPickerTriggerRef}
-        onClose={() => setAssetPath(null)}
-        onSelect={(asset) => {
-          if (assetPath) update(assetPath.locale, assetPath.path, `/api/assets/${asset.id}`);
-          setAssetPath(null);
-        }}
-      />
     </div>
   );
 }

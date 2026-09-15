@@ -1530,6 +1530,114 @@
   margin-top: 2px;
 }
 
+.projectSelection {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.projectSelectionHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.projectSelectionHeading h3 {
+  margin: 2px 0 0;
+}
+
+.projectSelection > p {
+  margin: 0;
+  color: #929ca6;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.projectSnapshotList {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.projectSnapshotList article,
+.projectSelectorRow {
+  display: grid;
+  min-width: 0;
+  padding: 10px 12px;
+  border-left: 2px solid rgba(0, 223, 143, 0.22);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.projectSnapshotList article {
+  gap: 4px;
+}
+
+.projectSnapshotList strong,
+.projectSelectorCopy strong {
+  overflow: hidden;
+  color: #e6e9eb;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projectSnapshotList small,
+.projectSelectorCopy small {
+  overflow: hidden;
+  color: #747f8b;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projectSnapshotList p {
+  margin: 0;
+  color: #929ca6;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.projectSelectorRow {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.projectSelectorCopy {
+  display: grid;
+  min-width: 0;
+  align-content: center;
+  gap: 4px;
+}
+
+.projectSelectorCopy .statusBadge,
+.projectSelectorCopy .warningBadge {
+  justify-self: start;
+  margin-top: 2px;
+}
+
+.projectSelectorActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.projectSelectorActions button {
+  display: inline-grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  padding: 0;
+}
+
+.projectSelectionEmpty {
+  margin: 0;
+  color: #8e98a4;
+  font-size: 13px;
+}
+
 .emptyProjects {
   display: grid;
   min-height: 150px;
@@ -2299,6 +2407,9 @@
   .pairedFieldLabel { margin-top: 2px; }
   .collectionItem,
   .assetFieldControl { grid-template-columns: minmax(0, 1fr); }
+  .projectSelectionHeading { align-items: start; flex-direction: column; }
+  .projectSelectorRow { align-items: start; grid-template-columns: minmax(0, 1fr); }
+  .projectSelectorActions { justify-content: flex-start; }
   .collectionActions { justify-content: flex-start; }
   .entityHead .actions { width: 100%; }
   .progressRow { grid-template-columns: minmax(0, 1fr) 50px; gap: 8px; padding-block: 10px; }
