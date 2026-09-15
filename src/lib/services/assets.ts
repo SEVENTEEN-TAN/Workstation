@@ -13,6 +13,21 @@ const MIME_EXTENSIONS = {
 const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 
 type UploadValidationInput = { bytes: Uint8Array; mimeType: string; filename: string; maxBytes?: number };
+type AssetAltTextInput = { altTextZh?: unknown; altTextEn?: unknown };
+
+function normalizeAltText(value: unknown) {
+  if (value !== undefined && value !== null && typeof value !== "string") throw new Error("替代文本必须是字符串");
+  const normalized = typeof value === "string" ? value.trim() : "";
+  if (normalized.length > 500) throw new Error("替代文本不能超过 500 个字符");
+  return normalized || null;
+}
+
+export function normalizeAssetAltText(input: AssetAltTextInput) {
+  return {
+    altTextZh: normalizeAltText(input.altTextZh),
+    altTextEn: normalizeAltText(input.altTextEn),
+  };
+}
 
 function hasImageSignature(bytes: Uint8Array, mimeType: keyof typeof MIME_EXTENSIONS) {
   if (mimeType === "image/png") return bytes.length >= 8 && [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every((value, index) => bytes[index] === value);
@@ -44,6 +59,7 @@ export async function saveImageAsset(file: File, altTextZh?: string, altTextEn?:
   if (!destination.startsWith(`${uploadRoot}${sep}`)) throw new Error("无效的上传路径");
   await writeFile(destination, bytes, { flag: "wx" });
   const database = await getDatabase();
+  const altText = normalizeAssetAltText({ altTextZh, altTextEn });
   return database.asset.create({
     data: {
       originalFilename: file.name,
@@ -51,8 +67,18 @@ export async function saveImageAsset(file: File, altTextZh?: string, altTextEn?:
       mimeType: file.type,
       sizeBytes: bytes.byteLength,
       sha256: validated.sha256,
-      altTextZh: altTextZh?.trim() || null,
-      altTextEn: altTextEn?.trim() || null,
+      ...altText,
     },
   });
+}
+
+export async function updateAssetAltText(id: string, input: AssetAltTextInput) {
+  const database = await getDatabase();
+  if (!await database.asset.findUnique({ where: { id }, select: { id: true } })) {
+    throw new Response(JSON.stringify({ error: "媒体资源不存在" }), {
+      status: 404,
+      headers: { "content-type": "application/json" },
+    });
+  }
+  return database.asset.update({ where: { id }, data: normalizeAssetAltText(input) });
 }

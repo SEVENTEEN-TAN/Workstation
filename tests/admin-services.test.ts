@@ -6,7 +6,7 @@ import { createSiteContentService } from "../src/lib/services/site-content";
 import { createOkrService } from "../src/lib/services/okr";
 import { createPublicDataService } from "../src/lib/services/public-data";
 import { requireAdminSession } from "../src/lib/services/auth-guard";
-import { validateImageUpload } from "../src/lib/services/assets";
+import { normalizeAssetAltText, validateImageUpload } from "../src/lib/services/assets";
 
 describe("site publishing", () => {
   it("archives the former release and publishes one complete validated snapshot in one transaction", async () => {
@@ -204,5 +204,14 @@ describe("asset validation", () => {
     expect(validateImageUpload({ bytes: png, mimeType: "image/png", filename: "portrait.png", maxBytes: 20 }).extension).toBe("png");
     expect(() => validateImageUpload({ bytes: new Uint8Array([1, 2, 3]), mimeType: "image/png", filename: "fake.png", maxBytes: 20 })).toThrow("文件内容与图片类型不匹配");
     expect(() => validateImageUpload({ bytes: png, mimeType: "image/png", filename: "portrait.png", maxBytes: 4 })).toThrow("图片大小超过限制");
+  });
+
+  it("normalizes bilingual alternative text and rejects excessive values", () => {
+    expect(normalizeAssetAltText({ altTextZh: "  项目界面  ", altTextEn: "   " })).toEqual({
+      altTextZh: "项目界面",
+      altTextEn: null,
+    });
+    expect(() => normalizeAssetAltText({ altTextZh: "图".repeat(501), altTextEn: "" }))
+      .toThrow("替代文本不能超过 500 个字符");
   });
 });

@@ -15,6 +15,7 @@ import { createFeedback } from "../src/components/admin/useAdminAction";
 import { EmptyState } from "../src/components/admin/EmptyState";
 import { PageHeader } from "../src/components/admin/PageHeader";
 import { OkrEntityDialog } from "../src/components/admin/okr/OkrEntityDialog";
+import type { AssetData } from "../src/components/admin/types";
 
 const projectRoot = resolve(import.meta.dirname, "..");
 
@@ -305,5 +306,64 @@ describe("OKR execution workspace contracts", () => {
   it("routes KR status changes through the shared action feedback", () => {
     expect(objectiveSource).toContain('runAction(`kr:status:${keyResult.id}`');
     expect(objectiveSource).not.toContain('.then(() => router.refresh())');
+  });
+
+  it("loads media records for project image selection without removing manual URL entry", () => {
+    const pageSource = readProjectFile("src/app/admin/(workspace)/home/page.tsx");
+    const editorSource = readProjectFile("src/components/admin/home/HomepageEditor.tsx");
+
+    expect(pageSource).toContain("asset.findMany");
+    expect(editorSource).toContain("AssetPicker");
+    expect(editorSource).toContain("图片路径或 URL");
+    expect(editorSource).toContain("选择媒体");
+  });
+});
+
+describe("media-library contracts", () => {
+  const mediaSource = readProjectFile("src/components/admin/MediaWorkspace.tsx");
+
+  it("provides upload progress, combined filters, preview, and alternative-text editing", () => {
+    expect(mediaSource).toContain("uploadAdminAsset");
+    expect(mediaSource).toContain("<progress");
+    expect(mediaSource).toContain("搜索文件名或替代文本");
+    expect(mediaSource).toContain("预览图片");
+    expect(mediaSource).toContain("保存替代文本");
+  });
+
+  it("combines filename, type, and alternative-text filters", async () => {
+    const { filterAssets } = await import("../src/components/admin/MediaWorkspace");
+    const assets = [
+      {
+        id: "png-complete",
+        originalFilename: "dashboard.png",
+        mimeType: "image/png",
+        width: 100,
+        height: 100,
+        sizeBytes: 10,
+        sha256: "a",
+        altTextZh: "项目看板",
+        altTextEn: "Project dashboard",
+        isReferenced: false,
+        createdAt: "2026-09-15T00:00:00.000Z",
+      },
+      {
+        id: "jpg-missing",
+        originalFilename: "portrait.jpg",
+        mimeType: "image/jpeg",
+        width: 100,
+        height: 100,
+        sizeBytes: 10,
+        sha256: "b",
+        altTextZh: null,
+        altTextEn: null,
+        isReferenced: false,
+        createdAt: "2026-09-15T00:00:00.000Z",
+      },
+    ] satisfies AssetData[];
+
+    expect(filterAssets(assets, { query: "看板", mimeType: "image/png", altState: "complete" }))
+      .toEqual([assets[0]]);
+    expect(filterAssets(assets, { query: "", mimeType: "", altState: "missing" }))
+      .toEqual([assets[1]]);
   });
 });
