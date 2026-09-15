@@ -54,6 +54,23 @@ export interface KeyResultData {
   createdAt: string;
   updatedAt: string;
   progressUpdates: ProgressUpdateData[];
+  actionItems: ActionItemData[];
+}
+
+export interface ActionItemData {
+  id: string;
+  keyResultId: string;
+  titleZh: string;
+  titleEn: string | null;
+  status: string;
+  dueDate: string | null;
+  sortOrder: number;
+  recurrenceType: string;
+  recurrenceInterval: number;
+  recurrenceDays: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ObjectiveData {
@@ -104,6 +121,24 @@ export interface OkrCycleData {
   createdAt: string;
   updatedAt: string;
   objectives: ObjectiveData[];
+  reviews: ReviewData[];
+}
+
+export interface OkrCycleBriefData {
+  id: string;
+  nameZh: string;
+  nameEn: string | null;
+  type: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  visibility: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ObjectiveDetailData extends ObjectiveData {
+  cycle: OkrCycleBriefData;
   reviews: ReviewData[];
 }
 

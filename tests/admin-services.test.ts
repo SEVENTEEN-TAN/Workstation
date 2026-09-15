@@ -162,6 +162,36 @@ describe("KR progress updates", () => {
   });
 });
 
+describe("focused OKR queries", () => {
+  it("returns cycle summaries through the focused list query", async () => {
+    const cycles = [{ id: "cycle-1", objectives: [], reviews: [] }];
+    const service = createOkrService({
+      async listCycles() { return cycles; },
+    });
+
+    await expect(service.listCycles()).resolves.toBe(cycles);
+  });
+
+  it("returns null for a missing cycle", async () => {
+    const service = createOkrService({
+      async findCycle() { return null; },
+    });
+
+    await expect(service.getCycle("missing")).resolves.toBeNull();
+  });
+
+  it("rejects an Objective that does not belong to the requested cycle", async () => {
+    const service = createOkrService({
+      async findObjective() {
+        return { id: "objective-1", cycleId: "cycle-a", cycle: { id: "cycle-a" }, keyResults: [], reviews: [] };
+      },
+    });
+
+    await expect(service.getObjective("objective-1", "cycle-b")).resolves.toBeNull();
+    await expect(service.getObjective("objective-1", "cycle-a")).resolves.toMatchObject({ id: "objective-1" });
+  });
+});
+
 describe("admin protection", () => {
   it("rejects a request when there is no active session", async () => {
     await expect(requireAdminSession(async () => null)).rejects.toMatchObject({ status: 401 });

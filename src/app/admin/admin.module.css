@@ -1363,6 +1363,320 @@
   gap: 7px;
 }
 
+.backLink {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 12px;
+  color: #8e98a4;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.backLink:hover { color: #00df8f; }
+
+.okrFilterBar {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(140px, 0.4fr) minmax(140px, 0.4fr);
+  gap: 12px;
+  align-items: end;
+}
+
+.okrFilterBar label,
+.entityForm label,
+.checkInForm label {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #9ba4ae;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.filterTitle {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  color: #e6e9eb;
+  font-size: 13px;
+}
+
+.filterTitle svg { color: #00df8f; }
+
+.cycleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.cycleCard {
+  display: grid;
+  min-width: 0;
+  gap: 17px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  background: #14181f;
+}
+
+.statusBadge,
+.riskBadge,
+.warningBadge {
+  display: inline-flex;
+  min-height: 25px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 5px;
+  padding: 0 8px;
+  color: #aab2bb;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.statusActive {
+  border-color: rgba(0, 223, 143, 0.34);
+  background: rgba(0, 223, 143, 0.07);
+  color: #00df8f;
+}
+
+.riskBadge {
+  border-color: rgba(255, 107, 95, 0.35);
+  background: rgba(255, 107, 95, 0.07);
+  color: #ff9a92;
+}
+
+.warningBadge {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #d7dde1;
+}
+
+.cycleProgress,
+.objectiveProgress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.cycleProgress > div,
+.objectiveProgress > div {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cycleProgress i,
+.objectiveProgress i {
+  display: block;
+  height: 100%;
+  background: #00df8f;
+}
+
+.cycleProgress strong,
+.objectiveProgress strong { color: #ffffff; font-size: 13px; }
+
+.cycleStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  color: #7c8792;
+  font-size: 11px;
+}
+
+.cardActions,
+.entityFormActions,
+.krCardActions,
+.actionSectionHeader,
+.historyHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardActions { justify-content: flex-end; margin-top: auto; }
+.cardActions .primaryButton { margin-right: auto; }
+
+.entityDialog {
+  width: min(720px, calc(100vw - 32px));
+  max-width: 100%;
+  max-height: min(860px, calc(100svh - 32px));
+  overflow: auto;
+  padding: 0;
+  border: 1px solid rgba(0, 223, 143, 0.24);
+  border-radius: 8px;
+  background: #14181f;
+  color: #eef1f2;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.68);
+}
+
+.entityDialog::backdrop { background: rgba(3, 5, 7, 0.78); backdrop-filter: blur(4px); }
+
+.entityDialogHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #14181f;
+}
+
+.entityDialogHeader h2 { margin: 5px 0 0; font-size: 20px; }
+.entityDialogHeader p { margin: 8px 0 0; color: #8e98a4; font-size: 12px; line-height: 1.6; }
+.entityDialogBody { padding: 22px; }
+
+.entityForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.entityForm textarea { min-height: 90px; resize: vertical; }
+.fullField,
+.weekdayField,
+.entityFormActions { grid-column: 1 / -1; }
+.entityFormActions { justify-content: flex-end; padding-top: 8px; }
+
+.weekdayField {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.weekdayField legend { padding: 0 5px; color: #9ba4ae; font-size: 12px; font-weight: 650; }
+.weekdayField label { display: inline-flex; grid-template-columns: auto auto; align-items: center; gap: 5px; min-height: 32px; padding: 0 8px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 5px; }
+.weekdayField input { width: 16px; min-height: 16px; }
+
+.reviewPrompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 14px;
+  padding: 20px 22px;
+  border: 1px solid rgba(0, 223, 143, 0.28);
+  border-radius: 7px;
+  background: rgba(0, 223, 143, 0.055);
+}
+
+.reviewPrompt h2 { margin: 5px 0 0; color: #ffffff; font-size: 18px; }
+.reviewPrompt p { margin: 7px 0 0; color: #9ba4ae; font-size: 12px; }
+
+.objectiveList,
+.krExecutionList,
+.actionList { display: grid; gap: 10px; }
+
+.objectiveRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(160px, 0.6fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 15px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.objectiveCopy h3 { margin: 8px 0 0; color: #f0f2f3; font-size: 15px; }
+.objectiveCopy p { margin: 6px 0 0; color: #8c96a1; font-size: 12px; line-height: 1.55; }
+.objectiveCopy small { display: block; margin-top: 7px; color: #727d88; font-size: 11px; }
+
+.objectiveWorkspaceGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.75fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.checkInPanel { position: sticky; top: 24px; }
+.checkInPanel h2 { margin: 7px 0 0; color: #ffffff; font-size: 18px; }
+.checkInPanel > p { color: #89939e; font-size: 12px; line-height: 1.6; }
+.currentProgress { margin: 8px 0 0; color: #00df8f !important; font-weight: 750; }
+.checkInForm { display: grid; gap: 12px; margin-top: 18px; }
+.checkInForm textarea { min-height: 72px; resize: vertical; }
+.historyHeader { justify-content: space-between; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.historyHeader h3 { margin: 0; font-size: 14px; }
+.historyHeader span { color: #727d88; font-size: 11px; }
+
+.progressHistory { display: grid; gap: 0; margin: 12px 0 0; padding: 0; list-style: none; }
+.progressHistory li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(255, 255, 255, 0.065); }
+.progressHistory strong,
+.progressHistory span { display: block; }
+.progressHistory strong { color: #00df8f; font-size: 12px; }
+.progressHistory span { margin-top: 4px; color: #9ba4ae; font-size: 11px; line-height: 1.45; }
+.progressHistory time { color: #6f7984; font-size: 10px; white-space: nowrap; }
+.mutedCopy { margin: 10px 0 0; color: #77818d; font-size: 11px; line-height: 1.55; }
+
+.krExecutionCard {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  background: #10141a;
+}
+
+.krSelected { border-color: rgba(0, 223, 143, 0.32); }
+.krSelectButton { display: flex !important; width: 100%; min-height: 48px !important; justify-content: space-between !important; gap: 14px; border: 0 !important; background: transparent !important; padding: 0 !important; text-align: left; }
+.krSelectButton span { min-width: 0; }
+.krSelectButton strong,
+.krSelectButton small { display: block; }
+.krSelectButton strong { color: #edf0f1; font-size: 13px; }
+.krSelectButton small { margin-top: 5px; color: #77818d; font-size: 11px; }
+.krSelectButton b { color: #00df8f; font-size: 16px; }
+.riskBadges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.krCardActions { justify-content: flex-end; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.065); }
+.krCardActions select { width: auto; min-width: 120px; }
+
+.actionSection { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.065); }
+.actionSectionHeader { justify-content: space-between; }
+.actionSectionHeader > div { display: flex; align-items: baseline; gap: 8px; }
+.actionSectionHeader h4 { margin: 0; color: #dfe3e6; font-size: 12px; }
+.actionSectionHeader span { color: #6f7984; font-size: 10px; }
+.actionSectionHeader button { min-height: 34px; }
+.actionList { margin-top: 9px; }
+
+.actionRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(105px, 0.3fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 48px;
+  padding: 7px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.actionRow strong,
+.actionRow small { display: block; }
+.actionRow strong { color: #dfe3e6; font-size: 11px; }
+.actionRow small { margin-top: 4px; color: #6f7984; font-size: 10px; }
+.actionRow select { min-height: 36px; font-size: 11px; }
+.actionDone strong { color: #77818d; text-decoration: line-through; }
+
+.checkInSuggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 9px;
+  padding: 9px 10px;
+  border-left: 2px solid #00df8f;
+  background: rgba(0, 223, 143, 0.06);
+  color: #b7c0c7;
+  font-size: 11px;
+}
+
+.checkInSuggestion button { min-height: 34px; flex: 0 0 auto; }
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -1419,6 +1733,10 @@
   .reviewForm { grid-template-columns: 1fr; }
   .readinessSummary { grid-template-columns: 1fr; }
   .readinessSummary dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .objectiveWorkspaceGrid { grid-template-columns: 1fr; }
+  .checkInPanel { position: static; }
+  .objectiveRow { grid-template-columns: minmax(0, 1fr) minmax(130px, 0.5fr); }
+  .objectiveRow .rowActions { grid-column: 1 / -1; justify-content: flex-end; }
 }
 
 @media (max-width: 639px) {
@@ -1476,6 +1794,26 @@
   .collectionControls { justify-content: flex-end; }
   .collectionHeading { align-items: flex-start; flex-direction: column; }
   .collectionHeading .collectionControls { width: 100%; }
+  .okrFilterBar,
+  .entityForm,
+  .objectiveRow,
+  .actionRow { grid-template-columns: 1fr; }
+  .cycleGrid { grid-template-columns: 1fr; }
+  .reviewPrompt { align-items: flex-start; flex-direction: column; }
+  .reviewPrompt button { width: 100%; }
+  .entityDialog { width: 100%; max-height: 100svh; border-radius: 0; }
+  .entityDialogHeader,
+  .entityDialogBody { padding: 16px; }
+  .fullField,
+  .weekdayField,
+  .entityFormActions { grid-column: auto; }
+  .entityFormActions { display: grid; grid-template-columns: 1fr 1fr; }
+  .cardActions { justify-content: stretch; }
+  .cardActions .primaryButton { flex: 1; margin: 0; }
+  .objectiveProgress { grid-template-columns: minmax(0, 1fr) auto; }
+  .objectiveRow .rowActions { grid-column: auto; justify-content: flex-start; }
+  .actionRow .rowActions { justify-content: flex-end; }
+  .checkInSuggestion { align-items: flex-start; flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {

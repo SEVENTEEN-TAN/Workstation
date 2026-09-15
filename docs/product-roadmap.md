@@ -40,15 +40,15 @@ Personal Workstation is a continuously updated online career profile and its pri
 
 ### Iteration V1.3 - OKR And Execution Workspace
 
-- [ ] Organize OKR management around cycles instead of one nested page.
-- [ ] Add route-addressable cycle and Objective views.
-- [ ] Use structured drawers or dialogs for cycle, Objective, KR, and review editing.
-- [ ] Add a selected-KR quick check-in panel with progress history.
-- [ ] Add Action Items under KRs, including status, due date, and ordering.
-- [ ] Add optional recurring actions inside OKR rather than a separate habits module.
-- [ ] Surface stale, overdue, and at-risk KRs.
-- [ ] Guide the administrator from cycle completion into review creation.
-- [ ] Keep action completion separate from KR progress; it may suggest a check-in but never changes progress automatically.
+- [x] Organize OKR management around cycles instead of one nested page.
+- [x] Add route-addressable cycle and Objective views.
+- [x] Use structured drawers or dialogs for cycle, Objective, KR, and review editing.
+- [x] Add a selected-KR quick check-in panel with progress history.
+- [x] Add Action Items under KRs, including status, due date, and ordering.
+- [x] Add optional recurring actions inside OKR rather than a separate habits module.
+- [x] Surface stale, overdue, and at-risk KRs.
+- [x] Guide the administrator from cycle completion into review creation.
+- [x] Keep action completion separate from KR progress; it may suggest a check-in but never changes progress automatically.
 
 ### Iteration V1.4 - Media Library
 

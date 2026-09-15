@@ -1,8 +1,8 @@
-import { Prisma, type KeyResult, type PrismaClient } from "@prisma/client";
+import { Prisma, type ActionItem, type KeyResult, type PrismaClient } from "@prisma/client";
 
 import { getDatabase } from "../db";
 import { calculateKeyResultProgress, calculateObjectiveProgress } from "../okr/progress";
-import { cycleInputSchema, keyResultInputSchema, objectiveInputSchema, progressInputSchema, reviewInputSchema } from "../validators/okr";
+import { actionItemInputSchema, actionItemPatchSchema, cycleInputSchema, cyclePatchSchema, keyResultInputSchema, keyResultPatchSchema, objectiveInputSchema, objectivePatchSchema, progressInputSchema, reviewInputSchema, reviewPatchSchema } from "../validators/okr";
 
 type ProgressTransaction = {
   findKeyResult(id: string): Promise<KeyResult | null>;
@@ -20,7 +20,15 @@ type ProgressUpdateValues = {
 };
 
 type OkrRepositoryOverrides = {
-  transaction<T>(run: (transaction: ProgressTransaction) => Promise<T>): Promise<T>;
+  transaction?<T>(run: (transaction: ProgressTransaction) => Promise<T>): Promise<T>;
+  findKeyResultForAction?(id: string): Promise<{ id: string } | null>;
+  createActionItem?(values: Prisma.ActionItemUncheckedCreateInput): Promise<unknown>;
+  findActionItem?(id: string): Promise<ActionItem | null>;
+  updateActionItem?(id: string, values: Prisma.ActionItemUncheckedUpdateInput): Promise<unknown>;
+  deleteActionItem?(id: string): Promise<unknown>;
+  listCycles?(): Promise<unknown[]>;
+  findCycle?(id: string): Promise<unknown | null>;
+  findObjective?(id: string): Promise<{ cycleId: string } & Record<string, unknown> | null>;
 };
 
 function progressRepository(database: PrismaClient): OkrRepositoryOverrides {
@@ -42,11 +50,70 @@ function progressForRecord(record: Pick<KeyResult, "progressMode" | "manualProgr
 export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
   const database = () => getDatabase();
   return {
+    async listCycles() {
+      if (repositoryOverride?.listCycles) return repositoryOverride.listCycles();
+      return (await database()).okrCycle.findMany({
+        orderBy: { startDate: "desc" },
+        include: {
+          objectives: {
+            orderBy: { sortOrder: "asc" },
+            include: {
+              keyResults: {
+                orderBy: { sortOrder: "asc" },
+                include: { progressUpdates: { orderBy: { recordedAt: "desc" }, take: 1 } },
+              },
+            },
+          },
+          reviews: { orderBy: { reviewedAt: "desc" } },
+        },
+      });
+    },
+    async getCycle(id: string) {
+      if (repositoryOverride?.findCycle) return repositoryOverride.findCycle(id);
+      return (await database()).okrCycle.findUnique({
+        where: { id },
+        include: {
+          objectives: {
+            orderBy: { sortOrder: "asc" },
+            include: {
+              keyResults: {
+                orderBy: { sortOrder: "asc" },
+                include: {
+                  progressUpdates: { orderBy: { recordedAt: "desc" }, take: 20 },
+                  actionItems: { orderBy: { sortOrder: "asc" } },
+                },
+              },
+            },
+          },
+          reviews: { orderBy: { reviewedAt: "desc" } },
+        },
+      });
+    },
+    async getObjective(id: string, cycleId?: string) {
+      const objective = repositoryOverride?.findObjective
+        ? await repositoryOverride.findObjective(id)
+        : await (await database()).objective.findUnique({
+          where: { id },
+          include: {
+            cycle: true,
+            keyResults: {
+              orderBy: { sortOrder: "asc" },
+              include: {
+                progressUpdates: { orderBy: { recordedAt: "desc" }, take: 20 },
+                actionItems: { orderBy: { sortOrder: "asc" } },
+              },
+            },
+            reviews: { orderBy: { reviewedAt: "desc" } },
+          },
+        });
+      if (!objective || (cycleId && objective.cycleId !== cycleId)) return null;
+      return objective;
+    },
     async listAll() {
       return (await database()).okrCycle.findMany({
         orderBy: { startDate: "desc" },
         include: {
-          objectives: { orderBy: { sortOrder: "asc" }, include: { keyResults: { orderBy: { sortOrder: "asc" }, include: { progressUpdates: { orderBy: { recordedAt: "desc" }, take: 20 } } } } },
+          objectives: { orderBy: { sortOrder: "asc" }, include: { keyResults: { orderBy: { sortOrder: "asc" }, include: { progressUpdates: { orderBy: { recordedAt: "desc" }, take: 20 }, actionItems: { orderBy: { sortOrder: "asc" } } } } } },
           reviews: { orderBy: { reviewedAt: "desc" } },
         },
       });
@@ -55,7 +122,7 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
       return (await database()).okrCycle.create({ data: cycleInputSchema.parse(input) });
     },
     async updateCycle(id: string, input: unknown) {
-      return (await database()).okrCycle.update({ where: { id }, data: cycleInputSchema.partial().parse(input) });
+      return (await database()).okrCycle.update({ where: { id }, data: cyclePatchSchema.parse(input) });
     },
     async deleteCycle(id: string) {
       return (await database()).okrCycle.delete({ where: { id } });
@@ -67,7 +134,7 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
       return db.objective.create({ data: parsed });
     },
     async updateObjective(id: string, input: unknown) {
-      const parsed = objectiveInputSchema.partial().parse(input);
+      const parsed = objectivePatchSchema.parse(input);
       const db = await database();
       if (parsed.cycleId && !(await db.okrCycle.findUnique({ where: { id: parsed.cycleId }, select: { id: true } }))) throw new Error("OKR 周期不存在");
       return db.objective.update({ where: { id }, data: parsed });
@@ -82,7 +149,7 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
       return db.keyResult.create({ data: parsed });
     },
     async updateKeyResult(id: string, input: unknown) {
-      const parsed = keyResultInputSchema.partial().parse(input);
+      const parsed = keyResultPatchSchema.parse(input);
       const db = await database();
       if (parsed.objectiveId && !(await db.objective.findUnique({ where: { id: parsed.objectiveId }, select: { id: true } }))) throw new Error("Objective 不存在");
       return db.keyResult.update({ where: { id }, data: parsed });
@@ -92,8 +159,8 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
     },
     async recordProgress(id: string, input: unknown) {
       const parsed = progressInputSchema.parse(input);
-      const repo = repositoryOverride ?? progressRepository(await database());
-      return repo.transaction(async (transaction) => {
+      const repo = repositoryOverride?.transaction ? repositoryOverride : progressRepository(await database());
+      return repo.transaction!(async (transaction) => {
         const current = await transaction.findKeyResult(id);
         if (!current) throw new Error("Key Result 不存在");
         const values = current.progressMode === "MANUAL"
@@ -126,7 +193,7 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
       return db.review.create({ data: parsed });
     },
     async updateReview(id: string, input: unknown) {
-      const parsed = reviewInputSchema.partial().parse(input);
+      const parsed = reviewPatchSchema.parse(input);
       const db = await database();
       const existing = await db.review.findUnique({ where: { id }, select: { cycleId: true, objectiveId: true } });
       if (!existing) throw new Error("复盘不存在");
@@ -140,6 +207,52 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
     },
     async deleteReview(id: string) {
       return (await database()).review.delete({ where: { id } });
+    },
+    async createActionItem(input: unknown) {
+      const parsed = actionItemInputSchema.parse(input);
+      const db = repositoryOverride?.findKeyResultForAction && repositoryOverride.createActionItem
+        ? null
+        : await database();
+      const keyResult = repositoryOverride?.findKeyResultForAction
+        ? await repositoryOverride.findKeyResultForAction(parsed.keyResultId)
+        : await db!.keyResult.findUnique({ where: { id: parsed.keyResultId }, select: { id: true } });
+      if (!keyResult) throw new Error("Key Result 不存在");
+      const values: Prisma.ActionItemUncheckedCreateInput = {
+        ...parsed,
+        completedAt: parsed.status === "DONE" ? new Date() : null,
+      };
+      return repositoryOverride?.createActionItem
+        ? repositoryOverride.createActionItem(values)
+        : db!.actionItem.create({ data: values });
+    },
+    async updateActionItem(id: string, input: unknown) {
+      const patch = actionItemPatchSchema.parse(input);
+      const db = repositoryOverride?.findActionItem && repositoryOverride.updateActionItem
+        ? null
+        : await database();
+      const existing = repositoryOverride?.findActionItem
+        ? await repositoryOverride.findActionItem(id)
+        : await db!.actionItem.findUnique({ where: { id } });
+      if (!existing) throw new Error("Action Item 不存在");
+      const normalized = actionItemInputSchema.parse({ ...existing, ...patch });
+      if (patch.keyResultId && patch.keyResultId !== existing.keyResultId) {
+        const keyResult = repositoryOverride?.findKeyResultForAction
+          ? await repositoryOverride.findKeyResultForAction(patch.keyResultId)
+          : await db!.keyResult.findUnique({ where: { id: patch.keyResultId }, select: { id: true } });
+        if (!keyResult) throw new Error("Key Result 不存在");
+      }
+      const values = Object.fromEntries(
+        Object.keys(patch).map((key) => [key, normalized[key as keyof typeof normalized]]),
+      ) as Prisma.ActionItemUncheckedUpdateInput;
+      if (patch.status === "DONE") values.completedAt = existing.completedAt ?? new Date();
+      if (patch.status && patch.status !== "DONE") values.completedAt = null;
+      return repositoryOverride?.updateActionItem
+        ? repositoryOverride.updateActionItem(id, values)
+        : db!.actionItem.update({ where: { id }, data: values });
+    },
+    async deleteActionItem(id: string) {
+      if (repositoryOverride?.deleteActionItem) return repositoryOverride.deleteActionItem(id);
+      return (await database()).actionItem.delete({ where: { id } });
     },
     async getDashboard() {
       const cycles = await this.listAll();

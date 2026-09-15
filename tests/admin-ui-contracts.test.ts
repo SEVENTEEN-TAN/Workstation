@@ -14,6 +14,7 @@ import { AdminRequestError, adminRequest } from "../src/components/admin/request
 import { createFeedback } from "../src/components/admin/useAdminAction";
 import { EmptyState } from "../src/components/admin/EmptyState";
 import { PageHeader } from "../src/components/admin/PageHeader";
+import { OkrEntityDialog } from "../src/components/admin/okr/OkrEntityDialog";
 
 const projectRoot = resolve(import.meta.dirname, "..");
 
@@ -183,6 +184,26 @@ describe("admin shell markup contracts", () => {
     expect(markup).toContain("上传图片");
     expect(markup.match(/<button/g)).toHaveLength(1);
   });
+
+  it("unmounts closed OKR editor fields so reopened forms receive fresh defaults", () => {
+    const closedMarkup = renderToStaticMarkup(
+      createElement(OkrEntityDialog, {
+        open: false,
+        title: "编辑周期",
+        onClose() {},
+      }, createElement("input", { name: "status", defaultValue: "ACTIVE" })),
+    );
+    const openMarkup = renderToStaticMarkup(
+      createElement(OkrEntityDialog, {
+        open: true,
+        title: "编辑周期",
+        onClose() {},
+      }, createElement("input", { name: "status", defaultValue: "ACTIVE" })),
+    );
+
+    expect(closedMarkup).not.toContain('name="status"');
+    expect(openMarkup).toContain('value="ACTIVE"');
+  });
 });
 
 describe("admin route contracts", () => {
@@ -201,6 +222,13 @@ describe("admin route contracts", () => {
       expect(source).toMatch(/export default async function/);
     },
   );
+
+  it("provides route-addressable OKR cycle and Objective pages", () => {
+    expect(readProjectFile("src/app/admin/(workspace)/okr/cycles/[cycleId]/page.tsx"))
+      .toContain("OkrCycleWorkspace");
+    expect(readProjectFile("src/app/admin/(workspace)/okr/cycles/[cycleId]/objectives/[objectiveId]/page.tsx"))
+      .toContain("ObjectiveWorkspace");
+  });
 });
 
 describe("homepage version safety contracts", () => {
@@ -238,5 +266,44 @@ describe("homepage version safety contracts", () => {
     expect(source).toContain('import { ConfirmDialog } from "./ConfirmDialog"');
     expect(source).toContain("setRollbackRequest(version)");
     expect(source).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="恢复为草稿"/);
+  });
+});
+
+describe("OKR execution workspace contracts", () => {
+  const listSource = readOptionalProjectFile("src/components/admin/okr/OkrCycleListWorkspace.tsx");
+  const cycleSource = readOptionalProjectFile("src/components/admin/okr/OkrCycleWorkspace.tsx");
+  const objectiveSource = readOptionalProjectFile("src/components/admin/okr/ObjectiveWorkspace.tsx");
+  const dialogSource = readOptionalProjectFile("src/components/admin/okr/OkrEntityDialog.tsx");
+  const checkInSource = readOptionalProjectFile("src/components/admin/okr/KrCheckInPanel.tsx");
+  const actionSource = readOptionalProjectFile("src/components/admin/okr/ActionItemList.tsx");
+  const allSources = [listSource, cycleSource, objectiveSource, dialogSource, checkInSource, actionSource].join("\n");
+
+  it("replaces JSON prompt editing with structured dialogs", () => {
+    expect(allSources).toContain("OkrEntityDialog");
+    expect(allSources).not.toContain("window.prompt");
+    expect(allSources).not.toContain("编辑字段 JSON");
+  });
+
+  it("exposes KR check-ins, history, risk signals, and action items", () => {
+    expect(checkInSource).toContain("进度历史");
+    expect(checkInSource).toContain("记录进度");
+    expect(objectiveSource).toContain("已逾期");
+    expect(objectiveSource).toContain("长期未更新");
+    expect(actionSource).toContain("行动项");
+    expect(actionSource).toContain("建议记录一次 KR 进度");
+  });
+
+  it("guides completed cycles into a cycle review", () => {
+    expect(cycleSource).toContain("创建周期复盘");
+    expect(cycleSource).toContain('cycle.status === "COMPLETED"');
+  });
+
+  it("shows weekday choices only for weekly recurring actions", () => {
+    expect(actionSource).toContain('recurrenceType === "WEEKLY" ? <fieldset');
+  });
+
+  it("routes KR status changes through the shared action feedback", () => {
+    expect(objectiveSource).toContain('runAction(`kr:status:${keyResult.id}`');
+    expect(objectiveSource).not.toContain('.then(() => router.refresh())');
   });
 });
