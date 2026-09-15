@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { SkillCapabilitiesExperience, type PublicSkillArea } from "../src/components/public/SkillCapabilitiesExperience";
-import { fallbackSiteContent } from "../src/components/public/data";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 
 const areas: PublicSkillArea[] = [{
   id: "area-1",
@@ -30,12 +30,12 @@ const areas: PublicSkillArea[] = [{
 describe("public skill capability presentation", () => {
   it("renders grouped bilingual skills and project evidence", () => {
     const zh = renderToStaticMarkup(createElement(SkillCapabilitiesExperience, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       areas,
       initialLocale: "zh",
     }));
     const en = renderToStaticMarkup(createElement(SkillCapabilitiesExperience, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       areas,
       initialLocale: "en",
     }));
@@ -50,12 +50,12 @@ describe("public skill capability presentation", () => {
 
   it("renders a bilingual empty state", () => {
     const zh = renderToStaticMarkup(createElement(SkillCapabilitiesExperience, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       areas: [],
       initialLocale: "zh",
     }));
     const en = renderToStaticMarkup(createElement(SkillCapabilitiesExperience, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       areas: [],
       initialLocale: "en",
     }));

@@ -60,10 +60,10 @@ Personal Workstation is a continuously updated online career profile and its pri
 
 ### Iteration V1.4.1 - HomePage Consolidation
 
-- [ ] Export the current published homepage, active draft, asset references, and media files, then capture desktop and mobile visual baselines before migration.
-- [ ] Move the preserved bilingual homepage content into one WorkStation-owned bootstrap fixture used only to initialize an empty database.
-- [ ] Remove seed and test imports of `HomePage/src/data/content.js` and `HomePage/src/data/projects.js`, then verify a WorkStation-only fresh install can migrate, seed, test, and build.
-- [ ] Remove the complete runtime homepage fallback after bootstrap independence is proven, and expose one explicit uninitialized state when no published version exists.
+- [x] Export the current published homepage, active draft, asset references, and media files, then capture desktop and mobile visual baselines before migration.
+- [x] Move the preserved bilingual homepage content into one WorkStation-owned bootstrap fixture used only to initialize an empty database.
+- [x] Remove seed and test imports of `HomePage/src/data/content.js` and `HomePage/src/data/projects.js`, then verify a WorkStation-only fresh install can migrate, seed, test, and build.
+- [x] Remove the complete runtime homepage fallback after bootstrap independence is proven, and expose one explicit uninitialized state when no published version exists.
 - [ ] Reorganize `/admin/home` into `个人与首屏`, `能力展示`, `项目展示`, and `联系与导航` without changing the `SiteContent` snapshot or public renderer.
 - [ ] Show paired Chinese and English fields for each concept, and move accessibility labels and interaction prompts into a collapsed `高级文案` area without losing data or validation.
 - [ ] Keep save, preview, and publish in one stable action bar, and move version history into a secondary `发布记录` view while preserving restore-to-draft safety.

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProjectExperience } from "@/components/public/ProjectExperience";
-import { fallbackSiteContent, toPublicPortfolioProject } from "@/components/public/data";
+import { SiteUninitialized } from "@/components/public/SiteUninitialized";
+import { toPublicPortfolioProject } from "@/components/public/data";
 import { getPublishedSiteContent } from "@/lib/services/public-data";
 import { portfolioProjectService } from "@/lib/services/portfolio-projects";
 
@@ -25,8 +26,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     getPublishedSiteContent(),
     portfolioProjectService.getPublicBySlug((await params).slug),
   ]);
+  if (!content) return <SiteUninitialized />;
   if (!record) notFound();
 
   const project = toPublicPortfolioProject(record);
-  return <ProjectExperience content={content ?? fallbackSiteContent} projects={[project]} project={project} />;
+  return <ProjectExperience content={content} projects={[project]} project={project} />;
 }

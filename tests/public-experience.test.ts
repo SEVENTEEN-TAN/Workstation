@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
-import { fallbackSiteContent } from "../src/components/public/data";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import { ExperienceTimeline } from "../src/components/public/ExperienceTimeline";
 
 const experiences = [
@@ -47,11 +47,11 @@ const experiences = [
 describe("public experience timeline", () => {
   it("renders bilingual work and education records with dates and links", () => {
     const zh = renderToStaticMarkup(createElement(ExperienceTimeline, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       experiences,
     }));
     const en = renderToStaticMarkup(createElement(ExperienceTimeline, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       experiences,
       initialLocale: "en",
     }));
@@ -67,7 +67,7 @@ describe("public experience timeline", () => {
 
   it("renders a useful empty state before any experience is public", () => {
     const markup = renderToStaticMarkup(createElement(ExperienceTimeline, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       experiences: [],
     }));
 

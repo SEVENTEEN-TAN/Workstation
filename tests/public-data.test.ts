@@ -1,23 +1,25 @@
 import { describe, expect, it } from "vitest";
 
-import { siteContentSchema } from "../src/lib/content/schema";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import {
   createPublicDataAdapter,
-  fallbackSiteContent,
   type PublicOkrCycleRecord,
 } from "../src/components/public/data";
 
 describe("public data adapter", () => {
-  it("provides a complete bilingual homepage snapshot when no CMS source exists", async () => {
+  it("returns null when no publication exists", async () => {
     const adapter = createPublicDataAdapter();
 
-    const published = await adapter.getPublishedSiteContent();
+    await expect(adapter.getPublishedSiteContent()).resolves.toBeNull();
+    await expect(adapter.getPreviewSiteContent()).resolves.toBeNull();
+  });
 
-    expect(siteContentSchema.safeParse(published).success).toBe(true);
-    expect(published.en.projects).toHaveLength(4);
-    expect(published.zh.projects).toHaveLength(4);
-    expect(published.zh.hero.headingLabel).toBe("Java 与 AI 工程");
-    expect(fallbackSiteContent.en.projects[0].image).toBe("/images/projects/neon-system.webp");
+  it("returns the requested preview version when it exists", async () => {
+    const adapter = createPublicDataAdapter({
+      loadPreviewSiteContent: async () => bootstrapSiteContent,
+    });
+
+    await expect(adapter.getPreviewSiteContent("version-1")).resolves.toEqual(bootstrapSiteContent);
   });
 
   it("returns an empty public OKR view when no OKR source exists", async () => {

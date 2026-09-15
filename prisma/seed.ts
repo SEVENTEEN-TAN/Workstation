@@ -1,24 +1,6 @@
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { dirname, resolve } from "node:path";
-
-import { Prisma } from "@prisma/client";
-
 import { hashPassword } from "../src/lib/auth/password";
-import { migrateLegacySiteContent } from "../src/lib/content/legacy";
-import { siteContentSchema } from "../src/lib/content/schema";
+import { seedPublishedSiteVersion } from "../src/lib/content/seed";
 import { getDatabase } from "../src/lib/db";
-
-async function loadLegacyData() {
-  const homepageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../../HomePage");
-  const contentUrl = pathToFileURL(resolve(homepageRoot, "src/data/content.js"));
-  const projectsUrl = pathToFileURL(resolve(homepageRoot, "src/data/projects.js"));
-  const [{ content }, { projects }] = await Promise.all([
-    import(contentUrl.href),
-    import(projectsUrl.href),
-  ]);
-
-  return siteContentSchema.parse(migrateLegacySiteContent(content, projects));
-}
 
 async function main() {
   const adminPassword = process.env.ADMIN_PASSWORD;
@@ -35,19 +17,7 @@ async function main() {
       })
     : null;
 
-  const existingVersion = await database.siteVersion.findFirst();
-  if (!existingVersion) {
-    const content = await loadLegacyData();
-    await database.siteVersion.create({
-      data: {
-        version: 1,
-        status: "PUBLISHED",
-        content: content as Prisma.InputJsonValue,
-        createdById: admin?.id ?? null,
-        publishedAt: new Date(),
-      },
-    });
-  }
+  await seedPublishedSiteVersion(database, admin?.id ?? null);
 }
 
 main()

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { ExperienceTimeline, type PublicExperienceRecord } from "@/components/public/ExperienceTimeline";
-import { fallbackSiteContent } from "@/components/public/data";
+import { SiteUninitialized } from "@/components/public/SiteUninitialized";
 import { experienceRecordService } from "@/lib/services/experience-records";
 import { getPublishedSiteContent } from "@/lib/services/public-data";
 
@@ -36,5 +36,6 @@ export default async function ExperiencePage() {
     sortOrder: record.sortOrder,
   })) satisfies PublicExperienceRecord[];
 
-  return <ExperienceTimeline content={content ?? fallbackSiteContent} experiences={experiences} />;
+  if (!content) return <SiteUninitialized />;
+  return <ExperienceTimeline content={content} experiences={experiences} />;
 }

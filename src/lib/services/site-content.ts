@@ -1,6 +1,5 @@
 import { Prisma, type PrismaClient } from "@prisma/client";
 
-import { fallbackSiteContent } from "../../components/public/data";
 import { siteContentSchema, type SiteContent } from "../content/schema";
 import { getDatabase } from "../db";
 
@@ -59,19 +58,21 @@ function createPrismaRepository(database: PrismaClient): SiteContentRepository {
 export function createSiteContentService(repository: SiteContentRepository) {
   return {
     listVersions: () => repository.listVersions(),
-    async getPublished(): Promise<SiteContent> {
+    async getPublished(): Promise<SiteContent | null> {
       const version = await repository.findPublished();
-      return version ? siteContentSchema.parse(version.content) : fallbackSiteContent;
+      return version ? siteContentSchema.parse(version.content) : null;
     },
     async getOrCreateDraft(createdById?: string | null) {
       const existing = await repository.findDraft();
       if (existing) return { ...existing, content: siteContentSchema.parse(existing.content) };
+      const published = await repository.findPublished();
+      if (!published) throw new Error("站点尚未初始化，请先运行数据库种子");
+      const content = siteContentSchema.parse(published.content);
       return repository.transaction(async (transaction) => {
-        const published = await repository.findPublished();
         return transaction.createVersion({
           version: (await transaction.latestVersionNumber()) + 1,
           status: "DRAFT",
-          content: published ? siteContentSchema.parse(published.content) : fallbackSiteContent,
+          content,
           createdById,
         });
       });

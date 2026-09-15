@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { siteContentSchema } from "../src/lib/content/schema";
-import { fallbackSiteContent } from "../src/components/public/data";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import { createSiteContentService } from "../src/lib/services/site-content";
 import { createOkrService } from "../src/lib/services/okr";
 import { createPublicDataService } from "../src/lib/services/public-data";
@@ -16,8 +16,8 @@ import {
 describe("site publishing", () => {
   it("archives the former release and publishes one complete validated snapshot in one transaction", async () => {
     const versions = [
-      { id: "old", version: 1, status: "PUBLISHED", content: fallbackSiteContent, publishedAt: new Date() },
-      { id: "draft", version: 2, status: "DRAFT", content: fallbackSiteContent, publishedAt: null },
+      { id: "old", version: 1, status: "PUBLISHED", content: bootstrapSiteContent, publishedAt: new Date() },
+      { id: "draft", version: 2, status: "DRAFT", content: bootstrapSiteContent, publishedAt: null },
     ];
     let transactions = 0;
     const service = createSiteContentService({
@@ -52,12 +52,12 @@ describe("site publishing", () => {
 
 describe("site rollback", () => {
   it("overwrites the existing draft without changing the published version", async () => {
-    const sourceContent = structuredClone(fallbackSiteContent);
+    const sourceContent = structuredClone(bootstrapSiteContent);
     sourceContent.en.hero.lineOne = "RESTORED SOURCE";
     const versions = [
-      { id: "published", version: 3, status: "PUBLISHED", content: fallbackSiteContent, publishedAt: new Date("2026-09-01") },
+      { id: "published", version: 3, status: "PUBLISHED", content: bootstrapSiteContent, publishedAt: new Date("2026-09-01") },
       { id: "source", version: 1, status: "ARCHIVED", content: sourceContent, publishedAt: new Date("2026-08-01") },
-      { id: "draft", version: 4, status: "DRAFT", content: fallbackSiteContent, publishedAt: null },
+      { id: "draft", version: 4, status: "DRAFT", content: bootstrapSiteContent, publishedAt: null },
     ];
     const service = createSiteContentService({
       async transaction(run) {
@@ -84,11 +84,11 @@ describe("site rollback", () => {
   });
 
   it("creates the next draft with no publication date and retains the author when no draft exists", async () => {
-    const sourceContent = structuredClone(fallbackSiteContent);
+    const sourceContent = structuredClone(bootstrapSiteContent);
     sourceContent.zh.hero.lineOne = "恢复的历史内容";
     const publishedAt = new Date("2026-09-01");
     const versions = [
-      { id: "published", version: 4, status: "PUBLISHED", content: fallbackSiteContent, publishedAt },
+      { id: "published", version: 4, status: "PUBLISHED", content: bootstrapSiteContent, publishedAt },
       { id: "source", version: 2, status: "ARCHIVED", content: sourceContent, publishedAt: new Date("2026-08-01") },
     ];
     let createdInput: unknown;
@@ -124,7 +124,7 @@ describe("site rollback", () => {
 describe("public data service", () => {
   it("returns only published content and public children of public cycles", async () => {
     const service = createPublicDataService({
-      async findPublishedSiteVersion() { return { content: fallbackSiteContent }; },
+      async findPublishedSiteVersion() { return { content: bootstrapSiteContent }; },
       async findOkrCycles() {
         return [
           { id: "private-cycle", visibility: "PRIVATE", objectives: [{ id: "leak", visibility: "PUBLIC", keyResults: [] }], reviews: [] },
@@ -141,7 +141,20 @@ describe("public data service", () => {
     expect(result.map((cycle) => cycle.id)).toEqual(["public-cycle"]);
     expect(result[0].objectives.map((objective) => objective.id)).toEqual(["public-objective"]);
     expect(result[0].reviews.map((review) => review.id)).toEqual(["public-review"]);
-    await expect(service.getPublishedSiteContent()).resolves.toEqual(fallbackSiteContent);
+    await expect(service.getPublishedSiteContent()).resolves.toEqual(bootstrapSiteContent);
+  });
+
+  it("reports an uninitialized site instead of manufacturing content", async () => {
+    const service = createSiteContentService({
+      transaction: async () => { throw new Error("not used"); },
+      listVersions: async () => [],
+      findPublished: async () => null,
+      findDraft: async () => null,
+      updateDraft: async () => { throw new Error("not used"); },
+    });
+
+    await expect(service.getPublished()).resolves.toBeNull();
+    await expect(service.getOrCreateDraft()).rejects.toThrow("站点尚未初始化，请先运行数据库种子");
   });
 });
 
@@ -222,7 +235,7 @@ describe("asset validation", () => {
 });
 
 describe("asset reference safety", () => {
-  const referencedContent = structuredClone(fallbackSiteContent);
+  const referencedContent = structuredClone(bootstrapSiteContent);
   referencedContent.zh.projects[0].image = "/api/assets/asset-1";
   referencedContent.en.projects[1].image = "/api/assets/asset-1";
 

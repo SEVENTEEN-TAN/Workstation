@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { ProjectExperience } from "@/components/public/ProjectExperience";
-import { fallbackSiteContent, toPublicPortfolioProject } from "@/components/public/data";
+import { SiteUninitialized } from "@/components/public/SiteUninitialized";
+import { toPublicPortfolioProject } from "@/components/public/data";
 import { getPublishedSiteContent } from "@/lib/services/public-data";
 import { portfolioProjectService } from "@/lib/services/portfolio-projects";
 
@@ -17,9 +18,10 @@ export default async function ProjectsPage() {
     getPublishedSiteContent(),
     portfolioProjectService.listPublic(),
   ]);
+  if (!content) return <SiteUninitialized />;
 
   return <ProjectExperience
-    content={content ?? fallbackSiteContent}
+    content={content}
     projects={projects.map(toPublicPortfolioProject)}
   />;
 }

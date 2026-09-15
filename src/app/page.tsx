@@ -1,5 +1,6 @@
 import { HomeExperience } from "@/components/public/HomeExperience";
-import { fallbackSiteContent, toPublicPortfolioProject } from "@/components/public/data";
+import { SiteUninitialized } from "@/components/public/SiteUninitialized";
+import { toPublicPortfolioProject } from "@/components/public/data";
 import { getPublishedSiteContent } from "@/lib/services/public-data";
 import { portfolioProjectService } from "@/lib/services/portfolio-projects";
 
@@ -10,9 +11,10 @@ export default async function HomePage() {
     getPublishedSiteContent(),
     portfolioProjectService.listPublic(),
   ]);
+  if (!content) return <SiteUninitialized />;
 
   return <HomeExperience
-    content={content ?? fallbackSiteContent}
+    content={content}
     projects={projects.map(toPublicPortfolioProject)}
   />;
 }

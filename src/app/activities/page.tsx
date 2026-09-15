@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { ActivityExperience, type PublicCareerActivity } from "@/components/public/ActivityExperience";
-import { fallbackSiteContent } from "@/components/public/data";
+import { SiteUninitialized } from "@/components/public/SiteUninitialized";
 import { careerActivityService } from "@/lib/services/career-activities";
 import { getPublishedSiteContent } from "@/lib/services/public-data";
 
@@ -24,5 +24,6 @@ export default async function ActivitiesPage() {
     featured: record.featured,
     linkUrl: record.linkUrl ?? null,
   })) satisfies PublicCareerActivity[];
-  return <ActivityExperience content={content ?? fallbackSiteContent} activities={activities} />;
+  if (!content) return <SiteUninitialized />;
+  return <ActivityExperience content={content} activities={activities} />;
 }

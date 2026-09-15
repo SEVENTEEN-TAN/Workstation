@@ -3,10 +3,10 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import {
-  fallbackSiteContent,
   toPublicPortfolioProject,
   toRecentProjectViews,
 } from "../src/components/public/data";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import { ProjectExperience } from "../src/components/public/ProjectExperience";
 
 const sourceProject = {
@@ -47,7 +47,7 @@ describe("public portfolio project presentation", () => {
   it("maps structured projects into localized homepage cards", () => {
     const project = toPublicPortfolioProject(sourceProject);
 
-    expect(toRecentProjectViews("en", [project], fallbackSiteContent.en.projects)).toEqual([
+    expect(toRecentProjectViews("en", [project], bootstrapSiteContent.en.projects)).toEqual([
       expect.objectContaining({
         slug: "personal-workstation",
         image: "/images/projects/workstation.webp",
@@ -61,24 +61,24 @@ describe("public portfolio project presentation", () => {
   });
 
   it("keeps CMS snapshot projects as the homepage fallback", () => {
-    const views = toRecentProjectViews("zh", [], fallbackSiteContent.zh.projects);
+    const views = toRecentProjectViews("zh", [], bootstrapSiteContent.zh.projects);
 
-    expect(views).toHaveLength(fallbackSiteContent.zh.projects.length);
+    expect(views).toHaveLength(bootstrapSiteContent.zh.projects.length);
     expect(views[0]).toEqual(expect.objectContaining({
       slug: null,
-      image: fallbackSiteContent.zh.projects[0].image,
-      title: fallbackSiteContent.zh.projects[0].title,
+      image: bootstrapSiteContent.zh.projects[0].image,
+      title: bootstrapSiteContent.zh.projects[0].title,
     }));
   });
 
   it("renders public list and evidence detail routes with working links", () => {
     const project = toPublicPortfolioProject(sourceProject);
     const list = renderToStaticMarkup(createElement(ProjectExperience, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       projects: [project],
     }));
     const detail = renderToStaticMarkup(createElement(ProjectExperience, {
-      content: fallbackSiteContent,
+      content: bootstrapSiteContent,
       projects: [project],
       project,
     }));

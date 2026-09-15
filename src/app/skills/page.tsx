@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { SkillCapabilitiesExperience } from "@/components/public/SkillCapabilitiesExperience";
-import { fallbackSiteContent } from "@/components/public/data";
+import { SiteUninitialized } from "@/components/public/SiteUninitialized";
 import { getPublishedSiteContent } from "@/lib/services/public-data";
 import { skillCapabilityService } from "@/lib/services/skill-capabilities";
 
@@ -18,5 +18,6 @@ export default async function SkillsPage() {
     skillCapabilityService.listPublic(),
   ]);
 
-  return <SkillCapabilitiesExperience content={content ?? fallbackSiteContent} areas={areas} />;
+  if (!content) return <SiteUninitialized />;
+  return <SkillCapabilitiesExperience content={content} areas={areas} />;
 }
