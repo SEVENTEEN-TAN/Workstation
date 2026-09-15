@@ -2011,6 +2011,42 @@
 
 .checkInSuggestion button { min-height: 34px; flex: 0 0 auto; }
 
+.activityToggle {
+  display: flex !important;
+  grid-template-columns: none !important;
+  min-height: 54px;
+  align-items: center;
+  gap: 11px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #10141a;
+}
+
+.activityToggle input { width: 17px; min-height: 17px; }
+.activityToggle strong,
+.activityToggle small { display: block; }
+.activityToggle strong { color: #e8ebed; font-size: 12px; }
+.activityToggle small { margin-top: 3px; color: #747f8b; font-size: 10px; font-weight: 500; }
+.activityList { display: grid; gap: 0; }
+
+.activityCard {
+  display: grid;
+  grid-template-columns: minmax(145px, 0.35fr) minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.activityMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.activityMeta time { width: 100%; color: #77818d; font-size: 11px; }
+.activityCopy { min-width: 0; }
+.activityCopy h3 { margin: 0; color: #f0f2f3; font-size: 15px; }
+.activityCopy p { margin: 6px 0 0; color: #929ca6; font-size: 12px; line-height: 1.6; }
+.activityCopy small { display: block; margin-top: 7px; color: #69747f; font-size: 11px; }
+.activityCard .iconTextButton { display: inline-flex; }
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -2065,6 +2101,9 @@
   .kr { grid-template-columns: 1fr auto; }
   .kr .progressForm { grid-column: 1 / -1; grid-row: 2; }
   .reviewForm { grid-template-columns: 1fr; }
+  .activityCard { grid-template-columns: 1fr auto; }
+  .activityMeta { grid-column: 1 / -1; }
+  .activityCard .rowActions { grid-column: 2; grid-row: 2; }
   .readinessSummary { grid-template-columns: 1fr; }
   .readinessSummary dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .objectiveWorkspaceGrid { grid-template-columns: 1fr; }
@@ -2153,6 +2192,8 @@
   .weekdayField,
   .entityFormActions { grid-column: auto; }
   .entityFormActions { display: grid; grid-template-columns: 1fr 1fr; }
+  .activityCard { grid-template-columns: 1fr; }
+  .activityCard .rowActions { grid-column: 1; grid-row: auto; justify-content: flex-start; }
   .cardActions { justify-content: stretch; }
   .cardActions .primaryButton { flex: 1; margin: 0; }
   .objectiveProgress { grid-template-columns: minmax(0, 1fr) auto; }
