@@ -50,6 +50,7 @@ export function HomeWorkspace({ initialDraft, initialVersions }: HomeWorkspacePr
 
     function warnBeforeUnload(event: BeforeUnloadEvent) {
       event.preventDefault();
+      event.returnValue = "";
     }
 
     function confirmSameOriginNavigation(event: globalThis.MouseEvent) {

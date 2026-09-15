@@ -35,7 +35,7 @@ Personal Workstation is a continuously updated online career profile and its pri
 - [x] Show unsaved state and warn before leaving with uncommitted changes.
 - [x] Add section-level validation and a publish-readiness summary.
 - [x] Keep draft, authenticated preview, atomic publish, version history, and rollback.
-- [x] Make rollback create a new draft that must be previewed and published explicitly.
+- [x] Make rollback restore into the active draft that must be previewed and published explicitly.
 - [ ] Integrate an asset picker into image fields.
 
 ### Iteration V1.3 - OKR And Execution Workspace
