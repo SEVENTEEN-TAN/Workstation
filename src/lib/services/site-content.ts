@@ -1,7 +1,9 @@
 import { Prisma, type PrismaClient } from "@prisma/client";
 
 import { siteContentSchema, type SiteContent } from "../content/schema";
+import { materializeHomepageProjects } from "../content/homepage-projects";
 import { getDatabase } from "../db";
+import { parsePortfolioProjectRecord, type PortfolioProjectRecord } from "./portfolio-projects";
 
 export type SiteVersionRecord = {
   id: string;
@@ -17,6 +19,7 @@ type TransactionRepository = {
   findVersion(id: string): Promise<SiteVersionRecord | null>;
   findDraft(): Promise<SiteVersionRecord | null>;
   updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
+  findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
   archivePublished(): Promise<unknown>;
   publishVersion(id: string, publishedAt: Date): Promise<SiteVersionRecord>;
   latestVersionNumber(): Promise<number>;
@@ -52,6 +55,11 @@ function createPrismaRepository(database: PrismaClient): SiteContentRepository {
     findPublished: () => database.siteVersion.findFirst({ where: { status: "PUBLISHED" }, orderBy: { publishedAt: "desc" } }),
     findDraft: () => database.siteVersion.findFirst({ where: { status: "DRAFT" }, orderBy: { version: "desc" } }),
     updateDraft: (id, content) => database.siteVersion.update({ where: { id }, data: { content: content as Prisma.InputJsonValue } }),
+    async findProjectsByIds(ids: string[]) {
+      if (!ids.length) return [];
+      const records = await database.portfolioProject.findMany({ where: { id: { in: ids } } });
+      return records.map(parsePortfolioProjectRecord);
+    },
   };
 }
 
@@ -89,7 +97,11 @@ export function createSiteContentService(repository: SiteContentRepository) {
       const versions = await repository.listVersions();
       const draft = versions.find((version) => version.id === id && version.status === "DRAFT");
       if (!draft) throw new Error("仅草稿版本可以保存");
-      return repository.updateDraft(id, content);
+      const selectedProjectIds = content.selectedProjectIds;
+      const materializedContent = selectedProjectIds
+        ? materializeHomepageProjects(content, await repository.findProjectsByIds(selectedProjectIds))
+        : content;
+      return repository.updateDraft(id, materializedContent);
     },
     async publish(id: string) {
       return repository.transaction(async (transaction) => {

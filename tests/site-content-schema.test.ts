@@ -90,6 +90,19 @@ describe("siteContentSchema", () => {
     expect(siteContentSchema.safeParse({ en: locale, zh: locale }).success).toBe(true);
   });
 
+  it("distinguishes legacy projects from explicit structured selections", () => {
+    const legacy = { en: locale, zh: locale };
+
+    expect(siteContentSchema.parse(legacy).selectedProjectIds).toBeUndefined();
+    expect(siteContentSchema.parse({ ...legacy, selectedProjectIds: [] }).selectedProjectIds).toEqual([]);
+    expect(siteContentSchema.parse({
+      ...legacy,
+      en: { ...locale, projects: [{ ...locale.projects[0], slug: "personal-workstation" }] },
+      zh: { ...locale, projects: [{ ...locale.projects[0], slug: "personal-workstation" }] },
+    }).en.projects[0].slug).toBe("personal-workstation");
+    expect(siteContentSchema.safeParse({ ...legacy, selectedProjectIds: ["p1", "p1"] }).success).toBe(false);
+  });
+
   it("rejects a snapshot missing a required locale section", () => {
     const incompleteZh = { ...locale } as Partial<typeof locale>;
     delete incompleteZh.services;

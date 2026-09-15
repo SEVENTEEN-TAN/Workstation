@@ -85,7 +85,8 @@ const footerSchema = z.object({
 });
 
 const projectSchema = z.object({
-  image: text,
+  slug: text.optional(),
+  image: z.string(),
   category: text,
   title: text,
   description: text,
@@ -105,6 +106,7 @@ export const localizedSiteContentSchema = z.object({
 });
 
 export const siteContentSchema = z.object({
+  selectedProjectIds: z.array(text).refine((ids) => new Set(ids).size === ids.length, "主页项目不能重复").optional(),
   en: localizedSiteContentSchema,
   zh: localizedSiteContentSchema,
 });
