@@ -469,6 +469,18 @@ describe("OKR execution workspace contracts", () => {
     expect(editorSource).not.toContain("图片路径或 URL");
     expect(editorSource).not.toContain("选择媒体");
   });
+
+  it("renders the public homepage only from its saved site snapshot", () => {
+    const homeRouteSource = readProjectFile("src/app/page.tsx");
+    const homeExperienceSource = readProjectFile("src/components/public/HomeExperience.tsx");
+    const recentWorksSource = readProjectFile("src/components/public/RecentWorks.tsx");
+
+    expect(homeRouteSource).not.toContain("portfolioProjectService");
+    expect(homeRouteSource).not.toContain("toPublicPortfolioProject");
+    expect(homeExperienceSource).not.toContain("projects");
+    expect(recentWorksSource).not.toContain("structuredProjects");
+    expect(recentWorksSource).toContain("toRecentProjectViews(locale, copy.projects)");
+  });
 });
 
 describe("media-library contracts", () => {

@@ -44,10 +44,18 @@ const sourceProject = {
 } as const;
 
 describe("public portfolio project presentation", () => {
-  it("maps structured projects into localized homepage cards", () => {
-    const project = toPublicPortfolioProject(sourceProject);
+  it("maps saved homepage snapshots into localized cards with project links", () => {
+    const snapshotProjects = [{
+      slug: "personal-workstation",
+      image: "/images/projects/workstation.webp",
+      category: "Next.js",
+      title: "Personal Workstation",
+      description: "A sustainable online career profile.",
+      tags: ["Next.js", "TypeScript", "Prisma", "SQLite"],
+      alt: "Personal Workstation interface",
+    }];
 
-    expect(toRecentProjectViews("en", [project], bootstrapSiteContent.en.projects)).toEqual([
+    expect(toRecentProjectViews("en", snapshotProjects)).toEqual([
       expect.objectContaining({
         slug: "personal-workstation",
         image: "/images/projects/workstation.webp",
@@ -60,8 +68,8 @@ describe("public portfolio project presentation", () => {
     ]);
   });
 
-  it("keeps CMS snapshot projects as the homepage fallback", () => {
-    const views = toRecentProjectViews("zh", [], bootstrapSiteContent.zh.projects);
+  it("keeps legacy CMS snapshot projects without inventing links", () => {
+    const views = toRecentProjectViews("zh", bootstrapSiteContent.zh.projects);
 
     expect(views).toHaveLength(bootstrapSiteContent.zh.projects.length);
     expect(views[0]).toEqual(expect.objectContaining({

@@ -1,6 +1,8 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { findHomepageProjectReferences } from "../content/homepage-projects";
+import type { SiteVersionRecord } from "./site-content";
 import { portfolioProjectInputSchema, portfolioProjectPatchSchema, type PortfolioProjectInput } from "../validators/portfolio-projects";
 
 export type PortfolioProjectRecord = PortfolioProjectInput & {
@@ -18,6 +20,7 @@ export type PortfolioProjectRepository = {
   updateProject(id: string, value: Partial<PortfolioProjectInput>): Promise<unknown>;
   deleteProject(id: string): Promise<unknown>;
   countSkillEvidence(projectId: string): Promise<number>;
+  listSiteVersions(): Promise<SiteVersionRecord[]>;
 };
 
 export function parsePortfolioProjectRecord(record: unknown): PortfolioProjectRecord {
@@ -76,6 +79,9 @@ function defaultRepository(): PortfolioProjectRepository {
     countSkillEvidence(projectId) {
       return getDatabase().then((database) => database.skillEvidence.count({ where: { projectId } }));
     },
+    listSiteVersions() {
+      return getDatabase().then((database) => database.siteVersion.findMany());
+    },
   };
 }
 
@@ -102,6 +108,9 @@ export function createPortfolioProjectService(repository?: PortfolioProjectRepos
     async delete(id: string) {
       if (await source.countSkillEvidence(id)) {
         throw new Error("项目仍被能力证据引用，请先移除对应证据");
+      }
+      if (findHomepageProjectReferences(id, await source.listSiteVersions()).length) {
+        throw new Error("项目仍被主页版本引用，请先移除主页选择");
       }
       return source.deleteProject(id);
     },

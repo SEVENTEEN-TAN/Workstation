@@ -8,9 +8,8 @@ import { I18nProvider } from "./i18n";
 import { Navbar } from "./Navbar";
 import { RecentWorks } from "./RecentWorks";
 import { Services } from "./Services";
-import type { PublicPortfolioProject } from "./data";
 
-export function HomeExperience({ content, projects = [] }: { content: SiteContent; projects?: PublicPortfolioProject[] }) {
+export function HomeExperience({ content }: { content: SiteContent }) {
   return (
     <I18nProvider content={content}>
       <div className="min-h-screen overflow-x-hidden bg-ink text-white selection:bg-accent selection:text-ink">
@@ -18,7 +17,7 @@ export function HomeExperience({ content, projects = [] }: { content: SiteConten
         <main>
           <Hero />
           <About />
-          <RecentWorks projects={projects} />
+          <RecentWorks />
           <Services />
         </main>
         <Footer />

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { createPortfolioProjectService, parsePortfolioProjectRecord } from "../src/lib/services/portfolio-projects";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import { portfolioProjectInputSchema } from "../src/lib/validators/portfolio-projects";
 
 const completeProject = {
@@ -94,6 +95,7 @@ describe("portfolio project service", () => {
       async updateProject(id, value) { calls.push({ type: `update:${id}`, value }); return { id, ...value }; },
       async deleteProject(id) { calls.push({ type: `delete:${id}` }); return { id }; },
       async countSkillEvidence() { return 0; },
+      async listSiteVersions() { return []; },
     });
 
     await service.create(completeProject);
@@ -119,6 +121,7 @@ describe("portfolio project service", () => {
       async updateProject() { throw new Error("not used"); },
       async deleteProject() { throw new Error("not used"); },
       async countSkillEvidence() { return 0; },
+      async listSiteVersions() { return []; },
     });
 
     await expect(service.listPublic()).resolves.toMatchObject([{ id: "public" }, { id: "later" }]);
@@ -139,8 +142,35 @@ describe("portfolio project service", () => {
         expect(projectId).toBe("project-1");
         return 1;
       },
+      async listSiteVersions() { return []; },
     });
 
     await expect(service.delete("project-1")).rejects.toThrow("项目仍被能力证据引用");
+  });
+
+  it("prevents deleting a project referenced by any homepage version", async () => {
+    const calls: string[] = [];
+    const service = createPortfolioProjectService({
+      async listProjects() { return []; },
+      async listPublicProjects() { return []; },
+      async findProject() { return null; },
+      async findPublicProjectBySlug() { return null; },
+      async createProject() { throw new Error("not used"); },
+      async updateProject() { throw new Error("not used"); },
+      async deleteProject() { calls.push("delete"); throw new Error("project should not be deleted"); },
+      async countSkillEvidence() { return 0; },
+      async listSiteVersions() {
+        return [{
+          id: "version-1",
+          version: 1,
+          status: "PUBLISHED",
+          publishedAt: new Date("2026-09-16T00:00:00.000Z"),
+          content: { ...bootstrapSiteContent, selectedProjectIds: ["project-1"] },
+        }];
+      },
+    });
+
+    await expect(service.delete("project-1")).rejects.toThrow("项目仍被主页版本引用");
+    expect(calls).toEqual([]);
   });
 });

@@ -240,25 +240,12 @@ export function toPublicPortfolioProject(source: PortfolioProjectRecord): Public
 
 export function toRecentProjectViews(
   locale: "en" | "zh",
-  projects: PublicPortfolioProject[],
-  fallbackProjects: ReadonlyArray<SiteContent["en"]["projects"][number]>,
+  projects: ReadonlyArray<SiteContent["en"]["projects"][number]>,
 ): RecentProjectView[] {
-  if (projects.length) {
-    return projects.map((project) => ({
-      slug: project.slug,
-      image: project.coverImage,
-      category: project.technologies[0] ?? (locale === "zh" ? "项目" : "Project"),
-      title: locale === "zh" ? project.titleZh : project.titleEn,
-      description: locale === "zh" ? project.summaryZh : project.summaryEn,
-      tags: project.technologies.slice(0, 4),
-      alt: (locale === "zh" ? project.coverAltZh : project.coverAltEn) ?? project.titleEn,
-    }));
-  }
-
-  return fallbackProjects.map((project) => ({
-    slug: null,
+  return projects.map((project) => ({
+    slug: project.slug ?? null,
     image: project.image,
-    category: project.category,
+    category: project.category || (locale === "zh" ? "项目" : "Project"),
     title: project.title,
     description: project.description,
     tags: project.tags,

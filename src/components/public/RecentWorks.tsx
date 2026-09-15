@@ -5,15 +5,15 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import { toRecentProjectViews, type PublicPortfolioProject } from "./data";
+import { toRecentProjectViews } from "./data";
 import { useI18n } from "./i18n";
 import { luxuryEase, reveal } from "./motion";
 
-export function RecentWorks({ projects: structuredProjects = [] }: { projects?: PublicPortfolioProject[] }) {
+export function RecentWorks() {
   const [activeIdx, setActiveIdx] = useState(0);
   const reduceMotion = useReducedMotion();
   const { copy, locale } = useI18n();
-  const projects = toRecentProjectViews(locale, structuredProjects, copy.projects);
+  const projects = toRecentProjectViews(locale, copy.projects);
   const activeProject = projects[activeIdx] ?? projects[0];
 
   if (!activeProject) return null;
