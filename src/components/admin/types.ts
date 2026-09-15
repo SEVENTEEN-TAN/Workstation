@@ -215,4 +215,23 @@ export interface PortfolioProjectData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ExperienceRecordData {
+  id: string;
+  kind: "WORK" | "EDUCATION";
+  organizationZh: string;
+  organizationEn: string | null;
+  titleZh: string;
+  titleEn: string | null;
+  descriptionZh: string;
+  descriptionEn: string | null;
+  locationZh: string | null;
+  locationEn: string | null;
+  linkUrl: string | null;
+  startedAt: string;
+  endedAt: string | null;
+  visibility: "PUBLIC" | "PRIVATE";
+  createdAt: string;
+  updatedAt: string;
+}
 import type { SiteContent } from "../../lib/content/schema";

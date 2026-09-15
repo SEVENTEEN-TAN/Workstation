@@ -21,8 +21,16 @@ export function resolveInitialLocale(savedLocale: string | null, browserLocale =
   return browserLocale.toLowerCase().startsWith("zh") ? "zh" : "en";
 }
 
-export function I18nProvider({ children, content }: { children: React.ReactNode; content: SiteContent }) {
-  const [locale, setLocale] = useState<Locale>("en");
+export function I18nProvider({
+  children,
+  content,
+  initialLocale = "en",
+}: {
+  children: React.ReactNode;
+  content: SiteContent;
+  initialLocale?: Locale;
+}) {
+  const [locale, setLocale] = useState<Locale>(initialLocale);
 
   useEffect(() => {
     // Locale is browser-owned state; hydrate from the persisted preference after mount.

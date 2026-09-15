@@ -43,6 +43,7 @@ describe("admin navigation contracts", () => {
       { id: "okr", href: "/admin/okr" },
       { id: "activities", href: "/admin/activities" },
       { id: "projects", href: "/admin/projects" },
+      { id: "experience", href: "/admin/experience" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -217,7 +218,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "projects", "media"])(
+  it.each(["overview", "home", "okr", "activities", "projects", "experience", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -282,6 +283,34 @@ describe("admin route contracts", () => {
       expect(workspace).toContain(`name="${field}"`);
     }
     expect(workspace).toContain("AssetPicker");
+    expect(workspace).toContain("ConfirmDialog");
+    expect(workspace).toContain("FeedbackCenter");
+  });
+
+  it("protects experience APIs and provides the complete timeline form", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/experience/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/experience/[id]/route.ts");
+    const workspace = readProjectFile("src/components/admin/ExperienceRecordsWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    for (const field of [
+      "kind",
+      "organizationZh",
+      "organizationEn",
+      "titleZh",
+      "titleEn",
+      "descriptionZh",
+      "descriptionEn",
+      "locationZh",
+      "locationEn",
+      "linkUrl",
+      "startedAt",
+      "endedAt",
+      "visibility",
+    ]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
     expect(workspace).toContain("ConfirmDialog");
     expect(workspace).toContain("FeedbackCenter");
   });

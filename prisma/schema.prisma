@@ -120,6 +120,28 @@ model PortfolioProject {
   @@map("portfolio_projects")
 }
 
+model ExperienceRecord {
+  id             String    @id @default(cuid())
+  kind           String
+  organizationZh String    @map("organization_zh")
+  organizationEn String?   @map("organization_en")
+  titleZh        String    @map("title_zh")
+  titleEn        String?   @map("title_en")
+  descriptionZh  String    @map("description_zh")
+  descriptionEn  String?   @map("description_en")
+  locationZh     String?   @map("location_zh")
+  locationEn     String?   @map("location_en")
+  linkUrl        String?   @map("link_url")
+  startedAt      DateTime  @map("started_at")
+  endedAt        DateTime? @map("ended_at")
+  visibility     String    @default("PRIVATE")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@index([visibility, startedAt])
+  @@map("experience_records")
+}
+
 model OkrCycle {
   id         String      @id @default(cuid())
   nameZh     String      @map("name_zh")
@@ -139,22 +161,22 @@ model OkrCycle {
 }
 
 model Objective {
-  id          String      @id @default(cuid())
-  cycleId     String      @map("cycle_id")
-  titleZh     String      @map("title_zh")
-  titleEn     String?     @map("title_en")
-  descriptionZh String?   @map("description_zh")
-  descriptionEn String?   @map("description_en")
-  status      String      @default("NOT_STARTED")
-  visibility  String      @default("PRIVATE")
-  sortOrder   Int         @default(0) @map("sort_order")
-  startDate   DateTime?   @map("start_date")
-  endDate     DateTime?   @map("end_date")
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
-  cycle       OkrCycle    @relation(fields: [cycleId], references: [id], onDelete: Cascade)
-  keyResults  KeyResult[]
-  reviews     Review[]
+  id            String      @id @default(cuid())
+  cycleId       String      @map("cycle_id")
+  titleZh       String      @map("title_zh")
+  titleEn       String?     @map("title_en")
+  descriptionZh String?     @map("description_zh")
+  descriptionEn String?     @map("description_en")
+  status        String      @default("NOT_STARTED")
+  visibility    String      @default("PRIVATE")
+  sortOrder     Int         @default(0) @map("sort_order")
+  startDate     DateTime?   @map("start_date")
+  endDate       DateTime?   @map("end_date")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  cycle         OkrCycle    @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  keyResults    KeyResult[]
+  reviews       Review[]
 
   @@index([cycleId, sortOrder])
   @@index([visibility, status])
@@ -162,24 +184,24 @@ model Objective {
 }
 
 model KeyResult {
-  id             String             @id @default(cuid())
-  objectiveId    String             @map("objective_id")
-  titleZh        String             @map("title_zh")
-  titleEn        String?            @map("title_en")
-  descriptionZh  String?            @map("description_zh")
-  descriptionEn  String?            @map("description_en")
-  progressMode   String             @map("progress_mode")
-  startValue     Float?             @map("start_value")
-  currentValue   Float?             @map("current_value")
-  targetValue    Float?             @map("target_value")
-  unit           String?
-  manualProgress Float?             @map("manual_progress")
-  weight         Float              @default(1)
-  status         String             @default("NOT_STARTED")
-  sortOrder      Int                @default(0) @map("sort_order")
-  createdAt      DateTime           @default(now()) @map("created_at")
-  updatedAt      DateTime           @updatedAt @map("updated_at")
-  objective      Objective          @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  id              String             @id @default(cuid())
+  objectiveId     String             @map("objective_id")
+  titleZh         String             @map("title_zh")
+  titleEn         String?            @map("title_en")
+  descriptionZh   String?            @map("description_zh")
+  descriptionEn   String?            @map("description_en")
+  progressMode    String             @map("progress_mode")
+  startValue      Float?             @map("start_value")
+  currentValue    Float?             @map("current_value")
+  targetValue     Float?             @map("target_value")
+  unit            String?
+  manualProgress  Float?             @map("manual_progress")
+  weight          Float              @default(1)
+  status          String             @default("NOT_STARTED")
+  sortOrder       Int                @default(0) @map("sort_order")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+  objective       Objective          @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
   progressUpdates KrProgressUpdate[]
   actionItems     ActionItem[]
 
@@ -209,39 +231,39 @@ model ActionItem {
 }
 
 model KrProgressUpdate {
-  id             String    @id @default(cuid())
-  keyResultId    String    @map("key_result_id")
-  currentValue   Float?    @map("current_value")
-  manualProgress Float?    @map("manual_progress")
-  calculatedProgress Float @map("calculated_progress")
-  noteZh         String?   @map("note_zh")
-  noteEn         String?   @map("note_en")
-  recordedAt     DateTime  @default(now()) @map("recorded_at")
-  keyResult      KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+  id                 String    @id @default(cuid())
+  keyResultId        String    @map("key_result_id")
+  currentValue       Float?    @map("current_value")
+  manualProgress     Float?    @map("manual_progress")
+  calculatedProgress Float     @map("calculated_progress")
+  noteZh             String?   @map("note_zh")
+  noteEn             String?   @map("note_en")
+  recordedAt         DateTime  @default(now()) @map("recorded_at")
+  keyResult          KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
 
   @@index([keyResultId, recordedAt])
   @@map("kr_progress_updates")
 }
 
 model Review {
-  id            String     @id @default(cuid())
-  cycleId       String     @map("cycle_id")
-  objectiveId   String?    @map("objective_id")
-  achievementsZh String    @map("achievements_zh")
-  achievementsEn String?   @map("achievements_en")
-  problemsZh    String     @map("problems_zh")
-  problemsEn    String?    @map("problems_en")
-  lessonsZh     String     @map("lessons_zh")
-  lessonsEn     String?    @map("lessons_en")
-  nextActionsZh String     @map("next_actions_zh")
-  nextActionsEn String?    @map("next_actions_en")
-  score         Float?
-  visibility    String     @default("PRIVATE")
-  reviewedAt    DateTime   @default(now()) @map("reviewed_at")
-  createdAt     DateTime   @default(now()) @map("created_at")
-  updatedAt     DateTime   @updatedAt @map("updated_at")
-  cycle         OkrCycle   @relation(fields: [cycleId], references: [id], onDelete: Cascade)
-  objective     Objective? @relation(fields: [objectiveId], references: [id], onDelete: SetNull)
+  id             String     @id @default(cuid())
+  cycleId        String     @map("cycle_id")
+  objectiveId    String?    @map("objective_id")
+  achievementsZh String     @map("achievements_zh")
+  achievementsEn String?    @map("achievements_en")
+  problemsZh     String     @map("problems_zh")
+  problemsEn     String?    @map("problems_en")
+  lessonsZh      String     @map("lessons_zh")
+  lessonsEn      String?    @map("lessons_en")
+  nextActionsZh  String     @map("next_actions_zh")
+  nextActionsEn  String?    @map("next_actions_en")
+  score          Float?
+  visibility     String     @default("PRIVATE")
+  reviewedAt     DateTime   @default(now()) @map("reviewed_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  cycle          OkrCycle   @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  objective      Objective? @relation(fields: [objectiveId], references: [id], onDelete: SetNull)
 
   @@index([cycleId, reviewedAt])
   @@index([objectiveId])
