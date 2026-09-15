@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
 
 import { getDatabase } from "../db";
@@ -14,6 +14,22 @@ const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 
 type UploadValidationInput = { bytes: Uint8Array; mimeType: string; filename: string; maxBytes?: number };
 type AssetAltTextInput = { altTextZh?: unknown; altTextEn?: unknown };
+type SiteVersionSource = { id: string; version: number; status: string; content: unknown };
+type StoredAsset = { id: string; storagePath: string };
+
+export type AssetReference = {
+  versionId: string;
+  version: number;
+  status: string;
+  path: string;
+};
+
+type AssetLibraryRepository<TAsset extends { id: string }> = {
+  listAssets(): Promise<TAsset[]>;
+  listSiteVersions(): Promise<SiteVersionSource[]>;
+  findAsset(id: string): Promise<StoredAsset | null>;
+  deleteAsset(id: string): Promise<unknown>;
+};
 
 function normalizeAltText(value: unknown) {
   if (value !== undefined && value !== null && typeof value !== "string") throw new Error("替代文本必须是字符串");
@@ -27,6 +43,81 @@ export function normalizeAssetAltText(input: AssetAltTextInput) {
     altTextZh: normalizeAltText(input.altTextZh),
     altTextEn: normalizeAltText(input.altTextEn),
   };
+}
+
+export function findAssetReferences(assetId: string, versions: SiteVersionSource[]) {
+  const target = `/api/assets/${assetId}`;
+  const references: AssetReference[] = [];
+
+  function visit(value: unknown, path: Array<string | number>, version: SiteVersionSource) {
+    if (value === target) {
+      references.push({ versionId: version.id, version: version.version, status: version.status, path: path.join(".") });
+      return;
+    }
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => visit(item, [...path, index], version));
+      return;
+    }
+    if (value && typeof value === "object") {
+      Object.entries(value).forEach(([key, item]) => visit(item, [...path, key], version));
+    }
+  }
+
+  versions.forEach((version) => visit(version.content, [], version));
+  return references.sort((left, right) => {
+    const versionOrder = right.version - left.version;
+    if (versionOrder) return versionOrder;
+    const leftLocale = left.path.startsWith("zh.") ? 0 : 1;
+    const rightLocale = right.path.startsWith("zh.") ? 0 : 1;
+    return leftLocale - rightLocale || left.path.localeCompare(right.path);
+  });
+}
+
+export function createAssetLibraryService<TAsset extends { id: string }>(
+  repository: AssetLibraryRepository<TAsset>,
+  removeFile: (path: string) => Promise<void> = (path) => rm(path, { force: true }),
+) {
+  return {
+    async list() {
+      const [assets, versions] = await Promise.all([repository.listAssets(), repository.listSiteVersions()]);
+      return assets.map((asset) => {
+        const references = findAssetReferences(asset.id, versions);
+        return { ...asset, isReferenced: references.length > 0, references };
+      });
+    },
+    async delete(id: string) {
+      const [asset, versions] = await Promise.all([repository.findAsset(id), repository.listSiteVersions()]);
+      if (!asset) {
+        throw new Response(JSON.stringify({ error: "媒体资源不存在" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        });
+      }
+      const references = findAssetReferences(id, versions);
+      if (references.length) {
+        throw new Response(JSON.stringify({ error: "媒体资源仍被内容版本引用，无法删除", references }), {
+          status: 409,
+          headers: { "content-type": "application/json" },
+        });
+      }
+      await repository.deleteAsset(id);
+      await removeFile(asset.storagePath);
+      return { id };
+    },
+  };
+}
+
+export async function getAssetLibraryService() {
+  const database = await getDatabase();
+  return createAssetLibraryService({
+    listAssets: () => database.asset.findMany({ orderBy: { createdAt: "desc" } }),
+    listSiteVersions: () => database.siteVersion.findMany({
+      orderBy: { version: "desc" },
+      select: { id: true, version: true, status: true, content: true },
+    }),
+    findAsset: (id) => database.asset.findUnique({ where: { id }, select: { id: true, storagePath: true } }),
+    deleteAsset: (id) => database.asset.delete({ where: { id } }),
+  });
 }
 
 function hasImageSignature(bytes: Uint8Array, mimeType: keyof typeof MIME_EXTENSIONS) {

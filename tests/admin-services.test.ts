@@ -6,7 +6,12 @@ import { createSiteContentService } from "../src/lib/services/site-content";
 import { createOkrService } from "../src/lib/services/okr";
 import { createPublicDataService } from "../src/lib/services/public-data";
 import { requireAdminSession } from "../src/lib/services/auth-guard";
-import { normalizeAssetAltText, validateImageUpload } from "../src/lib/services/assets";
+import {
+  createAssetLibraryService,
+  findAssetReferences,
+  normalizeAssetAltText,
+  validateImageUpload,
+} from "../src/lib/services/assets";
 
 describe("site publishing", () => {
   it("archives the former release and publishes one complete validated snapshot in one transaction", async () => {
@@ -213,5 +218,51 @@ describe("asset validation", () => {
     });
     expect(() => normalizeAssetAltText({ altTextZh: "图".repeat(501), altTextEn: "" }))
       .toThrow("替代文本不能超过 500 个字符");
+  });
+});
+
+describe("asset reference safety", () => {
+  const referencedContent = structuredClone(fallbackSiteContent);
+  referencedContent.zh.projects[0].image = "/api/assets/asset-1";
+  referencedContent.en.projects[1].image = "/api/assets/asset-1";
+
+  it("reports every homepage version and field that references an asset", () => {
+    expect(findAssetReferences("asset-1", [
+      { id: "draft", version: 4, status: "DRAFT", content: referencedContent },
+    ])).toEqual([
+      { versionId: "draft", version: 4, status: "DRAFT", path: "zh.projects.0.image" },
+      { versionId: "draft", version: 4, status: "DRAFT", path: "en.projects.1.image" },
+    ]);
+  });
+
+  it("blocks deletion when any content version still references the asset", async () => {
+    let deleted = false;
+    const service = createAssetLibraryService({
+      async listAssets() { return []; },
+      async listSiteVersions() { return [{ id: "published", version: 3, status: "PUBLISHED", content: referencedContent }]; },
+      async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/image.png" }; },
+      async deleteAsset() { deleted = true; },
+    }, async () => {});
+
+    const error = await service.delete("asset-1").catch((cause: unknown) => cause);
+
+    expect(error).toBeInstanceOf(Response);
+    expect(error).toMatchObject({ status: 409 });
+    expect(deleted).toBe(false);
+  });
+
+  it("deletes an unreferenced asset record and its stored file", async () => {
+    let deletedId = "";
+    let removedPath = "";
+    const service = createAssetLibraryService({
+      async listAssets() { return []; },
+      async listSiteVersions() { return []; },
+      async findAsset(id) { return { id, storagePath: "C:/uploads/image.png" }; },
+      async deleteAsset(id) { deletedId = id; },
+    }, async (path) => { removedPath = path; });
+
+    await expect(service.delete("asset-1")).resolves.toEqual({ id: "asset-1" });
+    expect(deletedId).toBe("asset-1");
+    expect(removedPath).toBe("C:/uploads/image.png");
   });
 });

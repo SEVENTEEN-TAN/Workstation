@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Eye, LoaderCircle, RefreshCw, Save, Search, Upload, X } from "lucide-react";
+import { Eye, Link2, LoaderCircle, RefreshCw, Save, Search, Trash2, Upload, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
 import { EmptyState } from "./EmptyState";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
 import { adminRequest, uploadAdminAsset } from "./request";
@@ -27,10 +28,23 @@ export function filterAssets(assets: AssetData[], filters: AssetFilters) {
   });
 }
 
+const VERSION_STATUS_LABELS: Record<string, string> = {
+  DRAFT: "草稿",
+  PUBLISHED: "已发布",
+  ARCHIVED: "历史版本",
+};
+
+function formatReferencePath(path: string) {
+  const project = path.match(/^(zh|en)\.projects\.(\d+)\.image$/);
+  if (project) return `${project[1] === "zh" ? "中文" : "English"} · 项目 ${Number(project[2]) + 1} · 图片`;
+  return path;
+}
+
 export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }) {
   const [assets, setAssets] = useState(initialAssets);
   const [filters, setFilters] = useState<AssetFilters>({ query: "", mimeType: "", altState: "" });
   const [selectedAsset, setSelectedAsset] = useState<AssetData | null>(null);
+  const [deleteRequest, setDeleteRequest] = useState<AssetData | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -70,8 +84,26 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
       jsonRequest("PATCH", { altTextZh: form.get("altTextZh"), altTextEn: form.get("altTextEn") }),
     ), "替代文本已保存");
     if (!updated) return;
-    setAssets((current) => current.map((asset) => asset.id === updated.id ? updated : asset));
-    setSelectedAsset(updated);
+    const enriched = { ...updated, references: selectedAsset.references, isReferenced: selectedAsset.isReferenced };
+    setAssets((current) => current.map((asset) => asset.id === enriched.id ? enriched : asset));
+    setSelectedAsset(enriched);
+  }
+
+  async function deleteAsset() {
+    if (!deleteRequest) return;
+    const deleted = await runAction(`media:delete:${deleteRequest.id}`, () => adminRequest<{ id: string }>(
+      `/api/admin/assets/${deleteRequest.id}`,
+      jsonRequest("DELETE", {}),
+    ), "媒体资源已删除");
+    if (!deleted) return;
+    setAssets((current) => current.filter((asset) => asset.id !== deleted.id));
+    setDeleteRequest(null);
+  }
+
+  function requestDelete(asset: AssetData) {
+    if (asset.references.length) return;
+    setSelectedAsset(null);
+    setDeleteRequest(asset);
   }
 
   function openPreview(asset: AssetData, trigger: HTMLButtonElement) {
@@ -86,6 +118,7 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
   const refreshBusy = isBusy("media:refresh");
   const uploadBusy = isBusy("media:upload");
   const altBusy = selectedAsset ? isBusy(`media:alt:${selectedAsset.id}`) : false;
+  const deleteBusy = deleteRequest ? isBusy(`media:delete:${deleteRequest.id}`) : false;
 
   return (
     <section>
@@ -120,7 +153,7 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
                 <article key={asset.id}>
                   <button type="button" className={styles.assetCardButton} onClick={(event) => openPreview(asset, event.currentTarget)} aria-label={`预览图片 ${asset.originalFilename}`}>
                     <Image src={`/api/assets/${asset.id}`} alt={asset.altTextZh ?? asset.originalFilename} width={asset.width ?? 640} height={asset.height ?? 480} unoptimized />
-                    <div><strong>{asset.originalFilename}</strong><small>{Math.round(asset.sizeBytes / 1024)} KB · {asset.mimeType}</small><span><Eye size={14} />预览图片</span></div>
+                    <div><strong>{asset.originalFilename}</strong><small>{Math.round(asset.sizeBytes / 1024)} KB · {asset.mimeType}</small><span className={asset.references.length ? styles.assetUsageActive : styles.assetUsage}><Link2 size={14} />{asset.references.length ? `使用中 · ${asset.references.length} 处` : "未使用"}</span><span><Eye size={14} />预览图片</span></div>
                   </button>
                 </article>
               ))}
@@ -136,15 +169,35 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
             <div className={styles.assetDetails}>
               <div className={styles.assetDialogHead}><div><span className={styles.kicker}>PREVIEW</span><h2 id="asset-preview-title">{selectedAsset.originalFilename}</h2></div><button type="button" className={styles.iconButton} aria-label="关闭预览" onClick={() => setSelectedAsset(null)} disabled={altBusy}><X size={18} /></button></div>
               <dl><div><dt>格式</dt><dd>{selectedAsset.mimeType}</dd></div><div><dt>大小</dt><dd>{Math.round(selectedAsset.sizeBytes / 1024)} KB</dd></div><div><dt>尺寸</dt><dd>{selectedAsset.width && selectedAsset.height ? `${selectedAsset.width} × ${selectedAsset.height}` : "未记录"}</dd></div><div><dt>地址</dt><dd><code>/api/assets/{selectedAsset.id}</code></dd></div></dl>
+              <section className={styles.assetReferences} aria-labelledby="asset-reference-title">
+                <div><h3 id="asset-reference-title">使用位置</h3><span>{selectedAsset.references.length} 处</span></div>
+                {selectedAsset.references.length ? (
+                  <ul>{selectedAsset.references.map((reference) => <li key={`${reference.versionId}:${reference.path}`}><strong>版本 {reference.version} · {VERSION_STATUS_LABELS[reference.status] ?? reference.status}</strong><span>{formatReferencePath(reference.path)}</span></li>)}</ul>
+                ) : <p>当前未被任何内容版本引用，可以安全删除。</p>}
+              </section>
               <form key={selectedAsset.id} className={styles.formGrid} onSubmit={saveAltText}>
                 <label><span>中文替代文本</span><textarea name="altTextZh" rows={3} maxLength={500} defaultValue={selectedAsset.altTextZh ?? ""} disabled={altBusy} /></label>
                 <label><span>英文替代文本</span><textarea name="altTextEn" rows={3} maxLength={500} defaultValue={selectedAsset.altTextEn ?? ""} disabled={altBusy} /></label>
                 <button className={styles.primaryButton} disabled={altBusy}>{altBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{altBusy ? "保存中" : "保存替代文本"}</button>
               </form>
+              <div className={styles.assetDeleteArea}>
+                <button type="button" className={styles.dangerButton} disabled={altBusy || selectedAsset.references.length > 0} onClick={() => requestDelete(selectedAsset)}><Trash2 size={17} />删除资源</button>
+                {selectedAsset.references.length ? <p>仍被内容版本引用，无法删除。请先在主页内容中移除所有使用位置。</p> : null}
+              </div>
             </div>
           </div>
         ) : null}
       </dialog>
+      <ConfirmDialog
+        open={Boolean(deleteRequest)}
+        title="删除媒体资源"
+        target={deleteRequest?.originalFilename ?? ""}
+        description="删除后将同时移除本地文件，且无法恢复。"
+        busy={deleteBusy}
+        triggerRef={previewTriggerRef}
+        onConfirm={deleteAsset}
+        onCancel={() => setDeleteRequest(null)}
+      />
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
     </section>
   );

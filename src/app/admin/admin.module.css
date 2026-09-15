@@ -735,6 +735,15 @@
   font-weight: 750;
 }
 
+.assetCardButton .assetUsage,
+.assetCardButton .assetUsageActive {
+  color: #7f8995;
+}
+
+.assetCardButton .assetUsageActive {
+  color: #00df8f;
+}
+
 .assetGrid strong {
   overflow: hidden;
   color: #e5e8ea;
@@ -1528,6 +1537,73 @@
   overflow-wrap: anywhere;
 }
 
+.assetReferences {
+  margin: 20px 0;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: #10141a;
+}
+
+.assetReferences > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.assetReferences h3 {
+  margin: 0;
+  color: #e8ebed;
+  font-size: 13px;
+}
+
+.assetReferences > div > span,
+.assetReferences p,
+.assetReferences li span,
+.assetDeleteArea p {
+  color: #7f8995;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.assetReferences p {
+  margin: 10px 0 0;
+}
+
+.assetReferences ul {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.assetReferences li {
+  display: grid;
+  gap: 3px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.assetReferences li strong {
+  color: #dfe3e7;
+  font-size: 11px;
+}
+
+.assetDeleteArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.assetDeleteArea p {
+  margin: 0;
+}
+
 .assetPickerDialog {
   width: min(780px, calc(100vw - 32px));
   max-width: 100%;
@@ -2032,6 +2108,7 @@
   .mediaToolbar > span { grid-column: auto; }
   .assetDetails { padding: 18px; }
   .assetDetails dl { grid-template-columns: 1fr; }
+  .assetDeleteArea { align-items: stretch; flex-direction: column; }
   .collectionItem { grid-template-columns: 1fr; }
   .collectionControls { justify-content: flex-end; }
   .collectionHeading { align-items: flex-start; flex-direction: column; }
