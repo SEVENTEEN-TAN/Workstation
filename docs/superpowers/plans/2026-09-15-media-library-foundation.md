@@ -71,11 +71,11 @@
 - Produces: `AssetPicker({ assets, open, onSelect, onClose })` selecting an `AssetData` record.
 - Consumes: the current `AssetData[]` supplied by the home server page.
 
-- [ ] Add a failing contract test proving the home route supplies assets and project image fields expose the picker while retaining the text input.
-- [ ] Run the focused test and confirm failure for the missing picker.
-- [ ] Load assets in the existing server-page `Promise.all` and thread them through existing component props.
-- [ ] Implement the native-dialog picker with filename/alt search and select action.
-- [ ] Connect only project image fields to the picker and keep locale-specific draft updates unchanged.
-- [ ] Mark the V1.2 asset-picker TODO and completed V1.4 foundation TODOs in the roadmap.
-- [ ] Run full tests, lint, Prisma validation, production build, and browser acceptance at desktop and 390px.
+- [x] Add a failing contract test proving the home route supplies assets and project image fields expose the picker while retaining the text input.
+- [x] Run the focused test and confirm failure for the missing picker.
+- [x] Load assets in the existing server-page `Promise.all` and thread them through existing component props.
+- [x] Implement the native-dialog picker with filename/alt search and select action.
+- [x] Connect only project image fields to the picker and keep locale-specific draft updates unchanged.
+- [x] Mark the V1.2 asset-picker TODO and completed V1.4 foundation TODOs in the roadmap.
+- [x] Run full tests, lint, Prisma validation, production build, and browser acceptance at desktop and 390px.
 - [ ] Review the diff, commit, push, open a PR against `main`, and merge after successful verification.

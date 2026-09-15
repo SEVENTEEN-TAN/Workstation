@@ -1,8 +1,10 @@
-import { Plus } from "lucide-react";
-import type { ChangeEvent } from "react";
+import { ImageIcon, Plus } from "lucide-react";
+import { useRef, useState, type ChangeEvent } from "react";
 
 import styles from "../../../app/admin/admin.module.css";
 import type { LocalizedSiteContent, SiteContent } from "../../../lib/content/schema";
+import type { AssetData } from "../types";
+import { AssetPicker } from "./AssetPicker";
 import { CollectionControls } from "./CollectionControls";
 import {
   type ContentPath,
@@ -103,6 +105,7 @@ const FOOTER_SCALARS: ScalarField[] = [
 ];
 
 interface HomepageEditorProps {
+  assets: AssetData[];
   content: SiteContent;
   locale: SiteLocale;
   section: SiteSectionId;
@@ -117,6 +120,7 @@ function pathId(path: string) {
 }
 
 export function HomepageEditor({
+  assets,
   content,
   locale,
   section,
@@ -126,6 +130,8 @@ export function HomepageEditor({
   onSectionChange,
 }: HomepageEditorProps) {
   const localized = content[locale];
+  const [assetPath, setAssetPath] = useState<ContentPath | null>(null);
+  const assetPickerTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   function update(path: ContentPath, value: unknown) {
     onContentChange(updateContentAtPath(content, [locale, ...path], value));
@@ -150,6 +156,17 @@ export function HomepageEditor({
         {long ? <textarea {...commonProps} rows={4} /> : <input {...commonProps} type="text" />}
         <FieldError id={errorId} path={exactPath} message={error} />
       </label>
+    );
+  }
+
+  function imageField(path: ContentPath, value: string) {
+    return (
+      <div className={styles.assetFieldControl}>
+        {field(path, "图片路径或 URL", value)}
+        <button type="button" className={styles.secondaryButton} onClick={(event) => { assetPickerTriggerRef.current = event.currentTarget; setAssetPath(path); }}>
+          <ImageIcon size={17} />选择媒体
+        </button>
+      </div>
     );
   }
 
@@ -308,7 +325,7 @@ export function HomepageEditor({
         </div>
         {field(["projects", projectIndex, "description"], "项目描述", project.description, true)}
         <div className={styles.tupleFields}>
-          {field(["projects", projectIndex, "image"], "图片路径或 URL", project.image)}
+          {imageField(["projects", projectIndex, "image"], project.image)}
           {field(["projects", projectIndex, "alt"], "图片替代文本", project.alt)}
         </div>
         <div className={styles.collectionBlock}>
@@ -356,6 +373,16 @@ export function HomepageEditor({
           </div>
         </section>
       </div>
+      <AssetPicker
+        assets={assets}
+        open={Boolean(assetPath)}
+        triggerRef={assetPickerTriggerRef}
+        onClose={() => setAssetPath(null)}
+        onSelect={(asset) => {
+          if (assetPath) update(assetPath, `/api/assets/${asset.id}`);
+          setAssetPath(null);
+        }}
+      />
     </div>
   );
 }

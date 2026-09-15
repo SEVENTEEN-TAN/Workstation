@@ -1343,6 +1343,14 @@
   border-color: rgba(255, 107, 95, 0.48);
 }
 
+.assetFieldControl {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+
 .tupleFields,
 .tripleFields {
   display: grid;
@@ -1518,6 +1526,74 @@
   color: #dfe3e7;
   font-size: 12px;
   overflow-wrap: anywhere;
+}
+
+.assetPickerDialog {
+  width: min(780px, calc(100vw - 32px));
+  max-width: 100%;
+  max-height: calc(100svh - 32px);
+  padding: 22px;
+  overflow: auto;
+  border: 1px solid rgba(0, 223, 143, 0.25);
+  border-radius: 8px;
+  background: #14181f;
+  color: #f0f2f3;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.68);
+}
+
+.assetPickerDialog::backdrop {
+  background: rgba(3, 5, 7, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.assetPickerHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.assetPickerHead h2 {
+  margin: 5px 0 0;
+  font-size: 19px;
+}
+
+.assetPickerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.assetPickerGrid button {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+}
+
+.assetPickerGrid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #0f141a;
+}
+
+.assetPickerGrid span {
+  overflow: hidden;
+  padding: 10px;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.assetPickerEmpty {
+  margin: 18px 0 0;
+  color: #8e98a4;
+  font-size: 13px;
 }
 
 .backLink {
@@ -1951,6 +2027,7 @@
   .languageSwitch { display: grid; width: 100%; }
   .tupleFields,
   .tripleFields { grid-template-columns: 1fr; }
+  .assetFieldControl { grid-template-columns: 1fr; }
   .mediaToolbar { grid-template-columns: 1fr; }
   .mediaToolbar > span { grid-column: auto; }
   .assetDetails { padding: 18px; }
