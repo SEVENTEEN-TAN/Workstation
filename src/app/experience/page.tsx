@@ -31,6 +31,9 @@ export default async function ExperiencePage() {
     linkUrl: record.linkUrl,
     startedAt: record.startedAt.toISOString(),
     endedAt: record.endedAt ? record.endedAt.toISOString() : null,
+    isCurrent: record.isCurrent,
+    featured: record.featured,
+    sortOrder: record.sortOrder,
   })) satisfies PublicExperienceRecord[];
 
   return <ExperienceTimeline content={content ?? fallbackSiteContent} experiences={experiences} />;

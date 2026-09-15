@@ -20,6 +20,9 @@ const experiences = [
     linkUrl: "https://example.com",
     startedAt: "2024-03-01T00:00:00.000Z",
     endedAt: null,
+    isCurrent: true,
+    featured: true,
+    sortOrder: 0,
   },
   {
     id: "education-1",
@@ -35,6 +38,9 @@ const experiences = [
     linkUrl: null,
     startedAt: "2017-09-01T00:00:00.000Z",
     endedAt: "2021-06-30T00:00:00.000Z",
+    isCurrent: false,
+    featured: false,
+    sortOrder: 1,
   },
 ] as const;
 

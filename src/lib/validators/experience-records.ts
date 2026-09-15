@@ -22,13 +22,23 @@ const fields = z.object({
   linkUrl: optionalText(2_048).refine((value) => value == null || URL.canParse(value), "链接地址格式不正确"),
   startedAt: z.coerce.date(),
   endedAt: optionalDate,
+  isCurrent: z.boolean(),
   visibility: z.enum(["PUBLIC", "PRIVATE"]),
+  featured: z.boolean(),
+  sortOrder: z.coerce.number().int().min(0).max(10_000),
 });
 
 function validateExperience(
   value: z.infer<typeof fields>,
   context: z.RefinementCtx,
 ) {
+  if (value.isCurrent && value.endedAt) {
+    context.addIssue({
+      code: "custom",
+      path: ["endedAt"],
+      message: "当前经历不能填写结束日期",
+    });
+  }
   if (value.endedAt && value.endedAt < value.startedAt) {
     context.addIssue({
       code: "custom",
@@ -52,7 +62,10 @@ function validateExperience(
 }
 
 export const experienceRecordInputSchema = fields.extend({
+  isCurrent: z.boolean().default(false),
   visibility: z.enum(["PUBLIC", "PRIVATE"]).default("PRIVATE"),
+  featured: z.boolean().default(false),
+  sortOrder: z.coerce.number().int().min(0).max(10_000).default(0),
 }).superRefine(validateExperience).transform((value) => ({
   ...value,
   organizationEn: value.organizationEn ?? null,

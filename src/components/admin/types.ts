@@ -230,7 +230,10 @@ export interface ExperienceRecordData {
   linkUrl: string | null;
   startedAt: string;
   endedAt: string | null;
+  isCurrent: boolean;
   visibility: "PUBLIC" | "PRIVATE";
+  featured: boolean;
+  sortOrder: number;
   createdAt: string;
   updatedAt: string;
 }

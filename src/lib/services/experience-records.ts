@@ -34,18 +34,38 @@ export function parseExperienceRecord(record: unknown): ExperienceRecord {
 
 const deserialize = parseExperienceRecord;
 
+function compareExperienceRecords(left: ExperienceRecord, right: ExperienceRecord) {
+  return Number(right.featured) - Number(left.featured)
+    || Number(right.isCurrent) - Number(left.isCurrent)
+    || left.sortOrder - right.sortOrder
+    || right.startedAt.getTime() - left.startedAt.getTime()
+    || right.updatedAt.getTime() - left.updatedAt.getTime();
+}
+
 function defaultRepository(): ExperienceRecordRepository {
   return {
     async listRecords() {
       const records = await (await getDatabase()).experienceRecord.findMany({
-        orderBy: [{ startedAt: "desc" }, { updatedAt: "desc" }],
+        orderBy: [
+          { featured: "desc" },
+          { isCurrent: "desc" },
+          { sortOrder: "asc" },
+          { startedAt: "desc" },
+          { updatedAt: "desc" },
+        ],
       });
       return records.map(deserialize);
     },
     async listPublicRecords() {
       const records = await (await getDatabase()).experienceRecord.findMany({
         where: { visibility: "PUBLIC" },
-        orderBy: [{ startedAt: "desc" }, { updatedAt: "desc" }],
+        orderBy: [
+          { featured: "desc" },
+          { isCurrent: "desc" },
+          { sortOrder: "asc" },
+          { startedAt: "desc" },
+          { updatedAt: "desc" },
+        ],
       });
       return records.map(deserialize);
     },
@@ -88,7 +108,7 @@ export function createExperienceRecordService(repository?: ExperienceRecordRepos
     async listPublic() {
       return (await source.listPublicRecords())
         .filter(isPublicReady)
-        .sort((left, right) => right.startedAt.getTime() - left.startedAt.getTime());
+        .sort(compareExperienceRecords);
     },
   };
 }

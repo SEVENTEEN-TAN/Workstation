@@ -307,7 +307,10 @@ describe("admin route contracts", () => {
       "linkUrl",
       "startedAt",
       "endedAt",
+      "isCurrent",
       "visibility",
+      "featured",
+      "sortOrder",
     ]) {
       expect(workspace).toContain(`name="${field}"`);
     }

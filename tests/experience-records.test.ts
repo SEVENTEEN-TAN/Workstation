@@ -19,6 +19,9 @@ const completeExperience = {
   linkUrl: "https://example.com",
   startedAt: "2024-03-01",
   endedAt: "",
+  isCurrent: true,
+  featured: true,
+  sortOrder: 2,
   visibility: "PUBLIC",
 };
 
@@ -42,8 +45,26 @@ describe("experience record validation", () => {
       linkUrl: null,
       startedAt: new Date("2024-03-01T00:00:00.000Z"),
       endedAt: null,
+      isCurrent: true,
+      featured: true,
+      sortOrder: 2,
       visibility: "PUBLIC",
     });
+  });
+
+  it("rejects an end date for a current experience", () => {
+    const result = experienceRecordInputSchema.safeParse({
+      ...completeExperience,
+      endedAt: "2025-03-01",
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]).toMatchObject({
+        path: ["endedAt"],
+        message: "当前经历不能填写结束日期",
+      });
+    }
   });
 
   it("requires complete English copy for public experience", () => {
@@ -69,6 +90,7 @@ describe("experience record validation", () => {
       ...completeExperience,
       startedAt: "2024-03-01",
       endedAt: "2024-02-01",
+      isCurrent: false,
     });
 
     expect(result.success).toBe(false);
@@ -130,7 +152,7 @@ describe("experience record service", () => {
     expect(calls[1].value).toEqual({ descriptionEn: "Updated" });
   });
 
-  it("returns only complete public records in reverse chronological order", async () => {
+  it("returns only complete public records in featured, current, manual, and date order", async () => {
     const base = {
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -140,10 +162,12 @@ describe("experience record service", () => {
       async listRecords() { return []; },
       async listPublicRecords() {
         return [
-          { ...base, id: "older", startedAt: new Date("2023-01-01") },
+          { ...base, id: "older", featured: false, isCurrent: false, sortOrder: 1, startedAt: new Date("2023-01-01"), endedAt: new Date("2023-12-01") },
           { ...base, id: "private", visibility: "PRIVATE" },
           { ...base, id: "incomplete", titleEn: null },
-          { ...base, id: "current", startedAt: new Date("2025-01-01"), endedAt: null },
+          { ...base, id: "current-later", featured: false, isCurrent: true, sortOrder: 2, startedAt: new Date("2025-01-01"), endedAt: null },
+          { ...base, id: "current-first", featured: false, isCurrent: true, sortOrder: 1, startedAt: new Date("2024-01-01"), endedAt: null },
+          { ...base, id: "featured", featured: true, isCurrent: false, sortOrder: 9, startedAt: new Date("2022-01-01"), endedAt: new Date("2022-12-01") },
         ];
       },
       async findRecord() { return null; },
@@ -153,7 +177,9 @@ describe("experience record service", () => {
     });
 
     await expect(service.listPublic()).resolves.toMatchObject([
-      { id: "current" },
+      { id: "featured" },
+      { id: "current-first" },
+      { id: "current-later" },
       { id: "older" },
     ]);
   });

@@ -22,6 +22,9 @@ export type PublicExperienceRecord = {
   linkUrl: string | null;
   startedAt: string;
   endedAt: string | null;
+  isCurrent: boolean;
+  featured: boolean;
+  sortOrder: number;
 };
 
 const labels = {
@@ -95,7 +98,7 @@ function ExperienceContent({ experiences }: { experiences: readonly PublicExperi
                 <motion.article key={experience.id} {...reveal} transition={{ duration: 0.5, delay: Math.min(index * 0.06, 0.3) }} className="relative mb-6 pl-7 last:mb-0 sm:pl-12">
                   <span className="absolute -left-1.5 top-8 size-3 border border-accent bg-ink" />
                   <time className="mb-3 block text-xs font-bold uppercase text-gray-600 sm:absolute sm:right-full sm:top-7 sm:mr-10 sm:w-28 sm:text-right">
-                    {formatDate(locale, experience.startedAt)} - {experience.endedAt ? formatDate(locale, experience.endedAt) : copy.present}
+                    {formatDate(locale, experience.startedAt)} - {experience.isCurrent ? copy.present : experience.endedAt ? formatDate(locale, experience.endedAt) : "—"}
                   </time>
                   <div className="border border-white/10 bg-white/[0.025] p-5 sm:p-7">
                     <div className="flex flex-wrap items-center gap-3">
