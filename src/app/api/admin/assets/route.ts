@@ -1,10 +1,9 @@
-import { getDatabase } from "@/lib/db";
-import { saveImageAsset } from "@/lib/services/assets";
+import { getAssetLibraryService, saveImageAsset } from "@/lib/services/assets";
 import { withAdminSession } from "@/lib/services/auth-guard";
 import { jsonError } from "@/lib/services/http";
 
 export async function GET() {
-  return withAdminSession(async () => Response.json(await (await getDatabase()).asset.findMany({ orderBy: { createdAt: "desc" } })));
+  return withAdminSession(async () => Response.json(await (await getAssetLibraryService()).list()));
 }
 
 export async function POST(request: Request) {

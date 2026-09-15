@@ -330,6 +330,13 @@ describe("media-library contracts", () => {
     expect(mediaSource).toContain("保存替代文本");
   });
 
+  it("shows usage locations and protects referenced assets from deletion", () => {
+    expect(mediaSource).toContain("使用位置");
+    expect(mediaSource).toContain("仍被内容版本引用，无法删除");
+    expect(mediaSource).toContain("ConfirmDialog");
+    expect(mediaSource).toContain('jsonRequest("DELETE", {})');
+  });
+
   it("combines filename, type, and alternative-text filters", async () => {
     const { filterAssets } = await import("../src/components/admin/MediaWorkspace");
     const assets = [
@@ -344,6 +351,7 @@ describe("media-library contracts", () => {
         altTextZh: "项目看板",
         altTextEn: "Project dashboard",
         isReferenced: false,
+        references: [],
         createdAt: "2026-09-15T00:00:00.000Z",
       },
       {
@@ -357,6 +365,7 @@ describe("media-library contracts", () => {
         altTextZh: null,
         altTextEn: null,
         isReferenced: false,
+        references: [],
         createdAt: "2026-09-15T00:00:00.000Z",
       },
     ] satisfies AssetData[];

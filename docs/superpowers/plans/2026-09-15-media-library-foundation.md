@@ -78,4 +78,4 @@
 - [x] Connect only project image fields to the picker and keep locale-specific draft updates unchanged.
 - [x] Mark the V1.2 asset-picker TODO and completed V1.4 foundation TODOs in the roadmap.
 - [x] Run full tests, lint, Prisma validation, production build, and browser acceptance at desktop and 390px.
-- [ ] Review the diff, commit, push, open a PR against `main`, and merge after successful verification.
+- [x] Review the diff, commit, push, open a PR against `main`, and merge after successful verification.

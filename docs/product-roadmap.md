@@ -54,8 +54,8 @@ Personal Workstation is a continuously updated online career profile and its pri
 
 - [x] Add upload progress, empty state, search, filtering, and preview.
 - [x] Edit bilingual alternative text.
-- [ ] Track asset references and show their usage locations.
-- [ ] Prevent direct deletion of referenced assets.
+- [x] Track asset references and show their usage locations.
+- [x] Prevent direct deletion of referenced assets.
 - [ ] Support replacing an asset while preserving references.
 
 ## V1.5 - Career Evidence

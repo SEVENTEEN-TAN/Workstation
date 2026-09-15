@@ -1,10 +1,10 @@
 import { MediaWorkspace } from "@/components/admin/MediaWorkspace";
 import type { AssetData } from "@/components/admin/types";
-import { getDatabase } from "@/lib/db";
+import { getAssetLibraryService } from "@/lib/services/assets";
 
 export default async function AdminMediaPage() {
   const assets = JSON.parse(JSON.stringify(
-    await (await getDatabase()).asset.findMany({ orderBy: { createdAt: "desc" } }),
+    await (await getAssetLibraryService()).list(),
   )) as AssetData[];
 
   return <MediaWorkspace initialAssets={assets} />;

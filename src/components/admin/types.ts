@@ -153,6 +153,14 @@ export interface AssetData {
   altTextZh: string | null;
   altTextEn: string | null;
   isReferenced: boolean;
+  references: AssetReferenceData[];
   createdAt: string;
+}
+
+export interface AssetReferenceData {
+  versionId: string;
+  version: number;
+  status: string;
+  path: string;
 }
 import type { SiteContent } from "../../lib/content/schema";
