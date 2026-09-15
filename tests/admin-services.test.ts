@@ -241,6 +241,7 @@ describe("asset reference safety", () => {
       async listAssets() { return []; },
       async listSiteVersions() { return [{ id: "published", version: 3, status: "PUBLISHED", content: referencedContent }]; },
       async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/image.png" }; },
+      async updateAsset() { throw new Error("not used"); },
       async deleteAsset() { deleted = true; },
     }, async () => {});
 
@@ -258,11 +259,127 @@ describe("asset reference safety", () => {
       async listAssets() { return []; },
       async listSiteVersions() { return []; },
       async findAsset(id) { return { id, storagePath: "C:/uploads/image.png" }; },
+      async updateAsset() { throw new Error("not used"); },
       async deleteAsset(id) { deletedId = id; },
     }, async (path) => { removedPath = path; });
 
     await expect(service.delete("asset-1")).resolves.toEqual({ id: "asset-1" });
     expect(deletedId).toBe("asset-1");
     expect(removedPath).toBe("C:/uploads/image.png");
+  });
+
+  it("replaces the stored file while preserving the asset identity and alternative text", async () => {
+    const events: string[] = [];
+    const asset = {
+      id: "asset-1",
+      originalFilename: "old.png",
+      storagePath: "C:/uploads/old.png",
+      mimeType: "image/png",
+      width: 120,
+      height: 80,
+      sizeBytes: 9,
+      sha256: "old-hash",
+      altTextZh: "项目界面",
+      altTextEn: "Project screen",
+    };
+    const service = createAssetLibraryService({
+      async listAssets() { return [asset]; },
+      async listSiteVersions() { return []; },
+      async findAsset() { return asset; },
+      async updateAsset(id, data) {
+        events.push(`update:${id}`);
+        Object.assign(asset, data);
+        return asset;
+      },
+      async deleteAsset() { throw new Error("not used"); },
+    }, async (path) => { events.push(`remove:${path}`); }, async () => {
+      events.push("write:new");
+      return {
+        originalFilename: "new.webp",
+        storagePath: "C:/uploads/new.webp",
+        mimeType: "image/webp",
+        width: null,
+        height: null,
+        sizeBytes: 12,
+        sha256: "new-hash",
+      };
+    });
+
+    const replaced = await service.replace("asset-1", new File(["replacement"], "new.webp", { type: "image/webp" }));
+
+    expect(events).toEqual(["write:new", "update:asset-1", "remove:C:/uploads/old.png"]);
+    expect(replaced).toMatchObject({
+      id: "asset-1",
+      originalFilename: "new.webp",
+      storagePath: "C:/uploads/new.webp",
+      sha256: "new-hash",
+      altTextZh: "项目界面",
+      altTextEn: "Project screen",
+    });
+  });
+
+  it("removes the newly written file when replacement metadata cannot be saved", async () => {
+    const removed: string[] = [];
+    const service = createAssetLibraryService({
+      async listAssets() { return []; },
+      async listSiteVersions() { return []; },
+      async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/old.png" }; },
+      async updateAsset() { throw new Error("database unavailable"); },
+      async deleteAsset() { throw new Error("not used"); },
+    }, async (path) => { removed.push(path); }, async () => ({
+      originalFilename: "new.png",
+      storagePath: "C:/uploads/new.png",
+      mimeType: "image/png",
+      width: null,
+      height: null,
+      sizeBytes: 9,
+      sha256: "new-hash",
+    }));
+
+    await expect(service.replace("asset-1", new File(["replacement"], "new.png", { type: "image/png" })))
+      .rejects.toThrow("database unavailable");
+    expect(removed).toEqual(["C:/uploads/new.png"]);
+  });
+
+  it("preserves the database error when replacement cleanup also fails", async () => {
+    const service = createAssetLibraryService({
+      async listAssets() { return []; },
+      async listSiteVersions() { return []; },
+      async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/old.png" }; },
+      async updateAsset() { throw new Error("database unavailable"); },
+      async deleteAsset() { throw new Error("not used"); },
+    }, async () => { throw new Error("cleanup unavailable"); }, async () => ({
+      originalFilename: "new.png",
+      storagePath: "C:/uploads/new.png",
+      mimeType: "image/png",
+      width: null,
+      height: null,
+      sizeBytes: 9,
+      sha256: "new-hash",
+    }));
+
+    await expect(service.replace("asset-1", new File(["replacement"], "new.png", { type: "image/png" })))
+      .rejects.toThrow("database unavailable");
+  });
+
+  it("returns 404 before writing a replacement for a missing asset", async () => {
+    let wroteFile = false;
+    const service = createAssetLibraryService({
+      async listAssets() { return []; },
+      async listSiteVersions() { return []; },
+      async findAsset() { return null; },
+      async updateAsset() { throw new Error("not used"); },
+      async deleteAsset() { throw new Error("not used"); },
+    }, async () => {}, async () => {
+      wroteFile = true;
+      throw new Error("must not write");
+    });
+
+    const error = await service.replace("missing", new File(["replacement"], "new.png", { type: "image/png" }))
+      .catch((cause: unknown) => cause);
+
+    expect(error).toBeInstanceOf(Response);
+    expect(error).toMatchObject({ status: 404 });
+    expect(wroteFile).toBe(false);
   });
 });

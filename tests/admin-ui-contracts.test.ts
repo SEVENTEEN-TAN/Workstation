@@ -321,6 +321,8 @@ describe("OKR execution workspace contracts", () => {
 
 describe("media-library contracts", () => {
   const mediaSource = readProjectFile("src/components/admin/MediaWorkspace.tsx");
+  const requestSource = readProjectFile("src/components/admin/request.ts");
+  const assetRouteSource = readProjectFile("src/app/api/assets/[id]/route.ts");
 
   it("provides upload progress, combined filters, preview, and alternative-text editing", () => {
     expect(mediaSource).toContain("uploadAdminAsset");
@@ -335,6 +337,25 @@ describe("media-library contracts", () => {
     expect(mediaSource).toContain("仍被内容版本引用，无法删除");
     expect(mediaSource).toContain("ConfirmDialog");
     expect(mediaSource).toContain('jsonRequest("DELETE", {})');
+  });
+
+  it("replaces a file only after confirmation while preserving its public URL", () => {
+    expect(mediaSource).toContain("替换文件");
+    expect(mediaSource).toContain("所有使用位置会同步更新");
+    expect(mediaSource).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="确认替换"/);
+    expect(mediaSource).toContain("selectedAsset.sha256");
+    expect(requestSource).toContain('method = "POST"');
+    expect(requestSource).toContain('path = "/api/admin/assets"');
+    expect(requestSource).toContain("request.open(method, path)");
+    expect(mediaSource).toContain("if (!updated) { setReplaceRequest(null); return; }");
+  });
+
+  it("revalidates stable public asset URLs with their content hash", () => {
+    expect(assetRouteSource).toContain('request.headers.get("if-none-match")');
+    expect(assetRouteSource).toContain("status: 304");
+    expect(assetRouteSource).toContain('"etag"');
+    expect(assetRouteSource).toContain('"public, max-age=0, must-revalidate"');
+    expect(assetRouteSource).not.toContain("immutable");
   });
 
   it("combines filename, type, and alternative-text filters", async () => {

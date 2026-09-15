@@ -77,10 +77,15 @@ export async function adminRequest<T>(path: string, init?: RequestInit): Promise
   throw error;
 }
 
-export function uploadAdminAsset<T>(form: FormData, onProgress: (percent: number) => void): Promise<T> {
+export function uploadAdminAsset<T>(
+  form: FormData,
+  onProgress: (percent: number) => void,
+  method = "POST",
+  path = "/api/admin/assets",
+): Promise<T> {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
-    request.open("POST", "/api/admin/assets");
+    request.open(method, path);
     request.responseType = "json";
     request.upload.addEventListener("progress", (event) => {
       if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));

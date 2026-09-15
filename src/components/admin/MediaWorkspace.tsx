@@ -45,8 +45,12 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
   const [filters, setFilters] = useState<AssetFilters>({ query: "", mimeType: "", altState: "" });
   const [selectedAsset, setSelectedAsset] = useState<AssetData | null>(null);
   const [deleteRequest, setDeleteRequest] = useState<AssetData | null>(null);
+  const [replaceRequest, setReplaceRequest] = useState<{ asset: AssetData; file: File } | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [replaceProgress, setReplaceProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceInputRef = useRef<HTMLInputElement>(null);
+  const replaceTriggerRef = useRef<HTMLButtonElement | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const previewTriggerRef = useRef<HTMLButtonElement | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
@@ -100,6 +104,33 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
     setDeleteRequest(null);
   }
 
+  function requestReplacement(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!selectedAsset) return;
+    const file = new FormData(event.currentTarget).get("file");
+    if (!(file instanceof File) || !file.size) return;
+    setReplaceRequest({ asset: selectedAsset, file });
+  }
+
+  async function replaceAsset() {
+    if (!replaceRequest) return;
+    const form = new FormData();
+    form.set("file", replaceRequest.file);
+    setReplaceProgress(0);
+    const updated = await runAction(`media:replace:${replaceRequest.asset.id}`, () => uploadAdminAsset<AssetData>(
+      form,
+      setReplaceProgress,
+      "PUT",
+      `/api/admin/assets/${replaceRequest.asset.id}`,
+    ), "图片已替换，原有引用保持不变");
+    if (!updated) { setReplaceRequest(null); return; }
+    const enriched = { ...updated, references: replaceRequest.asset.references, isReferenced: replaceRequest.asset.isReferenced };
+    setAssets((current) => current.map((asset) => asset.id === enriched.id ? enriched : asset));
+    setSelectedAsset(enriched);
+    setReplaceRequest(null);
+    if (replaceInputRef.current) replaceInputRef.current.value = "";
+  }
+
   function requestDelete(asset: AssetData) {
     if (asset.references.length) return;
     setSelectedAsset(null);
@@ -119,6 +150,7 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
   const uploadBusy = isBusy("media:upload");
   const altBusy = selectedAsset ? isBusy(`media:alt:${selectedAsset.id}`) : false;
   const deleteBusy = deleteRequest ? isBusy(`media:delete:${deleteRequest.id}`) : false;
+  const replaceBusy = replaceRequest ? isBusy(`media:replace:${replaceRequest.asset.id}`) : false;
 
   return (
     <section>
@@ -152,7 +184,7 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
               {visibleAssets.map((asset) => (
                 <article key={asset.id}>
                   <button type="button" className={styles.assetCardButton} onClick={(event) => openPreview(asset, event.currentTarget)} aria-label={`预览图片 ${asset.originalFilename}`}>
-                    <Image src={`/api/assets/${asset.id}`} alt={asset.altTextZh ?? asset.originalFilename} width={asset.width ?? 640} height={asset.height ?? 480} unoptimized />
+                    <Image src={`/api/assets/${asset.id}?v=${asset.sha256}`} alt={asset.altTextZh ?? asset.originalFilename} width={asset.width ?? 640} height={asset.height ?? 480} unoptimized />
                     <div><strong>{asset.originalFilename}</strong><small>{Math.round(asset.sizeBytes / 1024)} KB · {asset.mimeType}</small><span className={asset.references.length ? styles.assetUsageActive : styles.assetUsage}><Link2 size={14} />{asset.references.length ? `使用中 · ${asset.references.length} 处` : "未使用"}</span><span><Eye size={14} />预览图片</span></div>
                   </button>
                 </article>
@@ -162,12 +194,12 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
         </>
       ) : <section className={styles.panel}><EmptyState title="还没有媒体资源" description="上传第一张图片后，可在主页内容中引用。" action={<button type="button" className={styles.secondaryButton} onClick={() => fileInputRef.current?.focus()}>选择图片</button>} /></section>}
 
-      <dialog ref={dialogRef} className={styles.assetDialog} aria-labelledby="asset-preview-title" onCancel={(event) => { event.preventDefault(); if (!altBusy) setSelectedAsset(null); }} onClose={() => previewTriggerRef.current?.focus()}>
+      <dialog ref={dialogRef} className={styles.assetDialog} aria-labelledby="asset-preview-title" onCancel={(event) => { event.preventDefault(); if (!altBusy && !replaceBusy) setSelectedAsset(null); }} onClose={() => previewTriggerRef.current?.focus()}>
         {selectedAsset ? (
           <div className={styles.assetDialogLayout}>
-            <div className={styles.assetPreview}><Image src={`/api/assets/${selectedAsset.id}`} alt={selectedAsset.altTextZh ?? selectedAsset.originalFilename} width={selectedAsset.width ?? 1200} height={selectedAsset.height ?? 900} unoptimized /></div>
+            <div className={styles.assetPreview}><Image src={`/api/assets/${selectedAsset.id}?v=${selectedAsset.sha256}`} alt={selectedAsset.altTextZh ?? selectedAsset.originalFilename} width={selectedAsset.width ?? 1200} height={selectedAsset.height ?? 900} unoptimized /></div>
             <div className={styles.assetDetails}>
-              <div className={styles.assetDialogHead}><div><span className={styles.kicker}>PREVIEW</span><h2 id="asset-preview-title">{selectedAsset.originalFilename}</h2></div><button type="button" className={styles.iconButton} aria-label="关闭预览" onClick={() => setSelectedAsset(null)} disabled={altBusy}><X size={18} /></button></div>
+              <div className={styles.assetDialogHead}><div><span className={styles.kicker}>PREVIEW</span><h2 id="asset-preview-title">{selectedAsset.originalFilename}</h2></div><button type="button" className={styles.iconButton} aria-label="关闭预览" onClick={() => setSelectedAsset(null)} disabled={altBusy || replaceBusy}><X size={18} /></button></div>
               <dl><div><dt>格式</dt><dd>{selectedAsset.mimeType}</dd></div><div><dt>大小</dt><dd>{Math.round(selectedAsset.sizeBytes / 1024)} KB</dd></div><div><dt>尺寸</dt><dd>{selectedAsset.width && selectedAsset.height ? `${selectedAsset.width} × ${selectedAsset.height}` : "未记录"}</dd></div><div><dt>地址</dt><dd><code>/api/assets/{selectedAsset.id}</code></dd></div></dl>
               <section className={styles.assetReferences} aria-labelledby="asset-reference-title">
                 <div><h3 id="asset-reference-title">使用位置</h3><span>{selectedAsset.references.length} 处</span></div>
@@ -176,18 +208,38 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
                 ) : <p>当前未被任何内容版本引用，可以安全删除。</p>}
               </section>
               <form key={selectedAsset.id} className={styles.formGrid} onSubmit={saveAltText}>
-                <label><span>中文替代文本</span><textarea name="altTextZh" rows={3} maxLength={500} defaultValue={selectedAsset.altTextZh ?? ""} disabled={altBusy} /></label>
-                <label><span>英文替代文本</span><textarea name="altTextEn" rows={3} maxLength={500} defaultValue={selectedAsset.altTextEn ?? ""} disabled={altBusy} /></label>
-                <button className={styles.primaryButton} disabled={altBusy}>{altBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{altBusy ? "保存中" : "保存替代文本"}</button>
+                <label><span>中文替代文本</span><textarea name="altTextZh" rows={3} maxLength={500} defaultValue={selectedAsset.altTextZh ?? ""} disabled={altBusy || replaceBusy} /></label>
+                <label><span>英文替代文本</span><textarea name="altTextEn" rows={3} maxLength={500} defaultValue={selectedAsset.altTextEn ?? ""} disabled={altBusy || replaceBusy} /></label>
+                <button className={styles.primaryButton} disabled={altBusy || replaceBusy}>{altBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{altBusy ? "保存中" : "保存替代文本"}</button>
               </form>
+              <section className={styles.assetReplaceArea}>
+                <div><h3>替换文件</h3><p>资源地址与替代文本保持不变，所有使用位置会同步更新。</p></div>
+                <form className={styles.formGrid} onSubmit={requestReplacement}>
+                  <label className={styles.fileField}><span>新图片文件</span><input ref={replaceInputRef} name="file" type="file" accept="image/png,image/jpeg,image/webp" required disabled={altBusy || replaceBusy} /></label>
+                  <button ref={replaceTriggerRef} type="submit" className={styles.secondaryButton} disabled={altBusy || replaceBusy}><RefreshCw size={17} />选择并确认替换</button>
+                </form>
+                {replaceBusy ? <div className={styles.uploadProgress}><progress max="100" value={replaceProgress}>{replaceProgress}%</progress><span>{replaceProgress}%</span></div> : null}
+              </section>
               <div className={styles.assetDeleteArea}>
-                <button type="button" className={styles.dangerButton} disabled={altBusy || selectedAsset.references.length > 0} onClick={() => requestDelete(selectedAsset)}><Trash2 size={17} />删除资源</button>
+                <button type="button" className={styles.dangerButton} disabled={altBusy || replaceBusy || selectedAsset.references.length > 0} onClick={() => requestDelete(selectedAsset)}><Trash2 size={17} />删除资源</button>
                 {selectedAsset.references.length ? <p>仍被内容版本引用，无法删除。请先在主页内容中移除所有使用位置。</p> : null}
               </div>
             </div>
           </div>
         ) : null}
       </dialog>
+      <ConfirmDialog
+        open={Boolean(replaceRequest)}
+        title="替换媒体文件"
+        target={replaceRequest?.file.name ?? ""}
+        description={replaceRequest ? `将更新 ${replaceRequest.asset.references.length} 个使用位置的显示内容，资源地址保持不变。` : ""}
+        busy={replaceBusy}
+        confirmLabel="确认替换"
+        busyLabel="替换中"
+        triggerRef={replaceTriggerRef}
+        onConfirm={replaceAsset}
+        onCancel={() => setReplaceRequest(null)}
+      />
       <ConfirmDialog
         open={Boolean(deleteRequest)}
         title="删除媒体资源"
