@@ -69,6 +69,22 @@ model Asset {
   @@map("assets")
 }
 
+model ResumeFile {
+  id               String   @id @default(cuid())
+  locale           String   @unique
+  originalFilename String   @map("original_filename")
+  storagePath      String   @unique @map("storage_path")
+  mimeType         String   @map("mime_type")
+  sizeBytes        Int      @map("size_bytes")
+  sha256           String
+  visibility       String   @default("PRIVATE")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@index([visibility, locale])
+  @@map("resume_files")
+}
+
 model CareerActivity {
   id         String   @id @default(cuid())
   titleZh    String   @map("title_zh")
