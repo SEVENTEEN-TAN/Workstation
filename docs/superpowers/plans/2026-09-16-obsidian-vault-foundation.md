@@ -57,4 +57,4 @@
 - [x] Mark only vault registration and ignore patterns complete in `docs/product-roadmap.md`.
 - [x] Run `npm test`, `npm run lint`, `npx tsc --noEmit`, `npm run db:validate`, and `npm run build`.
 - [x] Inspect `git diff --check` and `git status --short`.
-- [ ] Commit, merge into `main`, push `origin/main`, and remove the feature worktree and branch.
+- [x] Commit, merge into `main`, push `origin/main`, and remove the feature worktree and branch.
