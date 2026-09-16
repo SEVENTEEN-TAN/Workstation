@@ -1,12 +1,18 @@
 import { HomeExperience } from "@/components/public/HomeExperience";
 import { SiteUninitialized } from "@/components/public/SiteUninitialized";
-import { getPublishedSiteContent } from "@/lib/services/public-data";
+import { getPublicResumeData } from "@/lib/services/public-resume";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const content = await getPublishedSiteContent();
-  if (!content) return <SiteUninitialized />;
+  const data = await getPublicResumeData();
+  if (!data) return <SiteUninitialized />;
 
-  return <HomeExperience content={content} />;
+  return <HomeExperience
+    content={data.content}
+    activities={data.activities}
+    skills={data.skills}
+    experiences={data.experiences}
+    resumeDownloads={data.downloads}
+  />;
 }

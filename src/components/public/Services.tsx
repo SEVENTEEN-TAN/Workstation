@@ -7,15 +7,15 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "./i18n";
 import { reveal } from "./motion";
 
-export function Services() {
+export function Services({ sectionNumber }: { sectionNumber?: string } = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const reduceMotion = useReducedMotion();
   const { copy } = useI18n();
 
   return (
-    <section className="border-t border-white/[0.06] bg-[#0b0f14] py-24 sm:py-32">
+    <section id="capability" className="scroll-mt-20 border-t border-white/[0.06] bg-[#0b0f14] py-24 sm:py-32">
       <div className="page-shell">
-        <motion.div {...reveal} transition={{ duration: 0.7 }} className="mx-auto max-w-5xl text-center"><p className="eyebrow justify-center">{copy.services.eyebrow}</p><h2 aria-label={copy.services.headingLabel} className="section-heading mx-auto mt-7 max-w-5xl">{copy.services.headingStart} <span className="outline-title inline-block">{copy.services.headingOutline}</span></h2></motion.div>
+        <motion.div {...reveal} transition={{ duration: 0.7 }} className="mx-auto max-w-5xl text-center"><p className="eyebrow justify-center">{sectionNumber ? copy.services.eyebrow.replace(/^\d{2}/, sectionNumber) : copy.services.eyebrow}</p><h2 aria-label={copy.services.headingLabel} className="section-heading mx-auto mt-7 max-w-5xl">{copy.services.headingStart} <span className="outline-title inline-block">{copy.services.headingOutline}</span></h2></motion.div>
         <div className="mx-auto mt-16 max-w-4xl border-t border-white/10 sm:mt-20">
           {copy.services.items.map(([title, description], index) => {
             const isOpen = openIndex === index;

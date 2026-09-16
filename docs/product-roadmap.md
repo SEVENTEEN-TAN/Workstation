@@ -78,7 +78,7 @@ Personal Workstation is a continuously updated online career profile and its pri
 - [x] Add work and education experience timelines.
 - [x] Group skills by capability area and connect them to supporting projects or articles.
 - [x] Add resume-file management and a printable resume view.
-- [ ] Recompose the public homepage as Identity, Now, Proof, Capability, Journey, and Contact without changing its visual language.
+- [x] Recompose the public homepage as Identity, Now, Proof, Capability, Journey, and Contact without changing its visual language.
 - [x] Add working project-list and project-detail routes before exposing project CTAs.
 
 ## V2 - Obsidian Knowledge Assets

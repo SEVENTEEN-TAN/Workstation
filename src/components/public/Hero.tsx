@@ -35,7 +35,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="hero-grid relative flex items-start overflow-hidden pb-16 pt-28 sm:pt-32 md:min-h-screen md:items-center md:pb-0">
+    <section id="identity" className="hero-grid relative flex scroll-mt-20 items-start overflow-hidden pb-16 pt-28 sm:pt-32 md:min-h-screen md:items-center md:pb-0">
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden" aria-hidden="true">
         <span className="font-display text-[23vw] font-black leading-none tracking-[-0.08em] text-white opacity-[0.018]">{copy.hero.backdrop}</span>
       </div>

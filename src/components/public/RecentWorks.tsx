@@ -9,7 +9,7 @@ import { toRecentProjectViews } from "./data";
 import { useI18n } from "./i18n";
 import { luxuryEase, reveal } from "./motion";
 
-export function RecentWorks() {
+export function RecentWorks({ sectionNumber }: { sectionNumber?: string } = {}) {
   const [activeIdx, setActiveIdx] = useState(0);
   const reduceMotion = useReducedMotion();
   const { copy, locale } = useI18n();
@@ -24,7 +24,7 @@ export function RecentWorks() {
     <section id="work" className="scroll-mt-20 py-24 sm:py-32">
       <div className="page-shell">
         <motion.div {...reveal} transition={{ duration: 0.7 }} className="mb-16 flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
-          <div><p className="eyebrow">{copy.works.eyebrow}</p><h2 className="section-heading mt-7">{copy.works.heading}</h2></div>
+          <div><p className="eyebrow">{sectionNumber ? copy.works.eyebrow.replace(/^\d{2}/, sectionNumber) : copy.works.eyebrow}</p><h2 className="section-heading mt-7">{copy.works.heading}</h2></div>
           <Link href="/projects" className="text-link focus-ring group self-start sm:self-auto">{copy.works.viewAll}<ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
         </motion.div>
 
