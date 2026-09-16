@@ -46,6 +46,7 @@ describe("admin navigation contracts", () => {
       { id: "experience", href: "/admin/experience" },
       { id: "skills", href: "/admin/skills" },
       { id: "resume", href: "/admin/resume" },
+      { id: "knowledge", href: "/admin/knowledge" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -220,7 +221,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "projects", "experience", "skills", "resume", "media"])(
+  it.each(["overview", "home", "okr", "activities", "projects", "experience", "skills", "resume", "knowledge", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -355,6 +356,27 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("ConfirmDialog");
     expect(workspace).toContain("FeedbackCenter");
     expect(workspace).toContain("/api/admin/resume");
+  });
+
+  it("protects vault APIs and provides registration, scan, search, and removal flows", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/knowledge/vaults/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/route.ts");
+    const scanRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/scan/route.ts");
+    const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
+    const workspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    expect(scanRoute).toContain("withAdminSession");
+    expect(page).toContain("KnowledgeWorkspace");
+    for (const field of ["name", "rootPath", "ignorePatterns"]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
+    expect(workspace).toContain("扫描知识库");
+    expect(workspace).toContain("搜索相对路径");
+    expect(workspace).toContain("尚未扫描知识库");
+    expect(workspace).toContain("ConfirmDialog");
+    expect(workspace).toContain("FeedbackCenter");
   });
 
   it("links the homepage skill summary to the structured capability page", () => {

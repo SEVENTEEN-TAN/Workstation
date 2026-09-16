@@ -87,8 +87,8 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 
 ### Vault Synchronization
 
-- [ ] Register one or more local vaults, beginning with `F:\Project\Obsidian\个人技术栈`.
-- [ ] Exclude `.obsidian`, `.trash`, `.claudian`, `.workbuddy`, and configured patterns.
+- [x] Register one or more local vaults, beginning with `F:\Project\Obsidian\个人技术栈`.
+- [x] Exclude `.obsidian`, `.trash`, `.claudian`, `.workbuddy`, and configured patterns.
 - [ ] Detect additions, edits, moves, and possible deletions through relative paths, hashes, and modification times.
 - [ ] Add full and incremental synchronization reports.
 - [ ] Review deletions and conflicts before changing published content.

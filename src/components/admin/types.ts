@@ -298,4 +298,37 @@ export interface ResumeFileData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface KnowledgeNoteData {
+  id: string;
+  vaultId: string;
+  relativePath: string;
+  fileName: string;
+  directoryPath: string;
+  sizeBytes: number;
+  modifiedAt: string;
+  contentHash: string;
+  hasFrontmatter: boolean;
+  hasWikilinks: boolean;
+  hasEmbeds: boolean;
+  hasCallouts: boolean;
+  hasDataview: boolean;
+  hasTasks: boolean;
+  indexedAt: string;
+}
+
+export interface KnowledgeVaultData {
+  id: string;
+  name: string;
+  rootPath: string;
+  enabled: boolean;
+  ignorePatterns: string[];
+  lastScanStatus: "NEVER" | "SUCCESS" | "FAILED";
+  lastScannedAt: string | null;
+  lastScanFileCount: number;
+  lastScanError: string | null;
+  createdAt: string;
+  updatedAt: string;
+  notes: KnowledgeNoteData[];
+}
 import type { SiteContent } from "../../lib/content/schema";

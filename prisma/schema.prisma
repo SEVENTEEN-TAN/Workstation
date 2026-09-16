@@ -344,3 +344,45 @@ model Review {
   @@index([visibility])
   @@map("reviews")
 }
+
+model KnowledgeVault {
+  id                String          @id @default(cuid())
+  name              String
+  rootPath          String          @unique @map("root_path")
+  enabled           Boolean         @default(true)
+  ignorePatterns    Json            @map("ignore_patterns")
+  lastScanStatus    String          @default("NEVER") @map("last_scan_status")
+  lastScannedAt     DateTime?       @map("last_scanned_at")
+  lastScanFileCount Int             @default(0) @map("last_scan_file_count")
+  lastScanError     String?         @map("last_scan_error")
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
+  notes             KnowledgeNote[]
+
+  @@index([enabled, name])
+  @@map("knowledge_vaults")
+}
+
+model KnowledgeNote {
+  id               String         @id @default(cuid())
+  vaultId          String         @map("vault_id")
+  relativePath     String         @map("relative_path")
+  fileName         String         @map("file_name")
+  directoryPath    String         @map("directory_path")
+  sizeBytes        Int            @map("size_bytes")
+  modifiedAt       DateTime       @map("modified_at")
+  contentHash      String         @map("content_hash")
+  hasFrontmatter   Boolean        @default(false) @map("has_frontmatter")
+  hasWikilinks     Boolean        @default(false) @map("has_wikilinks")
+  hasEmbeds        Boolean        @default(false) @map("has_embeds")
+  hasCallouts      Boolean        @default(false) @map("has_callouts")
+  hasDataview      Boolean        @default(false) @map("has_dataview")
+  hasTasks         Boolean        @default(false) @map("has_tasks")
+  indexedAt        DateTime       @map("indexed_at")
+  vault            KnowledgeVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  @@unique([vaultId, relativePath])
+  @@index([vaultId, directoryPath, fileName])
+  @@index([contentHash])
+  @@map("knowledge_notes")
+}
