@@ -656,6 +656,78 @@
   gap: 12px;
 }
 
+.resumeFileGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.resumeFileCard {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  background: #14181f;
+}
+
+.resumeFileCard > p {
+  min-height: 42px;
+  margin: -4px 0 16px;
+  color: #8e98a4;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.resumeFileMeta {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 72px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: #10141a;
+  color: #00df8f;
+}
+
+.resumeFileMeta strong,
+.resumeFileMeta small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.resumeFileMeta strong { color: #eef1f2; font-size: 13px; }
+.resumeFileMeta small { margin-top: 5px; color: #77818d; font-size: 11px; }
+
+.resumeUploadForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.resumeUploadForm > small {
+  grid-column: 1;
+  color: #77818d;
+  font-size: 11px;
+}
+
+.resumeUploadForm > button { grid-column: 2; grid-row: 1 / span 2; }
+
+.fileInput {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #9ba4ae;
+  font-size: 12px;
+  font-weight: 650;
+}
+
 .mediaToolbar {
   display: grid;
   grid-template-columns: minmax(220px, 1fr) minmax(130px, auto) minmax(150px, auto) auto;
@@ -2380,6 +2452,7 @@
   .homeActionBar { grid-template-columns: minmax(0, 1fr); }
   .homeActionBar .actions { width: 100%; }
   .workspaceTabs { width: 100%; }
+  .resumeFileGrid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 639px) {
@@ -2484,6 +2557,10 @@
   .objectiveRow .rowActions { grid-column: auto; justify-content: flex-start; }
   .actionRow .rowActions { justify-content: flex-end; }
   .checkInSuggestion { align-items: flex-start; flex-direction: column; }
+  .resumeUploadForm { grid-template-columns: 1fr; }
+  .resumeUploadForm > small,
+  .resumeUploadForm > button { grid-column: auto; grid-row: auto; }
+  .resumeUploadForm > button { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

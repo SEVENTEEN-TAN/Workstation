@@ -286,4 +286,16 @@ export interface SkillAreaData {
   updatedAt: string;
   skills: SkillData[];
 }
+
+export interface ResumeFileData {
+  id: string;
+  locale: "ZH" | "EN";
+  originalFilename: string;
+  mimeType: "application/pdf";
+  sizeBytes: number;
+  sha256: string;
+  visibility: "PRIVATE" | "PUBLIC";
+  createdAt: string;
+  updatedAt: string;
+}
 import type { SiteContent } from "../../lib/content/schema";

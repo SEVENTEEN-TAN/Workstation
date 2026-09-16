@@ -45,6 +45,7 @@ describe("admin navigation contracts", () => {
       { id: "projects", href: "/admin/projects" },
       { id: "experience", href: "/admin/experience" },
       { id: "skills", href: "/admin/skills" },
+      { id: "resume", href: "/admin/resume" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -219,7 +220,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "projects", "experience", "media"])(
+  it.each(["overview", "home", "okr", "activities", "projects", "experience", "skills", "resume", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -340,6 +341,20 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("FeedbackCenter");
     expect(workspace).toContain('projects.length ? "PROJECT" : "ARTICLE"');
     expect(workspace).toContain("暂无项目，可先使用文章证据");
+  });
+
+  it("provides fixed Chinese and English PDF resume slots with shared feedback patterns", () => {
+    const page = readProjectFile("src/app/admin/(workspace)/resume/page.tsx");
+    const workspace = readProjectFile("src/components/admin/ResumeFilesWorkspace.tsx");
+
+    expect(page).toContain("ResumeFilesWorkspace");
+    expect(page).toContain("getResumeFileService");
+    expect(workspace).toContain('accept=".pdf,application/pdf"');
+    expect(workspace).toContain('locale: "ZH"');
+    expect(workspace).toContain('locale: "EN"');
+    expect(workspace).toContain("ConfirmDialog");
+    expect(workspace).toContain("FeedbackCenter");
+    expect(workspace).toContain("/api/admin/resume");
   });
 
   it("links the homepage skill summary to the structured capability page", () => {
