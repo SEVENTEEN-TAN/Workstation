@@ -1,0 +1,131 @@
+.pageFrame {
+  min-height: 100vh;
+  background: #0d1116;
+  color: #ffffff;
+  padding: 28px 20px 64px;
+}
+
+.resumeToolbar {
+  width: min(920px, 100%);
+  min-height: 48px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.toolbarActions,
+.toolbarLink,
+.contactGrid a,
+.entryLink {
+  display: inline-flex;
+  align-items: center;
+}
+
+.toolbarActions { gap: 10px; }
+.toolbarLink { gap: 8px; color: #c9d1d9; font-size: 14px; font-weight: 700; }
+.toolbarLink:hover { color: #00df8f; }
+.toolbarLink svg,
+.contactGrid svg,
+.entryLink svg { width: 16px; height: 16px; }
+
+.localeControl {
+  display: grid;
+  grid-template-columns: repeat(2, 42px);
+  min-height: 40px;
+  border: 1px solid #343b44;
+}
+
+.localeControl button,
+.iconButton {
+  min-width: 40px;
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: #c9d1d9;
+  cursor: pointer;
+}
+
+.localeControl button[aria-pressed="true"] { background: #00df8f; color: #0d1116; }
+.iconButton { display: inline-grid; place-items: center; border: 1px solid #343b44; }
+.iconButton:hover { border-color: #00df8f; color: #00df8f; }
+.iconButton svg { width: 18px; height: 18px; }
+
+.resumeDocument {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: 56px clamp(24px, 6vw, 72px);
+  border: 1px solid #2a3038;
+  background: #14181f;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 28%);
+}
+
+.identity { padding-bottom: 36px; border-bottom: 1px solid #343b44; }
+.kicker { margin: 0 0 18px; color: #00df8f; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.identity h1 { margin: 0; font-size: clamp(42px, 8vw, 76px); line-height: .92; font-weight: 900; }
+.role { margin: 18px 0 0; color: #00df8f; font-size: 15px; font-weight: 800; text-transform: uppercase; }
+.summary { max-width: 700px; margin: 24px 0 0; color: #ffffff; font-size: 19px; line-height: 1.65; }
+.about { max-width: 720px; margin: 12px 0 0; color: #9ca7b4; font-size: 14px; line-height: 1.75; }
+
+.section { padding: 34px 0; border-bottom: 1px solid #343b44; }
+.section:last-child { padding-bottom: 0; border-bottom: 0; }
+.section > h2 { margin: 0 0 22px; color: #00df8f; font-size: 12px; font-weight: 900; text-transform: uppercase; }
+.contactGrid { display: flex; flex-wrap: wrap; gap: 14px 24px; }
+.contactGrid a { gap: 8px; color: #dce3ea; font-size: 14px; font-weight: 700; }
+.list { display: grid; gap: 18px; }
+.resumeEntry { padding: 20px; border: 1px solid #343b44; background: #0d1116; }
+.entryHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.resumeEntry h3 { margin: 0; color: #ffffff; font-size: 18px; line-height: 1.35; }
+.entryHeading div > p { margin: 5px 0 0; color: #00df8f; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.resumeEntry > p { margin: 12px 0 0; color: #aeb8c3; font-size: 14px; line-height: 1.7; }
+.resumeEntry time { flex: 0 0 auto; color: #768290; font-size: 12px; font-weight: 700; }
+.tagList { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0 0; padding: 0; list-style: none; }
+.tagList li { border: 1px solid #343b44; padding: 4px 7px; color: #c9d1d9; font-size: 11px; }
+.capabilityGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.skillList { display: grid; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
+.skillList li { display: grid; gap: 3px; }
+.skillList strong { color: #ffffff; font-size: 13px; }
+.skillList span { color: #8e99a5; font-size: 12px; line-height: 1.55; }
+.entryLink { gap: 5px; margin-top: 14px; color: #00df8f; font-size: 12px; font-weight: 800; }
+
+@media (max-width: 640px) {
+  .pageFrame { padding: 16px 12px 40px; }
+  .resumeToolbar { align-items: flex-start; }
+  .toolbarLink { min-height: 40px; }
+  .resumeDocument { padding: 36px 20px; }
+  .identity h1 { font-size: 42px; }
+  .summary { font-size: 17px; }
+  .entryHeading { display: grid; gap: 8px; }
+  .capabilityGrid { grid-template-columns: 1fr; }
+}
+
+@media print {
+  @page { margin: 12mm; }
+
+  :global(html),
+  :global(body) { background: #ffffff !important; color: #000000; }
+  .pageFrame { min-height: 0; padding: 0; background: #ffffff; color: #000000; }
+  .resumeToolbar { display: none; }
+  .resumeDocument { width: 100%; padding: 0; border: 0; background: #ffffff; color: #000000; box-shadow: none; }
+  .identity,
+  .section { border-color: #b8b8b8; }
+  .identity h1,
+  .summary,
+  .resumeEntry h3,
+  .skillList strong { color: #000000; }
+  .kicker,
+  .role,
+  .section > h2,
+  .entryHeading div > p,
+  .entryLink { color: #006c48; }
+  .about,
+  .resumeEntry > p,
+  .resumeEntry time,
+  .skillList span { color: #333333; }
+  .resumeEntry { break-inside: avoid; border-color: #c9c9c9; background: #ffffff; }
+  .tagList li { border-color: #b8b8b8; color: #222222; }
+  .contactGrid a { color: #000000; }
+  .contactGrid a[href^="http"]::after,
+  .entryLink[href^="http"]::after { content: " (" attr(href) ")"; font-weight: 400; }
+}

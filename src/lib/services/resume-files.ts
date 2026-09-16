@@ -78,7 +78,7 @@ export function validateResumePdf(input: {
 
 export function getResumeUploadRoot() {
   if (process.env.RESUME_UPLOAD_DIR) return resolve(process.env.RESUME_UPLOAD_DIR);
-  const uploadRoot = resolve(process.env.UPLOAD_DIR ?? resolve(process.cwd(), "data", "uploads"));
+  const uploadRoot = resolve(/* turbopackIgnore: true */ process.env.UPLOAD_DIR ?? resolve(process.cwd(), "data", "uploads"));
   return resolve(uploadRoot, "resumes");
 }
 
