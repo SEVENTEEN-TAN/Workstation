@@ -91,9 +91,9 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Exclude `.obsidian`, `.trash`, `.claudian`, `.workbuddy`, and configured patterns.
 - [x] Detect additions, edits, moves, and possible deletions through relative paths, hashes, and modification times.
 - [x] Add persistent full-scan synchronization reports.
-- [ ] Add incremental synchronization reports after the Windows-side sync transport exists.
+- [x] Add incremental synchronization reports after the Windows-side sync transport exists.
 - [ ] Review deletions and conflicts before changing published content.
-- [ ] Provide a lightweight Windows-side sync client because the deployed server cannot read the local `F:` drive.
+- [x] Provide a lightweight Windows-side sync client because the deployed server cannot read the local `F:` drive.
 - [ ] Synchronize Markdown first and transfer attachments lazily or when a note is prepared for publication.
 
 ### Obsidian Compatibility
@@ -105,7 +105,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Resolve Obsidian embeds and sibling `assets` folders without transferring files.
 - [x] Render callouts, tables, fenced code, and Markdown task lists.
 - [x] Preserve unsupported Dataview blocks without executing them on the server.
-- [ ] Treat normal Obsidian tasks as note content unless the administrator explicitly promotes one to an OKR Action Item.
+- [x] Treat normal Obsidian tasks as note content unless the administrator explicitly promotes one to an OKR Action Item.
 
 ### Knowledge Publishing
 
@@ -113,7 +113,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Provide a vault tree, note viewer, properties, links, backlinks, and publication inspector.
 - [x] Create a publication draft from a selected source revision.
 - [x] Keep the published article stable when the source note changes and show that an update is available.
-- [ ] Publish only explicitly selected attachments.
+- [x] Publish only explicitly selected attachments.
 - [x] Add public article, knowledge collection, tag, and search pages.
 
 ## V3 - Automation And AI

@@ -37,6 +37,16 @@ npm run db:restore -- --from <备份目录>
 
 生产发布、迁移、切流和回滚流程见 [docs/deployment.md](docs/deployment.md)。
 
+## Windows Obsidian 同步
+
+部署服务器不能直接读取本机 `F:` 盘。Windows 电脑可扫描本地 Vault 后把 Markdown 快照推送到 WorkStation；同步只创建私有索引、差异报告和不可变源修订，不会修改 Vault、草稿、公开文章或传输附件。
+
+1. 在服务器生成高熵令牌，并仅将其 SHA-256 十六进制摘要写入 `KNOWLEDGE_SYNC_TOKEN_HASH`。
+2. 在 Windows 用户环境变量中设置 `KNOWLEDGE_SYNC_URL`、`KNOWLEDGE_SYNC_TOKEN`、`KNOWLEDGE_SYNC_VAULT_ID` 和 `KNOWLEDGE_SYNC_VAULT_PATH`；可选 `KNOWLEDGE_SYNC_IGNORE_PATTERNS` 用逗号或换行分隔。
+3. 在包含本项目依赖的 Windows 工作目录执行 `npm run knowledge:sync`，确认首次报告无误后再通过“任务计划程序”定期执行该命令。
+
+生产环境必须使用 HTTPS。令牌、Markdown 正文和本地路径不会打印到客户端日志中。
+
 ## 主要入口
 
 - `/`：公开主页

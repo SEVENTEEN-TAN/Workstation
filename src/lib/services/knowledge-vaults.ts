@@ -1,7 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
-import { readIndexedMarkdownNote } from "../knowledge/note-reader";
 import { scanVault, type ScannedKnowledgeLink, type ScannedKnowledgeNote, type VaultScanResult } from "../knowledge/vault-scanner";
 import { buildKnowledgeSyncReport, type KnowledgeNoteSnapshot, type KnowledgeSyncReportInput } from "../knowledge/sync-report";
 import { knowledgeVaultInputSchema, knowledgeVaultPatchSchema } from "../validators/knowledge-vaults";
@@ -25,8 +24,9 @@ type KnowledgeVaultRepository = {
   createVault(value: { name: string; rootPath: string; enabled: boolean; ignorePatterns: string[] }): Promise<unknown>;
   updateVault(id: string, value: Record<string, unknown>): Promise<unknown>;
   deleteVault(id: string): Promise<unknown>;
-  replaceIndex(id: string, result: VaultScanResult, report: KnowledgeSyncReportInput): Promise<unknown>;
+  replaceIndex(id: string, result: VaultScanResult, report: KnowledgeSyncReportInput, origin: "LOCAL_SCAN" | "WINDOWS_SYNC"): Promise<unknown>;
   markScanFailed(id: string, message: string): Promise<unknown>;
+  findLatestSourceRevision(vaultId: string, relativePath: string): Promise<{ markdown: string } | null>;
 };
 
 const vaultDetailsInclude = {
@@ -72,14 +72,14 @@ function noteData(vaultId: string, indexedAt: Date, note: ScannedKnowledgeNote) 
   };
 }
 
-export function sourceRevisionRows(vaultId: string, capturedAt: Date, notes: ScannedKnowledgeNote[], existingKeys: ReadonlySet<string>) {
+export function sourceRevisionRows(vaultId: string, capturedAt: Date, notes: ScannedKnowledgeNote[], existingKeys: ReadonlySet<string>, origin: "LOCAL_SCAN" | "WINDOWS_SYNC" = "LOCAL_SCAN") {
   return notes.filter((note) => !existingKeys.has(`${note.relativePath}\u0000${note.sha256}`)).map((note) => ({
     vaultId,
     relativePath: note.relativePath,
     contentHash: note.sha256,
     markdown: note.markdown,
     frontmatterJson: note.frontmatter ? JSON.stringify(note.frontmatter) : null,
-    origin: "LOCAL_SCAN",
+    origin,
     capturedAt,
   }));
 }
@@ -112,7 +112,7 @@ function defaultRepository(): KnowledgeVaultRepository {
     async deleteVault(id) {
       return (await getDatabase()).knowledgeVault.delete({ where: { id } });
     },
-    async replaceIndex(id, result, report) {
+    async replaceIndex(id, result, report, origin) {
       const database = await getDatabase();
       return database.$transaction(async (transaction) => {
         const existing = result.notes.length ? await transaction.knowledgeSourceRevision.findMany({
@@ -123,7 +123,7 @@ function defaultRepository(): KnowledgeVaultRepository {
           select: { relativePath: true, contentHash: true },
         }) : [];
         const existingKeys = new Set(existing.map((revision) => `${revision.relativePath}\u0000${revision.contentHash}`));
-        const revisions = sourceRevisionRows(id, result.scannedAt, result.notes, existingKeys);
+        const revisions = sourceRevisionRows(id, result.scannedAt, result.notes, existingKeys, origin);
 
         if (revisions.length) await transaction.knowledgeSourceRevision.createMany({ data: revisions });
         await transaction.knowledgeNoteLink.deleteMany({ where: { vaultId: id } });
@@ -161,13 +161,19 @@ function defaultRepository(): KnowledgeVaultRepository {
         include: vaultDetailsInclude,
       });
     },
+    async findLatestSourceRevision(vaultId, relativePath) {
+      return (await getDatabase()).knowledgeSourceRevision.findFirst({
+        where: { vaultId, relativePath },
+        orderBy: { capturedAt: "desc" },
+        select: { markdown: true },
+      });
+    },
   };
 }
 
 export function createKnowledgeVaultService(
   repository: KnowledgeVaultRepository = defaultRepository(),
   scanner: (rootPath: string, ignorePatterns: readonly string[]) => Promise<VaultScanResult> = scanVault,
-  noteReader: (rootPath: string, relativePath: string) => Promise<{ content: string }> = readIndexedMarkdownNote,
 ) {
   return {
     list: () => repository.listVaults(),
@@ -195,7 +201,9 @@ export function createKnowledgeVaultService(
       if (!current?.enabled || !current.notes?.some((note) => note.relativePath === relativePath)) {
         throw new Error("Note unavailable");
       }
-      return { relativePath, ...(await noteReader(current.rootPath, relativePath)) };
+      const revision = await repository.findLatestSourceRevision(id, relativePath);
+      if (!revision) throw new Error("Note unavailable");
+      return { relativePath, content: revision.markdown };
     },
     async scan(id: string) {
       const current = await repository.findVault(id);
@@ -208,9 +216,27 @@ export function createKnowledgeVaultService(
           contentHash: note.sha256,
           modifiedAt: note.modifiedAt,
         })));
-        return await repository.replaceIndex(id, result, report);
+        return await repository.replaceIndex(id, result, report, "LOCAL_SCAN");
       } catch (error) {
         const message = error instanceof Error ? error.message : "Vault scan failed";
+        await repository.markScanFailed(id, message);
+        throw error;
+      }
+    },
+    async receiveTransportSync(id: string, result: VaultScanResult) {
+      const current = await repository.findVault(id);
+      if (!current) throw new Error("Knowledge vault not found");
+      if (!current.enabled) throw new Error("Vault is disabled");
+      try {
+        const report = buildKnowledgeSyncReport(current.notes ?? [], result.notes.map((note) => ({
+          relativePath: note.relativePath,
+          contentHash: note.sha256,
+          modifiedAt: note.modifiedAt,
+        })));
+        await repository.replaceIndex(id, result, report, "WINDOWS_SYNC");
+        return report.summary;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Knowledge sync failed";
         await repository.markScanFailed(id, message);
         throw error;
       }

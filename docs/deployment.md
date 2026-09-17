@@ -16,6 +16,25 @@
 
 每次部署前必须重新核对服务器上的 Node 版本、磁盘空间、服务状态、Nginx 配置和当前 `/opt/personal-workstation` 指向。不要把本文当成当前生产状态的实时记录。
 
+## Windows Obsidian 同步
+
+服务器无法读取 Windows 本机 Vault。为同步生成一次随机令牌，保留原始值仅供 Windows 客户端使用，并把摘要写入服务器环境文件：
+
+```bash
+token="$(openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_')"
+printf '%s' "$token" | sha256sum | awk '{print "KNOWLEDGE_SYNC_TOKEN_HASH=" $1}'
+```
+
+将输出的 `KNOWLEDGE_SYNC_TOKEN_HASH` 写入 `/etc/personal-workstation.env`，不要把 `$token` 写入服务器、仓库或日志。Windows 侧设置以下用户环境变量后，在项目目录运行 `npm run knowledge:sync`：
+
+- `KNOWLEDGE_SYNC_URL`：站点 HTTPS 地址。
+- `KNOWLEDGE_SYNC_TOKEN`：上一步保存的原始令牌。
+- `KNOWLEDGE_SYNC_VAULT_ID`：后台登记 Vault 的 ID。
+- `KNOWLEDGE_SYNC_VAULT_PATH`：本机 Vault 的绝对路径。
+- `KNOWLEDGE_SYNC_IGNORE_PATTERNS`：可选，逗号或换行分隔的忽略规则。
+
+首次手动同步并检查后台报告后，可使用 Windows“任务计划程序”按周期执行该命令。此流程只传输 Markdown 快照和索引元数据；附件不会自动上传，任何同步也不会改写 Vault 或公开内容。
+
 ## 发布流程
 
 发布顺序为：preflight → backup → clean checkout/build → staged standalone release → migrate → atomic service switch → health checks。

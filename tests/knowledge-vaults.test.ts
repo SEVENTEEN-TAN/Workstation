@@ -169,6 +169,36 @@ describe("knowledge vault service", () => {
     expect(events).toEqual(["delete:vault-1"]);
   });
 
+  it("receives a Windows snapshot through the same incremental index flow", async () => {
+    const received: { origin?: string; report?: unknown } = {};
+    const result: VaultScanResult = {
+      scannedAt: new Date("2026-09-17T12:00:00.000Z"),
+      notes: [{
+        relativePath: "notes/remote.md", fileName: "remote.md", directoryPath: "notes", markdown: "# Remote", sizeBytes: 8,
+        modifiedAt: new Date("2026-09-17T12:00:00.000Z"), sha256: "remote-hash", hasFrontmatter: false, hasWikilinks: false,
+        hasEmbeds: false, hasCallouts: false, hasDataview: false, hasTasks: false, isMoc: false, frontmatter: null,
+      }],
+      links: [],
+    };
+    const service = createKnowledgeVaultService({
+      async listVaults() { return [vault]; },
+      async findVault() { return vault; },
+      async createVault() { throw new Error("not used"); },
+      async updateVault() { throw new Error("not used"); },
+      async deleteVault() { throw new Error("not used"); },
+      async replaceIndex(_id, scan, report, origin) {
+        received.origin = origin;
+        received.report = report;
+        return { ...vault, notes: scan.notes, lastScanStatus: "SUCCESS" };
+      },
+      async markScanFailed() { throw new Error("not used"); },
+    });
+
+    await expect(service.receiveTransportSync("vault-1", result)).resolves.toMatchObject({ addedCount: 1 });
+    expect(received.origin).toBe("WINDOWS_SYNC");
+    expect(received.report).toMatchObject({ summary: { addedCount: 1 } });
+  });
+
   it("reads only a currently indexed note from an enabled vault", async () => {
     const indexed = { ...vault, notes: [{ relativePath: "notes/a.md", contentHash: "hash", modifiedAt: new Date() }] };
     const service = createKnowledgeVaultService({
@@ -179,9 +209,10 @@ describe("knowledge vault service", () => {
       async deleteVault() { throw new Error("not used"); },
       async replaceIndex() { throw new Error("not used"); },
       async markScanFailed() { throw new Error("not used"); },
-    }, async () => { throw new Error("not used"); }, async (rootPath, relativePath) => ({ content: `${rootPath}:${relativePath}` }));
+      async findLatestSourceRevision(id, relativePath) { return id === "vault-1" && relativePath === "notes/a.md" ? { markdown: "# Stored revision" } : null; },
+    }, async () => { throw new Error("not used"); }, async () => { throw new Error("filesystem must not be read"); });
 
-    await expect(service.readNote("vault-1", "notes/a.md")).resolves.toEqual({ relativePath: "notes/a.md", content: "F:\\Project\\Obsidian\\PersonalTech:notes/a.md" });
+    await expect(service.readNote("vault-1", "notes/a.md")).resolves.toEqual({ relativePath: "notes/a.md", content: "# Stored revision" });
     await expect(service.readNote("vault-1", "notes/missing.md")).rejects.toThrow("Note unavailable");
   });
 });
