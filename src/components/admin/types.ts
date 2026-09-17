@@ -342,6 +342,28 @@ export interface KnowledgeNoteLinkData {
   isResolved: boolean;
 }
 
+export interface KnowledgePublicationDraftData {
+  id: string;
+  sourceRevisionId: string;
+  sourceHash: string;
+  title: string;
+  summary: string | null;
+  tags: string[];
+  status: "DRAFT";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface KnowledgeSourceRevisionData {
+  id: string;
+  vaultId: string;
+  relativePath: string;
+  contentHash: string;
+  origin: "LOCAL_SCAN";
+  capturedAt: string;
+  draft: KnowledgePublicationDraftData | null;
+}
+
 export interface KnowledgeSyncReportData {
   id: string;
   scannedAt: string;
@@ -367,6 +389,7 @@ export interface KnowledgeVaultData {
   updatedAt: string;
   notes: KnowledgeNoteData[];
   noteLinks: KnowledgeNoteLinkData[];
+  sourceRevisions: KnowledgeSourceRevisionData[];
   syncReports: KnowledgeSyncReportData[];
 }
 import type { SiteContent } from "../../lib/content/schema";

@@ -35,7 +35,7 @@
 - Produces database model `KnowledgeSourceRevision` with unique `(vaultId, relativePath, contentHash)`.
 - Extends `replaceIndex(id, result, report)` so a scan persists unseen snapshots while replacing the current index.
 
-- [ ] **Step 1: Write failing scanner coverage for retained Markdown**
+- [x] **Step 1: Write failing scanner coverage for retained Markdown**
 
 ```ts
 expect(result.notes[0]).toMatchObject({
@@ -44,11 +44,11 @@ expect(result.notes[0]).toMatchObject({
 });
 ```
 
-- [ ] **Step 2: Run the scanner test and verify the `markdown` field is absent**
+- [x] **Step 2: Run the scanner test and verify the `markdown` field is absent**
 
 Run: `npm test -- tests/knowledge-vault-scanner.test.ts`
 
-- [ ] **Step 3: Add the scanner field without adding a second filesystem read**
+- [x] **Step 3: Add the scanner field without adding a second filesystem read**
 
 ```ts
 export type ScannedKnowledgeNote = {
@@ -62,7 +62,7 @@ notes.push({
 });
 ```
 
-- [ ] **Step 4: Write a service-repository test proving an unchanged path/hash is not recreated and a changed hash is appended**
+- [x] **Step 4: Write a service-repository test proving an unchanged path/hash is not recreated and a changed hash is appended**
 
 ```ts
 await service.scan("vault-1");
@@ -71,11 +71,11 @@ expect(repository.sourceRevisions).toEqual([
 ]);
 ```
 
-- [ ] **Step 5: Run the focused service test and verify it fails because source revisions are not persisted**
+- [x] **Step 5: Run the focused service test and verify it fails because source revisions are not persisted**
 
 Run: `npm test -- tests/knowledge-vaults.test.ts`
 
-- [ ] **Step 6: Add schema, migration, and transactional persistence**
+- [x] **Step 6: Add schema, migration, and transactional persistence**
 
 ```prisma
 model KnowledgeSourceRevision {
@@ -98,11 +98,11 @@ model KnowledgeSourceRevision {
 
 Use a transaction callback to query existing unique keys, create only missing rows, then replace links and notes. Do not add a relation to `KnowledgeNote`.
 
-- [ ] **Step 7: Run focused scanner and vault service tests**
+- [x] **Step 7: Run focused scanner and vault service tests**
 
 Run: `npm test -- tests/knowledge-vault-scanner.test.ts tests/knowledge-vaults.test.ts`
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add prisma src/lib/knowledge/vault-scanner.ts src/lib/services/knowledge-vaults.ts tests/knowledge-vault-scanner.test.ts tests/knowledge-vaults.test.ts
@@ -113,7 +113,7 @@ git commit -m "feat: capture knowledge source revisions"
 
 **Files:**
 - Modify: `prisma/schema.prisma`
-- Modify: Task 1 migration before it is applied
+- Create: `prisma/migrations/<timestamp>_add_knowledge_publication_drafts/migration.sql`
 - Create: `src/lib/services/knowledge-publications.ts`
 - Create: `src/app/api/admin/knowledge/publications/drafts/route.ts`
 - Modify: `tests/knowledge-vaults.test.ts`
@@ -121,9 +121,9 @@ git commit -m "feat: capture knowledge source revisions"
 
 **Interfaces:**
 - Produces `KnowledgePublicationDraft` with unique `sourceRevisionId`, copied Markdown and metadata, `DRAFT` status.
-- Produces `knowledgePublicationService.createDraft(sourceRevisionId)` and `GET/POST /api/admin/knowledge/publications/drafts`.
+- Produces `knowledgePublicationService.createDraft(sourceRevisionId)` and `POST /api/admin/knowledge/publications/drafts`; revision and draft summaries travel with the admin-only vault response.
 
-- [ ] **Step 1: Write failing draft service tests for copied snapshots and idempotent creation**
+- [x] **Step 1: Write failing draft service tests for copied snapshots and idempotent creation**
 
 ```ts
 await expect(service.createDraft("revision-1")).resolves.toMatchObject({
@@ -135,11 +135,11 @@ await expect(service.createDraft("revision-1")).resolves.toMatchObject({
 });
 ```
 
-- [ ] **Step 2: Run the draft test and verify it fails because the service does not exist**
+- [x] **Step 2: Run the draft test and verify it fails because the service does not exist**
 
 Run: `npm test -- tests/knowledge-publications.test.ts`
 
-- [ ] **Step 3: Add the draft model and private service**
+- [x] **Step 3: Add the draft model and private service**
 
 ```prisma
 model KnowledgePublicationDraft {
@@ -162,18 +162,18 @@ model KnowledgePublicationDraft {
 
 Parse only string `title`, string `summary` or `excerpt`, and scalar `tags`. Fall back to the revision filename when title is unavailable. Return the existing draft on a repeated revision id.
 
-- [ ] **Step 4: Add failing protected-route contract coverage**
+- [x] **Step 4: Add failing protected-route contract coverage**
 
 ```ts
 expect(readProjectFile("src/app/api/admin/knowledge/publications/drafts/route.ts"))
   .toContain("withAdminSession");
 ```
 
-- [ ] **Step 5: Add the route and run service plus contract tests**
+- [x] **Step 5: Add the route and run service plus contract tests**
 
 Run: `npm test -- tests/knowledge-publications.test.ts tests/admin-ui-contracts.test.ts`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add prisma src/lib/services/knowledge-publications.ts src/app/api/admin/knowledge/publications/drafts/route.ts tests/knowledge-publications.test.ts tests/admin-ui-contracts.test.ts
@@ -193,7 +193,7 @@ git commit -m "feat: create private knowledge drafts"
 - `KnowledgeVaultData` includes the selected vault's source revisions and private drafts.
 - The selected note lists its captured revisions and exposes an idempotent “创建发布草稿” action.
 
-- [ ] **Step 1: Write a failing workspace contract test**
+- [x] **Step 1: Write a failing workspace contract test**
 
 ```ts
 expect(workspace).toContain("源修订");
@@ -201,23 +201,23 @@ expect(workspace).toContain("创建发布草稿");
 expect(workspace).toContain("/api/admin/knowledge/publications/drafts");
 ```
 
-- [ ] **Step 2: Run the contract test and verify it fails**
+- [x] **Step 2: Run the contract test and verify it fails**
 
 Run: `npm test -- tests/admin-ui-contracts.test.ts`
 
-- [ ] **Step 3: Return private revisions and drafts from the admin-only vault service**
+- [x] **Step 3: Return private revisions and drafts from the admin-only vault service**
 
 Keep source revision Markdown out of the list response. Include identifiers, path, hash, origin, captured time, and draft metadata only.
 
-- [ ] **Step 4: Add the revision list and draft action to the selected-note inspector**
+- [x] **Step 4: Add the revision list and draft action to the selected-note inspector**
 
 Show an explicit re-scan empty state when an indexed note has no captured revision. Use `runAction`, `FeedbackCenter`, and existing request helpers. Update only local draft state after successful creation.
 
-- [ ] **Step 5: Add responsive styles and verify the focused test**
+- [x] **Step 5: Add responsive styles and verify the focused test**
 
 Run: `npm test -- tests/admin-ui-contracts.test.ts`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/lib/services/knowledge-vaults.ts src/components/admin src/app/admin/admin.module.css tests/admin-ui-contracts.test.ts
@@ -228,19 +228,19 @@ git commit -m "feat: manage knowledge source revisions"
 
 **Files:** None unless verification exposes a defect.
 
-- [ ] **Step 1: Run all unit and contract tests**
+- [x] **Step 1: Run all unit and contract tests**
 
 Run: `npm test`
 
-- [ ] **Step 2: Run lint and type checks**
+- [x] **Step 2: Run lint and type checks**
 
 Run: `npm run lint && npx tsc --noEmit`
 
-- [ ] **Step 3: Validate and migrate an isolated SQLite database**
+- [x] **Step 3: Validate and migrate an isolated SQLite database**
 
 Run: `$env:DATABASE_URL='file:./workstation-verification.db'; npm run db:validate; npx prisma migrate deploy`
 
-- [ ] **Step 4: Build production output against the isolated database**
+- [x] **Step 4: Build production output against the isolated database**
 
 Run: `$env:DATABASE_URL='file:./workstation-verification.db'; npm run build`
 

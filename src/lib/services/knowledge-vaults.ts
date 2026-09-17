@@ -29,6 +29,24 @@ type KnowledgeVaultRepository = {
   markScanFailed(id: string, message: string): Promise<unknown>;
 };
 
+const vaultDetailsInclude = {
+  notes: { orderBy: { relativePath: "asc" } },
+  noteLinks: { orderBy: { sourceRelativePath: "asc" } },
+  sourceRevisions: {
+    orderBy: { capturedAt: "desc" },
+    select: {
+      id: true,
+      vaultId: true,
+      relativePath: true,
+      contentHash: true,
+      origin: true,
+      capturedAt: true,
+      draft: { select: { id: true, sourceRevisionId: true, sourceHash: true, title: true, summary: true, tags: true, status: true, createdAt: true, updatedAt: true } },
+    },
+  },
+  syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } },
+} satisfies Prisma.KnowledgeVaultInclude;
+
 function parseIgnorePatterns(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 }
@@ -74,7 +92,7 @@ function defaultRepository(): KnowledgeVaultRepository {
   return {
     async listVaults() {
       return (await getDatabase()).knowledgeVault.findMany({
-        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: vaultDetailsInclude,
         orderBy: { name: "asc" },
       });
     },
@@ -82,13 +100,13 @@ function defaultRepository(): KnowledgeVaultRepository {
       return (await getDatabase()).knowledgeVault.findUnique({ where: { id }, include: { notes: true, noteLinks: true } });
     },
     async createVault(value) {
-      return (await getDatabase()).knowledgeVault.create({ data: value, include: { notes: true, noteLinks: true, syncReports: { include: { changes: true } } } });
+      return (await getDatabase()).knowledgeVault.create({ data: value, include: vaultDetailsInclude });
     },
     async updateVault(id, value) {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
         data: value as Prisma.KnowledgeVaultUpdateInput,
-        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: vaultDetailsInclude,
       });
     },
     async deleteVault(id) {
@@ -132,7 +150,7 @@ function defaultRepository(): KnowledgeVaultRepository {
             lastScanFileCount: result.notes.length,
             lastScanError: null,
           },
-          include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+          include: vaultDetailsInclude,
         });
       });
     },
@@ -140,7 +158,7 @@ function defaultRepository(): KnowledgeVaultRepository {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
         data: { lastScanStatus: "FAILED", lastScanError: message.slice(0, 1_000) },
-        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: vaultDetailsInclude,
       });
     },
   };

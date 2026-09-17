@@ -2539,6 +2539,13 @@
 .publicationReady { border-color: #79cfac !important; color: #9fcbb9 !important; }
 .publicationBlocked { border-color: #ff8a80 !important; color: #f1a69e !important; }
 .publicationNotice { border-color: #d5c887 !important; color: #d5c887 !important; }
+.sourceRevisionList { padding: 0 !important; list-style: none; }
+.sourceRevisionList li { display: grid; gap: 5px; padding: 8px 0; border-top: 1px solid rgba(119, 173, 236, 0.12); }
+.sourceRevisionList li:first-child { border-top: 0; padding-top: 0; }
+.sourceRevisionList div { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.sourceRevisionList strong { color: #c8d2dc; font-family: var(--font-geist-mono), monospace; font-size: 10px; }
+.sourceRevisionList time, .sourceRevisionList span { color: #7f8b97; font-size: 9px; }
+.sourceRevisionList button { justify-self: start; min-height: 28px; padding: 0 8px; font-size: 10px; }
 
 .noteBadges {
   display: flex;
