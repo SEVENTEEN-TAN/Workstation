@@ -2485,6 +2485,42 @@
   font-size: 9px;
 }
 
+.syncSummary {
+  margin: -3px 0 12px;
+  color: #78aa96;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.syncReport {
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(0, 223, 143, 0.16);
+  border-radius: 6px;
+  background: rgba(0, 223, 143, 0.035);
+}
+
+.syncReportHeading,
+.syncCounts,
+.syncChanges > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.syncReportHeading strong { color: #e7eaec; font-size: 12px; }
+.syncReportHeading time,
+.syncCounts,
+.syncEmpty,
+.syncChanges { color: #78838f; font-size: 10px; }
+.syncCounts { flex-wrap: wrap; margin-top: 8px; color: #8bc6ae; }
+.syncChanges { display: grid; gap: 5px; margin-top: 10px; }
+.syncChanges > div { min-width: 0; }
+.syncChanges span { flex: 0 0 auto; color: #d5c887; }
+.syncChanges small { overflow: hidden; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+.syncChanges p,
+.syncEmpty { margin: 4px 0 0; }
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

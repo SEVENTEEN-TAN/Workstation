@@ -45,6 +45,7 @@ describe("knowledge vault service", () => {
 
   it("replaces the note index only after a successful scan", async () => {
     const events: string[] = [];
+    let receivedReport: unknown;
     const scannedAt = new Date("2026-09-16T04:00:00.000Z");
     const result: VaultScanResult = {
       scannedAt,
@@ -69,7 +70,11 @@ describe("knowledge vault service", () => {
       async createVault() { throw new Error("not used"); },
       async updateVault() { throw new Error("not used"); },
       async deleteVault() { throw new Error("not used"); },
-      async replaceIndex(id, scan) { events.push(`replace:${id}:${scan.notes.length}`); return { ...vault, notes: scan.notes, lastScanStatus: "SUCCESS", lastScannedAt: scan.scannedAt, lastScanFileCount: scan.notes.length }; },
+      async replaceIndex(id, scan, ...reports: unknown[]) {
+        receivedReport = reports[0];
+        events.push(`replace:${id}:${scan.notes.length}`);
+        return { ...vault, notes: scan.notes, lastScanStatus: "SUCCESS", lastScannedAt: scan.scannedAt, lastScanFileCount: scan.notes.length };
+      },
       async markScanFailed() { throw new Error("not used"); },
     }, async (rootPath, ignores) => {
       events.push(`scan:${rootPath}:${ignores.join(",")}`);
@@ -81,6 +86,7 @@ describe("knowledge vault service", () => {
       "scan:F:\\Project\\Obsidian\\PersonalTech:private",
       "replace:vault-1:1",
     ]);
+    expect(receivedReport).toMatchObject({ summary: { addedCount: 1, modifiedCount: 0, movedCount: 0, missingCount: 0, unchangedCount: 0 } });
   });
 
   it("preserves the previous index and records a failed scan", async () => {

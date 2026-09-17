@@ -89,8 +89,9 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 
 - [x] Register one or more local vaults, beginning with `F:\Project\Obsidian\个人技术栈`.
 - [x] Exclude `.obsidian`, `.trash`, `.claudian`, `.workbuddy`, and configured patterns.
-- [ ] Detect additions, edits, moves, and possible deletions through relative paths, hashes, and modification times.
-- [ ] Add full and incremental synchronization reports.
+- [x] Detect additions, edits, moves, and possible deletions through relative paths, hashes, and modification times.
+- [x] Add persistent full-scan synchronization reports.
+- [ ] Add incremental synchronization reports after the Windows-side sync transport exists.
 - [ ] Review deletions and conflicts before changing published content.
 - [ ] Provide a lightweight Windows-side sync client because the deployed server cannot read the local `F:` drive.
 - [ ] Synchronize Markdown first and transfer attachments lazily or when a note is prepared for publication.

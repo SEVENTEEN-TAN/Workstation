@@ -2,6 +2,7 @@ import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
 import { scanVault, type ScannedKnowledgeNote, type VaultScanResult } from "../knowledge/vault-scanner";
+import { buildKnowledgeSyncReport, type KnowledgeNoteSnapshot, type KnowledgeSyncReportInput } from "../knowledge/sync-report";
 import { knowledgeVaultInputSchema, knowledgeVaultPatchSchema } from "../validators/knowledge-vaults";
 
 export type KnowledgeVaultRecord = {
@@ -14,7 +15,7 @@ export type KnowledgeVaultRecord = {
   lastScannedAt: Date | null;
   lastScanFileCount: number;
   lastScanError: string | null;
-  notes?: unknown[];
+  notes?: KnowledgeNoteSnapshot[];
 };
 
 type KnowledgeVaultRepository = {
@@ -23,7 +24,7 @@ type KnowledgeVaultRepository = {
   createVault(value: { name: string; rootPath: string; enabled: boolean; ignorePatterns: string[] }): Promise<unknown>;
   updateVault(id: string, value: Record<string, unknown>): Promise<unknown>;
   deleteVault(id: string): Promise<unknown>;
-  replaceIndex(id: string, result: VaultScanResult): Promise<unknown>;
+  replaceIndex(id: string, result: VaultScanResult, report: KnowledgeSyncReportInput): Promise<unknown>;
   markScanFailed(id: string, message: string): Promise<unknown>;
 };
 
@@ -40,7 +41,7 @@ function defaultRepository(): KnowledgeVaultRepository {
   return {
     async listVaults() {
       return (await getDatabase()).knowledgeVault.findMany({
-        include: { notes: { orderBy: { relativePath: "asc" } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
         orderBy: { name: "asc" },
       });
     },
@@ -48,19 +49,19 @@ function defaultRepository(): KnowledgeVaultRepository {
       return (await getDatabase()).knowledgeVault.findUnique({ where: { id }, include: { notes: true } });
     },
     async createVault(value) {
-      return (await getDatabase()).knowledgeVault.create({ data: value, include: { notes: true } });
+      return (await getDatabase()).knowledgeVault.create({ data: value, include: { notes: true, syncReports: { include: { changes: true } } } });
     },
     async updateVault(id, value) {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
         data: value as Prisma.KnowledgeVaultUpdateInput,
-        include: { notes: { orderBy: { relativePath: "asc" } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
       });
     },
     async deleteVault(id) {
       return (await getDatabase()).knowledgeVault.delete({ where: { id } });
     },
-    async replaceIndex(id, result) {
+    async replaceIndex(id, result, report) {
       const database = await getDatabase();
       const operations: Prisma.PrismaPromise<unknown>[] = [database.knowledgeNote.deleteMany({ where: { vaultId: id } })];
       if (result.notes.length) {
@@ -68,6 +69,14 @@ function defaultRepository(): KnowledgeVaultRepository {
           data: result.notes.map((note) => noteData(id, result.scannedAt, note)),
         }));
       }
+      operations.push(database.knowledgeSyncReport.create({
+        data: {
+          vaultId: id,
+          scannedAt: result.scannedAt,
+          ...report.summary,
+          changes: { createMany: { data: report.changes } },
+        },
+      }));
       operations.push(database.knowledgeVault.update({
         where: { id },
         data: {
@@ -76,7 +85,7 @@ function defaultRepository(): KnowledgeVaultRepository {
           lastScanFileCount: result.notes.length,
           lastScanError: null,
         },
-        include: { notes: { orderBy: { relativePath: "asc" } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
       }));
       const results = await database.$transaction(operations);
       return results.at(-1);
@@ -85,7 +94,7 @@ function defaultRepository(): KnowledgeVaultRepository {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
         data: { lastScanStatus: "FAILED", lastScanError: message.slice(0, 1_000) },
-        include: { notes: { orderBy: { relativePath: "asc" } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
       });
     },
   };
@@ -122,7 +131,12 @@ export function createKnowledgeVaultService(
       if (!current.enabled) throw new Error("Vault is disabled");
       try {
         const result = await scanner(current.rootPath, parseIgnorePatterns(current.ignorePatterns));
-        return await repository.replaceIndex(id, result);
+        const report = buildKnowledgeSyncReport(current.notes ?? [], result.notes.map((note) => ({
+          relativePath: note.relativePath,
+          contentHash: note.sha256,
+          modifiedAt: note.modifiedAt,
+        })));
+        return await repository.replaceIndex(id, result, report);
       } catch (error) {
         const message = error instanceof Error ? error.message : "Vault scan failed";
         await repository.markScanFailed(id, message);

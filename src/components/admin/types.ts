@@ -317,6 +317,28 @@ export interface KnowledgeNoteData {
   indexedAt: string;
 }
 
+export interface KnowledgeSyncChangeData {
+  id: string;
+  type: "ADDED" | "MODIFIED" | "MOVED" | "MISSING";
+  previousRelativePath: string | null;
+  currentRelativePath: string | null;
+  previousContentHash: string | null;
+  currentContentHash: string | null;
+  previousModifiedAt: string | null;
+  currentModifiedAt: string | null;
+}
+
+export interface KnowledgeSyncReportData {
+  id: string;
+  scannedAt: string;
+  addedCount: number;
+  modifiedCount: number;
+  movedCount: number;
+  missingCount: number;
+  unchangedCount: number;
+  changes: KnowledgeSyncChangeData[];
+}
+
 export interface KnowledgeVaultData {
   id: string;
   name: string;
@@ -330,5 +352,6 @@ export interface KnowledgeVaultData {
   createdAt: string;
   updatedAt: string;
   notes: KnowledgeNoteData[];
+  syncReports: KnowledgeSyncReportData[];
 }
 import type { SiteContent } from "../../lib/content/schema";

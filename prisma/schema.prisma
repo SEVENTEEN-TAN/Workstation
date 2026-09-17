@@ -358,6 +358,7 @@ model KnowledgeVault {
   createdAt         DateTime        @default(now()) @map("created_at")
   updatedAt         DateTime        @updatedAt @map("updated_at")
   notes             KnowledgeNote[]
+  syncReports       KnowledgeSyncReport[]
 
   @@index([enabled, name])
   @@map("knowledge_vaults")
@@ -385,4 +386,37 @@ model KnowledgeNote {
   @@index([vaultId, directoryPath, fileName])
   @@index([contentHash])
   @@map("knowledge_notes")
+}
+
+model KnowledgeSyncReport {
+  id             String                @id @default(cuid())
+  vaultId        String                @map("vault_id")
+  scannedAt      DateTime              @map("scanned_at")
+  addedCount     Int                   @default(0) @map("added_count")
+  modifiedCount  Int                   @default(0) @map("modified_count")
+  movedCount     Int                   @default(0) @map("moved_count")
+  missingCount   Int                   @default(0) @map("missing_count")
+  unchangedCount Int                   @default(0) @map("unchanged_count")
+  createdAt      DateTime              @default(now()) @map("created_at")
+  vault          KnowledgeVault        @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  changes        KnowledgeSyncChange[]
+
+  @@index([vaultId, scannedAt])
+  @@map("knowledge_sync_reports")
+}
+
+model KnowledgeSyncChange {
+  id                   String              @id @default(cuid())
+  reportId             String              @map("report_id")
+  type                 String
+  previousRelativePath String?             @map("previous_relative_path")
+  currentRelativePath  String?             @map("current_relative_path")
+  previousContentHash  String?             @map("previous_content_hash")
+  currentContentHash   String?             @map("current_content_hash")
+  previousModifiedAt   DateTime?           @map("previous_modified_at")
+  currentModifiedAt    DateTime?           @map("current_modified_at")
+  report               KnowledgeSyncReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId, type])
+  @@map("knowledge_sync_changes")
 }

@@ -9,7 +9,7 @@ import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
-import type { KnowledgeNoteData, KnowledgeVaultData } from "./types";
+import type { KnowledgeNoteData, KnowledgeSyncChangeData, KnowledgeSyncReportData, KnowledgeVaultData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
 
@@ -34,6 +34,20 @@ function syntaxLabels(note: KnowledgeNoteData) {
   ].filter(Boolean) as string[];
 }
 
+function reportSummary(report: KnowledgeSyncReportData) {
+  return `+${report.addedCount} 新增 / ${report.modifiedCount} 修改 / ${report.movedCount} 移动 / ${report.missingCount} 缺失`;
+}
+
+function changeLabel(change: KnowledgeSyncChangeData) {
+  const labels = { ADDED: "新增", MODIFIED: "已修改", MOVED: "已移动", MISSING: "疑似缺失" };
+  return labels[change.type];
+}
+
+function changePath(change: KnowledgeSyncChangeData) {
+  if (change.type === "MOVED") return `${change.previousRelativePath} -> ${change.currentRelativePath}`;
+  return change.currentRelativePath ?? change.previousRelativePath ?? "";
+}
+
 export function KnowledgeWorkspace({ initialVaults }: { initialVaults: KnowledgeVaultData[] }) {
   const [vaults, setVaults] = useState(initialVaults);
   const [selectedId, setSelectedId] = useState(initialVaults[0]?.id ?? "");
@@ -41,6 +55,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const [deleteRequest, setDeleteRequest] = useState<KnowledgeVaultData | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
+  const syncReport = selected?.syncReports[0] ?? null;
   const notes = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase();
     if (!selected) return [];
@@ -117,6 +132,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                   <BookOpen size={18} /><span><strong>{vault.name}</strong><small>{vault.rootPath}</small></span>
                 </button>
                 <div className={styles.vaultMeta}><span>{vault.lastScanStatus === "NEVER" ? "尚未扫描" : vault.lastScanStatus === "FAILED" ? "扫描失败" : `${vault.lastScanFileCount} 篇`}</span><span>{vault.enabled ? "已启用" : "已停用"}</span></div>
+                {vault.syncReports[0] ? <p className={styles.syncSummary}>{reportSummary(vault.syncReports[0])}</p> : null}
                 {vault.lastScanError ? <p className={styles.inlineError}>{vault.lastScanError}</p> : null}
                 <div className={styles.rowActions}>
                   <button type="button" onClick={() => scanVault(vault)} disabled={!vault.enabled || isBusy(`knowledge:scan:${vault.id}`)}>{isBusy(`knowledge:scan:${vault.id}`) ? <LoaderCircle className={styles.spin} size={15} /> : <FolderSearch size={15} />}扫描知识库</button>
@@ -128,6 +144,11 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
 
           <section className={styles.panel}>
             <div className={styles.sectionHeading}><div><span className={styles.kicker}>INDEX</span><h2>{selected?.name ?? "知识库索引"}</h2></div><span>{notes.length} / {selected?.notes.length ?? 0}</span></div>
+            {syncReport ? <section className={styles.syncReport} aria-label="最新同步报告">
+              <div className={styles.syncReportHeading}><strong>最新同步报告</strong><time dateTime={syncReport.scannedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(syncReport.scannedAt))}</time></div>
+              <div className={styles.syncCounts}><span>新增 {syncReport.addedCount}</span><span>修改 {syncReport.modifiedCount}</span><span>移动 {syncReport.movedCount}</span><span>疑似缺失 {syncReport.missingCount}</span><span>未变 {syncReport.unchangedCount}</span></div>
+              {syncReport.changes.length ? <div className={styles.syncChanges}>{syncReport.changes.slice(0, 8).map((change) => <div key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small></div>)}{syncReport.changes.length > 8 ? <p>另有 {syncReport.changes.length - 8} 项变更未展开。</p> : null}</div> : <p className={styles.syncEmpty}>内容未变化，未生成待处理项。</p>}
+            </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
               <>
                 <label className={styles.searchField}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索相对路径" aria-label="搜索相对路径" /></label>
