@@ -244,7 +244,7 @@ Run: `$env:DATABASE_URL='file:./workstation-verification.db'; npm run db:validat
 
 Run: `$env:DATABASE_URL='file:./workstation-verification.db'; npm run build`
 
-- [ ] **Step 5: Push `main` after a clean verification and a clean status**
+- [x] **Step 5: Push `main` after a clean verification and a clean status**
 
 ```bash
 git push origin main
