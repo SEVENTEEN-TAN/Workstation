@@ -395,7 +395,7 @@ export interface KnowledgeSourceRevisionData {
   vaultId: string;
   relativePath: string;
   contentHash: string;
-  origin: "LOCAL_SCAN";
+  origin: "LOCAL_SCAN" | "WINDOWS_SYNC";
   capturedAt: string;
   draft: KnowledgePublicationDraftData | null;
 }
