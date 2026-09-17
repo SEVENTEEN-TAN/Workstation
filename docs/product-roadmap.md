@@ -114,7 +114,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Create a publication draft from a selected source revision.
 - [x] Keep the published article stable when the source note changes and show that an update is available.
 - [ ] Publish only explicitly selected attachments.
-- [ ] Add public article, knowledge collection, tag, and search pages.
+- [x] Add public article, knowledge collection, tag, and search pages.
 
 ## V3 - Automation And AI
 

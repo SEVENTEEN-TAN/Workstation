@@ -34,4 +34,14 @@ describe("public knowledge articles", () => {
     expect(`${listRoute}\n${articleRoute}`).not.toContain("knowledgeVaultService");
     expect(`${listRoute}\n${articleRoute}`).not.toContain("KnowledgePublicationDraft");
   });
+
+  it("uses collection-only public routes without private knowledge services", () => {
+    const listRoute = readProjectFile("src/app/knowledge/collections/page.tsx");
+    const collectionRoute = readProjectFile("src/app/knowledge/collections/[slug]/page.tsx");
+
+    expect(listRoute).toContain("knowledgeCollectionService.listPublic");
+    expect(collectionRoute).toContain("knowledgeCollectionService.getPublic");
+    expect(`${listRoute}\n${collectionRoute}`).not.toContain("knowledgeVaultService");
+    expect(`${listRoute}\n${collectionRoute}`).not.toContain("KnowledgePublicationDraft");
+  });
 });
