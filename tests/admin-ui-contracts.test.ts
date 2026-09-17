@@ -382,6 +382,9 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("疑似缺失");
     expect(workspace).toContain("未解析链接");
     expect(workspace).toContain("正向链接");
+    expect(workspace).toContain("查看笔记");
+    expect(workspace).toContain("/notes?path=");
+    expect(workspace).not.toContain("dangerouslySetInnerHTML");
     expect(workspace).toContain("syncReports");
     expect(workspace).toContain("syncReport");
     expect(workspace).toContain("ConfirmDialog");

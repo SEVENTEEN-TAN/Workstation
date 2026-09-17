@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Database, FolderSearch, LoaderCircle, Plus, Search, Trash2 } from "lucide-react";
+import { BookOpen, Database, FileText, FolderSearch, LoaderCircle, Plus, Search, Trash2, X } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -12,6 +12,8 @@ import { adminRequest } from "./request";
 import type { KnowledgeNoteData, KnowledgeNoteLinkData, KnowledgeSyncChangeData, KnowledgeSyncReportData, KnowledgeVaultData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
+
+type NoteContent = { relativePath: string; content: string };
 
 function splitPatterns(value: FormDataEntryValue | null) {
   return String(value ?? "").split(/[\n,]+/).map((item) => item.trim()).filter(Boolean);
@@ -72,6 +74,10 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const [selectedId, setSelectedId] = useState(initialVaults[0]?.id ?? "");
   const [query, setQuery] = useState("");
   const [deleteRequest, setDeleteRequest] = useState<KnowledgeVaultData | null>(null);
+  const [viewingNote, setViewingNote] = useState<KnowledgeNoteData | null>(null);
+  const [noteContent, setNoteContent] = useState("");
+  const [noteError, setNoteError] = useState("");
+  const [isNoteLoading, setIsNoteLoading] = useState(false);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
   const syncReport = selected?.syncReports[0] ?? null;
@@ -127,6 +133,22 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
     setDeleteRequest(null);
   }
 
+  async function viewNote(note: KnowledgeNoteData) {
+    if (!selected) return;
+    setViewingNote(note);
+    setNoteContent("");
+    setNoteError("");
+    setIsNoteLoading(true);
+    try {
+      const result = await adminRequest<NoteContent>(`/api/admin/knowledge/vaults/${selected.id}/notes?path=${encodeURIComponent(note.relativePath)}`);
+      setNoteContent(result.content);
+    } catch (error) {
+      setNoteError(error instanceof Error ? error.message : "笔记正文不可用");
+    } finally {
+      setIsNoteLoading(false);
+    }
+  }
+
   return (
     <section>
       <PageHeader title="个人知识库" description="登记本地 Obsidian Vault，执行只读扫描并检查 Markdown 结构。笔记正文与附件不会上传。" />
@@ -152,7 +174,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
           <aside className={styles.vaultStack} aria-label="已登记知识库">
             {vaults.map((vault) => (
               <article key={vault.id} className={`${styles.vaultCard} ${selected?.id === vault.id ? styles.vaultCardActive : ""}`}>
-                <button type="button" className={styles.vaultSelect} onClick={() => { setSelectedId(vault.id); setQuery(""); }}>
+                <button type="button" className={styles.vaultSelect} onClick={() => { setSelectedId(vault.id); setQuery(""); setViewingNote(null); }}>
                   <BookOpen size={18} /><span><strong>{vault.name}</strong><small>{vault.rootPath}</small></span>
                 </button>
                 <div className={styles.vaultMeta}><span>{vault.lastScanStatus === "NEVER" ? "尚未扫描" : vault.lastScanStatus === "FAILED" ? "扫描失败" : `${vault.lastScanFileCount} 篇`}</span><span>{vault.enabled ? "已启用" : "已停用"}</span></div>
@@ -178,12 +200,16 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                <div className={styles.syncCounts}><span>正向链接 {noteLinks.length}</span><span>已解析嵌入 {embeds.filter((link) => link.isResolved).length}</span><span>未解析链接 {unresolvedLinks.length}</span></div>
                {unresolvedLinks.length ? <div className={styles.syncChanges}>{unresolvedLinks.slice(0, 8).map((link) => <div key={link.id}><span>未解析</span><small>{link.sourceRelativePath} -&gt; {link.targetRaw}</small></div>)}{unresolvedLinks.length > 8 ? <p>另有 {unresolvedLinks.length - 8} 条未解析链接未展开。</p> : null}</div> : <p className={styles.syncEmpty}>所有内部链接都已解析。</p>}
              </section> : null}
+             {viewingNote ? <section className={styles.noteViewer} aria-label="笔记正文">
+               <div className={styles.syncReportHeading}><div><strong>{noteTitle(viewingNote)}</strong><small>{viewingNote.relativePath}</small></div><button type="button" className={styles.iconButton} title="关闭笔记" aria-label="关闭笔记" onClick={() => setViewingNote(null)}><X size={16} /></button></div>
+               {isNoteLoading ? <p className={styles.syncEmpty}>正在读取笔记...</p> : noteError ? <p className={styles.inlineError} role="alert">{noteError}</p> : <pre className={styles.noteSource}>{noteContent}</pre>}
+             </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
               <>
                 <label className={styles.searchField}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索相对路径" aria-label="搜索相对路径" /></label>
                 {notes.length ? <div className={styles.noteTable}>{notes.map((note) => (
                   <article key={note.id} className={styles.noteRow}>
-                    <div><strong>{noteTitle(note)}</strong><small>{note.relativePath}</small></div>
+                    <div><strong>{noteTitle(note)}</strong><small>{note.relativePath}</small><button type="button" className={styles.noteViewButton} onClick={() => viewNote(note)}><FileText size={13} />查看笔记</button></div>
                     <span>{formatBytes(note.sizeBytes)}</span>
                     <time dateTime={note.modifiedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium" }).format(new Date(note.modifiedAt))}</time>
                      <div className={styles.noteBadges}>{[...syntaxLabels(note), ...linkLabels(note, selectedLinks)].map((label) => <span key={label}>{label}</span>)}</div>

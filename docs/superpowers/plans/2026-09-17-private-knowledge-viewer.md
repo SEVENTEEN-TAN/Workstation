@@ -29,26 +29,26 @@
 **Interfaces:**
 - Produces `readIndexedMarkdownNote(rootPath: string, relativePath: string): Promise<{ content: string }>`.
 
-- [ ] **Step 1: Write a failing traversal test**
+- [x] **Step 1: Write a failing traversal test**
 
 ```ts
 await expect(readIndexedMarkdownNote(root, "../outside.md")).rejects.toThrow("Note unavailable");
 ```
 
-- [ ] **Step 2: Write a failing symlink-escape test**
+- [x] **Step 2: Write a failing symlink-escape test**
 
 ```ts
 await symlink(outsidePath, join(root, "notes", "outside.md"), "file");
 await expect(readIndexedMarkdownNote(root, "notes/outside.md")).rejects.toThrow("Note unavailable");
 ```
 
-- [ ] **Step 3: Write a failing valid-note test**
+- [x] **Step 3: Write a failing valid-note test**
 
 ```ts
 await expect(readIndexedMarkdownNote(root, "notes/entry.md")).resolves.toEqual({ content: "# Entry" });
 ```
 
-- [ ] **Step 4: Implement validated UTF-8 reads**
+- [x] **Step 4: Implement validated UTF-8 reads**
 
 ```ts
 const vaultRoot = await realpath(rootPath);
@@ -59,9 +59,9 @@ if (!safeFile.startsWith(`${vaultRoot}${sep}`)) throw new Error("Note unavailabl
 return { content: await readFile(safeFile, "utf8") };
 ```
 
-- [ ] **Step 5: Run `npm test -- tests/knowledge-note-reader.test.ts`**
+- [x] **Step 5: Run `npm test -- tests/knowledge-note-reader.test.ts`**
 
-- [ ] **Step 6: Commit `feat: add safe local note reader`**
+- [x] **Step 6: Commit `feat: add safe local note reader`**
 
 ### Task 2: Protected Note-Content API
 
@@ -74,20 +74,20 @@ return { content: await readFile(safeFile, "utf8") };
 - Produces `knowledgeVaultService.readNote(vaultId, relativePath)`.
 - Route returns `{ relativePath, content }` for an indexed note only.
 
-- [ ] **Step 1: Write failing tests for an unknown note and an indexed note**
+- [x] **Step 1: Write failing tests for an unknown note and an indexed note**
 
 ```ts
 await expect(service.readNote("vault-1", "unknown.md")).rejects.toThrow("Note unavailable");
 await expect(service.readNote("vault-1", "notes/a.md")).resolves.toMatchObject({ relativePath: "notes/a.md" });
 ```
 
-- [ ] **Step 2: Add `readNote` using the vault record and indexed paths**
+- [x] **Step 2: Add `readNote` using the vault record and indexed paths**
 
-- [ ] **Step 3: Add a `withAdminSession` route that validates `path` query input**
+- [x] **Step 3: Add a `withAdminSession` route that validates `path` query input**
 
-- [ ] **Step 4: Run the focused service and admin contract tests**
+- [x] **Step 4: Run the focused service and admin contract tests**
 
-- [ ] **Step 5: Commit `feat: add private knowledge note API`**
+- [x] **Step 5: Commit `feat: add private knowledge note API`**
 
 ### Task 3: Admin Note Viewer
 
@@ -101,18 +101,18 @@ await expect(service.readNote("vault-1", "notes/a.md")).resolves.toMatchObject({
 - Consumes `GET /api/admin/knowledge/vaults/:id/notes?path=<encoded>`.
 - Produces an admin-only source panel with note metadata, links, and escaped Markdown text.
 
-- [ ] **Step 1: Write a failing workspace-contract test for the protected note endpoint and source panel**
+- [x] **Step 1: Write a failing workspace-contract test for the protected note endpoint and source panel**
 
 ```ts
 expect(workspace).toContain("查看笔记");
 expect(workspace).toContain("/notes?path=");
 ```
 
-- [ ] **Step 2: Add note selection, loading and unavailable states**
+- [x] **Step 2: Add note selection, loading and unavailable states**
 
-- [ ] **Step 3: Render content inside a `pre` element; do not use `dangerouslySetInnerHTML`**
+- [x] **Step 3: Render content inside a `pre` element; do not use `dangerouslySetInnerHTML`**
 
-- [ ] **Step 4: Run focused UI-contract tests**
+- [x] **Step 4: Run focused UI-contract tests**
 
 - [ ] **Step 5: Commit `feat: add private knowledge note viewer`**
 

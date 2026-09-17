@@ -2470,6 +2470,39 @@
 .noteRow strong { overflow: hidden; color: #e7eaec; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .noteRow small { margin-top: 4px; overflow: hidden; color: #66717c; text-overflow: ellipsis; white-space: nowrap; }
 
+.noteViewButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 7px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #79cfac;
+  font-size: 10px;
+}
+
+.noteViewer {
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(119, 173, 236, 0.2);
+  border-radius: 6px;
+  background: rgba(119, 173, 236, 0.04);
+}
+
+.noteViewer .syncReportHeading small { display: block; margin-top: 4px; color: #738091; font-size: 10px; }
+
+.noteSource {
+  max-height: 480px;
+  margin: 10px 0 0;
+  overflow: auto;
+  color: #c8d2dc;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
 .noteBadges {
   display: flex;
   flex-wrap: wrap;
