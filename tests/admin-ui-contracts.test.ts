@@ -433,6 +433,7 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("/api/admin/knowledge/publications/drafts");
     expect(workspace).toContain("发布文章");
     expect(workspace).toContain("/api/admin/knowledge/articles");
+    expect(workspace).toContain("源文件已有新版本");
     expect(workspace).toContain("buildKnowledgeNoteTree");
     expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.knowledgeIndexLayout\s*\{\s*grid-template-columns:\s*1fr/);
     expect(adminStyles).toMatch(/@media \(max-width: 639px\)[\s\S]*\.noteInspector\s*\{\s*grid-template-columns:\s*1fr/);
