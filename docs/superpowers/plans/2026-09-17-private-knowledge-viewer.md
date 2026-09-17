@@ -35,24 +35,33 @@
 await expect(readIndexedMarkdownNote(root, "../outside.md")).rejects.toThrow("Note unavailable");
 ```
 
-- [ ] **Step 2: Write a failing valid-note test**
+- [ ] **Step 2: Write a failing symlink-escape test**
+
+```ts
+await symlink(outsidePath, join(root, "notes", "outside.md"), "file");
+await expect(readIndexedMarkdownNote(root, "notes/outside.md")).rejects.toThrow("Note unavailable");
+```
+
+- [ ] **Step 3: Write a failing valid-note test**
 
 ```ts
 await expect(readIndexedMarkdownNote(root, "notes/entry.md")).resolves.toEqual({ content: "# Entry" });
 ```
 
-- [ ] **Step 3: Implement validated UTF-8 reads**
+- [ ] **Step 4: Implement validated UTF-8 reads**
 
 ```ts
-const vaultRoot = resolve(rootPath);
+const vaultRoot = await realpath(rootPath);
 const candidate = resolve(vaultRoot, relativePath);
 if (!candidate.startsWith(`${vaultRoot}${sep}`) || extname(candidate).toLowerCase() !== ".md") throw new Error("Note unavailable");
-return { content: await readFile(candidate, "utf8") };
+const safeFile = await realpath(candidate);
+if (!safeFile.startsWith(`${vaultRoot}${sep}`)) throw new Error("Note unavailable");
+return { content: await readFile(safeFile, "utf8") };
 ```
 
-- [ ] **Step 4: Run `npm test -- tests/knowledge-note-reader.test.ts`**
+- [ ] **Step 5: Run `npm test -- tests/knowledge-note-reader.test.ts`**
 
-- [ ] **Step 5: Commit `feat: add safe local note reader`**
+- [ ] **Step 6: Commit `feat: add safe local note reader`**
 
 ### Task 2: Protected Note-Content API
 
