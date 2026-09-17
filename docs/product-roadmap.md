@@ -111,7 +111,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 
 - [x] Default every synchronized note to private.
 - [x] Provide a vault tree, note viewer, properties, links, backlinks, and publication inspector.
-- [ ] Create a publication draft from a selected source revision.
+- [x] Create a publication draft from a selected source revision.
 - [ ] Keep the published article stable when the source note changes and show that an update is available.
 - [ ] Publish only explicitly selected attachments.
 - [ ] Add public article, knowledge collection, tag, and search pages.
