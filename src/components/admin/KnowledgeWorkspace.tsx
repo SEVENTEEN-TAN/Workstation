@@ -34,6 +34,16 @@ function syntaxLabels(note: KnowledgeNoteData) {
   ].filter(Boolean) as string[];
 }
 
+function noteTitle(note: KnowledgeNoteData) {
+  if (!note.frontmatterJson) return note.fileName;
+  try {
+    const { title } = JSON.parse(note.frontmatterJson) as { title?: unknown };
+    return typeof title === "string" && title.trim() ? title.trim() : note.fileName;
+  } catch {
+    return note.fileName;
+  }
+}
+
 function reportSummary(report: KnowledgeSyncReportData) {
   return `+${report.addedCount} 新增 / ${report.modifiedCount} 修改 / ${report.movedCount} 移动 / ${report.missingCount} 缺失`;
 }
@@ -154,7 +164,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                 <label className={styles.searchField}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索相对路径" aria-label="搜索相对路径" /></label>
                 {notes.length ? <div className={styles.noteTable}>{notes.map((note) => (
                   <article key={note.id} className={styles.noteRow}>
-                    <div><strong>{note.fileName}</strong><small>{note.relativePath}</small></div>
+                    <div><strong>{noteTitle(note)}</strong><small>{note.relativePath}</small></div>
                     <span>{formatBytes(note.sizeBytes)}</span>
                     <time dateTime={note.modifiedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium" }).format(new Date(note.modifiedAt))}</time>
                     <div className={styles.noteBadges}>{syntaxLabels(note).map((label) => <span key={label}>{label}</span>)}</div>

@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { basename, dirname, extname, join, relative, sep } from "node:path";
+import { parseDocument } from "yaml";
 
 const DEFAULT_IGNORED_DIRECTORIES = new Set([".obsidian", ".trash", ".claudian", ".workbuddy"]);
 
@@ -17,6 +18,7 @@ export type ScannedKnowledgeNote = {
   hasCallouts: boolean;
   hasDataview: boolean;
   hasTasks: boolean;
+  frontmatter: Record<string, unknown> | null;
 };
 
 export type VaultScanResult = {
@@ -67,6 +69,16 @@ function detectSyntax(content: string) {
   };
 }
 
+function parseFrontmatter(content: string) {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  if (!match) return null;
+
+  const document = parseDocument(match[1]);
+  if (document.errors.length) return null;
+  const value = document.toJSON();
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
+}
+
 export async function scanVault(rootPath: string, ignorePatterns: readonly string[] = []): Promise<VaultScanResult> {
   let rootStat;
   try {
@@ -103,6 +115,7 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
         modifiedAt: fileStat.mtime,
         sha256: createHash("sha256").update(content).digest("hex"),
         ...detectSyntax(content),
+        frontmatter: parseFrontmatter(content),
       });
     }
   }

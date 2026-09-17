@@ -22,7 +22,13 @@ describe("knowledge vault scanner", () => {
     const richContent = [
       "---",
       "title: Rich note",
-      "tags: [obsidian]",
+      "aliases: [Rich, Reference]",
+      "tags:",
+      "  - obsidian",
+      "  - knowledge",
+      "type: guide",
+      "created: 2026-09-16",
+      "published: true",
       "---",
       "",
       "![[attachment.png]]",
@@ -74,6 +80,14 @@ describe("knowledge vault scanner", () => {
       hasCallouts: true,
       hasDataview: true,
       hasTasks: true,
+      frontmatter: {
+        title: "Rich note",
+        aliases: ["Rich", "Reference"],
+        tags: ["obsidian", "knowledge"],
+        type: "guide",
+        created: "2026-09-16",
+        published: true,
+      },
     });
     expect(result.notes[0].modifiedAt).toBeInstanceOf(Date);
     expect(result.notes[0]).toMatchObject({

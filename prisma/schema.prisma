@@ -379,6 +379,7 @@ model KnowledgeNote {
   hasCallouts      Boolean        @default(false) @map("has_callouts")
   hasDataview      Boolean        @default(false) @map("has_dataview")
   hasTasks         Boolean        @default(false) @map("has_tasks")
+  frontmatterJson  String?        @map("frontmatter_json")
   indexedAt        DateTime       @map("indexed_at")
   vault            KnowledgeVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
 

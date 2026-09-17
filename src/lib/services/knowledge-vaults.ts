@@ -33,8 +33,8 @@ function parseIgnorePatterns(value: unknown): string[] {
 }
 
 function noteData(vaultId: string, indexedAt: Date, note: ScannedKnowledgeNote) {
-  const { sha256, ...rest } = note;
-  return { vaultId, indexedAt, contentHash: sha256, ...rest };
+  const { sha256, frontmatter, ...rest } = note;
+  return { vaultId, indexedAt, contentHash: sha256, frontmatterJson: frontmatter ? JSON.stringify(frontmatter) : null, ...rest };
 }
 
 function defaultRepository(): KnowledgeVaultRepository {
