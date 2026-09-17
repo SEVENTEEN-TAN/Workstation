@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { readFile, realpath, stat } from "node:fs/promises";
+import { basename, dirname, extname, resolve, sep } from "node:path";
 
 import type { VaultScanResult } from "./vault-scanner";
 
@@ -21,6 +23,14 @@ const summarySchema = z.object({
   missingCount: z.number().int().min(0),
   unchangedCount: z.number().int().min(0),
 }).strict();
+
+const attachmentRequestsSchema = z.object({ requests: z.array(z.object({
+  id: z.string().min(1),
+  target: z.string().min(1),
+  sourceRevision: z.object({ relativePath: z.string().min(1) }),
+}).strict()) }).strict();
+
+const attachmentMimeTypes: Record<string, string> = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp" };
 
 function parseServerUrl(value: string | undefined) {
   try {
@@ -48,6 +58,44 @@ export function readKnowledgeSyncConfig(environment: Environment = process.env) 
   } satisfies KnowledgeSyncConfig;
 }
 
+export async function resolveRequestedAttachment(vaultPath: string, noteRelativePath: string, target: string) {
+  const root = await realpath(vaultPath);
+  const noteDirectory = dirname(noteRelativePath.replace(/\\/g, "/"));
+  const candidates = [
+    resolve(root, noteDirectory, target),
+    resolve(root, noteDirectory, "assets", target),
+    resolve(root, "assets", target),
+    resolve(root, target),
+  ];
+  const matches: string[] = [];
+  for (const candidate of candidates) {
+    try {
+      const resolved = await realpath(candidate);
+      if (!resolved.startsWith(`${root}${sep}`) || !(await stat(resolved)).isFile()) continue;
+      if (attachmentMimeTypes[extname(resolved).toLowerCase()] && !matches.includes(resolved)) matches.push(resolved);
+    } catch {
+      // Missing candidates are expected while checking Obsidian attachment conventions.
+    }
+  }
+  return matches.length === 1 ? matches[0] : null;
+}
+
+async function syncRequestedAttachments(config: KnowledgeSyncConfig, fetcher: Fetcher) {
+  const endpoint = new URL(`/api/sync/knowledge/vaults/${encodeURIComponent(config.vaultId)}/attachments`, config.serverUrl);
+  const response = await fetcher(new Request(endpoint, { headers: { authorization: `Bearer ${config.token}` } }));
+  if (!response.ok) throw new Error("Knowledge attachment sync failed");
+  const pending = attachmentRequestsSchema.parse(await response.json());
+  for (const request of pending.requests) {
+    const path = await resolveRequestedAttachment(config.vaultPath, request.sourceRevision.relativePath, request.target);
+    if (!path) continue;
+    const form = new FormData();
+    form.set("file", new File([await readFile(path)], basename(path), { type: attachmentMimeTypes[extname(path).toLowerCase()] }));
+    const upload = new URL(`/api/sync/knowledge/attachments/${encodeURIComponent(request.id)}`, config.serverUrl);
+    const uploaded = await fetcher(new Request(upload, { method: "POST", headers: { authorization: `Bearer ${config.token}` }, body: form }));
+    if (!uploaded.ok) throw new Error("Knowledge attachment sync failed");
+  }
+}
+
 export async function syncKnowledge(config: KnowledgeSyncConfig, scan: Scanner, fetcher: Fetcher = (request) => fetch(request)) {
   const snapshot = await scan(config.vaultPath, config.ignorePatterns);
   const endpoint = new URL(`/api/sync/knowledge/vaults/${encodeURIComponent(config.vaultId)}`, config.serverUrl);
@@ -58,7 +106,9 @@ export async function syncKnowledge(config: KnowledgeSyncConfig, scan: Scanner, 
   }));
   if (!response.ok) throw new Error("Knowledge sync failed");
   try {
-    return summarySchema.parse((await response.json()).summary);
+    const summary = summarySchema.parse((await response.json()).summary);
+    await syncRequestedAttachments(config, fetcher);
+    return summary;
   } catch {
     throw new Error("Knowledge sync failed");
   }

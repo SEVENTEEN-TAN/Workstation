@@ -65,6 +65,7 @@ model Asset {
   isReferenced     Boolean  @default(false) @map("is_referenced")
   createdAt        DateTime @default(now()) @map("created_at")
   draftAttachments KnowledgePublicationDraftAttachment[]
+  attachmentTransfers KnowledgeAttachmentTransferRequest[]
 
   @@index([sha256])
   @@map("assets")
@@ -459,14 +460,17 @@ model KnowledgeAttachmentTransferRequest {
   vaultId          String                    @map("vault_id")
   target           String
   status           String                    @default("PENDING")
+  assetId          String?                   @map("asset_id")
   createdAt        DateTime                  @default(now()) @map("created_at")
   updatedAt        DateTime                  @updatedAt @map("updated_at")
   draft            KnowledgePublicationDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
   sourceRevision   KnowledgeSourceRevision   @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict)
   vault            KnowledgeVault            @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  asset            Asset?                    @relation(fields: [assetId], references: [id], onDelete: SetNull)
 
   @@unique([draftId, target])
   @@index([vaultId, status])
+  @@index([assetId])
   @@map("knowledge_attachment_transfer_requests")
 }
 

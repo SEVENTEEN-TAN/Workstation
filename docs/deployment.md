@@ -33,7 +33,7 @@ printf '%s' "$token" | sha256sum | awk '{print "KNOWLEDGE_SYNC_TOKEN_HASH=" $1}'
 - `KNOWLEDGE_SYNC_VAULT_PATH`：本机 Vault 的绝对路径。
 - `KNOWLEDGE_SYNC_IGNORE_PATTERNS`：可选，逗号或换行分隔的忽略规则。
 
-首次手动同步并检查后台报告后，可使用 Windows“任务计划程序”按周期执行该命令。此流程只传输 Markdown 快照和索引元数据；附件不会自动上传，任何同步也不会改写 Vault 或公开内容。
+首次手动同步并检查后台报告后，可使用 Windows“任务计划程序”按周期执行该命令。默认同步 Markdown 快照和索引元数据；后台为笔记创建发布草稿后，客户端会按请求上传该草稿引用的图片。同步不会改写 Vault 或直接修改公开内容。
 
 ## 发布流程
 
