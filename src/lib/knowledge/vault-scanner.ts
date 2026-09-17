@@ -132,6 +132,25 @@ function linkPathKey(target: string, sourceDirectory: string) {
   return candidate.startsWith("../") ? null : noteKey(candidate);
 }
 
+function headingKey(value: string) {
+  return value.replace(/[*_`~]/g, "").replace(/\s+/g, " ").trim().toLocaleLowerCase();
+}
+
+function headingsIn(content: string) {
+  const headings = new Set<string>();
+  let fenced = false;
+  for (const line of content.split(/\r?\n/)) {
+    if (/^\s*```/.test(line)) {
+      fenced = !fenced;
+      continue;
+    }
+    if (fenced) continue;
+    const match = line.match(/^\s{0,3}#{1,6}\s+(.+?)(?:\s+#+)?\s*$/);
+    if (match) headings.add(headingKey(match[1]));
+  }
+  return headings;
+}
+
 function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, string>) {
   const lookup = new Map<string, Set<string>>();
   for (const note of notes) {
@@ -140,6 +159,7 @@ function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, 
     const aliases = Array.isArray(note.frontmatter?.aliases) ? note.frontmatter.aliases : [];
     for (const alias of aliases) if (typeof alias === "string") addLookup(lookup, noteKey(alias), note.relativePath);
   }
+  const headingsByPath = new Map(notes.map((note) => [note.relativePath, headingsIn(contentByPath.get(note.relativePath) ?? "")]));
 
   const links: ScannedKnowledgeLink[] = [];
   for (const note of notes) {
@@ -150,13 +170,14 @@ function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, 
       const targetPath = target.trim();
       if (!targetPath) continue;
       const targetRelativePath = uniquePath(lookup, linkPathKey(targetPath, note.directoryPath) ?? "");
+      const targetHeading = heading?.trim() || null;
       links.push({
         sourceRelativePath: note.relativePath,
         targetRaw: targetWithHeading.trim(),
         targetRelativePath,
-        targetHeading: heading?.trim() || null,
+        targetHeading,
         displayLabel: display?.trim() || null,
-        isResolved: Boolean(targetRelativePath),
+        isResolved: targetRelativePath !== null && (!targetHeading || headingsByPath.get(targetRelativePath)?.has(headingKey(targetHeading)) === true),
       });
     }
   }

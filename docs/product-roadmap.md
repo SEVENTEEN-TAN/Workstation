@@ -100,8 +100,8 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 
 - [x] Parse and preserve YAML frontmatter, including title, aliases, tags, type, created date, and publication metadata.
 - [x] Preserve directory hierarchy and identify conventional MOC/index notes.
-- [ ] Resolve wikilinks, aliases, relative paths, heading links, and display labels.
-- [ ] Build forward links, backlinks, and unresolved-link reports.
+- [x] Resolve wikilinks, aliases, relative paths, heading links, and display labels.
+- [x] Build forward links, backlinks, and unresolved-link reports.
 - [ ] Resolve Obsidian embeds and sibling `assets` folders.
 - [ ] Render callouts, tables, fenced code, and Markdown task lists.
 - [ ] Preserve unsupported Dataview blocks without executing them on the server.

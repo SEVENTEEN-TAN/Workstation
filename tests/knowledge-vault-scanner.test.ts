@@ -140,6 +140,7 @@ describe("knowledge vault scanner", () => {
         "[[Target note#Introduction|Read the target]]",
         "[[../shared/Guide]]",
         "[[Alias note]]",
+        "[[Target note#Missing heading]]",
         "[[Missing note]]",
         "![[attachment.png]]",
       ].join("\n"), "utf8"),
@@ -171,6 +172,13 @@ describe("knowledge vault scanner", () => {
         targetRaw: "Alias note",
         targetRelativePath: "notes/Target note.md",
         isResolved: true,
+      }),
+      expect.objectContaining({
+        sourceRelativePath: "notes/source.md",
+        targetRaw: "Target note#Missing heading",
+        targetRelativePath: "notes/Target note.md",
+        targetHeading: "Missing heading",
+        isResolved: false,
       }),
       expect.objectContaining({
         sourceRelativePath: "notes/source.md",
