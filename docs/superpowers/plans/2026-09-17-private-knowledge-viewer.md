@@ -114,15 +114,15 @@ expect(workspace).toContain("/notes?path=");
 
 - [x] **Step 4: Run focused UI-contract tests**
 
-- [ ] **Step 5: Commit `feat: add private knowledge note viewer`**
+- [x] **Step 5: Commit `feat: add private knowledge note viewer`**
 
 ### Task 4: Full Verification
 
 **Files:** None unless verification exposes a defect.
 
-- [ ] **Step 1: Run `npm test`**
-- [ ] **Step 2: Run `npm run lint`**
-- [ ] **Step 3: Run `npx tsc --noEmit`**
-- [ ] **Step 4: Run `npm run db:validate`**
-- [ ] **Step 5: Run `npm run build` with an isolated migrated SQLite database**
-- [ ] **Step 6: Commit only required fixes, then push `main`**
+- [x] **Step 1: Run `npm test`**
+- [x] **Step 2: Run `npm run lint`**
+- [x] **Step 3: Run `npx tsc --noEmit`**
+- [x] **Step 4: Run `npm run db:validate`**
+- [x] **Step 5: Run `npm run build` with an isolated migrated SQLite database**
+- [x] **Step 6: Commit only required fixes, then push `main`**

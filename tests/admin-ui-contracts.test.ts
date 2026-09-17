@@ -13,6 +13,7 @@ import {
 import { AdminRequestError, adminRequest } from "../src/components/admin/request";
 import { createFeedback } from "../src/components/admin/useAdminAction";
 import { EmptyState } from "../src/components/admin/EmptyState";
+import { ObsidianMarkdownPreview } from "../src/components/admin/ObsidianMarkdownPreview";
 import { PageHeader } from "../src/components/admin/PageHeader";
 import { OkrEntityDialog } from "../src/components/admin/okr/OkrEntityDialog";
 import type { AssetData } from "../src/components/admin/types";
@@ -166,6 +167,37 @@ describe("admin request contracts", () => {
 });
 
 describe("admin shell markup contracts", () => {
+  it("renders Obsidian reading syntax without executing raw HTML or Dataview", () => {
+    const markup = renderToStaticMarkup(
+      createElement(ObsidianMarkdownPreview, {
+        content: [
+          "> [!note] Reading note",
+          "> Keep this private.",
+          "",
+          "| Name | Value |",
+          "| --- | --- |",
+          "| Status | Active |",
+          "",
+          "- [x] Reviewed",
+          "",
+          "```dataview",
+          "list from #private",
+          "```",
+          "",
+          "<script>window.__unsafe = true</script>",
+        ].join("\n"),
+      }),
+    );
+
+    expect(markup).toContain("Reading note");
+    expect(markup).toContain("Keep this private.");
+    expect(markup).toContain("<table>");
+    expect(markup).toContain('type="checkbox"');
+    expect(markup).toContain("Dataview 查询（未执行）");
+    expect(markup).toContain("&lt;script&gt;window.__unsafe = true&lt;/script&gt;");
+    expect(markup).not.toContain("<script>window.__unsafe");
+  });
+
   it("renders a page title and optional description", () => {
     const markup = renderToStaticMarkup(
       createElement(PageHeader, {

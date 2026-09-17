@@ -103,8 +103,8 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Resolve wikilinks, aliases, relative paths, heading links, and display labels.
 - [x] Build forward links, backlinks, and unresolved-link reports.
 - [x] Resolve Obsidian embeds and sibling `assets` folders without transferring files.
-- [ ] Render callouts, tables, fenced code, and Markdown task lists.
-- [ ] Preserve unsupported Dataview blocks without executing them on the server.
+- [x] Render callouts, tables, fenced code, and Markdown task lists.
+- [x] Preserve unsupported Dataview blocks without executing them on the server.
 - [ ] Treat normal Obsidian tasks as note content unless the administrator explicitly promotes one to an OKR Action Item.
 
 ### Knowledge Publishing

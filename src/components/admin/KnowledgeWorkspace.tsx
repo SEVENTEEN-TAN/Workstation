@@ -7,6 +7,7 @@ import styles from "../../app/admin/admin.module.css";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
+import { ObsidianMarkdownPreview } from "./ObsidianMarkdownPreview";
 import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
 import type { KnowledgeNoteData, KnowledgeNoteLinkData, KnowledgeSyncChangeData, KnowledgeSyncReportData, KnowledgeVaultData } from "./types";
@@ -202,7 +203,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
              </section> : null}
              {viewingNote ? <section className={styles.noteViewer} aria-label="笔记正文">
                <div className={styles.syncReportHeading}><div><strong>{noteTitle(viewingNote)}</strong><small>{viewingNote.relativePath}</small></div><button type="button" className={styles.iconButton} title="关闭笔记" aria-label="关闭笔记" onClick={() => setViewingNote(null)}><X size={16} /></button></div>
-               {isNoteLoading ? <p className={styles.syncEmpty}>正在读取笔记...</p> : noteError ? <p className={styles.inlineError} role="alert">{noteError}</p> : <pre className={styles.noteSource}>{noteContent}</pre>}
+               {isNoteLoading ? <p className={styles.syncEmpty}>正在读取笔记...</p> : noteError ? <p className={styles.inlineError} role="alert">{noteError}</p> : <ObsidianMarkdownPreview content={noteContent} />}
              </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
               <>
