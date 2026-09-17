@@ -41,7 +41,7 @@ const vaultDetailsInclude = {
       contentHash: true,
       origin: true,
       capturedAt: true,
-      draft: { select: { id: true, sourceRevisionId: true, sourceHash: true, title: true, summary: true, tags: true, status: true, createdAt: true, updatedAt: true, article: { select: { id: true, draftId: true, slug: true, publishedAt: true } } } },
+      draft: { select: { id: true, sourceRevisionId: true, sourceHash: true, title: true, summary: true, tags: true, status: true, createdAt: true, updatedAt: true, attachments: { select: { id: true, target: true, assetId: true } }, article: { select: { id: true, draftId: true, slug: true, publishedAt: true } } } },
     },
   },
   syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } },

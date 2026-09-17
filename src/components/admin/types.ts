@@ -352,7 +352,14 @@ export interface KnowledgePublicationDraftData {
   status: "DRAFT";
   createdAt: string;
   updatedAt: string;
+  attachments: KnowledgePublicationDraftAttachmentData[];
   article: KnowledgeArticleData | null;
+}
+
+export interface KnowledgePublicationDraftAttachmentData {
+  id: string;
+  target: string;
+  assetId: string;
 }
 
 export interface KnowledgeArticleData {

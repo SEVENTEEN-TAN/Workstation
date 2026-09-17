@@ -54,6 +54,7 @@ function defaultRepository(): KnowledgePublicationRepository {
         where: { sourceRevisionId: input.sourceRevisionId },
         update: {},
         create: input,
+        include: { attachments: { select: { id: true, target: true, assetId: true } }, article: { select: { id: true, draftId: true, slug: true, publishedAt: true } } },
       });
     },
   };

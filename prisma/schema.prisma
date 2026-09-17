@@ -64,6 +64,7 @@ model Asset {
   altTextEn        String?  @map("alt_text_en")
   isReferenced     Boolean  @default(false) @map("is_referenced")
   createdAt        DateTime @default(now()) @map("created_at")
+  draftAttachments KnowledgePublicationDraftAttachment[]
 
   @@index([sha256])
   @@map("assets")
@@ -442,6 +443,7 @@ model KnowledgePublicationDraft {
   updatedAt        DateTime                @updatedAt @map("updated_at")
   sourceRevision   KnowledgeSourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict)
   article          KnowledgeArticle?
+  attachments      KnowledgePublicationDraftAttachment[]
 
   @@index([status, updatedAt])
   @@map("knowledge_publication_drafts")
@@ -460,9 +462,40 @@ model KnowledgeArticle {
   publishedAt      DateTime                  @default(now()) @map("published_at")
   draft            KnowledgePublicationDraft @relation(fields: [draftId], references: [id], onDelete: Restrict)
   collections      KnowledgeCollectionArticle[]
+  attachments      KnowledgeArticleAttachment[]
 
   @@index([publishedAt])
   @@map("knowledge_articles")
+}
+
+model KnowledgePublicationDraftAttachment {
+  id        String                    @id @default(cuid())
+  draftId   String                    @map("draft_id")
+  target    String
+  assetId   String                    @map("asset_id")
+  createdAt DateTime                  @default(now()) @map("created_at")
+  draft     KnowledgePublicationDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  asset     Asset                     @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@unique([draftId, target])
+  @@index([assetId])
+  @@map("knowledge_publication_draft_attachments")
+}
+
+model KnowledgeArticleAttachment {
+  id          String           @id
+  articleId   String           @map("article_id")
+  target      String
+  storagePath String           @unique @map("storage_path")
+  mimeType    String           @map("mime_type")
+  sizeBytes   Int              @map("size_bytes")
+  sha256      String
+  createdAt   DateTime         @default(now()) @map("created_at")
+  article     KnowledgeArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, target])
+  @@index([sha256])
+  @@map("knowledge_article_attachments")
 }
 
 model KnowledgeCollection {
