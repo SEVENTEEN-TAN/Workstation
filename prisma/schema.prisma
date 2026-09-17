@@ -361,6 +361,7 @@ model KnowledgeVault {
   notes             KnowledgeNote[]
   noteLinks         KnowledgeNoteLink[]
   sourceRevisions   KnowledgeSourceRevision[]
+  attachmentTransfers KnowledgeAttachmentTransferRequest[]
   syncReports       KnowledgeSyncReport[]
 
   @@index([enabled, name])
@@ -424,6 +425,7 @@ model KnowledgeSourceRevision {
   capturedAt      DateTime       @map("captured_at")
   vault           KnowledgeVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
   draft           KnowledgePublicationDraft?
+  attachmentTransfers KnowledgeAttachmentTransferRequest[]
 
   @@unique([vaultId, relativePath, contentHash])
   @@index([vaultId, relativePath, capturedAt])
@@ -444,9 +446,28 @@ model KnowledgePublicationDraft {
   sourceRevision   KnowledgeSourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict)
   article          KnowledgeArticle?
   attachments      KnowledgePublicationDraftAttachment[]
+  attachmentTransfers KnowledgeAttachmentTransferRequest[]
 
   @@index([status, updatedAt])
   @@map("knowledge_publication_drafts")
+}
+
+model KnowledgeAttachmentTransferRequest {
+  id               String                    @id @default(cuid())
+  draftId          String                    @map("draft_id")
+  sourceRevisionId String                    @map("source_revision_id")
+  vaultId          String                    @map("vault_id")
+  target           String
+  status           String                    @default("PENDING")
+  createdAt        DateTime                  @default(now()) @map("created_at")
+  updatedAt        DateTime                  @updatedAt @map("updated_at")
+  draft            KnowledgePublicationDraft @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  sourceRevision   KnowledgeSourceRevision   @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict)
+  vault            KnowledgeVault            @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  @@unique([draftId, target])
+  @@index([vaultId, status])
+  @@map("knowledge_attachment_transfer_requests")
 }
 
 model KnowledgeArticle {

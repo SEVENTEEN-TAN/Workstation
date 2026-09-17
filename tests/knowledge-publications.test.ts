@@ -35,6 +35,21 @@ describe("knowledge publication service", () => {
     expect(created).toEqual([expect.objectContaining({ sourceRevisionId: revision.id })]);
   });
 
+  it("queues only embedded images for a Windows attachment transfer", async () => {
+    const queued: unknown[] = [];
+    const service = createKnowledgePublicationService({
+      async findSourceRevision() {
+        return { ...revision, vaultId: "vault-1", markdown: "# Note\n![[diagram.png]]\n![[private-note.md]]" };
+      },
+      async upsertDraft(input) { return { id: "draft-1", ...input }; },
+      async queueAttachmentTransfers(input) { queued.push(input); },
+    });
+
+    await service.createDraft("revision-1");
+
+    expect(queued).toEqual([{ draftId: "draft-1", sourceRevisionId: "revision-1", vaultId: "vault-1", targets: ["diagram.png"] }]);
+  });
+
   it("uses the source filename when frontmatter does not provide a title", async () => {
     const service = createKnowledgePublicationService({
       async findSourceRevision() { return { ...revision, relativePath: "nested/fallback-name.md", frontmatterJson: null }; },

@@ -1,9 +1,11 @@
 import { basename, extname } from "node:path";
 
 import { getDatabase } from "../db";
+import { isArticleImageEmbedTarget } from "../knowledge/article-attachments";
 
 type SourceRevisionRecord = {
   id: string;
+  vaultId: string;
   relativePath: string;
   contentHash: string;
   markdown: string;
@@ -22,8 +24,16 @@ type DraftInput = {
 
 type KnowledgePublicationRepository = {
   findSourceRevision(id: string): Promise<SourceRevisionRecord | null>;
-  upsertDraft(input: DraftInput): Promise<unknown>;
+  upsertDraft(input: DraftInput): Promise<{ id: string }>;
+  queueAttachmentTransfers?(input: { draftId: string; sourceRevisionId: string; vaultId: string; targets: string[] }): Promise<unknown>;
 };
+
+function imageEmbedTargets(markdown: string) {
+  const targets = [...markdown.matchAll(/!\[\[([^\]\r\n]+)\]\]/g)]
+    .map((match) => match[1].trim())
+    .filter(isArticleImageEmbedTarget);
+  return [...new Set(targets)];
+}
 
 function sourceMetadata(revision: SourceRevisionRecord) {
   let frontmatter: Record<string, unknown> = {};
@@ -46,7 +56,7 @@ function defaultRepository(): KnowledgePublicationRepository {
     async findSourceRevision(id) {
       return (await getDatabase()).knowledgeSourceRevision.findUnique({
         where: { id },
-        select: { id: true, relativePath: true, contentHash: true, markdown: true, frontmatterJson: true },
+        select: { id: true, vaultId: true, relativePath: true, contentHash: true, markdown: true, frontmatterJson: true },
       });
     },
     async upsertDraft(input) {
@@ -57,6 +67,15 @@ function defaultRepository(): KnowledgePublicationRepository {
         include: { attachments: { select: { id: true, target: true, assetId: true } }, article: { select: { id: true, draftId: true, slug: true, publishedAt: true } } },
       });
     },
+    async queueAttachmentTransfers(input) {
+      if (!input.targets.length) return;
+      const database = await getDatabase();
+      await database.$transaction(input.targets.map((target) => database.knowledgeAttachmentTransferRequest.upsert({
+        where: { draftId_target: { draftId: input.draftId, target } },
+        update: {},
+        create: { ...input, target },
+      })));
+    },
   };
 }
 
@@ -65,13 +84,16 @@ export function createKnowledgePublicationService(repository: KnowledgePublicati
     async createDraft(sourceRevisionId: string) {
       const revision = await repository.findSourceRevision(sourceRevisionId);
       if (!revision) throw new Error("Source revision unavailable");
-      return repository.upsertDraft({
+      const draft = await repository.upsertDraft({
         sourceRevisionId: revision.id,
         sourceHash: revision.contentHash,
         markdown: revision.markdown,
         ...sourceMetadata(revision),
         status: "DRAFT",
       });
+      const targets = imageEmbedTargets(revision.markdown);
+      if (targets.length) await repository.queueAttachmentTransfers?.({ draftId: draft.id, sourceRevisionId: revision.id, vaultId: revision.vaultId, targets });
+      return draft;
     },
   };
 }
