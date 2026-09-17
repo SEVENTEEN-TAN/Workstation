@@ -12,11 +12,21 @@ type DraftRecord = {
 
 type ArticleInput = Omit<DraftRecord, "id"> & { draftId: string; slug: string };
 
+export type PublicKnowledgeArticle = {
+  id: string;
+  slug: string;
+  markdown: string;
+  title: string;
+  summary: string | null;
+  tags: string[];
+  publishedAt: Date;
+};
+
 type KnowledgeArticleRepository = {
   findDraft(id: string): Promise<DraftRecord | null>;
   upsertArticle(input: ArticleInput): Promise<unknown>;
-  listPublicArticles(): Promise<unknown>;
-  getPublicArticle(slug: string): Promise<unknown>;
+  listPublicArticles(): Promise<PublicKnowledgeArticle[]>;
+  getPublicArticle(slug: string): Promise<PublicKnowledgeArticle | null>;
 };
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -43,10 +53,16 @@ function defaultRepository(): KnowledgeArticleRepository {
       });
     },
     async listPublicArticles() {
-      return (await getDatabase()).knowledgeArticle.findMany({ orderBy: { publishedAt: "desc" } });
+      return (await getDatabase()).knowledgeArticle.findMany({
+        orderBy: { publishedAt: "desc" },
+        select: { id: true, slug: true, markdown: true, title: true, summary: true, tags: true, publishedAt: true },
+      }) as unknown as PublicKnowledgeArticle[];
     },
     async getPublicArticle(slug) {
-      return (await getDatabase()).knowledgeArticle.findUnique({ where: { slug } });
+      return (await getDatabase()).knowledgeArticle.findUnique({
+        where: { slug },
+        select: { id: true, slug: true, markdown: true, title: true, summary: true, tags: true, publishedAt: true },
+      }) as unknown as PublicKnowledgeArticle | null;
     },
   };
 }
