@@ -422,10 +422,28 @@ model KnowledgeSourceRevision {
   origin          String         @default("LOCAL_SCAN")
   capturedAt      DateTime       @map("captured_at")
   vault           KnowledgeVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  draft           KnowledgePublicationDraft?
 
   @@unique([vaultId, relativePath, contentHash])
   @@index([vaultId, relativePath, capturedAt])
   @@map("knowledge_source_revisions")
+}
+
+model KnowledgePublicationDraft {
+  id               String                  @id @default(cuid())
+  sourceRevisionId String                  @unique @map("source_revision_id")
+  sourceHash       String                  @map("source_hash")
+  markdown         String
+  title            String
+  summary          String?
+  tags             Json
+  status           String                  @default("DRAFT")
+  createdAt        DateTime                @default(now()) @map("created_at")
+  updatedAt        DateTime                @updatedAt @map("updated_at")
+  sourceRevision   KnowledgeSourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict)
+
+  @@index([status, updatedAt])
+  @@map("knowledge_publication_drafts")
 }
 
 model KnowledgeSyncReport {
