@@ -49,6 +49,8 @@ describe("Windows knowledge sync client", () => {
 
     await expect(resolveRequestedAttachment(root, "notes/entry.md", "diagram.png"))
       .resolves.toBe(join(root, "notes", "assets", "diagram.png"));
+    await expect(resolveRequestedAttachment(root, "notes/entry.md", "diagram.png|300"))
+      .resolves.toBe(join(root, "notes", "assets", "diagram.png"));
     await expect(resolveRequestedAttachment(root, "notes/entry.md", "../../outside.png")).resolves.toBeNull();
   });
 

@@ -6,6 +6,8 @@ describe("article attachment snapshots", () => {
   it("rewrites only explicitly mapped image embeds to article-owned URLs", () => {
     expect(rewriteArticleEmbeds("![[diagram.png]]", [{ target: "diagram.png", id: "snapshot-1" }]))
       .toBe("![](/api/knowledge/assets/snapshot-1)");
+    expect(rewriteArticleEmbeds("![[diagram.png|300]]", [{ target: "diagram.png|300", id: "snapshot-2" }]))
+      .toBe("![](/api/knowledge/assets/snapshot-2)");
   });
 
   it("rejects publication when an image embed is unselected or mapped twice", () => {

@@ -3,6 +3,7 @@ import { readFile, realpath, stat } from "node:fs/promises";
 import { basename, dirname, extname, resolve, sep } from "node:path";
 
 import type { VaultScanResult } from "./vault-scanner";
+import { articleImageEmbedPath } from "./article-attachments";
 
 export type KnowledgeSyncConfig = {
   serverUrl: URL;
@@ -59,13 +60,15 @@ export function readKnowledgeSyncConfig(environment: Environment = process.env) 
 }
 
 export async function resolveRequestedAttachment(vaultPath: string, noteRelativePath: string, target: string) {
+  const attachmentPath = articleImageEmbedPath(target);
+  if (!attachmentPath) return null;
   const root = await realpath(vaultPath);
   const noteDirectory = dirname(noteRelativePath.replace(/\\/g, "/"));
   const candidates = [
-    resolve(root, noteDirectory, target),
-    resolve(root, noteDirectory, "assets", target),
-    resolve(root, "assets", target),
-    resolve(root, target),
+    resolve(root, noteDirectory, attachmentPath),
+    resolve(root, noteDirectory, "assets", attachmentPath),
+    resolve(root, "assets", attachmentPath),
+    resolve(root, attachmentPath),
   ];
   const matches: string[] = [];
   for (const candidate of candidates) {

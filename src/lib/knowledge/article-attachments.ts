@@ -4,7 +4,12 @@ type ArticleEmbedMapping = {
 };
 
 export function isArticleImageEmbedTarget(target: string) {
-  return /\.(?:png|jpe?g|webp)$/i.test(target);
+  return articleImageEmbedPath(target) !== null;
+}
+
+export function articleImageEmbedPath(target: string) {
+  const path = target.split("|", 1)[0].split("#", 1)[0].trim();
+  return /\.(?:png|jpe?g|webp)$/i.test(path) ? path : null;
 }
 
 export function validateArticleEmbedMappings(targets: string[], mappings: ArticleEmbedMapping[]) {
