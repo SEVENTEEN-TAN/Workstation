@@ -130,6 +130,57 @@ describe("knowledge vault scanner", () => {
     ]));
   });
 
+  it("resolves wikilinks by path and alias while retaining headings and display labels", async () => {
+    await Promise.all([
+      mkdir(join(rootPath, "notes")),
+      mkdir(join(rootPath, "shared")),
+    ]);
+    await Promise.all([
+      writeFile(join(rootPath, "notes", "source.md"), [
+        "[[Target note#Introduction|Read the target]]",
+        "[[../shared/Guide]]",
+        "[[Alias note]]",
+        "[[Missing note]]",
+        "![[attachment.png]]",
+      ].join("\n"), "utf8"),
+      writeFile(join(rootPath, "notes", "Target note.md"), "---\naliases: [Alias note]\n---\n# Introduction", "utf8"),
+      writeFile(join(rootPath, "shared", "Guide.md"), "# Guide", "utf8"),
+    ]);
+
+    const result = await scanVault(rootPath);
+
+    expect(result.links).toEqual([
+      expect.objectContaining({
+        sourceRelativePath: "notes/source.md",
+        targetRaw: "Target note#Introduction",
+        targetRelativePath: "notes/Target note.md",
+        targetHeading: "Introduction",
+        displayLabel: "Read the target",
+        isResolved: true,
+      }),
+      expect.objectContaining({
+        sourceRelativePath: "notes/source.md",
+        targetRaw: "../shared/Guide",
+        targetRelativePath: "shared/Guide.md",
+        targetHeading: null,
+        displayLabel: null,
+        isResolved: true,
+      }),
+      expect.objectContaining({
+        sourceRelativePath: "notes/source.md",
+        targetRaw: "Alias note",
+        targetRelativePath: "notes/Target note.md",
+        isResolved: true,
+      }),
+      expect.objectContaining({
+        sourceRelativePath: "notes/source.md",
+        targetRaw: "Missing note",
+        targetRelativePath: null,
+        isResolved: false,
+      }),
+    ]);
+  });
+
   it("does not follow file symlinks outside the vault", async () => {
     const outsidePath = join(rootPath, "..", `${rootPath.split(/[\\/]/).at(-1)}-outside.md`);
     await writeFile(outsidePath, "# Outside", "utf8");

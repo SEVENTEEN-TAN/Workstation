@@ -330,6 +330,16 @@ export interface KnowledgeSyncChangeData {
   currentModifiedAt: string | null;
 }
 
+export interface KnowledgeNoteLinkData {
+  id: string;
+  sourceRelativePath: string;
+  targetRaw: string;
+  targetRelativePath: string | null;
+  targetHeading: string | null;
+  displayLabel: string | null;
+  isResolved: boolean;
+}
+
 export interface KnowledgeSyncReportData {
   id: string;
   scannedAt: string;
@@ -354,6 +364,7 @@ export interface KnowledgeVaultData {
   createdAt: string;
   updatedAt: string;
   notes: KnowledgeNoteData[];
+  noteLinks: KnowledgeNoteLinkData[];
   syncReports: KnowledgeSyncReportData[];
 }
 import type { SiteContent } from "../../lib/content/schema";

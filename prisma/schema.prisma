@@ -358,6 +358,7 @@ model KnowledgeVault {
   createdAt         DateTime        @default(now()) @map("created_at")
   updatedAt         DateTime        @updatedAt @map("updated_at")
   notes             KnowledgeNote[]
+  noteLinks         KnowledgeNoteLink[]
   syncReports       KnowledgeSyncReport[]
 
   @@index([enabled, name])
@@ -388,6 +389,24 @@ model KnowledgeNote {
   @@index([vaultId, directoryPath, fileName])
   @@index([contentHash])
   @@map("knowledge_notes")
+}
+
+model KnowledgeNoteLink {
+  id                 String         @id @default(cuid())
+  vaultId            String         @map("vault_id")
+  sourceRelativePath String         @map("source_relative_path")
+  targetRaw          String         @map("target_raw")
+  targetRelativePath String?        @map("target_relative_path")
+  targetHeading      String?        @map("target_heading")
+  displayLabel       String?        @map("display_label")
+  isResolved         Boolean        @default(false) @map("is_resolved")
+  indexedAt          DateTime       @map("indexed_at")
+  vault              KnowledgeVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  @@index([vaultId, sourceRelativePath])
+  @@index([vaultId, targetRelativePath])
+  @@index([vaultId, isResolved])
+  @@map("knowledge_note_links")
 }
 
 model KnowledgeSyncReport {

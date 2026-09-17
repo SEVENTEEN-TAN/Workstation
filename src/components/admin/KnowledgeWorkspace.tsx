@@ -9,7 +9,7 @@ import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
-import type { KnowledgeNoteData, KnowledgeSyncChangeData, KnowledgeSyncReportData, KnowledgeVaultData } from "./types";
+import type { KnowledgeNoteData, KnowledgeNoteLinkData, KnowledgeSyncChangeData, KnowledgeSyncReportData, KnowledgeVaultData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
 
@@ -45,6 +45,12 @@ function noteTitle(note: KnowledgeNoteData) {
   }
 }
 
+function linkLabels(note: KnowledgeNoteData, links: KnowledgeNoteLinkData[]) {
+  const outgoing = links.filter((link) => link.sourceRelativePath === note.relativePath).length;
+  const incoming = links.filter((link) => link.targetRelativePath === note.relativePath).length;
+  return [outgoing && `出链 ${outgoing}`, incoming && `反链 ${incoming}`].filter(Boolean) as string[];
+}
+
 function reportSummary(report: KnowledgeSyncReportData) {
   return `+${report.addedCount} 新增 / ${report.modifiedCount} 修改 / ${report.movedCount} 移动 / ${report.missingCount} 缺失`;
 }
@@ -67,6 +73,8 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
   const syncReport = selected?.syncReports[0] ?? null;
+  const selectedLinks = selected?.noteLinks ?? [];
+  const unresolvedLinks = selectedLinks.filter((link) => !link.isResolved);
   const notes = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase();
     if (!selected) return [];
@@ -122,6 +130,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
       <div className={styles.metrics}>
         <article><span>已登记 Vault</span><strong>{vaults.length}</strong></article>
         <article><span>已索引 Markdown</span><strong>{totalNotes}</strong></article>
+        <article><span>已解析链接</span><strong>{vaults.reduce((sum, vault) => sum + vault.noteLinks.filter((link) => link.isResolved).length, 0)}</strong></article>
       </div>
 
       <section className={styles.panel}>
@@ -155,11 +164,16 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
 
           <section className={styles.panel}>
             <div className={styles.sectionHeading}><div><span className={styles.kicker}>INDEX</span><h2>{selected?.name ?? "知识库索引"}</h2></div><span>{notes.length} / {selected?.notes.length ?? 0}</span></div>
-            {syncReport ? <section className={styles.syncReport} aria-label="最新同步报告">
+             {syncReport ? <section className={styles.syncReport} aria-label="最新同步报告">
               <div className={styles.syncReportHeading}><strong>最新同步报告</strong><time dateTime={syncReport.scannedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(syncReport.scannedAt))}</time></div>
               <div className={styles.syncCounts}><span>新增 {syncReport.addedCount}</span><span>修改 {syncReport.modifiedCount}</span><span>移动 {syncReport.movedCount}</span><span>疑似缺失 {syncReport.missingCount}</span><span>未变 {syncReport.unchangedCount}</span></div>
               {syncReport.changes.length ? <div className={styles.syncChanges}>{syncReport.changes.slice(0, 8).map((change) => <div key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small></div>)}{syncReport.changes.length > 8 ? <p>另有 {syncReport.changes.length - 8} 项变更未展开。</p> : null}</div> : <p className={styles.syncEmpty}>内容未变化，未生成待处理项。</p>}
-            </section> : null}
+             </section> : null}
+             {selectedLinks.length ? <section className={styles.syncReport} aria-label="链接报告">
+               <div className={styles.syncReportHeading}><strong>链接报告</strong><span>仅索引，不修改笔记</span></div>
+               <div className={styles.syncCounts}><span>正向链接 {selectedLinks.length}</span><span>已解析 {selectedLinks.length - unresolvedLinks.length}</span><span>未解析链接 {unresolvedLinks.length}</span></div>
+               {unresolvedLinks.length ? <div className={styles.syncChanges}>{unresolvedLinks.slice(0, 8).map((link) => <div key={link.id}><span>未解析</span><small>{link.sourceRelativePath} -&gt; {link.targetRaw}</small></div>)}{unresolvedLinks.length > 8 ? <p>另有 {unresolvedLinks.length - 8} 条未解析链接未展开。</p> : null}</div> : <p className={styles.syncEmpty}>所有内部链接都已解析。</p>}
+             </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
               <>
                 <label className={styles.searchField}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索相对路径" aria-label="搜索相对路径" /></label>
@@ -168,7 +182,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                     <div><strong>{noteTitle(note)}</strong><small>{note.relativePath}</small></div>
                     <span>{formatBytes(note.sizeBytes)}</span>
                     <time dateTime={note.modifiedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium" }).format(new Date(note.modifiedAt))}</time>
-                    <div className={styles.noteBadges}>{syntaxLabels(note).map((label) => <span key={label}>{label}</span>)}</div>
+                     <div className={styles.noteBadges}>{[...syntaxLabels(note), ...linkLabels(note, selectedLinks)].map((label) => <span key={label}>{label}</span>)}</div>
                   </article>
                 ))}</div> : <EmptyState title="没有匹配的 Markdown" description="调整搜索条件，或重新扫描知识库。" action={<button type="button" onClick={() => setQuery("")}>清除搜索</button>} />}
               </>

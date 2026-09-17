@@ -1,7 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
-import { scanVault, type ScannedKnowledgeNote, type VaultScanResult } from "../knowledge/vault-scanner";
+import { scanVault, type ScannedKnowledgeLink, type ScannedKnowledgeNote, type VaultScanResult } from "../knowledge/vault-scanner";
 import { buildKnowledgeSyncReport, type KnowledgeNoteSnapshot, type KnowledgeSyncReportInput } from "../knowledge/sync-report";
 import { knowledgeVaultInputSchema, knowledgeVaultPatchSchema } from "../validators/knowledge-vaults";
 
@@ -37,25 +37,29 @@ function noteData(vaultId: string, indexedAt: Date, note: ScannedKnowledgeNote) 
   return { vaultId, indexedAt, contentHash: sha256, frontmatterJson: frontmatter ? JSON.stringify(frontmatter) : null, ...rest };
 }
 
+function linkData(vaultId: string, indexedAt: Date, link: ScannedKnowledgeLink) {
+  return { vaultId, indexedAt, ...link };
+}
+
 function defaultRepository(): KnowledgeVaultRepository {
   return {
     async listVaults() {
       return (await getDatabase()).knowledgeVault.findMany({
-        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
         orderBy: { name: "asc" },
       });
     },
     async findVault(id) {
-      return (await getDatabase()).knowledgeVault.findUnique({ where: { id }, include: { notes: true } });
+      return (await getDatabase()).knowledgeVault.findUnique({ where: { id }, include: { notes: true, noteLinks: true } });
     },
     async createVault(value) {
-      return (await getDatabase()).knowledgeVault.create({ data: value, include: { notes: true, syncReports: { include: { changes: true } } } });
+      return (await getDatabase()).knowledgeVault.create({ data: value, include: { notes: true, noteLinks: true, syncReports: { include: { changes: true } } } });
     },
     async updateVault(id, value) {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
         data: value as Prisma.KnowledgeVaultUpdateInput,
-        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
       });
     },
     async deleteVault(id) {
@@ -63,10 +67,18 @@ function defaultRepository(): KnowledgeVaultRepository {
     },
     async replaceIndex(id, result, report) {
       const database = await getDatabase();
-      const operations: Prisma.PrismaPromise<unknown>[] = [database.knowledgeNote.deleteMany({ where: { vaultId: id } })];
+      const operations: Prisma.PrismaPromise<unknown>[] = [
+        database.knowledgeNoteLink.deleteMany({ where: { vaultId: id } }),
+        database.knowledgeNote.deleteMany({ where: { vaultId: id } }),
+      ];
       if (result.notes.length) {
         operations.push(database.knowledgeNote.createMany({
           data: result.notes.map((note) => noteData(id, result.scannedAt, note)),
+        }));
+      }
+      if (result.links.length) {
+        operations.push(database.knowledgeNoteLink.createMany({
+          data: result.links.map((link) => linkData(id, result.scannedAt, link)),
         }));
       }
       operations.push(database.knowledgeSyncReport.create({
@@ -85,7 +97,7 @@ function defaultRepository(): KnowledgeVaultRepository {
           lastScanFileCount: result.notes.length,
           lastScanError: null,
         },
-        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
       }));
       const results = await database.$transaction(operations);
       return results.at(-1);
@@ -94,7 +106,7 @@ function defaultRepository(): KnowledgeVaultRepository {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
         data: { lastScanStatus: "FAILED", lastScanError: message.slice(0, 1_000) },
-        include: { notes: { orderBy: { relativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
       });
     },
   };

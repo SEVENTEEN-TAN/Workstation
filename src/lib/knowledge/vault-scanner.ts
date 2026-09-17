@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { readdir, readFile, stat } from "node:fs/promises";
-import { basename, dirname, extname, join, relative, sep } from "node:path";
+import { basename, dirname, extname, join, posix, relative, sep } from "node:path";
 import { parseDocument } from "yaml";
 
 const DEFAULT_IGNORED_DIRECTORIES = new Set([".obsidian", ".trash", ".claudian", ".workbuddy"]);
@@ -25,6 +25,16 @@ export type ScannedKnowledgeNote = {
 export type VaultScanResult = {
   scannedAt: Date;
   notes: ScannedKnowledgeNote[];
+  links: ScannedKnowledgeLink[];
+};
+
+export type ScannedKnowledgeLink = {
+  sourceRelativePath: string;
+  targetRaw: string;
+  targetRelativePath: string | null;
+  targetHeading: string | null;
+  displayLabel: string | null;
+  isResolved: boolean;
 };
 
 function normalizeSegments(value: string) {
@@ -92,6 +102,67 @@ function isMocNote(fileName: string, frontmatter: Record<string, unknown> | null
   return tags.some((tag) => typeof tag === "string" && ["moc", "index"].includes(tag.replace(/^#/, "").toLocaleLowerCase()));
 }
 
+function splitLinkPart(value: string, separator: string): [string, string | null] {
+  const index = value.indexOf(separator);
+  return index < 0 ? [value, null] : [value.slice(0, index), value.slice(index + separator.length)];
+}
+
+function noteKey(value: string) {
+  return value.replace(/\\/g, "/").replace(/\.md$/i, "").replace(/^\.\//, "").toLocaleLowerCase();
+}
+
+function addLookup(lookup: Map<string, Set<string>>, key: string, relativePath: string) {
+  if (!key) return;
+  const paths = lookup.get(key) ?? new Set<string>();
+  paths.add(relativePath);
+  lookup.set(key, paths);
+}
+
+function uniquePath(lookup: Map<string, Set<string>>, key: string) {
+  const paths = lookup.get(key);
+  return paths?.size === 1 ? [...paths][0] : null;
+}
+
+function linkPathKey(target: string, sourceDirectory: string) {
+  const normalized = target.replace(/\\/g, "/").trim();
+  if (!normalized) return null;
+  const candidate = normalized.startsWith("./") || normalized.startsWith("../")
+    ? posix.normalize(posix.join(sourceDirectory || ".", normalized))
+    : posix.normalize(normalized.replace(/^\/+/, ""));
+  return candidate.startsWith("../") ? null : noteKey(candidate);
+}
+
+function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, string>) {
+  const lookup = new Map<string, Set<string>>();
+  for (const note of notes) {
+    addLookup(lookup, noteKey(note.relativePath), note.relativePath);
+    addLookup(lookup, noteKey(note.fileName), note.relativePath);
+    const aliases = Array.isArray(note.frontmatter?.aliases) ? note.frontmatter.aliases : [];
+    for (const alias of aliases) if (typeof alias === "string") addLookup(lookup, noteKey(alias), note.relativePath);
+  }
+
+  const links: ScannedKnowledgeLink[] = [];
+  for (const note of notes) {
+    const content = contentByPath.get(note.relativePath) ?? "";
+    for (const match of content.matchAll(/(?<!!)\[\[([^\]\r\n]+)\]\]/g)) {
+      const [targetWithHeading, display] = splitLinkPart(match[1], "|");
+      const [target, heading] = splitLinkPart(targetWithHeading, "#");
+      const targetPath = target.trim();
+      if (!targetPath) continue;
+      const targetRelativePath = uniquePath(lookup, linkPathKey(targetPath, note.directoryPath) ?? "");
+      links.push({
+        sourceRelativePath: note.relativePath,
+        targetRaw: targetWithHeading.trim(),
+        targetRelativePath,
+        targetHeading: heading?.trim() || null,
+        displayLabel: display?.trim() || null,
+        isResolved: Boolean(targetRelativePath),
+      });
+    }
+  }
+  return links;
+}
+
 export async function scanVault(rootPath: string, ignorePatterns: readonly string[] = []): Promise<VaultScanResult> {
   let rootStat;
   try {
@@ -103,6 +174,7 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
 
   const configuredPatterns = [...new Set(ignorePatterns.map((pattern) => pattern.trim()).filter(Boolean))];
   const notes: ScannedKnowledgeNote[] = [];
+  const contentByPath = new Map<string, string>();
 
   async function walk(directory: string) {
     const entries = await readdir(directory, { withFileTypes: true });
@@ -120,6 +192,7 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
       if (isIgnored(relativePath, configuredPatterns)) continue;
 
       const [fileStat, content] = await Promise.all([stat(absolutePath), readFile(absolutePath, "utf8")]);
+      contentByPath.set(relativePath, content);
       const frontmatter = parseFrontmatter(content);
       notes.push({
         relativePath,
@@ -137,5 +210,5 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
 
   await walk(rootPath);
   notes.sort((left, right) => left.relativePath.localeCompare(right.relativePath));
-  return { scannedAt: new Date(), notes };
+  return { scannedAt: new Date(), notes, links: resolveLinks(notes, contentByPath) };
 }
