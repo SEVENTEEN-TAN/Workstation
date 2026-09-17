@@ -246,6 +246,20 @@ describe("admin shell markup contracts", () => {
 });
 
 describe("admin route contracts", () => {
+  it("protects knowledge collection management and links it from the knowledge workspace", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/knowledge/collections/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/knowledge/collections/[id]/route.ts");
+    const page = readProjectFile("src/app/admin/(workspace)/knowledge/collections/page.tsx");
+    const workspace = readProjectFile("src/components/admin/KnowledgeCollectionsWorkspace.tsx");
+    const knowledgeWorkspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    expect(page).toContain("KnowledgeCollectionsWorkspace");
+    expect(workspace).toContain("articleIds");
+    expect(knowledgeWorkspace).toContain("/admin/knowledge/collections");
+  });
+
   it("redirects the admin index to the overview route", () => {
     const source = readProjectFile("src/app/admin/page.tsx");
 

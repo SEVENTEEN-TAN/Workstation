@@ -1,6 +1,7 @@
 "use client";
 
 import { BookOpen, Database, FileText, FolderSearch, LoaderCircle, Plus, Search, Trash2, X } from "lucide-react";
+import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -206,7 +207,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
 
   return (
     <section>
-      <PageHeader title="个人知识库" description="登记本地 Obsidian Vault，执行只读扫描并检查 Markdown 结构。笔记正文与附件不会上传。" />
+      <PageHeader title="个人知识库" description="登记本地 Obsidian Vault，执行只读扫描并检查 Markdown 结构。笔记正文与附件不会上传。" action={<Link href="/admin/knowledge/collections" className={styles.secondaryButton}>知识合集</Link>} />
 
       <div className={styles.metrics}>
         <article><span>已登记 Vault</span><strong>{vaults.length}</strong></article>
