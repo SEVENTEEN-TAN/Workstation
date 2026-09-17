@@ -441,9 +441,27 @@ model KnowledgePublicationDraft {
   createdAt        DateTime                @default(now()) @map("created_at")
   updatedAt        DateTime                @updatedAt @map("updated_at")
   sourceRevision   KnowledgeSourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict)
+  article          KnowledgeArticle?
 
   @@index([status, updatedAt])
   @@map("knowledge_publication_drafts")
+}
+
+model KnowledgeArticle {
+  id               String                    @id @default(cuid())
+  draftId          String                    @unique @map("draft_id")
+  sourceRevisionId String                    @map("source_revision_id")
+  sourceHash       String                    @map("source_hash")
+  slug             String                    @unique
+  markdown         String
+  title            String
+  summary          String?
+  tags             Json
+  publishedAt      DateTime                  @default(now()) @map("published_at")
+  draft            KnowledgePublicationDraft @relation(fields: [draftId], references: [id], onDelete: Restrict)
+
+  @@index([publishedAt])
+  @@map("knowledge_articles")
 }
 
 model KnowledgeSyncReport {
