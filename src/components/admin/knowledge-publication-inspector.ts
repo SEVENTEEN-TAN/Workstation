@@ -24,7 +24,7 @@ export function inspectKnowledgePublication(note: KnowledgeNoteData, links: Know
   const hasUnresolvedLinks = outgoing.some((link) => !link.isResolved);
   const hasAttachments = outgoing.some((link) => link.kind === "EMBED");
   return [
-    { id: "visibility", status: note.visibility === "PUBLIC" ? "READY" : "BLOCKED", label: note.visibility === "PUBLIC" ? "可见性已设为公开" : "笔记仍为私有" },
+    { id: "visibility", status: note.visibility === "PRIVATE" ? "READY" : "BLOCKED", label: note.visibility === "PRIVATE" ? "源笔记保持私有" : "源笔记不应直接公开" },
     { id: "title", status: titled ? "READY" : "BLOCKED", label: titled ? "已提供标题" : "frontmatter 缺少标题" },
     { id: "links", status: hasUnresolvedLinks ? "BLOCKED" : "READY", label: hasUnresolvedLinks ? "存在未解析链接" : "链接均可解析" },
     { id: "attachments", status: hasAttachments ? "BLOCKED" : "READY", label: hasAttachments ? "附件需单独选择后才能发布" : "不含待选择附件" },

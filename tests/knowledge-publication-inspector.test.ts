@@ -36,20 +36,18 @@ const unresolvedLink: KnowledgeNoteLinkData = {
 };
 
 describe("knowledge publication inspector", () => {
-  it("blocks private notes, unresolved links, and embedded attachments before publication", () => {
+  it("keeps source notes private while blocking unresolved links and embedded attachments", () => {
     const checks = inspectKnowledgePublication(note, [unresolvedLink, { ...unresolvedLink, id: "embed-1", kind: "EMBED", isResolved: true }]);
 
-    expect(checks.filter((check) => check.status === "BLOCKED").map((check) => check.id)).toEqual([
-      "visibility",
-      "links",
-      "attachments",
-    ]);
+    expect(checks.filter((check) => check.status === "BLOCKED").map((check) => check.id)).toEqual(["links", "attachments"]);
+    expect(checks).toContainEqual(expect.objectContaining({ id: "visibility", status: "READY" }));
     expect(checks).toContainEqual(expect.objectContaining({ id: "dataview", status: "NOTICE" }));
   });
 
-  it("marks a public source with a title and no attachments or unresolved links as ready", () => {
+  it("blocks a public source even when its draft inputs are otherwise complete", () => {
     const checks = inspectKnowledgePublication({ ...note, visibility: "PUBLIC", hasEmbeds: false, hasDataview: false }, []);
 
-    expect(checks.every((check) => check.status === "READY")).toBe(true);
+    expect(checks).toContainEqual(expect.objectContaining({ id: "visibility", status: "BLOCKED" }));
+    expect(checks.filter((check) => check.id !== "visibility").every((check) => check.status === "READY")).toBe(true);
   });
 });
