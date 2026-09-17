@@ -2515,6 +2515,26 @@
 .noteMarkdown :not(pre) > code { padding: 1px 4px; background: rgba(119, 173, 236, 0.12); }
 .noteMarkdown input[type="checkbox"] { margin: 0 6px 0 0; accent-color: #79cfac; }
 
+.knowledgeIndexLayout { display: grid; grid-template-columns: minmax(150px, 0.42fr) minmax(0, 1fr); gap: 14px; }
+.knowledgeTree { min-width: 0; color: #aebac5; font-size: 11px; }
+.knowledgeTree > strong { display: block; margin: 4px 0 8px; color: #e7eaec; }
+.noteTree { margin: 0; padding: 0; list-style: none; }
+.noteTree .noteTree { margin-left: 12px; padding-left: 8px; border-left: 1px solid rgba(119, 173, 236, 0.16); }
+.noteTree li { min-width: 0; }
+.noteTree summary { cursor: pointer; padding: 4px 0; color: #9caab8; }
+.noteTree button { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 4px 0; border: 0; background: transparent; color: #c8d2dc; font: inherit; text-align: left; }
+.noteTree button:hover, .noteInspector button:hover { color: #79cfac; }
+
+.noteInspector { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(119, 173, 236, 0.16); }
+.noteInspector h3 { margin: 0 0 7px; color: #e7eaec; font-size: 11px; }
+.noteInspector p, .noteInspector ul, .noteInspector dl { margin: 0; color: #8794a1; font-size: 10px; }
+.noteInspector ul { padding-left: 15px; }
+.noteInspector li + li { margin-top: 4px; }
+.noteInspector button { padding: 0; border: 0; background: transparent; color: #9fcbb9; font: inherit; text-align: left; }
+.noteInspector dl > div { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr); gap: 6px; }
+.noteInspector dt { color: #8794a1; }
+.noteInspector dd { margin: 0; color: #c8d2dc; overflow-wrap: anywhere; }
+
 .noteBadges {
   display: flex;
   flex-wrap: wrap;
@@ -2641,6 +2661,7 @@
   .workspaceTabs { width: 100%; }
   .resumeFileGrid { grid-template-columns: 1fr; }
   .knowledgeLayout { grid-template-columns: 1fr; }
+  .knowledgeIndexLayout { grid-template-columns: 1fr; }
   .vaultStack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -2751,6 +2772,7 @@
   .resumeUploadForm > button { grid-column: auto; grid-row: auto; }
   .resumeUploadForm > button { width: 100%; }
   .vaultStack { grid-template-columns: 1fr; }
+  .noteInspector { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

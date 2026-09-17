@@ -7,6 +7,7 @@ import styles from "../../app/admin/admin.module.css";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
+import { buildKnowledgeNoteTree, readKnowledgeProperties, type KnowledgeTreeItem } from "./knowledge-note-tree";
 import { ObsidianMarkdownPreview } from "./ObsidianMarkdownPreview";
 import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
@@ -70,6 +71,17 @@ function changePath(change: KnowledgeSyncChangeData) {
   return change.currentRelativePath ?? change.previousRelativePath ?? "";
 }
 
+function KnowledgeTree({ items, onOpenNote }: { items: KnowledgeTreeItem[]; onOpenNote: (note: KnowledgeNoteData) => void }) {
+  return <ul className={styles.noteTree}>{items.map((item) => item.kind === "directory" ? (
+    <li key={item.path}>
+      <details open>
+        <summary>{item.name}</summary>
+        <KnowledgeTree items={item.children} onOpenNote={onOpenNote} />
+      </details>
+    </li>
+  ) : <li key={item.note.id}><button type="button" onClick={() => onOpenNote(item.note)}><FileText size={13} />{noteTitle(item.note)}</button></li>)}</ul>;
+}
+
 export function KnowledgeWorkspace({ initialVaults }: { initialVaults: KnowledgeVaultData[] }) {
   const [vaults, setVaults] = useState(initialVaults);
   const [selectedId, setSelectedId] = useState(initialVaults[0]?.id ?? "");
@@ -92,6 +104,10 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
     if (!normalized) return selected.notes;
     return selected.notes.filter((note) => note.relativePath.toLocaleLowerCase().includes(normalized));
   }, [query, selected]);
+  const noteTree = useMemo(() => buildKnowledgeNoteTree(notes), [notes]);
+  const viewingProperties = viewingNote ? readKnowledgeProperties(viewingNote) : [];
+  const outgoingLinks = viewingNote ? selectedLinks.filter((link) => link.kind === "LINK" && link.sourceRelativePath === viewingNote.relativePath) : [];
+  const incomingLinks = viewingNote ? selectedLinks.filter((link) => link.kind === "LINK" && link.targetRelativePath === viewingNote.relativePath) : [];
   const totalNotes = vaults.reduce((sum, vault) => sum + vault.notes.length, 0);
 
   async function createVault(event: FormEvent<HTMLFormElement>) {
@@ -150,6 +166,11 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
     }
   }
 
+  function viewLinkedNote(relativePath: string | null) {
+    const note = selected?.notes.find((item) => item.relativePath === relativePath);
+    if (note) void viewNote(note);
+  }
+
   return (
     <section>
       <PageHeader title="个人知识库" description="登记本地 Obsidian Vault，执行只读扫描并检查 Markdown 结构。笔记正文与附件不会上传。" />
@@ -204,18 +225,23 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
              {viewingNote ? <section className={styles.noteViewer} aria-label="笔记正文">
                <div className={styles.syncReportHeading}><div><strong>{noteTitle(viewingNote)}</strong><small>{viewingNote.relativePath}</small></div><button type="button" className={styles.iconButton} title="关闭笔记" aria-label="关闭笔记" onClick={() => setViewingNote(null)}><X size={16} /></button></div>
                {isNoteLoading ? <p className={styles.syncEmpty}>正在读取笔记...</p> : noteError ? <p className={styles.inlineError} role="alert">{noteError}</p> : <ObsidianMarkdownPreview content={noteContent} />}
+               <div className={styles.noteInspector}>
+                 <section><h3>笔记属性</h3>{viewingProperties.length ? <dl>{viewingProperties.map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl> : <p>没有可展示的 frontmatter 属性。</p>}</section>
+                 <section><h3>正向链接</h3>{outgoingLinks.length ? <ul>{outgoingLinks.map((link) => <li key={link.id}>{link.isResolved && link.targetRelativePath ? <button type="button" onClick={() => viewLinkedNote(link.targetRelativePath)}>{link.displayLabel ?? link.targetRelativePath}</button> : <span>{link.displayLabel ?? link.targetRaw}（未解析）</span>}</li>)}</ul> : <p>没有正向链接。</p>}</section>
+                 <section><h3>反向链接</h3>{incomingLinks.length ? <ul>{incomingLinks.map((link) => <li key={link.id}><button type="button" onClick={() => viewLinkedNote(link.sourceRelativePath)}>{link.displayLabel ?? link.sourceRelativePath}</button></li>)}</ul> : <p>没有反向链接。</p>}</section>
+               </div>
              </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
               <>
                 <label className={styles.searchField}><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索相对路径" aria-label="搜索相对路径" /></label>
-                {notes.length ? <div className={styles.noteTable}>{notes.map((note) => (
+                {notes.length ? <div className={styles.knowledgeIndexLayout}><aside className={styles.knowledgeTree} aria-label="知识库目录"><strong>知识库目录</strong><KnowledgeTree items={noteTree} onOpenNote={viewNote} /></aside><div className={styles.noteTable}>{notes.map((note) => (
                   <article key={note.id} className={styles.noteRow}>
                     <div><strong>{noteTitle(note)}</strong><small>{note.relativePath}</small><button type="button" className={styles.noteViewButton} onClick={() => viewNote(note)}><FileText size={13} />查看笔记</button></div>
                     <span>{formatBytes(note.sizeBytes)}</span>
                     <time dateTime={note.modifiedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium" }).format(new Date(note.modifiedAt))}</time>
                      <div className={styles.noteBadges}>{[...syntaxLabels(note), ...linkLabels(note, selectedLinks)].map((label) => <span key={label}>{label}</span>)}</div>
                   </article>
-                ))}</div> : <EmptyState title="没有匹配的 Markdown" description="调整搜索条件，或重新扫描知识库。" action={<button type="button" onClick={() => setQuery("")}>清除搜索</button>} />}
+                ))}</div></div> : <EmptyState title="没有匹配的 Markdown" description="调整搜索条件，或重新扫描知识库。" action={<button type="button" onClick={() => setQuery("")}>清除搜索</button>} />}
               </>
             ) : <EmptyState title="尚未扫描知识库" description="扫描只读取 Markdown 元数据，不会修改本地文件。" action={<button type="button" className={styles.primaryButton} onClick={() => selected && scanVault(selected)}><Database size={17} />扫描知识库</button>} />}
           </section>

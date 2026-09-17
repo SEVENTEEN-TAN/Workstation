@@ -397,6 +397,7 @@ describe("admin route contracts", () => {
     const noteRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/notes/route.ts");
     const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
     const workspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
+    const adminStyles = readProjectFile("src/app/admin/admin.module.css");
 
     expect(collectionRoute).toContain("withAdminSession");
     expect(itemRoute).toContain("withAdminSession");
@@ -416,6 +417,12 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("正向链接");
     expect(workspace).toContain("查看笔记");
     expect(workspace).toContain("/notes?path=");
+    expect(workspace).toContain("知识库目录");
+    expect(workspace).toContain("笔记属性");
+    expect(workspace).toContain("反向链接");
+    expect(workspace).toContain("buildKnowledgeNoteTree");
+    expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.knowledgeIndexLayout\s*\{\s*grid-template-columns:\s*1fr/);
+    expect(adminStyles).toMatch(/@media \(max-width: 639px\)[\s\S]*\.noteInspector\s*\{\s*grid-template-columns:\s*1fr/);
     expect(workspace).not.toContain("dangerouslySetInnerHTML");
     expect(workspace).toContain("syncReports");
     expect(workspace).toContain("syncReport");
