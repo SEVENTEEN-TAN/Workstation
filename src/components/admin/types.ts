@@ -308,6 +308,7 @@ export interface KnowledgeNoteData {
   sizeBytes: number;
   modifiedAt: string;
   contentHash: string;
+  visibility: "PRIVATE" | "PUBLIC";
   hasFrontmatter: boolean;
   hasWikilinks: boolean;
   hasEmbeds: boolean;

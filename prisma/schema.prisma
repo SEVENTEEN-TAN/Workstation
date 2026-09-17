@@ -374,6 +374,7 @@ model KnowledgeNote {
   sizeBytes        Int            @map("size_bytes")
   modifiedAt       DateTime       @map("modified_at")
   contentHash      String         @map("content_hash")
+  visibility       String         @default("PRIVATE")
   hasFrontmatter   Boolean        @default(false) @map("has_frontmatter")
   hasWikilinks     Boolean        @default(false) @map("has_wikilinks")
   hasEmbeds        Boolean        @default(false) @map("has_embeds")
