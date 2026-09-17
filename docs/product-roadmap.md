@@ -92,7 +92,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Detect additions, edits, moves, and possible deletions through relative paths, hashes, and modification times.
 - [x] Add persistent full-scan synchronization reports.
 - [x] Add incremental synchronization reports after the Windows-side sync transport exists.
-- [ ] Review deletions and conflicts before changing published content.
+- [x] Review deletions and conflicts before changing published content.
 - [x] Provide a lightweight Windows-side sync client because the deployed server cannot read the local `F:` drive.
 - [ ] Synchronize Markdown first and transfer attachments lazily or when a note is prepared for publication.
 

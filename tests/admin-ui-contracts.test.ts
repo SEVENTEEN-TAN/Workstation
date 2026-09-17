@@ -409,6 +409,7 @@ describe("admin route contracts", () => {
     const itemRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/route.ts");
     const scanRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/scan/route.ts");
     const noteRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/notes/route.ts");
+    const reviewRoute = readProjectFile("src/app/api/admin/knowledge/sync-changes/[id]/review/route.ts");
     const draftRoute = readProjectFile("src/app/api/admin/knowledge/publications/drafts/route.ts");
     const articleRoute = readProjectFile("src/app/api/admin/knowledge/articles/route.ts");
     const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
@@ -418,6 +419,8 @@ describe("admin route contracts", () => {
     expect(collectionRoute).toContain("withAdminSession");
     expect(itemRoute).toContain("withAdminSession");
     expect(scanRoute).toContain("withAdminSession");
+    expect(reviewRoute).toContain("withAdminSession");
+    expect(reviewRoute).toContain("knowledgeSyncReviewService.review");
     expect(noteRoute).toContain("withAdminSession");
     expect(noteRoute).toContain("readNote");
     expect(draftRoute).toContain("withAdminSession");
@@ -454,6 +457,8 @@ describe("admin route contracts", () => {
     expect(workspace).not.toContain("dangerouslySetInnerHTML");
     expect(workspace).toContain("syncReports");
     expect(workspace).toContain("syncReport");
+    expect(workspace).toContain("待审查");
+    expect(workspace).toContain("确认变更");
     expect(workspace).toContain("ConfirmDialog");
     expect(workspace).toContain("FeedbackCenter");
   });

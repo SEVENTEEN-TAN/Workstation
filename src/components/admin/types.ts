@@ -329,6 +329,8 @@ export interface KnowledgeSyncChangeData {
   currentContentHash: string | null;
   previousModifiedAt: string | null;
   currentModifiedAt: string | null;
+  reviewDecision: "ACKNOWLEDGED" | "IGNORED" | null;
+  reviewedAt: string | null;
 }
 
 export interface KnowledgeNoteLinkData {

@@ -552,6 +552,8 @@ model KnowledgeSyncChange {
   currentContentHash   String?             @map("current_content_hash")
   previousModifiedAt   DateTime?           @map("previous_modified_at")
   currentModifiedAt    DateTime?           @map("current_modified_at")
+  reviewDecision       String?             @map("review_decision")
+  reviewedAt           DateTime?           @map("reviewed_at")
   report               KnowledgeSyncReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
 
   @@index([reportId, type])

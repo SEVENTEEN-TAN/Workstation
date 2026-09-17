@@ -75,6 +75,10 @@ function changePath(change: KnowledgeSyncChangeData) {
   return change.currentRelativePath ?? change.previousRelativePath ?? "";
 }
 
+function needsSyncReview(change: KnowledgeSyncChangeData) {
+  return (change.type === "MODIFIED" || change.type === "MISSING") && !change.reviewDecision;
+}
+
 function KnowledgeTree({ items, onOpenNote }: { items: KnowledgeTreeItem[]; onOpenNote: (note: KnowledgeNoteData) => void }) {
   return <ul className={styles.noteTree}>{items.map((item) => item.kind === "directory" ? (
     <li key={item.path}>
@@ -102,6 +106,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
   const syncReport = selected?.syncReports[0] ?? null;
+  const pendingSyncChanges = syncReport?.changes.filter(needsSyncReview) ?? [];
   const selectedLinks = selected?.noteLinks ?? [];
   const noteLinks = selectedLinks.filter((link) => link.kind === "LINK");
   const embeds = selectedLinks.filter((link) => link.kind === "EMBED");
@@ -198,6 +203,21 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
     void loadAttachmentAssets();
   }
 
+  async function reviewSyncChange(change: KnowledgeSyncChangeData, decision: "ACKNOWLEDGED" | "IGNORED") {
+    const reviewed = await runAction(`knowledge:sync-review:${change.id}`, () => adminRequest<KnowledgeSyncChangeData>(
+      `/api/admin/knowledge/sync-changes/${change.id}/review`,
+      jsonRequest("PATCH", { decision }),
+    ), decision === "ACKNOWLEDGED" ? "已确认源变更；公开内容未被修改" : "已忽略本次源变更；公开内容未被修改");
+    if (!reviewed || !selected) return;
+    setVaults((current) => current.map((vault) => vault.id !== selected.id ? vault : {
+      ...vault,
+      syncReports: vault.syncReports.map((report) => ({
+        ...report,
+        changes: report.changes.map((item) => item.id === reviewed.id ? reviewed : item),
+      })),
+    }));
+  }
+
   async function loadAttachmentAssets() {
     const assets = await runAction("knowledge:attachment-assets", () => adminRequest<AssetData[]>("/api/admin/assets"));
     if (assets) setAttachmentAssets(assets.filter((asset) => ["image/png", "image/jpeg", "image/webp"].includes(asset.mimeType)));
@@ -288,7 +308,8 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
             <div className={styles.sectionHeading}><div><span className={styles.kicker}>INDEX</span><h2>{selected?.name ?? "知识库索引"}</h2></div><span>{notes.length} / {selected?.notes.length ?? 0}</span></div>
              {syncReport ? <section className={styles.syncReport} aria-label="最新同步报告">
               <div className={styles.syncReportHeading}><strong>最新同步报告</strong><time dateTime={syncReport.scannedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(syncReport.scannedAt))}</time></div>
-              <div className={styles.syncCounts}><span>新增 {syncReport.addedCount}</span><span>修改 {syncReport.modifiedCount}</span><span>移动 {syncReport.movedCount}</span><span>疑似缺失 {syncReport.missingCount}</span><span>未变 {syncReport.unchangedCount}</span></div>
+             <div className={styles.syncCounts}><span>新增 {syncReport.addedCount}</span><span>修改 {syncReport.modifiedCount}</span><span>移动 {syncReport.movedCount}</span><span>疑似缺失 {syncReport.missingCount}</span><span>未变 {syncReport.unchangedCount}</span></div>
+              {pendingSyncChanges.length ? <div className={styles.syncReviewQueue}><p><strong>待审查 {pendingSyncChanges.length} 项</strong>。审查只记录同步决定，不会修改任何公开文章。</p>{pendingSyncChanges.map((change) => <div key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small><div className={styles.syncReviewActions}><button type="button" onClick={() => void reviewSyncChange(change, "ACKNOWLEDGED")} disabled={isBusy(`knowledge:sync-review:${change.id}`)}>{isBusy(`knowledge:sync-review:${change.id}`) ? "处理中" : "确认变更"}</button><button type="button" onClick={() => void reviewSyncChange(change, "IGNORED")} disabled={isBusy(`knowledge:sync-review:${change.id}`)}>忽略本次</button></div></div>)}</div> : null}
               {syncReport.changes.length ? <div className={styles.syncChanges}>{syncReport.changes.slice(0, 8).map((change) => <div key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small></div>)}{syncReport.changes.length > 8 ? <p>另有 {syncReport.changes.length - 8} 项变更未展开。</p> : null}</div> : <p className={styles.syncEmpty}>内容未变化，未生成待处理项。</p>}
              </section> : null}
              {selectedLinks.length ? <section className={styles.syncReport} aria-label="链接报告">
