@@ -9,6 +9,7 @@ export type ScannedKnowledgeNote = {
   relativePath: string;
   fileName: string;
   directoryPath: string;
+  markdown: string;
   sizeBytes: number;
   modifiedAt: Date;
   sha256: string;
@@ -259,6 +260,7 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
         relativePath,
         fileName: basename(absolutePath),
         directoryPath: dirname(relativePath) === "." ? "" : dirname(relativePath),
+        markdown: content,
         sizeBytes: fileStat.size,
         modifiedAt: fileStat.mtime,
         sha256: createHash("sha256").update(content).digest("hex"),

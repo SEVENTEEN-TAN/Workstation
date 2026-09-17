@@ -72,6 +72,7 @@ describe("knowledge vault scanner", () => {
     expect(result.notes[1]).toMatchObject({
       fileName: "rich.md",
       directoryPath: "notes",
+      markdown: richContent,
       sizeBytes: Buffer.byteLength(richContent, "utf8"),
       sha256: createHash("sha256").update(richContent).digest("hex"),
       hasFrontmatter: true,

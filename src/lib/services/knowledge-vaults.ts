@@ -34,8 +34,36 @@ function parseIgnorePatterns(value: unknown): string[] {
 }
 
 function noteData(vaultId: string, indexedAt: Date, note: ScannedKnowledgeNote) {
-  const { sha256, frontmatter, ...rest } = note;
-  return { vaultId, indexedAt, contentHash: sha256, frontmatterJson: frontmatter ? JSON.stringify(frontmatter) : null, ...rest };
+  return {
+    vaultId,
+    indexedAt,
+    relativePath: note.relativePath,
+    fileName: note.fileName,
+    directoryPath: note.directoryPath,
+    sizeBytes: note.sizeBytes,
+    modifiedAt: note.modifiedAt,
+    contentHash: note.sha256,
+    frontmatterJson: note.frontmatter ? JSON.stringify(note.frontmatter) : null,
+    hasFrontmatter: note.hasFrontmatter,
+    hasWikilinks: note.hasWikilinks,
+    hasEmbeds: note.hasEmbeds,
+    hasCallouts: note.hasCallouts,
+    hasDataview: note.hasDataview,
+    hasTasks: note.hasTasks,
+    isMoc: note.isMoc,
+  };
+}
+
+export function sourceRevisionRows(vaultId: string, capturedAt: Date, notes: ScannedKnowledgeNote[], existingKeys: ReadonlySet<string>) {
+  return notes.filter((note) => !existingKeys.has(`${note.relativePath}\u0000${note.sha256}`)).map((note) => ({
+    vaultId,
+    relativePath: note.relativePath,
+    contentHash: note.sha256,
+    markdown: note.markdown,
+    frontmatterJson: note.frontmatter ? JSON.stringify(note.frontmatter) : null,
+    origin: "LOCAL_SCAN",
+    capturedAt,
+  }));
 }
 
 function linkData(vaultId: string, indexedAt: Date, link: ScannedKnowledgeLink) {
@@ -68,40 +96,45 @@ function defaultRepository(): KnowledgeVaultRepository {
     },
     async replaceIndex(id, result, report) {
       const database = await getDatabase();
-      const operations: Prisma.PrismaPromise<unknown>[] = [
-        database.knowledgeNoteLink.deleteMany({ where: { vaultId: id } }),
-        database.knowledgeNote.deleteMany({ where: { vaultId: id } }),
-      ];
-      if (result.notes.length) {
-        operations.push(database.knowledgeNote.createMany({
+      return database.$transaction(async (transaction) => {
+        const existing = result.notes.length ? await transaction.knowledgeSourceRevision.findMany({
+          where: {
+            vaultId: id,
+            OR: result.notes.map((note) => ({ relativePath: note.relativePath, contentHash: note.sha256 })),
+          },
+          select: { relativePath: true, contentHash: true },
+        }) : [];
+        const existingKeys = new Set(existing.map((revision) => `${revision.relativePath}\u0000${revision.contentHash}`));
+        const revisions = sourceRevisionRows(id, result.scannedAt, result.notes, existingKeys);
+
+        if (revisions.length) await transaction.knowledgeSourceRevision.createMany({ data: revisions });
+        await transaction.knowledgeNoteLink.deleteMany({ where: { vaultId: id } });
+        await transaction.knowledgeNote.deleteMany({ where: { vaultId: id } });
+        if (result.notes.length) await transaction.knowledgeNote.createMany({
           data: result.notes.map((note) => noteData(id, result.scannedAt, note)),
-        }));
-      }
-      if (result.links.length) {
-        operations.push(database.knowledgeNoteLink.createMany({
+        });
+        if (result.links.length) await transaction.knowledgeNoteLink.createMany({
           data: result.links.map((link) => linkData(id, result.scannedAt, link)),
-        }));
-      }
-      operations.push(database.knowledgeSyncReport.create({
-        data: {
-          vaultId: id,
-          scannedAt: result.scannedAt,
-          ...report.summary,
-          changes: { createMany: { data: report.changes } },
-        },
-      }));
-      operations.push(database.knowledgeVault.update({
-        where: { id },
-        data: {
-          lastScanStatus: "SUCCESS",
-          lastScannedAt: result.scannedAt,
-          lastScanFileCount: result.notes.length,
-          lastScanError: null,
-        },
-        include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
-      }));
-      const results = await database.$transaction(operations);
-      return results.at(-1);
+        });
+        await transaction.knowledgeSyncReport.create({
+          data: {
+            vaultId: id,
+            scannedAt: result.scannedAt,
+            ...report.summary,
+            changes: { createMany: { data: report.changes } },
+          },
+        });
+        return transaction.knowledgeVault.update({
+          where: { id },
+          data: {
+            lastScanStatus: "SUCCESS",
+            lastScannedAt: result.scannedAt,
+            lastScanFileCount: result.notes.length,
+            lastScanError: null,
+          },
+          include: { notes: { orderBy: { relativePath: "asc" } }, noteLinks: { orderBy: { sourceRelativePath: "asc" } }, syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } } },
+        });
+      });
     },
     async markScanFailed(id, message) {
       return (await getDatabase()).knowledgeVault.update({

@@ -359,6 +359,7 @@ model KnowledgeVault {
   updatedAt         DateTime        @updatedAt @map("updated_at")
   notes             KnowledgeNote[]
   noteLinks         KnowledgeNoteLink[]
+  sourceRevisions   KnowledgeSourceRevision[]
   syncReports       KnowledgeSyncReport[]
 
   @@index([enabled, name])
@@ -409,6 +410,22 @@ model KnowledgeNoteLink {
   @@index([vaultId, targetRelativePath])
   @@index([vaultId, isResolved])
   @@map("knowledge_note_links")
+}
+
+model KnowledgeSourceRevision {
+  id              String         @id @default(cuid())
+  vaultId         String         @map("vault_id")
+  relativePath    String         @map("relative_path")
+  contentHash     String         @map("content_hash")
+  markdown        String
+  frontmatterJson String?        @map("frontmatter_json")
+  origin          String         @default("LOCAL_SCAN")
+  capturedAt      DateTime       @map("captured_at")
+  vault           KnowledgeVault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+
+  @@unique([vaultId, relativePath, contentHash])
+  @@index([vaultId, relativePath, capturedAt])
+  @@map("knowledge_source_revisions")
 }
 
 model KnowledgeSyncReport {

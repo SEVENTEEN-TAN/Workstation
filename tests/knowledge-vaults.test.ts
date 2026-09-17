@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createKnowledgeVaultService } from "../src/lib/services/knowledge-vaults";
+import { createKnowledgeVaultService, sourceRevisionRows } from "../src/lib/services/knowledge-vaults";
 import type { VaultScanResult } from "../src/lib/knowledge/vault-scanner";
 
 const vault = {
@@ -17,6 +17,51 @@ const vault = {
 };
 
 describe("knowledge vault service", () => {
+  it("keeps only unseen path and hash pairs for append-only source revisions", () => {
+    const rows = sourceRevisionRows("vault-1", new Date("2026-09-17T00:00:00.000Z"), [{
+      relativePath: "notes/a.md",
+      fileName: "a.md",
+      directoryPath: "notes",
+      markdown: "# A changed",
+      sizeBytes: 12,
+      modifiedAt: new Date("2026-09-17T00:00:00.000Z"),
+      sha256: "hash-b",
+      hasFrontmatter: false,
+      hasWikilinks: false,
+      hasEmbeds: false,
+      hasCallouts: false,
+      hasDataview: false,
+      hasTasks: false,
+      isMoc: false,
+      frontmatter: { title: "A" },
+    }, {
+      relativePath: "notes/b.md",
+      fileName: "b.md",
+      directoryPath: "notes",
+      markdown: "# B",
+      sizeBytes: 12,
+      modifiedAt: new Date("2026-09-17T00:00:00.000Z"),
+      sha256: "hash-c",
+      hasFrontmatter: false,
+      hasWikilinks: false,
+      hasEmbeds: false,
+      hasCallouts: false,
+      hasDataview: false,
+      hasTasks: false,
+      isMoc: false,
+      frontmatter: null,
+    }], new Set(["notes/a.md\u0000hash-a", "notes/b.md\u0000hash-c"]));
+
+    expect(rows).toEqual([expect.objectContaining({
+      vaultId: "vault-1",
+      relativePath: "notes/a.md",
+      contentHash: "hash-b",
+      markdown: "# A changed",
+      frontmatterJson: JSON.stringify({ title: "A" }),
+      origin: "LOCAL_SCAN",
+    })]);
+  });
+
   it("validates registration and delegates normalized values", async () => {
     let created: unknown;
     const service = createKnowledgeVaultService({
@@ -53,6 +98,7 @@ describe("knowledge vault service", () => {
         relativePath: "notes/a.md",
         fileName: "a.md",
         directoryPath: "notes",
+        markdown: "# A",
         sizeBytes: 12,
         modifiedAt: new Date("2026-09-16T03:00:00.000Z"),
         sha256: "hash",
