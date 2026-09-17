@@ -459,9 +459,37 @@ model KnowledgeArticle {
   tags             Json
   publishedAt      DateTime                  @default(now()) @map("published_at")
   draft            KnowledgePublicationDraft @relation(fields: [draftId], references: [id], onDelete: Restrict)
+  collections      KnowledgeCollectionArticle[]
 
   @@index([publishedAt])
   @@map("knowledge_articles")
+}
+
+model KnowledgeCollection {
+  id          String                       @id @default(cuid())
+  title       String
+  description String?
+  slug        String                       @unique
+  visibility  String                       @default("PRIVATE")
+  sortOrder   Int                          @default(0) @map("sort_order")
+  createdAt   DateTime                     @default(now()) @map("created_at")
+  updatedAt   DateTime                     @updatedAt @map("updated_at")
+  articles    KnowledgeCollectionArticle[]
+
+  @@index([visibility, sortOrder])
+  @@map("knowledge_collections")
+}
+
+model KnowledgeCollectionArticle {
+  collectionId String              @map("collection_id")
+  articleId    String              @map("article_id")
+  sortOrder    Int                 @default(0) @map("sort_order")
+  collection   KnowledgeCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  article      KnowledgeArticle    @relation(fields: [articleId], references: [id], onDelete: Restrict)
+
+  @@id([collectionId, articleId])
+  @@index([articleId])
+  @@map("knowledge_collection_articles")
 }
 
 model KnowledgeSyncReport {
