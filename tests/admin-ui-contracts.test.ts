@@ -396,6 +396,7 @@ describe("admin route contracts", () => {
     const scanRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/scan/route.ts");
     const noteRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/notes/route.ts");
     const draftRoute = readProjectFile("src/app/api/admin/knowledge/publications/drafts/route.ts");
+    const articleRoute = readProjectFile("src/app/api/admin/knowledge/articles/route.ts");
     const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
     const workspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
     const adminStyles = readProjectFile("src/app/admin/admin.module.css");
@@ -407,6 +408,8 @@ describe("admin route contracts", () => {
     expect(noteRoute).toContain("readNote");
     expect(draftRoute).toContain("withAdminSession");
     expect(draftRoute).toContain("knowledgePublicationService.createDraft");
+    expect(articleRoute).toContain("withAdminSession");
+    expect(articleRoute).toContain("knowledgeArticleService.publishDraft");
     expect(page).toContain("KnowledgeWorkspace");
     for (const field of ["name", "rootPath", "ignorePatterns"]) {
       expect(workspace).toContain(`name="${field}"`);
@@ -428,6 +431,8 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("源修订");
     expect(workspace).toContain("创建发布草稿");
     expect(workspace).toContain("/api/admin/knowledge/publications/drafts");
+    expect(workspace).toContain("发布文章");
+    expect(workspace).toContain("/api/admin/knowledge/articles");
     expect(workspace).toContain("buildKnowledgeNoteTree");
     expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.knowledgeIndexLayout\s*\{\s*grid-template-columns:\s*1fr/);
     expect(adminStyles).toMatch(/@media \(max-width: 639px\)[\s\S]*\.noteInspector\s*\{\s*grid-template-columns:\s*1fr/);

@@ -2546,6 +2546,9 @@
 .sourceRevisionList strong { color: #c8d2dc; font-family: var(--font-geist-mono), monospace; font-size: 10px; }
 .sourceRevisionList time, .sourceRevisionList span { color: #7f8b97; font-size: 9px; }
 .sourceRevisionList button { justify-self: start; min-height: 28px; padding: 0 8px; font-size: 10px; }
+.articlePublishForm { display: grid; grid-template-columns: minmax(0, 1fr) 150px auto; align-items: center; gap: 6px; }
+.articlePublishForm input { width: 100%; min-height: 28px; padding: 0 8px; border: 1px solid rgba(119, 173, 236, 0.24); border-radius: 3px; background: rgba(9, 18, 28, 0.76); color: #d8e3ec; font-size: 10px; }
+.articlePublishForm input:focus { outline: 2px solid rgba(117, 190, 236, 0.45); outline-offset: 1px; }
 
 .noteBadges {
   display: flex;
@@ -2767,6 +2770,7 @@
   .weekdayField,
   .entityFormActions { grid-column: auto; }
   .entityFormActions { display: grid; grid-template-columns: 1fr 1fr; }
+  .articlePublishForm { grid-template-columns: 1fr; }
   .activityCard { grid-template-columns: 1fr; }
   .activityCard .rowActions { grid-column: 1; grid-row: auto; justify-content: flex-start; }
   .projectCard { grid-template-columns: 1fr; }

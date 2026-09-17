@@ -352,6 +352,14 @@ export interface KnowledgePublicationDraftData {
   status: "DRAFT";
   createdAt: string;
   updatedAt: string;
+  article: KnowledgeArticleData | null;
+}
+
+export interface KnowledgeArticleData {
+  id: string;
+  draftId: string;
+  slug: string;
+  publishedAt: string;
 }
 
 export interface KnowledgeSourceRevisionData {
