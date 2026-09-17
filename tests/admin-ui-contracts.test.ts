@@ -362,12 +362,15 @@ describe("admin route contracts", () => {
     const collectionRoute = readProjectFile("src/app/api/admin/knowledge/vaults/route.ts");
     const itemRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/route.ts");
     const scanRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/scan/route.ts");
+    const noteRoute = readProjectFile("src/app/api/admin/knowledge/vaults/[id]/notes/route.ts");
     const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
     const workspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
 
     expect(collectionRoute).toContain("withAdminSession");
     expect(itemRoute).toContain("withAdminSession");
     expect(scanRoute).toContain("withAdminSession");
+    expect(noteRoute).toContain("withAdminSession");
+    expect(noteRoute).toContain("readNote");
     expect(page).toContain("KnowledgeWorkspace");
     for (const field of ["name", "rootPath", "ignorePatterns"]) {
       expect(workspace).toContain(`name="${field}"`);

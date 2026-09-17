@@ -122,4 +122,20 @@ describe("knowledge vault service", () => {
     await service.remove("vault-1");
     expect(events).toEqual(["delete:vault-1"]);
   });
+
+  it("reads only a currently indexed note from an enabled vault", async () => {
+    const indexed = { ...vault, notes: [{ relativePath: "notes/a.md", contentHash: "hash", modifiedAt: new Date() }] };
+    const service = createKnowledgeVaultService({
+      async listVaults() { return [indexed]; },
+      async findVault() { return indexed; },
+      async createVault() { throw new Error("not used"); },
+      async updateVault() { throw new Error("not used"); },
+      async deleteVault() { throw new Error("not used"); },
+      async replaceIndex() { throw new Error("not used"); },
+      async markScanFailed() { throw new Error("not used"); },
+    }, async () => { throw new Error("not used"); }, async (rootPath, relativePath) => ({ content: `${rootPath}:${relativePath}` }));
+
+    await expect(service.readNote("vault-1", "notes/a.md")).resolves.toEqual({ relativePath: "notes/a.md", content: "F:\\Project\\Obsidian\\PersonalTech:notes/a.md" });
+    await expect(service.readNote("vault-1", "notes/missing.md")).rejects.toThrow("Note unavailable");
+  });
 });

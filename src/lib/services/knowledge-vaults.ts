@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { readIndexedMarkdownNote } from "../knowledge/note-reader";
 import { scanVault, type ScannedKnowledgeLink, type ScannedKnowledgeNote, type VaultScanResult } from "../knowledge/vault-scanner";
 import { buildKnowledgeSyncReport, type KnowledgeNoteSnapshot, type KnowledgeSyncReportInput } from "../knowledge/sync-report";
 import { knowledgeVaultInputSchema, knowledgeVaultPatchSchema } from "../validators/knowledge-vaults";
@@ -115,6 +116,7 @@ function defaultRepository(): KnowledgeVaultRepository {
 export function createKnowledgeVaultService(
   repository: KnowledgeVaultRepository = defaultRepository(),
   scanner: (rootPath: string, ignorePatterns: readonly string[]) => Promise<VaultScanResult> = scanVault,
+  noteReader: (rootPath: string, relativePath: string) => Promise<{ content: string }> = readIndexedMarkdownNote,
 ) {
   return {
     list: () => repository.listVaults(),
@@ -136,6 +138,13 @@ export function createKnowledgeVaultService(
       const current = await repository.findVault(id);
       if (!current) throw new Error("Knowledge vault not found");
       return repository.deleteVault(id);
+    },
+    async readNote(id: string, relativePath: string) {
+      const current = await repository.findVault(id);
+      if (!current?.enabled || !current.notes?.some((note) => note.relativePath === relativePath)) {
+        throw new Error("Note unavailable");
+      }
+      return { relativePath, ...(await noteReader(current.rootPath, relativePath)) };
     },
     async scan(id: string) {
       const current = await repository.findVault(id);
