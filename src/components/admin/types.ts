@@ -314,6 +314,7 @@ export interface KnowledgeNoteData {
   hasCallouts: boolean;
   hasDataview: boolean;
   hasTasks: boolean;
+  isMoc: boolean;
   frontmatterJson: string | null;
   indexedAt: string;
 }

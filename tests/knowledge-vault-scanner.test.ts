@@ -115,6 +115,21 @@ describe("knowledge vault scanner", () => {
     });
   });
 
+  it("marks conventional MOC and index notes without changing their paths", async () => {
+    await mkdir(join(rootPath, "knowledge"));
+    await Promise.all([
+      writeFile(join(rootPath, "knowledge", "Index.md"), "# Knowledge index", "utf8"),
+      writeFile(join(rootPath, "knowledge", "topic.md"), "---\ntype: moc\n---\n# Topic map", "utf8"),
+    ]);
+
+    const result = await scanVault(rootPath);
+
+    expect(result.notes).toEqual(expect.arrayContaining([
+      expect.objectContaining({ relativePath: "knowledge/Index.md", directoryPath: "knowledge", isMoc: true }),
+      expect.objectContaining({ relativePath: "knowledge/topic.md", directoryPath: "knowledge", isMoc: true }),
+    ]));
+  });
+
   it("does not follow file symlinks outside the vault", async () => {
     const outsidePath = join(rootPath, "..", `${rootPath.split(/[\\/]/).at(-1)}-outside.md`);
     await writeFile(outsidePath, "# Outside", "utf8");

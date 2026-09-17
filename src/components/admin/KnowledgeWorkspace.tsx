@@ -25,6 +25,7 @@ function formatBytes(value: number) {
 
 function syntaxLabels(note: KnowledgeNoteData) {
   return [
+    note.isMoc && "MOC",
     note.hasFrontmatter && "YAML",
     note.hasWikilinks && "Link",
     note.hasEmbeds && "Embed",

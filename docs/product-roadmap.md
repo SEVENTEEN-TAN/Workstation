@@ -99,7 +99,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 ### Obsidian Compatibility
 
 - [x] Parse and preserve YAML frontmatter, including title, aliases, tags, type, created date, and publication metadata.
-- [ ] Preserve directory hierarchy and MOC/index notes.
+- [x] Preserve directory hierarchy and identify conventional MOC/index notes.
 - [ ] Resolve wikilinks, aliases, relative paths, heading links, and display labels.
 - [ ] Build forward links, backlinks, and unresolved-link reports.
 - [ ] Resolve Obsidian embeds and sibling `assets` folders.

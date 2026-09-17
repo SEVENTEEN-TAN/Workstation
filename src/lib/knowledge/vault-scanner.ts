@@ -18,6 +18,7 @@ export type ScannedKnowledgeNote = {
   hasCallouts: boolean;
   hasDataview: boolean;
   hasTasks: boolean;
+  isMoc: boolean;
   frontmatter: Record<string, unknown> | null;
 };
 
@@ -79,6 +80,18 @@ function parseFrontmatter(content: string) {
   return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
 }
 
+function isMocNote(fileName: string, frontmatter: Record<string, unknown> | null) {
+  const name = basename(fileName, extname(fileName)).toLocaleLowerCase();
+  if (["moc", "index", "索引"].includes(name)) return true;
+  if (!frontmatter) return false;
+
+  const type = frontmatter.type ?? frontmatter.layout;
+  if (typeof type === "string" && ["moc", "index"].includes(type.toLocaleLowerCase())) return true;
+
+  const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : [];
+  return tags.some((tag) => typeof tag === "string" && ["moc", "index"].includes(tag.replace(/^#/, "").toLocaleLowerCase()));
+}
+
 export async function scanVault(rootPath: string, ignorePatterns: readonly string[] = []): Promise<VaultScanResult> {
   let rootStat;
   try {
@@ -107,6 +120,7 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
       if (isIgnored(relativePath, configuredPatterns)) continue;
 
       const [fileStat, content] = await Promise.all([stat(absolutePath), readFile(absolutePath, "utf8")]);
+      const frontmatter = parseFrontmatter(content);
       notes.push({
         relativePath,
         fileName: basename(absolutePath),
@@ -115,7 +129,8 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
         modifiedAt: fileStat.mtime,
         sha256: createHash("sha256").update(content).digest("hex"),
         ...detectSyntax(content),
-        frontmatter: parseFrontmatter(content),
+        isMoc: isMocNote(entry.name, frontmatter),
+        frontmatter,
       });
     }
   }
