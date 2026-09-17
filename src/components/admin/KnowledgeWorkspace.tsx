@@ -46,9 +46,10 @@ function noteTitle(note: KnowledgeNoteData) {
 }
 
 function linkLabels(note: KnowledgeNoteData, links: KnowledgeNoteLinkData[]) {
-  const outgoing = links.filter((link) => link.sourceRelativePath === note.relativePath).length;
-  const incoming = links.filter((link) => link.targetRelativePath === note.relativePath).length;
-  return [outgoing && `出链 ${outgoing}`, incoming && `反链 ${incoming}`].filter(Boolean) as string[];
+  const outgoing = links.filter((link) => link.kind === "LINK" && link.sourceRelativePath === note.relativePath).length;
+  const incoming = links.filter((link) => link.kind === "LINK" && link.targetRelativePath === note.relativePath).length;
+  const embeds = links.filter((link) => link.kind === "EMBED" && link.sourceRelativePath === note.relativePath).length;
+  return [outgoing && `出链 ${outgoing}`, incoming && `反链 ${incoming}`, embeds && `嵌入 ${embeds}`].filter(Boolean) as string[];
 }
 
 function reportSummary(report: KnowledgeSyncReportData) {
@@ -74,6 +75,8 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
   const syncReport = selected?.syncReports[0] ?? null;
   const selectedLinks = selected?.noteLinks ?? [];
+  const noteLinks = selectedLinks.filter((link) => link.kind === "LINK");
+  const embeds = selectedLinks.filter((link) => link.kind === "EMBED");
   const unresolvedLinks = selectedLinks.filter((link) => !link.isResolved);
   const notes = useMemo(() => {
     const normalized = query.trim().toLocaleLowerCase();
@@ -171,7 +174,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
              </section> : null}
              {selectedLinks.length ? <section className={styles.syncReport} aria-label="链接报告">
                <div className={styles.syncReportHeading}><strong>链接报告</strong><span>仅索引，不修改笔记</span></div>
-               <div className={styles.syncCounts}><span>正向链接 {selectedLinks.length}</span><span>已解析 {selectedLinks.length - unresolvedLinks.length}</span><span>未解析链接 {unresolvedLinks.length}</span></div>
+               <div className={styles.syncCounts}><span>正向链接 {noteLinks.length}</span><span>已解析嵌入 {embeds.filter((link) => link.isResolved).length}</span><span>未解析链接 {unresolvedLinks.length}</span></div>
                {unresolvedLinks.length ? <div className={styles.syncChanges}>{unresolvedLinks.slice(0, 8).map((link) => <div key={link.id}><span>未解析</span><small>{link.sourceRelativePath} -&gt; {link.targetRaw}</small></div>)}{unresolvedLinks.length > 8 ? <p>另有 {unresolvedLinks.length - 8} 条未解析链接未展开。</p> : null}</div> : <p className={styles.syncEmpty}>所有内部链接都已解析。</p>}
              </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (

@@ -394,6 +394,7 @@ model KnowledgeNote {
 model KnowledgeNoteLink {
   id                 String         @id @default(cuid())
   vaultId            String         @map("vault_id")
+  kind               String         @default("LINK")
   sourceRelativePath String         @map("source_relative_path")
   targetRaw          String         @map("target_raw")
   targetRelativePath String?        @map("target_relative_path")

@@ -186,6 +186,32 @@ describe("knowledge vault scanner", () => {
         targetRelativePath: null,
         isResolved: false,
       }),
+      expect.objectContaining({
+        kind: "EMBED",
+        sourceRelativePath: "notes/source.md",
+        targetRaw: "attachment.png",
+        targetRelativePath: null,
+        isResolved: false,
+      }),
+    ]);
+  });
+
+  it("resolves embedded files from sibling assets folders and relative paths", async () => {
+    await Promise.all([
+      mkdir(join(rootPath, "notes", "assets"), { recursive: true }),
+      mkdir(join(rootPath, "assets")),
+    ]);
+    await Promise.all([
+      writeFile(join(rootPath, "notes", "source.md"), "![[architecture.png]]\n![[../assets/reference.pdf]]", "utf8"),
+      writeFile(join(rootPath, "notes", "assets", "architecture.png"), "image", "utf8"),
+      writeFile(join(rootPath, "assets", "reference.pdf"), "pdf", "utf8"),
+    ]);
+
+    const result = await scanVault(rootPath);
+
+    expect(result.links).toEqual([
+      expect.objectContaining({ kind: "EMBED", targetRaw: "architecture.png", targetRelativePath: "notes/assets/architecture.png", isResolved: true }),
+      expect.objectContaining({ kind: "EMBED", targetRaw: "../assets/reference.pdf", targetRelativePath: "assets/reference.pdf", isResolved: true }),
     ]);
   });
 

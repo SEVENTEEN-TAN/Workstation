@@ -29,6 +29,7 @@ export type VaultScanResult = {
 };
 
 export type ScannedKnowledgeLink = {
+  kind: "LINK" | "EMBED";
   sourceRelativePath: string;
   targetRaw: string;
   targetRelativePath: string | null;
@@ -136,6 +137,25 @@ function headingKey(value: string) {
   return value.replace(/[*_`~]/g, "").replace(/\s+/g, " ").trim().toLocaleLowerCase();
 }
 
+function fileKey(value: string) {
+  return value.replace(/\\/g, "/").replace(/^\.\//, "").toLocaleLowerCase();
+}
+
+function resolveEmbedPath(target: string, sourceDirectory: string, fileLookup: Map<string, Set<string>>) {
+  const normalized = target.replace(/\\/g, "/").trim();
+  if (!normalized) return null;
+  const candidates = normalized.startsWith("./") || normalized.startsWith("../")
+    ? [posix.normalize(posix.join(sourceDirectory || ".", normalized))]
+    : [
+      sourceDirectory && posix.join(sourceDirectory, normalized),
+      sourceDirectory && posix.join(sourceDirectory, "assets", normalized),
+      posix.join("assets", normalized),
+      normalized,
+    ].filter((value): value is string => Boolean(value));
+  const resolved = new Set(candidates.map((candidate) => uniquePath(fileLookup, fileKey(candidate))).filter(Boolean));
+  return resolved.size === 1 ? [...resolved][0] : null;
+}
+
 function headingsIn(content: string) {
   const headings = new Set<string>();
   let fenced = false;
@@ -151,8 +171,10 @@ function headingsIn(content: string) {
   return headings;
 }
 
-function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, string>) {
+function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, string>, filePaths: Set<string>) {
   const lookup = new Map<string, Set<string>>();
+  const fileLookup = new Map<string, Set<string>>();
+  for (const filePath of filePaths) addLookup(fileLookup, fileKey(filePath), filePath);
   for (const note of notes) {
     addLookup(lookup, noteKey(note.relativePath), note.relativePath);
     addLookup(lookup, noteKey(note.fileName), note.relativePath);
@@ -172,12 +194,29 @@ function resolveLinks(notes: ScannedKnowledgeNote[], contentByPath: Map<string, 
       const targetRelativePath = uniquePath(lookup, linkPathKey(targetPath, note.directoryPath) ?? "");
       const targetHeading = heading?.trim() || null;
       links.push({
+        kind: "LINK",
         sourceRelativePath: note.relativePath,
         targetRaw: targetWithHeading.trim(),
         targetRelativePath,
         targetHeading,
         displayLabel: display?.trim() || null,
         isResolved: targetRelativePath !== null && (!targetHeading || headingsByPath.get(targetRelativePath)?.has(headingKey(targetHeading)) === true),
+      });
+    }
+    for (const match of content.matchAll(/!\[\[([^\]\r\n]+)\]\]/g)) {
+      const [targetWithHeading, display] = splitLinkPart(match[1], "|");
+      const [target, heading] = splitLinkPart(targetWithHeading, "#");
+      const targetPath = target.trim();
+      if (!targetPath) continue;
+      const targetRelativePath = resolveEmbedPath(targetPath, note.directoryPath, fileLookup);
+      links.push({
+        kind: "EMBED",
+        sourceRelativePath: note.relativePath,
+        targetRaw: targetWithHeading.trim(),
+        targetRelativePath,
+        targetHeading: heading?.trim() || null,
+        displayLabel: display?.trim() || null,
+        isResolved: targetRelativePath !== null,
       });
     }
   }
@@ -196,6 +235,7 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
   const configuredPatterns = [...new Set(ignorePatterns.map((pattern) => pattern.trim()).filter(Boolean))];
   const notes: ScannedKnowledgeNote[] = [];
   const contentByPath = new Map<string, string>();
+  const filePaths = new Set<string>();
 
   async function walk(directory: string) {
     const entries = await readdir(directory, { withFileTypes: true });
@@ -206,11 +246,11 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
         if (!isIgnored(relativePath, configuredPatterns)) await walk(absolutePath);
         continue;
       }
-      if (!entry.isFile()) continue;
-      if (extname(entry.name).toLowerCase() !== ".md") continue;
-
       const relativePath = relative(rootPath, absolutePath).split(sep).join("/");
       if (isIgnored(relativePath, configuredPatterns)) continue;
+      if (!entry.isFile()) continue;
+      filePaths.add(relativePath);
+      if (extname(entry.name).toLowerCase() !== ".md") continue;
 
       const [fileStat, content] = await Promise.all([stat(absolutePath), readFile(absolutePath, "utf8")]);
       contentByPath.set(relativePath, content);
@@ -231,5 +271,5 @@ export async function scanVault(rootPath: string, ignorePatterns: readonly strin
 
   await walk(rootPath);
   notes.sort((left, right) => left.relativePath.localeCompare(right.relativePath));
-  return { scannedAt: new Date(), notes, links: resolveLinks(notes, contentByPath) };
+  return { scannedAt: new Date(), notes, links: resolveLinks(notes, contentByPath, filePaths) };
 }

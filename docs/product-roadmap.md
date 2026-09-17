@@ -102,7 +102,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 - [x] Preserve directory hierarchy and identify conventional MOC/index notes.
 - [x] Resolve wikilinks, aliases, relative paths, heading links, and display labels.
 - [x] Build forward links, backlinks, and unresolved-link reports.
-- [ ] Resolve Obsidian embeds and sibling `assets` folders.
+- [x] Resolve Obsidian embeds and sibling `assets` folders without transferring files.
 - [ ] Render callouts, tables, fenced code, and Markdown task lists.
 - [ ] Preserve unsupported Dataview blocks without executing them on the server.
 - [ ] Treat normal Obsidian tasks as note content unless the administrator explicitly promotes one to an OKR Action Item.

@@ -332,6 +332,7 @@ export interface KnowledgeSyncChangeData {
 
 export interface KnowledgeNoteLinkData {
   id: string;
+  kind: "LINK" | "EMBED";
   sourceRelativePath: string;
   targetRaw: string;
   targetRelativePath: string | null;
