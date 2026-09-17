@@ -2525,7 +2525,7 @@
 .noteTree button { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 4px 0; border: 0; background: transparent; color: #c8d2dc; font: inherit; text-align: left; }
 .noteTree button:hover, .noteInspector button:hover { color: #79cfac; }
 
-.noteInspector { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(119, 173, 236, 0.16); }
+.noteInspector { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(119, 173, 236, 0.16); }
 .noteInspector h3 { margin: 0 0 7px; color: #e7eaec; font-size: 11px; }
 .noteInspector p, .noteInspector ul, .noteInspector dl { margin: 0; color: #8794a1; font-size: 10px; }
 .noteInspector ul { padding-left: 15px; }
@@ -2534,6 +2534,11 @@
 .noteInspector dl > div { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr); gap: 6px; }
 .noteInspector dt { color: #8794a1; }
 .noteInspector dd { margin: 0; color: #c8d2dc; overflow-wrap: anywhere; }
+.publicationChecks { padding: 0 !important; list-style: none; }
+.publicationChecks li { padding-left: 10px; border-left: 2px solid; }
+.publicationReady { border-color: #79cfac !important; color: #9fcbb9 !important; }
+.publicationBlocked { border-color: #ff8a80 !important; color: #f1a69e !important; }
+.publicationNotice { border-color: #d5c887 !important; color: #d5c887 !important; }
 
 .noteBadges {
   display: flex;

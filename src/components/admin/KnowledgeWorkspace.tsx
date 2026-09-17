@@ -8,6 +8,7 @@ import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { buildKnowledgeNoteTree, readKnowledgeProperties, type KnowledgeTreeItem } from "./knowledge-note-tree";
+import { inspectKnowledgePublication } from "./knowledge-publication-inspector";
 import { ObsidianMarkdownPreview } from "./ObsidianMarkdownPreview";
 import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
@@ -108,6 +109,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const viewingProperties = viewingNote ? readKnowledgeProperties(viewingNote) : [];
   const outgoingLinks = viewingNote ? selectedLinks.filter((link) => link.kind === "LINK" && link.sourceRelativePath === viewingNote.relativePath) : [];
   const incomingLinks = viewingNote ? selectedLinks.filter((link) => link.kind === "LINK" && link.targetRelativePath === viewingNote.relativePath) : [];
+  const publicationChecks = viewingNote ? inspectKnowledgePublication(viewingNote, selectedLinks) : [];
   const totalNotes = vaults.reduce((sum, vault) => sum + vault.notes.length, 0);
 
   async function createVault(event: FormEvent<HTMLFormElement>) {
@@ -229,6 +231,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                  <section><h3>笔记属性</h3>{viewingProperties.length ? <dl>{viewingProperties.map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl> : <p>没有可展示的 frontmatter 属性。</p>}</section>
                  <section><h3>正向链接</h3>{outgoingLinks.length ? <ul>{outgoingLinks.map((link) => <li key={link.id}>{link.isResolved && link.targetRelativePath ? <button type="button" onClick={() => viewLinkedNote(link.targetRelativePath)}>{link.displayLabel ?? link.targetRelativePath}</button> : <span>{link.displayLabel ?? link.targetRaw}（未解析）</span>}</li>)}</ul> : <p>没有正向链接。</p>}</section>
                  <section><h3>反向链接</h3>{incomingLinks.length ? <ul>{incomingLinks.map((link) => <li key={link.id}><button type="button" onClick={() => viewLinkedNote(link.sourceRelativePath)}>{link.displayLabel ?? link.sourceRelativePath}</button></li>)}</ul> : <p>没有反向链接。</p>}</section>
+                 <section><h3>发布检查</h3><ul className={styles.publicationChecks}>{publicationChecks.map((check) => <li key={check.id} className={check.status === "READY" ? styles.publicationReady : check.status === "BLOCKED" ? styles.publicationBlocked : styles.publicationNotice}>{check.label}</li>)}</ul></section>
                </div>
              </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (

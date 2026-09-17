@@ -420,6 +420,8 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("知识库目录");
     expect(workspace).toContain("笔记属性");
     expect(workspace).toContain("反向链接");
+    expect(workspace).toContain("发布检查");
+    expect(workspace).toContain("inspectKnowledgePublication");
     expect(workspace).toContain("buildKnowledgeNoteTree");
     expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.knowledgeIndexLayout\s*\{\s*grid-template-columns:\s*1fr/);
     expect(adminStyles).toMatch(/@media \(max-width: 639px\)[\s\S]*\.noteInspector\s*\{\s*grid-template-columns:\s*1fr/);
