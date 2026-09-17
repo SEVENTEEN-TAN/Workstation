@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const setupSchema = z.object({
   username: z.string().trim().min(3),
-  password: z.string().min(12),
+  password: z.string().min(1),
 });
 
 export async function POST(request: Request) {

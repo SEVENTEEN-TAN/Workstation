@@ -6,13 +6,19 @@ export type AdminBootstrapRepository = {
   createUser(input: { username: string; passwordHash: string }): Promise<{ id: string; username: string }>;
 };
 
+function isLocalDefaultAdministrator(username: string, password: string) {
+  return process.env.NODE_ENV !== "production" && username === "admin" && password === "admin";
+}
+
 export async function bootstrapAdmin(
   input: { username: string; password: string },
   repository?: AdminBootstrapRepository,
 ): Promise<{ id: string; username: string }> {
   const username = input.username.trim();
   if (username.length < 3) throw new Error("用户名至少 3 位");
-  if (input.password.length < 12) throw new Error("密码至少 12 位");
+  if (input.password.length < 12 && !isLocalDefaultAdministrator(username, input.password)) {
+    throw new Error("密码至少 12 位");
+  }
 
   if (!repository) {
     const database = await getDatabase();

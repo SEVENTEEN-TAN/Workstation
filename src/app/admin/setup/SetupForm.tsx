@@ -6,6 +6,11 @@ import { useRouter } from "next/navigation";
 
 import styles from "../admin.module.css";
 
+const passwordMinimumLength = process.env.NODE_ENV === "production" ? 12 : 5;
+const passwordRequirement = process.env.NODE_ENV === "production"
+  ? "生产环境密码至少需要 12 位。"
+  : "本地开发可使用 admin / admin；其他密码至少需要 12 位。";
+
 export function SetupForm() {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -63,7 +68,7 @@ export function SetupForm() {
             name={name}
             type={visible ? "text" : "password"}
             autoComplete="new-password"
-            minLength={12}
+            minLength={passwordMinimumLength}
             aria-describedby="password-requirement"
             disabled={busy}
             required
@@ -100,7 +105,7 @@ export function SetupForm() {
       </label>
       {passwordControl("password", "密码", passwordVisible, setPasswordVisible)}
       {passwordControl("confirmPassword", "确认密码", confirmationVisible, setConfirmationVisible)}
-      <p id="password-requirement" className={styles.fieldHint}>生产环境密码至少需要 12 位。</p>
+      <p id="password-requirement" className={styles.fieldHint}>{passwordRequirement}</p>
       {error && <p className={styles.error} role="alert">{error}</p>}
       <button
         type="submit"

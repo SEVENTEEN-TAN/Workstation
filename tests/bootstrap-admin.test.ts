@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { bootstrapAdmin, type AdminBootstrapRepository } from "../src/lib/auth/bootstrap";
 
@@ -15,6 +15,10 @@ function repository(existingUsers = 0) {
 }
 
 describe("administrator bootstrap", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   it("creates the only administrator with a password hash", async () => {
     const repo = repository();
 
@@ -37,6 +41,22 @@ describe("administrator bootstrap", () => {
   it("rejects short passwords", async () => {
     const repo = repository();
     await expect(bootstrapAdmin({ username: "admin", password: "too-short" }, repo.value))
+      .rejects.toThrow("至少 12 位");
+  });
+
+  it("allows the documented local admin credentials outside production", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    const repo = repository();
+
+    await expect(bootstrapAdmin({ username: "admin", password: "admin" }, repo.value))
+      .resolves.toEqual({ id: "admin-1", username: "admin" });
+  });
+
+  it("rejects the local admin credentials in production", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    const repo = repository();
+
+    await expect(bootstrapAdmin({ username: "admin", password: "admin" }, repo.value))
       .rejects.toThrow("至少 12 位");
   });
 });
