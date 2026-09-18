@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarRange, FilePenLine, LoaderCircle, RefreshCw, Save, Send } from "lucide-react";
+import { CalendarRange, FilePenLine, LoaderCircle, RefreshCw, Save, Send, Sparkles } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -86,6 +86,15 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     if (editing?.id === converted.id) setEditing(null);
   }
 
+  async function rewriteWithAi(draft: WeeklyActivityDraftData) {
+    const rewritten = await runAction(`weekly:ai:${draft.id}`, () => adminRequest<WeeklyActivityDraftData>(
+      `/api/admin/weekly/${draft.id}/ai`, { method: "POST" },
+    ), "周报草稿已由 AI 润色");
+    if (!rewritten) return;
+    setDrafts((current) => current.map((item) => item.id === rewritten.id ? rewritten : item));
+    if (editing?.id === rewritten.id) setEditing(rewritten);
+  }
+
   return (
     <section>
       <PageHeader title="每周动态" description="从现有工作证据生成私有周报草稿，确认后再转入职业动态。" />
@@ -111,6 +120,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
             <label><span>英文摘要</span><textarea name="summaryEn" maxLength={4000} defaultValue={editing.summaryEn} /></label>
             <div className={styles.entityFormActions}>
               <button type="button" onClick={() => setEditing(null)} disabled={saving}>取消</button>
+              <button type="button" onClick={() => rewriteWithAi(editing)} disabled={saving || isBusy(`weekly:ai:${editing.id}`)}>{isBusy(`weekly:ai:${editing.id}`) ? <LoaderCircle className={styles.spin} size={17} /> : <Sparkles size={17} />}AI 润色</button>
               <button className={styles.primaryButton} disabled={saving}>{saving ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{saving ? "保存中" : "保存草稿"}</button>
             </div>
           </form>
@@ -129,6 +139,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
             <div className={styles.activityCopy}><h3>{draft.titleZh}</h3><p>{draft.summaryZh}</p><small>{draft.titleEn}</small></div>
             <div className={styles.rowActions}>
               {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)}><FilePenLine size={15} />编辑</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => rewriteWithAi(draft)} disabled={isBusy(`weekly:ai:${draft.id}`)}>{isBusy(`weekly:ai:${draft.id}`) ? <LoaderCircle className={styles.spin} size={15} /> : <Sparkles size={15} />}AI 润色</button> : null}
               {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`weekly:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
             </div>
           </article>

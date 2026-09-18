@@ -1,7 +1,9 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { weeklyUpdateDraftSchema } from "../validators/ai-content-drafts";
 import { weeklyDraftPatchSchema, weeklyRangeSchema } from "../validators/weekly-activity-drafts";
+import { aiGenerationService, type AiGenerator } from "./ai-generation";
 
 export type WeeklySourceSnapshot = {
   github: { id: string; type: string; repository: string; url: string | null; occurredAt: Date }[];
@@ -32,6 +34,7 @@ type EditableDraft = {
   summaryEn?: string | null;
   weekEnd?: Date;
   convertedActivityId?: string | null;
+  sourceSnapshot?: unknown;
 };
 
 export type WeeklyActivityDraftRepository = {
@@ -191,7 +194,10 @@ function defaultRepository(): WeeklyActivityDraftRepository {
   };
 }
 
-export function createWeeklyActivityDraftService(repository: WeeklyActivityDraftRepository = defaultRepository()) {
+export function createWeeklyActivityDraftService(
+  repository: WeeklyActivityDraftRepository = defaultRepository(),
+  generator: AiGenerator = aiGenerationService,
+) {
   return {
     list: () => repository.listDrafts(),
     async generate(input: unknown) {
@@ -217,6 +223,18 @@ export function createWeeklyActivityDraftService(repository: WeeklyActivityDraft
       if (!draft) throw new Error("周报草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("已转换的周报不能继续编辑");
       return repository.updateDraft(id, weeklyDraftPatchSchema.parse(input));
+    },
+    async rewriteWithAi(id: string) {
+      const draft = await repository.findDraft(id);
+      if (!draft) throw new Error("周报草稿不存在");
+      if (draft.status !== "DRAFT") throw new Error("已转换的周报不能继续编辑");
+      if (!draft.sourceSnapshot) throw new Error("周报草稿缺少来源快照");
+      const generated = await generator.generate("WEEKLY_UPDATE", {
+        system: "You create concise bilingual weekly updates from verified private work evidence.",
+        prompt: `请基于来源事实润色周报草稿。只返回 JSON，不要 Markdown。字段必须为 titleZh, titleEn, summaryZh, summaryEn，不得虚构事实。\n\nCURRENT:\n${JSON.stringify({ titleZh: draft.titleZh, titleEn: draft.titleEn, summaryZh: draft.summaryZh, summaryEn: draft.summaryEn })}\n\nSOURCE:\n${JSON.stringify(draft.sourceSnapshot)}`,
+        schema: weeklyUpdateDraftSchema,
+      });
+      return repository.updateDraft(id, weeklyUpdateDraftSchema.parse(generated.content));
     },
     async convert(id: string) {
       const draft = await repository.findDraft(id);

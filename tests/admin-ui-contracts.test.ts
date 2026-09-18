@@ -370,6 +370,33 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("FeedbackCenter");
   });
 
+  it("protects AI content draft APIs and exposes explicit review actions", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/ai/drafts/route.ts");
+    const applyRoute = readProjectFile("src/app/api/admin/ai/drafts/[id]/apply/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/ai/drafts/[id]/route.ts");
+    const weeklyAiRoute = readProjectFile("src/app/api/admin/weekly/[id]/ai/route.ts");
+    const projectPage = readProjectFile("src/app/admin/(workspace)/projects/page.tsx");
+    const okrPage = readProjectFile("src/app/admin/(workspace)/okr/cycles/[cycleId]/page.tsx");
+    const projectWorkspace = readProjectFile("src/components/admin/PortfolioProjectsWorkspace.tsx");
+    const weeklyWorkspace = readProjectFile("src/components/admin/WeeklyActivityWorkspace.tsx");
+    const okrWorkspace = readProjectFile("src/components/admin/okr/OkrCycleWorkspace.tsx");
+
+    for (const source of [collectionRoute, applyRoute, itemRoute, weeklyAiRoute]) {
+      expect(source).toContain("withAdminSession");
+    }
+    expect(projectPage).toContain("aiContentDraftService.list");
+    expect(okrPage).toContain("aiContentDraftService.list");
+    expect(projectWorkspace).toContain("AI 整理说明");
+    expect(projectWorkspace).toContain("来源内容");
+    expect(projectWorkspace).toContain("生成草稿");
+    expect(projectWorkspace).toContain("应用草稿");
+    expect(projectWorkspace).toContain("丢弃草稿");
+    expect(weeklyWorkspace).toContain("AI 润色");
+    expect(okrWorkspace).toContain("AI 生成复盘");
+    expect(okrWorkspace).toContain("应用为私密复盘");
+    expect(okrWorkspace).toContain("丢弃草稿");
+  });
+
   it("protects OKR milestone drafts and provides editing and private conversion", () => {
     const collectionRoute = readProjectFile("src/app/api/admin/milestones/route.ts");
     const itemRoute = readProjectFile("src/app/api/admin/milestones/[id]/route.ts");

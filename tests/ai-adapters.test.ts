@@ -105,6 +105,12 @@ describe("AI adapters", () => {
     })).toEqual({ text: "Generated text", inputTokens: 12, outputTokens: 7 });
   });
 
+  it("accepts OpenAI-compatible responses without usage metadata", () => {
+    expect(getAiAdapter(openAiProvider).readGenerationResponse({
+      choices: [{ message: { content: "Generated text" } }],
+    })).toEqual({ text: "Generated text", inputTokens: null, outputTokens: null });
+  });
+
   it("builds and reads Anthropic Messages requests", async () => {
     const request = getAiAdapter(anthropicProvider).buildGenerationRequest(
       anthropicProvider,

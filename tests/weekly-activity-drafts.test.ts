@@ -142,4 +142,27 @@ describe("weekly activity draft service", () => {
       titleZh: "本周进展", summaryZh: "完成工作站同步。", visibility: "PRIVATE", featured: false, linkUrl: null,
     }));
   });
+
+  it("uses AI only to rewrite an existing private draft and keeps the original source snapshot", async () => {
+    const sources = emptySources();
+    const repo = repository({
+      findDraft: vi.fn(async () => ({
+        id: "draft-1", status: "DRAFT", titleZh: "原始周报", titleEn: "Original weekly",
+        summaryZh: "规则摘要", summaryEn: "Rule summary", weekEnd: new Date("2026-09-19T16:00:00.000Z"),
+        sourceSnapshot: sources,
+      })),
+    });
+    const generate = vi.fn(async () => ({
+      content: { titleZh: "AI 周报", titleEn: "AI weekly", summaryZh: "AI 摘要", summaryEn: "AI summary" },
+      providerId: "provider-1", model: "model-1",
+    }));
+    const service = createWeeklyActivityDraftService(repo, { generate });
+
+    await service.rewriteWithAi("draft-1");
+
+    expect(generate).toHaveBeenCalledWith("WEEKLY_UPDATE", expect.objectContaining({ prompt: expect.stringContaining("规则摘要") }));
+    expect(repo.updateDraft).toHaveBeenCalledWith("draft-1", {
+      titleZh: "AI 周报", titleEn: "AI weekly", summaryZh: "AI 摘要", summaryEn: "AI summary",
+    });
+  });
 });

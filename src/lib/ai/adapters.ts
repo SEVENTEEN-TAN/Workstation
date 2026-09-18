@@ -81,7 +81,12 @@ function requiredString(value: unknown, path: string) {
 
 function optionalToken(payload: unknown, path: string | undefined) {
   if (!path) return null;
-  const value = readJsonPath(payload, path);
+  let value: unknown;
+  try {
+    value = readJsonPath(payload, path);
+  } catch {
+    return null;
+  }
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 

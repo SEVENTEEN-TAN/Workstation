@@ -2304,6 +2304,54 @@
 .activityToggle small { margin-top: 3px; color: #747f8b; font-size: 10px; font-weight: 500; }
 .activityList { display: grid; gap: 0; }
 
+.aiDraftList {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.aiDraftCard {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(0, 223, 143, 0.2);
+  border-radius: 7px;
+  background: rgba(0, 223, 143, 0.035);
+}
+
+.aiDraftHeader {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.aiDraftHeader h3 { margin: 8px 0 4px; color: #f1f3f4; font-size: 16px; }
+.aiDraftHeader small { color: #78838e; font-size: 11px; }
+
+.aiCompareGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.aiCompareColumn {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 6px;
+  background: rgba(4, 7, 9, 0.36);
+}
+
+.aiCompareColumn > strong { color: #dfe4e7; font-size: 12px; }
+.aiCompareColumn > div { display: grid; gap: 4px; padding-top: 9px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+.aiCompareColumn span { color: #77818c; font-size: 10px; font-weight: 700; }
+.aiCompareColumn p { margin: 0; color: #b8c0c6; font-size: 12px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+
 .activityCard {
   display: grid;
   grid-template-columns: minmax(145px, 0.35fr) minmax(0, 1fr) auto;
@@ -2930,6 +2978,9 @@
   .activityCard .rowActions { grid-column: 1; grid-row: auto; justify-content: flex-start; }
   .projectCard { grid-template-columns: 1fr; }
   .projectCard .rowActions { grid-column: 1; grid-row: auto; justify-content: flex-start; }
+  .aiDraftHeader { align-items: stretch; flex-direction: column; }
+  .aiDraftHeader .rowActions { justify-content: flex-start; }
+  .aiCompareGrid { grid-template-columns: 1fr; }
   .projectLinkRow { grid-template-columns: 1fr; }
   .projectLinkRow button { justify-self: end; }
   .cardActions { justify-content: stretch; }

@@ -720,9 +720,31 @@ model AiProvider {
   updatedAt            DateTime           @updatedAt @map("updated_at")
   defaults             AiUseCaseSetting[]
   requestLogs          AiRequestLog[]
+  contentDrafts        AiContentDraft[]
 
   @@index([enabled, name])
   @@map("ai_providers")
+}
+
+model AiContentDraft {
+  id             String      @id @default(cuid())
+  useCase        String      @map("use_case")
+  targetType     String      @map("target_type")
+  targetId       String      @map("target_id")
+  status         String      @default("DRAFT")
+  sourceSnapshot Json        @map("source_snapshot")
+  content        Json
+  providerId     String?     @map("provider_id")
+  model          String
+  generatedAt    DateTime    @default(now()) @map("generated_at")
+  appliedAt      DateTime?   @map("applied_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  provider       AiProvider? @relation(fields: [providerId], references: [id], onDelete: SetNull)
+
+  @@index([useCase, targetId, status, generatedAt])
+  @@index([providerId])
+  @@map("ai_content_drafts")
 }
 
 model AiUseCaseSetting {

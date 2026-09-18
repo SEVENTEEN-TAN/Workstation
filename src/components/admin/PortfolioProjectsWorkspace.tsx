@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, ImageIcon, LoaderCircle, Pencil, Plus, Save, Star, Trash2, X } from "lucide-react";
+import { Check, ExternalLink, ImageIcon, LoaderCircle, Pencil, Plus, Save, Sparkles, Star, Trash2, X } from "lucide-react";
 import { useRef, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -10,7 +10,7 @@ import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
 import { AssetPicker } from "./home/AssetPicker";
 import { adminRequest } from "./request";
-import type { AssetData, PortfolioProjectData } from "./types";
+import type { AiContentDraftData, AssetData, PortfolioProjectData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
 
@@ -91,11 +91,14 @@ function formPayload(form: HTMLFormElement) {
 export function PortfolioProjectsWorkspace({
   initialProjects,
   assets,
+  initialAiDrafts,
 }: {
   initialProjects: PortfolioProjectData[];
   assets: AssetData[];
+  initialAiDrafts: AiContentDraftData[];
 }) {
   const [projects, setProjects] = useState(() => sortProjects(initialProjects));
+  const [aiDrafts, setAiDrafts] = useState(initialAiDrafts);
   const [editor, setEditor] = useState<Editor>(null);
   const [coverImage, setCoverImage] = useState("");
   const [assetPickerOpen, setAssetPickerOpen] = useState(false);
@@ -149,6 +152,33 @@ export function PortfolioProjectsWorkspace({
     if (!deleted) return;
     setProjects((current) => current.filter((item) => item.id !== deleteRequest.id));
     setDeleteRequest(null);
+  }
+
+  async function generateAiDraft(project: PortfolioProjectData) {
+    const draft = await runAction(`projects:ai:${project.id}`, () => adminRequest<AiContentDraftData>(
+      "/api/admin/ai/drafts",
+      jsonRequest("POST", { useCase: "PROJECT_DESCRIPTION", targetId: project.id }),
+    ), "AI 项目说明草稿已生成");
+    if (!draft) return;
+    setAiDrafts((current) => [draft, ...current.filter((item) => item.targetId !== project.id)]);
+  }
+
+  async function applyAiDraft(draft: AiContentDraftData) {
+    const applied = await runAction(`projects:ai:apply:${draft.id}`, () => adminRequest<AiContentDraftData>(
+      `/api/admin/ai/drafts/${draft.id}/apply`, { method: "POST" },
+    ), "AI 草稿已应用到项目");
+    if (!applied) return;
+    setProjects((current) => sortProjects(current.map((project) => project.id === draft.targetId
+      ? { ...project, ...draft.content, updatedAt: new Date().toISOString() } as PortfolioProjectData
+      : project)));
+    setAiDrafts((current) => current.filter((item) => item.id !== draft.id));
+  }
+
+  async function discardAiDraft(draft: AiContentDraftData) {
+    const discarded = await runAction(`projects:ai:discard:${draft.id}`, () => adminRequest<AiContentDraftData>(
+      `/api/admin/ai/drafts/${draft.id}`, { method: "DELETE" },
+    ), "AI 草稿已丢弃");
+    if (discarded) setAiDrafts((current) => current.filter((item) => item.id !== draft.id));
   }
 
   const editing = editor !== null && editor !== "new" ? editor : null;
@@ -223,6 +253,34 @@ export function PortfolioProjectsWorkspace({
         </section>
       ) : null}
 
+      {aiDrafts.length ? (
+        <section className={styles.panel}>
+          <div className={styles.sectionHeading}><div><span className={styles.kicker}>AI DRAFT REVIEW</span><h2>项目说明草稿审核</h2></div><span>{aiDrafts.length} 条待处理</span></div>
+          <div className={styles.aiDraftList}>{aiDrafts.map((draft) => {
+            const project = projects.find((item) => item.id === draft.targetId);
+            const fields = [
+              ["摘要", "summaryZh"], ["背景", "contextZh"], ["职责", "responsibilityZh"],
+              ["挑战", "challengeZh"], ["方案", "approachZh"], ["结果", "resultZh"],
+            ] as const;
+            return (
+              <article className={styles.aiDraftCard} key={draft.id}>
+                <div className={styles.aiDraftHeader}>
+                  <div><span className={styles.statusBadge}>私密草稿</span><h3>{project?.titleZh ?? "项目已不存在"}</h3><small>{draft.model} · {new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(draft.generatedAt))}</small></div>
+                  <div className={styles.rowActions}>
+                    <button type="button" className={styles.primaryButton} onClick={() => applyAiDraft(draft)} disabled={isBusy(`projects:ai:apply:${draft.id}`)}><Check size={15} />应用草稿</button>
+                    <button type="button" onClick={() => discardAiDraft(draft)} disabled={isBusy(`projects:ai:discard:${draft.id}`)}><Trash2 size={15} />丢弃草稿</button>
+                  </div>
+                </div>
+                <div className={styles.aiCompareGrid}>
+                  <div className={styles.aiCompareColumn}><strong>来源内容</strong>{fields.map(([label, key]) => <div key={key}><span>{label}</span><p>{String(draft.sourceSnapshot[key] ?? "未填写")}</p></div>)}</div>
+                  <div className={styles.aiCompareColumn}><strong>生成草稿</strong>{fields.map(([label, key]) => <div key={key}><span>{label}</span><p>{String(draft.content[key] ?? "未生成")}</p></div>)}</div>
+                </div>
+              </article>
+            );
+          })}</div>
+        </section>
+      ) : null}
+
       <section className={styles.panel}>
         <div className={styles.sectionHeading}><div><span className={styles.kicker}>PROJECT EVIDENCE</span><h2>项目记录</h2></div><span>{projects.length} 个</span></div>
         {projects.length ? (
@@ -241,6 +299,7 @@ export function PortfolioProjectsWorkspace({
               </div>
               <div className={styles.rowActions}>
                 {project.links[0] ? <a className={styles.iconTextButton} href={project.links[0].url} target="_blank" rel="noreferrer"><ExternalLink size={15} />打开链接</a> : null}
+                <button type="button" onClick={() => generateAiDraft(project)} disabled={isBusy(`projects:ai:${project.id}`)}>{isBusy(`projects:ai:${project.id}`) ? <LoaderCircle className={styles.spin} size={15} /> : <Sparkles size={15} />}AI 整理说明</button>
                 <button type="button" aria-label={`编辑项目 ${project.titleZh}`} onClick={() => openEditor(project)}><Pencil size={15} />编辑</button>
                 <button type="button" aria-label={`删除项目 ${project.titleZh}`} onClick={() => setDeleteRequest(project)}><Trash2 size={15} />删除</button>
               </div>

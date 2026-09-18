@@ -124,7 +124,7 @@ Only the following automation capabilities are in scope.
 - [x] Generate a weekly activity draft from GitHub, OKR, projects, articles, and manual activities.
 - [x] Generate milestone drafts from meaningful OKR updates and completions.
 - [x] Generate career-timeline drafts from articles, projects, activities, and OKR milestones.
-- [ ] Assist with project descriptions, weekly updates, and OKR reviews.
+- [x] Assist with project descriptions, weekly updates, and OKR reviews.
 
 ### AI Provider Configuration
 
@@ -137,7 +137,7 @@ Only the following automation capabilities are in scope.
 - [x] Configure default models by use case.
 - [x] Test provider connectivity before activation.
 - [x] Track model, latency, token usage, outcome, and failure reason without exposing credentials.
-- [ ] Keep all AI output in drafts and preserve source content for comparison.
+- [x] Keep all AI output in drafts and preserve source content for comparison.
 
 ## Deferred And Excluded
 
