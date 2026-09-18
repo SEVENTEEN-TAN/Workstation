@@ -1,6 +1,6 @@
-import { BarChart3, BookOpen, BriefcaseBusiness, FileJson, FileText, GraduationCap, ImagePlus, Layers, Newspaper, Target, type LucideIcon } from "lucide-react";
+import { BarChart3, BookOpen, BriefcaseBusiness, FileJson, FileText, Github, GraduationCap, ImagePlus, Layers, Newspaper, Target, type LucideIcon } from "lucide-react";
 
-export type AdminNavId = "overview" | "home" | "okr" | "activities" | "projects" | "experience" | "skills" | "resume" | "knowledge" | "media";
+export type AdminNavId = "overview" | "home" | "okr" | "activities" | "projects" | "experience" | "skills" | "resume" | "knowledge" | "github" | "media";
 
 export interface AdminNavItem {
   id: AdminNavId;
@@ -19,6 +19,7 @@ export const ADMIN_NAV_ITEMS: readonly AdminNavItem[] = [
   { id: "skills", href: "/admin/skills", label: "能力矩阵", icon: Layers },
   { id: "resume", href: "/admin/resume", label: "简历管理", icon: FileText },
   { id: "knowledge", href: "/admin/knowledge", label: "知识库", icon: BookOpen },
+  { id: "github", href: "/admin/github", label: "GitHub 同步", icon: Github },
   { id: "media", href: "/admin/media", label: "媒体资源", icon: ImagePlus },
 ];
 

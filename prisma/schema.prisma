@@ -396,6 +396,55 @@ model KnowledgeNote {
   @@map("knowledge_notes")
 }
 
+model GitHubSyncConfig {
+  id                   String   @id
+  username             String
+  enabled              Boolean  @default(true)
+  selectedRepositories Json     @map("selected_repositories")
+  lastSyncStatus       String   @default("NEVER") @map("last_sync_status")
+  lastSyncedAt         DateTime? @map("last_synced_at")
+  lastSyncError        String?  @map("last_sync_error")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("github_sync_configs")
+}
+
+model GitHubRepositorySnapshot {
+  id              String   @id @default(cuid())
+  githubId        String   @unique @map("github_id")
+  fullName        String   @unique @map("full_name")
+  name            String
+  description     String?
+  htmlUrl         String   @map("html_url")
+  homepageUrl     String?  @map("homepage_url")
+  primaryLanguage String?  @map("primary_language")
+  topics          Json
+  stars           Int      @default(0)
+  forks           Int      @default(0)
+  isFork          Boolean  @default(false) @map("is_fork")
+  isArchived      Boolean  @default(false) @map("is_archived")
+  selected        Boolean  @default(false)
+  pushedAt        DateTime? @map("pushed_at")
+  syncedAt        DateTime @map("synced_at")
+
+  @@index([selected, pushedAt])
+  @@map("github_repository_snapshots")
+}
+
+model GitHubContributionEvent {
+  id         String   @id @default(cuid())
+  githubId   String   @unique @map("github_id")
+  type       String
+  repository String
+  url        String?
+  occurredAt DateTime @map("occurred_at")
+  syncedAt   DateTime @map("synced_at")
+
+  @@index([occurredAt])
+  @@map("github_contribution_events")
+}
+
 model KnowledgeNoteLink {
   id                 String         @id @default(cuid())
   vaultId            String         @map("vault_id")

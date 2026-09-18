@@ -47,9 +47,16 @@ npm run db:restore -- --from <备份目录>
 
 生产环境必须使用 HTTPS。令牌、Markdown 正文和本地路径不会打印到客户端日志中。
 
+## GitHub 同步
+
+后台 `/admin/github` 可保存 GitHub 用户名、同步公开仓库与近期公开事件，并选择后续自动化可以引用的项目。同步快照仅供后台使用，不会直接发布到主页、项目或职业动态。
+
+未配置令牌时使用 GitHub 匿名 API；如需更高的请求额度，可在服务器 `.env` 中设置 `GITHUB_TOKEN`。该令牌只在服务端请求 GitHub 时读取，不写入数据库，也不会发送到浏览器。
+
 ## 主要入口
 
 - `/`：公开主页
 - `/okr`：公开 OKR
 - `/admin`：管理后台
+- `/admin/github`：GitHub 同步与项目选择
 - `/preview?id=<草稿版本 ID>`：登录态主页预览

@@ -120,7 +120,7 @@ The Obsidian vault remains the source authoring environment. The workstation ind
 
 Only the following automation capabilities are in scope.
 
-- [ ] Synchronize selected GitHub projects and public contribution events.
+- [x] Synchronize selected GitHub projects and public contribution events.
 - [ ] Generate a weekly activity draft from GitHub, OKR, projects, articles, and manual activities.
 - [ ] Generate milestone drafts from meaningful OKR updates and completions.
 - [ ] Generate career-timeline drafts from articles, projects, activities, and OKR milestones.

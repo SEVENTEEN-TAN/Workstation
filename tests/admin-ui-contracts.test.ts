@@ -48,6 +48,7 @@ describe("admin navigation contracts", () => {
       { id: "skills", href: "/admin/skills" },
       { id: "resume", href: "/admin/resume" },
       { id: "knowledge", href: "/admin/knowledge" },
+      { id: "github", href: "/admin/github" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -267,7 +268,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "projects", "experience", "skills", "resume", "knowledge", "media"])(
+  it.each(["overview", "home", "okr", "activities", "projects", "experience", "skills", "resume", "knowledge", "github", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -275,6 +276,20 @@ describe("admin route contracts", () => {
       expect(source).toMatch(/export default async function/);
     },
   );
+
+  it("protects GitHub synchronization APIs and provides explicit save and sync actions", () => {
+    const configRoute = readProjectFile("src/app/api/admin/github/route.ts");
+    const syncRoute = readProjectFile("src/app/api/admin/github/sync/route.ts");
+    const workspace = readProjectFile("src/components/admin/GitHubWorkspace.tsx");
+
+    expect(configRoute).toContain("withAdminSession");
+    expect(syncRoute).toContain("withAdminSession");
+    expect(workspace).toContain('name="username"');
+    expect(workspace).toContain("保存配置");
+    expect(workspace).toContain("立即同步");
+    expect(workspace).toContain("selectedRepositories");
+    expect(workspace).toContain("FeedbackCenter");
+  });
 
   it("provides route-addressable OKR cycle and Objective pages", () => {
     expect(readProjectFile("src/app/admin/(workspace)/okr/cycles/[cycleId]/page.tsx"))

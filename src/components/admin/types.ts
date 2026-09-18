@@ -320,6 +320,53 @@ export interface KnowledgeNoteData {
   indexedAt: string;
 }
 
+export interface GitHubSyncConfigData {
+  id: string;
+  username: string;
+  enabled: boolean;
+  selectedRepositories: string[];
+  lastSyncStatus: "NEVER" | "SUCCESS" | "FAILED";
+  lastSyncedAt: string | null;
+  lastSyncError: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GitHubRepositorySnapshotData {
+  id: string;
+  githubId: string;
+  fullName: string;
+  name: string;
+  description: string | null;
+  htmlUrl: string;
+  homepageUrl: string | null;
+  primaryLanguage: string | null;
+  topics: string[];
+  stars: number;
+  forks: number;
+  isFork: boolean;
+  isArchived: boolean;
+  selected: boolean;
+  pushedAt: string | null;
+  syncedAt: string;
+}
+
+export interface GitHubContributionEventData {
+  id: string;
+  githubId: string;
+  type: string;
+  repository: string;
+  url: string | null;
+  occurredAt: string;
+  syncedAt: string;
+}
+
+export interface GitHubSyncStateData {
+  config: GitHubSyncConfigData | null;
+  repositories: GitHubRepositorySnapshotData[];
+  events: GitHubContributionEventData[];
+}
+
 export interface KnowledgeSyncChangeData {
   id: string;
   type: "ADDED" | "MODIFIED" | "MOVED" | "MISSING";
