@@ -123,7 +123,7 @@ Only the following automation capabilities are in scope.
 - [x] Synchronize selected GitHub projects and public contribution events.
 - [x] Generate a weekly activity draft from GitHub, OKR, projects, articles, and manual activities.
 - [x] Generate milestone drafts from meaningful OKR updates and completions.
-- [ ] Generate career-timeline drafts from articles, projects, activities, and OKR milestones.
+- [x] Generate career-timeline drafts from articles, projects, activities, and OKR milestones.
 - [ ] Assist with project descriptions, weekly updates, and OKR reviews.
 
 ### AI Provider Configuration

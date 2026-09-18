@@ -101,6 +101,7 @@ model CareerActivity {
   updatedAt  DateTime @updatedAt @map("updated_at")
   weeklyDrafts WeeklyActivityDraft[]
   okrMilestoneDrafts OkrMilestoneDraft[]
+  timelineDrafts CareerTimelineDraft[]
 
   @@index([visibility, featured, occurredAt])
   @@map("career_activities")
@@ -144,6 +145,26 @@ model OkrMilestoneDraft {
 
   @@index([status, occurredAt])
   @@map("okr_milestone_drafts")
+}
+
+model CareerTimelineDraft {
+  id                  String          @id @default(cuid())
+  sourceKey           String          @unique @map("source_key")
+  kind                String
+  status              String          @default("DRAFT")
+  titleZh             String          @map("title_zh")
+  titleEn             String          @map("title_en")
+  summaryZh           String          @map("summary_zh")
+  summaryEn           String          @map("summary_en")
+  occurredAt          DateTime        @map("occurred_at")
+  sourceSnapshot      Json            @map("source_snapshot")
+  convertedActivityId String?         @unique @map("converted_activity_id")
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+  convertedActivity   CareerActivity? @relation(fields: [convertedActivityId], references: [id], onDelete: SetNull)
+
+  @@index([status, occurredAt])
+  @@map("career_timeline_drafts")
 }
 
 model PortfolioProject {

@@ -45,6 +45,7 @@ describe("admin navigation contracts", () => {
       { id: "activities", href: "/admin/activities" },
       { id: "weekly", href: "/admin/weekly" },
       { id: "milestones", href: "/admin/milestones" },
+      { id: "timeline", href: "/admin/timeline" },
       { id: "projects", href: "/admin/projects" },
       { id: "experience", href: "/admin/experience" },
       { id: "skills", href: "/admin/skills" },
@@ -270,7 +271,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "weekly", "milestones", "projects", "experience", "skills", "resume", "knowledge", "github", "media"])(
+  it.each(["overview", "home", "okr", "activities", "weekly", "milestones", "timeline", "projects", "experience", "skills", "resume", "knowledge", "github", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -323,6 +324,23 @@ describe("admin route contracts", () => {
       expect(workspace).toContain(`name="${field}"`);
     }
     expect(workspace).toContain("OKR 更新时自动生成");
+    expect(workspace).toContain("转为私有职业动态");
+    expect(workspace).toContain("FeedbackCenter");
+  });
+
+  it("protects career timeline drafts and provides synchronization, editing, and private conversion", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/timeline/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/timeline/[id]/route.ts");
+    const convertRoute = readProjectFile("src/app/api/admin/timeline/[id]/convert/route.ts");
+    const workspace = readProjectFile("src/components/admin/CareerTimelineDraftWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    expect(convertRoute).toContain("withAdminSession");
+    for (const field of ["titleZh", "titleEn", "summaryZh", "summaryEn"]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
+    expect(workspace).toContain("同步时间线草稿");
     expect(workspace).toContain("转为私有职业动态");
     expect(workspace).toContain("FeedbackCenter");
   });
