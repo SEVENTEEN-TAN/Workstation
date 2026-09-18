@@ -1,0 +1,141 @@
+"use client";
+
+import { CalendarRange, FilePenLine, LoaderCircle, RefreshCw, Save, Send } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
+import styles from "../../app/admin/admin.module.css";
+import { EmptyState } from "./EmptyState";
+import { FeedbackCenter } from "./FeedbackCenter";
+import { PageHeader } from "./PageHeader";
+import { adminRequest } from "./request";
+import type { WeeklyActivityDraftData } from "./types";
+import { useAdminAction } from "./useAdminAction";
+import { jsonRequest } from "./workspace-utils";
+
+function dateOnly(value: string | Date) {
+  const date = new Date(value);
+  const local = new Date(date.getTime() + 8 * 60 * 60_000);
+  return local.toISOString().slice(0, 10);
+}
+
+function currentWeek() {
+  const now = new Date();
+  const local = new Date(now.getTime() + 8 * 60 * 60_000);
+  const day = local.getUTCDay() || 7;
+  const monday = new Date(local);
+  monday.setUTCDate(local.getUTCDate() - day + 1);
+  const sunday = new Date(monday);
+  sunday.setUTCDate(monday.getUTCDate() + 6);
+  return { start: monday.toISOString().slice(0, 10), end: sunday.toISOString().slice(0, 10) };
+}
+
+function sourceCounts(draft: WeeklyActivityDraftData) {
+  const source = draft.sourceSnapshot;
+  return [
+    ["GitHub", source.github.length], ["OKR", source.progress.length + source.actions.length],
+    ["项目", source.projects.length], ["文章", source.articles.length], ["手工动态", source.activities.length],
+  ] as const;
+}
+
+function sortDrafts(drafts: WeeklyActivityDraftData[]) {
+  return [...drafts].sort((left, right) => new Date(right.weekStart).getTime() - new Date(left.weekStart).getTime());
+}
+
+export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: WeeklyActivityDraftData[] }) {
+  const week = currentWeek();
+  const [drafts, setDrafts] = useState(() => sortDrafts(initialDrafts));
+  const [editing, setEditing] = useState<WeeklyActivityDraftData | null>(null);
+  const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
+  const generating = isBusy("weekly:generate");
+  const saving = isBusy("weekly:save");
+
+  async function generate(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const saved = await runAction("weekly:generate", () => adminRequest<WeeklyActivityDraftData>(
+      "/api/admin/weekly",
+      jsonRequest("POST", { weekStart: data.get("weekStart"), weekEnd: data.get("weekEnd") }),
+    ), "周报草稿已生成");
+    if (!saved) return;
+    setDrafts((current) => sortDrafts([saved, ...current.filter((item) => item.id !== saved.id)]));
+    setEditing(saved.status === "DRAFT" ? saved : null);
+  }
+
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!editing) return;
+    const data = new FormData(event.currentTarget);
+    const saved = await runAction("weekly:save", () => adminRequest<WeeklyActivityDraftData>(
+      `/api/admin/weekly/${editing.id}`,
+      jsonRequest("PATCH", {
+        titleZh: data.get("titleZh"), titleEn: data.get("titleEn"),
+        summaryZh: data.get("summaryZh"), summaryEn: data.get("summaryEn"),
+      }),
+    ), "周报草稿已保存");
+    if (!saved) return;
+    setDrafts((current) => current.map((item) => item.id === saved.id ? saved : item));
+    setEditing(null);
+  }
+
+  async function convert(draft: WeeklyActivityDraftData) {
+    const converted = await runAction(`weekly:convert:${draft.id}`, () => adminRequest<WeeklyActivityDraftData>(
+      `/api/admin/weekly/${draft.id}/convert`, { method: "POST" },
+    ), "已转为私有职业动态");
+    if (!converted) return;
+    setDrafts((current) => current.map((item) => item.id === converted.id ? converted : item));
+    if (editing?.id === converted.id) setEditing(null);
+  }
+
+  return (
+    <section>
+      <PageHeader title="每周动态" description="从现有工作证据生成私有周报草稿，确认后再转入职业动态。" />
+
+      <section className={styles.panel}>
+        <div className={styles.sectionHeading}><div><span className={styles.kicker}>WEEKLY DRAFT</span><h2>生成草稿</h2></div><CalendarRange size={18} /></div>
+        <form className={styles.entityForm} onSubmit={generate}>
+          <label><span>开始日期</span><input name="weekStart" type="date" required defaultValue={week.start} /></label>
+          <label><span>结束日期</span><input name="weekEnd" type="date" required defaultValue={week.end} /></label>
+          <div className={styles.entityFormActions}>
+            <button className={styles.primaryButton} disabled={generating || saving}>{generating ? <LoaderCircle className={styles.spin} size={17} /> : <RefreshCw size={17} />}{generating ? "生成中" : "生成周报草稿"}</button>
+          </div>
+        </form>
+      </section>
+
+      {editing ? (
+        <section className={styles.panel} aria-labelledby="weekly-editor-title">
+          <div className={styles.sectionHeading}><div><span className={styles.kicker}>EDIT</span><h2 id="weekly-editor-title">编辑周报草稿</h2></div><FilePenLine size={18} /></div>
+          <form key={editing.id} className={styles.entityForm} onSubmit={save}>
+            <label><span>中文标题</span><input name="titleZh" required maxLength={120} defaultValue={editing.titleZh} /></label>
+            <label><span>英文标题</span><input name="titleEn" maxLength={120} defaultValue={editing.titleEn} /></label>
+            <label><span>中文摘要</span><textarea name="summaryZh" required maxLength={4000} defaultValue={editing.summaryZh} /></label>
+            <label><span>英文摘要</span><textarea name="summaryEn" maxLength={4000} defaultValue={editing.summaryEn} /></label>
+            <div className={styles.entityFormActions}>
+              <button type="button" onClick={() => setEditing(null)} disabled={saving}>取消</button>
+              <button className={styles.primaryButton} disabled={saving}>{saving ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{saving ? "保存中" : "保存草稿"}</button>
+            </div>
+          </form>
+        </section>
+      ) : null}
+
+      <section className={styles.panel}>
+        <div className={styles.sectionHeading}><div><span className={styles.kicker}>DRAFT HISTORY</span><h2>周报草稿</h2></div><span>{drafts.length} 条</span></div>
+        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => (
+          <article key={draft.id} className={styles.activityCard}>
+            <div className={styles.activityMeta}>
+              <time dateTime={draft.weekStart}>{dateOnly(draft.weekStart)} — {dateOnly(draft.weekEnd)}</time>
+              <span className={draft.status === "DRAFT" ? `${styles.statusBadge} ${styles.statusActive}` : styles.statusBadge}>{draft.status === "DRAFT" ? "草稿" : "已转动态"}</span>
+              {sourceCounts(draft).map(([label, count]) => <span key={label} className={styles.statusBadge}>{label} {count}</span>)}
+            </div>
+            <div className={styles.activityCopy}><h3>{draft.titleZh}</h3><p>{draft.summaryZh}</p><small>{draft.titleEn}</small></div>
+            <div className={styles.rowActions}>
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)}><FilePenLine size={15} />编辑</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`weekly:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
+            </div>
+          </article>
+        ))}</div> : <EmptyState title="还没有周报草稿" description="选择一周后生成，系统会汇总 GitHub、OKR、项目、文章和手工动态。" action={null} />}
+      </section>
+
+      <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
+    </section>
+  );
+}

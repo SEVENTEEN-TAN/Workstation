@@ -43,6 +43,7 @@ describe("admin navigation contracts", () => {
       { id: "home", href: "/admin/home" },
       { id: "okr", href: "/admin/okr" },
       { id: "activities", href: "/admin/activities" },
+      { id: "weekly", href: "/admin/weekly" },
       { id: "projects", href: "/admin/projects" },
       { id: "experience", href: "/admin/experience" },
       { id: "skills", href: "/admin/skills" },
@@ -268,7 +269,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "projects", "experience", "skills", "resume", "knowledge", "github", "media"])(
+  it.each(["overview", "home", "okr", "activities", "weekly", "projects", "experience", "skills", "resume", "knowledge", "github", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -288,6 +289,23 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("保存配置");
     expect(workspace).toContain("立即同步");
     expect(workspace).toContain("selectedRepositories");
+    expect(workspace).toContain("FeedbackCenter");
+  });
+
+  it("protects weekly draft APIs and provides generation, editing, and private conversion", () => {
+    const collectionRoute = readProjectFile("src/app/api/admin/weekly/route.ts");
+    const itemRoute = readProjectFile("src/app/api/admin/weekly/[id]/route.ts");
+    const convertRoute = readProjectFile("src/app/api/admin/weekly/[id]/convert/route.ts");
+    const workspace = readProjectFile("src/components/admin/WeeklyActivityWorkspace.tsx");
+
+    expect(collectionRoute).toContain("withAdminSession");
+    expect(itemRoute).toContain("withAdminSession");
+    expect(convertRoute).toContain("withAdminSession");
+    for (const field of ["weekStart", "weekEnd", "titleZh", "titleEn", "summaryZh", "summaryEn"]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
+    expect(workspace).toContain("生成周报草稿");
+    expect(workspace).toContain("转为私有职业动态");
     expect(workspace).toContain("FeedbackCenter");
   });
 

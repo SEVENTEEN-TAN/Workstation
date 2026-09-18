@@ -367,6 +367,29 @@ export interface GitHubSyncStateData {
   events: GitHubContributionEventData[];
 }
 
+export interface WeeklyActivityDraftData {
+  id: string;
+  weekStart: string;
+  weekEnd: string;
+  status: "DRAFT" | "CONVERTED";
+  titleZh: string;
+  titleEn: string;
+  summaryZh: string;
+  summaryEn: string;
+  sourceSnapshot: {
+    github: unknown[];
+    progress: unknown[];
+    actions: unknown[];
+    projects: unknown[];
+    articles: unknown[];
+    activities: unknown[];
+  };
+  convertedActivityId: string | null;
+  generatedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface KnowledgeSyncChangeData {
   id: string;
   type: "ADDED" | "MODIFIED" | "MOVED" | "MISSING";
