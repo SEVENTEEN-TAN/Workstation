@@ -294,6 +294,18 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("FeedbackCenter");
   });
 
+  it("protects every AI provider configuration API", () => {
+    const providerRoute = readProjectFile("src/app/api/admin/ai/providers/route.ts");
+    const providerItemRoute = readProjectFile("src/app/api/admin/ai/providers/[id]/route.ts");
+    const testRoute = readProjectFile("src/app/api/admin/ai/providers/[id]/test/route.ts");
+    const modelsRoute = readProjectFile("src/app/api/admin/ai/providers/[id]/models/route.ts");
+    const defaultsRoute = readProjectFile("src/app/api/admin/ai/defaults/route.ts");
+
+    for (const source of [providerRoute, providerItemRoute, testRoute, modelsRoute, defaultsRoute]) {
+      expect(source).toContain("withAdminSession");
+    }
+  });
+
   it("protects weekly draft APIs and provides generation, editing, and private conversion", () => {
     const collectionRoute = readProjectFile("src/app/api/admin/weekly/route.ts");
     const itemRoute = readProjectFile("src/app/api/admin/weekly/[id]/route.ts");

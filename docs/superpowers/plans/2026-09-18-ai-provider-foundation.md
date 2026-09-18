@@ -32,10 +32,10 @@
 **Interfaces:**
 - Produces `aiProviderInputSchema`, `aiUseCaseDefaultsSchema`, and normalized provider input types.
 
-- [ ] Write failing validation tests for adapter-specific configuration, URLs, endpoints, headers, model IDs, and environment-variable names.
-- [ ] Run `npm test -- tests/ai-provider-config.test.ts` and confirm the missing-module failure.
-- [ ] Add the three Prisma models and the smallest matching Zod schemas.
-- [ ] Run `npm run db:generate` and the targeted tests until green.
+- [x] Write failing validation tests for adapter-specific configuration, URLs, endpoints, headers, model IDs, and environment-variable names.
+- [x] Run `npm test -- tests/ai-provider-config.test.ts` and confirm the missing-module failure.
+- [x] Add the three Prisma models and the smallest matching Zod schemas.
+- [x] Run `npm run db:generate` and the targeted tests until green.
 
 ### Task 2: Adapter And Safe HTTP Runtime
 
@@ -48,10 +48,10 @@
 **Interfaces:**
 - Produces `getAiAdapter(provider)`, `renderJsonTemplate(value, variables)`, `readJsonPath(value, path)`, `discoverProviderModels(provider, fetcher)`, and `generateAiText(provider, input, fetcher)`.
 
-- [ ] Write failing tests for OpenAI-compatible and Anthropic request/response shapes.
-- [ ] Write failing tests for recursive custom JSON rendering, response-path extraction, model discovery, timeout/redirect options, and credential headers.
-- [ ] Implement the minimal adapter and runtime functions with no new dependency.
-- [ ] Run `npm test -- tests/ai-adapters.test.ts` until green.
+- [x] Write failing tests for OpenAI-compatible and Anthropic request/response shapes.
+- [x] Write failing tests for recursive custom JSON rendering, response-path extraction, model discovery, timeout/redirect options, and credential headers.
+- [x] Implement the minimal adapter and runtime functions with no new dependency.
+- [x] Run `npm test -- tests/ai-adapters.test.ts` until green.
 
 ### Task 3: Provider Administration Service And APIs
 
@@ -67,9 +67,9 @@
 **Interfaces:**
 - Produces `aiProviderService.listState()`, `save(input)`, `update(id, input)`, `test(id, fetcher?)`, `refreshModels(id, fetcher?)`, and `saveDefaults(input)`.
 
-- [ ] Write failing service tests for credential lookup, activation after successful test, model caching/manual models, defaults, and redacted errors.
-- [ ] Implement transactional provider/default persistence and thin authenticated routes.
-- [ ] Run targeted tests, `npx tsc --noEmit`, and `npm run lint` until green.
+- [x] Write failing service tests for credential lookup, activation after successful test, model caching/manual models, defaults, and redacted errors.
+- [x] Implement transactional provider/default persistence and thin authenticated routes.
+- [x] Run targeted tests, `npx tsc --noEmit`, and `npm run lint` until green.
 
 ### Task 4: Administration Workspace And Release Verification
 
@@ -90,4 +90,3 @@
 - [ ] Verify the workflow in a fresh local SQLite database with `admin/admin`.
 - [ ] Run the full test suite, lint, type check, Prisma validation/generation, fresh migrations, production build, and `git diff --check`.
 - [ ] Mark roadmap lines 131-139 complete only after the corresponding behavior is verified.
-

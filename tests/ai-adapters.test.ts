@@ -69,7 +69,7 @@ const input = {
 };
 
 function captureRequest(payload: unknown, status = 200) {
-  const fetcher = vi.fn(async (request: Request) => new Response(
+  const fetcher = vi.fn(async () => new Response(
     status === 200 ? JSON.stringify(payload) : "{}",
     { status, headers: { "content-type": "application/json" } },
   ));
