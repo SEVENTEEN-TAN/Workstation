@@ -1,13 +1,24 @@
-import { Prisma, type ActionItem, type KeyResult, type PrismaClient } from "@prisma/client";
+import { Prisma, type ActionItem, type KeyResult, type Objective, type PrismaClient } from "@prisma/client";
 
 import { getDatabase } from "../db";
 import { calculateKeyResultProgress, calculateObjectiveProgress } from "../okr/progress";
 import { actionItemInputSchema, actionItemPatchSchema, cycleInputSchema, cyclePatchSchema, keyResultInputSchema, keyResultPatchSchema, objectiveInputSchema, objectivePatchSchema, progressInputSchema, reviewInputSchema, reviewPatchSchema } from "../validators/okr";
+import {
+  buildCompletionMilestoneDraft,
+  buildProgressMilestoneDraft,
+  type OkrMilestoneDraftWrite,
+} from "./okr-milestone-drafts";
+
+type OkrParent = { titleZh: string; titleEn: string | null; cycle: { nameZh: string; nameEn: string | null } };
+type ProgressKeyResult = KeyResult & { objective: OkrParent };
+type ObjectiveForUpdate = Objective & { cycle: { nameZh: string; nameEn: string | null } };
+type KeyResultForUpdate = KeyResult & { objective: OkrParent };
 
 type ProgressTransaction = {
-  findKeyResult(id: string): Promise<KeyResult | null>;
-  updateKeyResultProgress(id: string, values: { currentValue: number | null; manualProgress: number | null }): Promise<KeyResult>;
+  findKeyResult(id: string): Promise<ProgressKeyResult | null>;
+  updateKeyResultProgress(id: string, values: { currentValue: number | null; manualProgress: number | null }): Promise<ProgressKeyResult>;
   createProgressUpdate(values: ProgressUpdateValues): Promise<unknown>;
+  createMilestoneDraft(values: OkrMilestoneDraftWrite): Promise<unknown>;
 };
 
 type ProgressUpdateValues = {
@@ -17,10 +28,20 @@ type ProgressUpdateValues = {
   calculatedProgress: number;
   noteZh: string | null;
   noteEn: string | null;
+  recordedAt: Date;
+};
+
+type EntityTransaction = {
+  findObjectiveForUpdate(id: string): Promise<ObjectiveForUpdate | null>;
+  updateObjectiveRecord(id: string, values: Prisma.ObjectiveUncheckedUpdateInput): Promise<ObjectiveForUpdate>;
+  findKeyResultForUpdate(id: string): Promise<KeyResultForUpdate | null>;
+  updateKeyResultRecord(id: string, values: Prisma.KeyResultUncheckedUpdateInput): Promise<KeyResultForUpdate>;
+  createMilestoneDraft(values: OkrMilestoneDraftWrite): Promise<unknown>;
 };
 
 type OkrRepositoryOverrides = {
   transaction?<T>(run: (transaction: ProgressTransaction) => Promise<T>): Promise<T>;
+  entityTransaction?<T>(run: (transaction: EntityTransaction) => Promise<T>): Promise<T>;
   findKeyResultForAction?(id: string): Promise<{ id: string } | null>;
   createActionItem?(values: Prisma.ActionItemUncheckedCreateInput): Promise<unknown>;
   findActionItem?(id: string): Promise<ActionItem | null>;
@@ -34,9 +55,38 @@ type OkrRepositoryOverrides = {
 function progressRepository(database: PrismaClient): OkrRepositoryOverrides {
   return {
     transaction: (run) => database.$transaction((transaction) => run({
-      findKeyResult: (id) => transaction.keyResult.findUnique({ where: { id } }),
-      updateKeyResultProgress: (id, values) => transaction.keyResult.update({ where: { id }, data: values }),
+      findKeyResult: (id) => transaction.keyResult.findUnique({
+        where: { id }, include: { objective: { include: { cycle: true } } },
+      }),
+      updateKeyResultProgress: (id, values) => transaction.keyResult.update({
+        where: { id }, data: values, include: { objective: { include: { cycle: true } } },
+      }),
       createProgressUpdate: (values) => transaction.krProgressUpdate.create({ data: values }),
+      createMilestoneDraft: (values) => transaction.okrMilestoneDraft.upsert({
+        where: { sourceKey: values.sourceKey },
+        create: { ...values, sourceSnapshot: JSON.parse(JSON.stringify(values.sourceSnapshot)) as Prisma.InputJsonValue },
+        update: {},
+      }),
+    })),
+  };
+}
+
+function entityRepository(database: PrismaClient): OkrRepositoryOverrides {
+  return {
+    entityTransaction: (run) => database.$transaction((transaction) => run({
+      findObjectiveForUpdate: (id) => transaction.objective.findUnique({ where: { id }, include: { cycle: true } }),
+      updateObjectiveRecord: (id, values) => transaction.objective.update({ where: { id }, data: values, include: { cycle: true } }),
+      findKeyResultForUpdate: (id) => transaction.keyResult.findUnique({
+        where: { id }, include: { objective: { include: { cycle: true } } },
+      }),
+      updateKeyResultRecord: (id, values) => transaction.keyResult.update({
+        where: { id }, data: values, include: { objective: { include: { cycle: true } } },
+      }),
+      createMilestoneDraft: (values) => transaction.okrMilestoneDraft.upsert({
+        where: { sourceKey: values.sourceKey },
+        create: { ...values, sourceSnapshot: JSON.parse(JSON.stringify(values.sourceSnapshot)) as Prisma.InputJsonValue },
+        update: {},
+      }),
     })),
   };
 }
@@ -135,9 +185,29 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
     },
     async updateObjective(id: string, input: unknown) {
       const parsed = objectivePatchSchema.parse(input);
-      const db = await database();
-      if (parsed.cycleId && !(await db.okrCycle.findUnique({ where: { id: parsed.cycleId }, select: { id: true } }))) throw new Error("OKR 周期不存在");
-      return db.objective.update({ where: { id }, data: parsed });
+      const db = repositoryOverride?.entityTransaction ? null : await database();
+      if (parsed.cycleId && db && !(await db.okrCycle.findUnique({ where: { id: parsed.cycleId }, select: { id: true } }))) throw new Error("OKR 周期不存在");
+      const repo = repositoryOverride?.entityTransaction ? repositoryOverride : entityRepository(db!);
+      return repo.entityTransaction!(async (transaction) => {
+        const current = await transaction.findObjectiveForUpdate(id);
+        if (!current) throw new Error("Objective 不存在");
+        const wasCompleted = current.status === "COMPLETED";
+        const updated = await transaction.updateObjectiveRecord(id, parsed);
+        if (parsed.status === "COMPLETED" && !wasCompleted) {
+          await transaction.createMilestoneDraft(buildCompletionMilestoneDraft({
+            kind: "OBJECTIVE_COMPLETED",
+            entityId: updated.id,
+            titleZh: updated.titleZh,
+            titleEn: updated.titleEn,
+            parentZh: updated.cycle.nameZh,
+            parentEn: updated.cycle.nameEn,
+            occurredAt: new Date(),
+          }));
+        }
+        const { cycle: _cycle, ...record } = updated;
+        void _cycle;
+        return record;
+      });
     },
     async deleteObjective(id: string) {
       return (await database()).objective.delete({ where: { id } });
@@ -150,9 +220,29 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
     },
     async updateKeyResult(id: string, input: unknown) {
       const parsed = keyResultPatchSchema.parse(input);
-      const db = await database();
-      if (parsed.objectiveId && !(await db.objective.findUnique({ where: { id: parsed.objectiveId }, select: { id: true } }))) throw new Error("Objective 不存在");
-      return db.keyResult.update({ where: { id }, data: parsed });
+      const db = repositoryOverride?.entityTransaction ? null : await database();
+      if (parsed.objectiveId && db && !(await db.objective.findUnique({ where: { id: parsed.objectiveId }, select: { id: true } }))) throw new Error("Objective 不存在");
+      const repo = repositoryOverride?.entityTransaction ? repositoryOverride : entityRepository(db!);
+      return repo.entityTransaction!(async (transaction) => {
+        const current = await transaction.findKeyResultForUpdate(id);
+        if (!current) throw new Error("Key Result 不存在");
+        const wasCompleted = current.status === "COMPLETED";
+        const updated = await transaction.updateKeyResultRecord(id, parsed);
+        if (parsed.status === "COMPLETED" && !wasCompleted) {
+          await transaction.createMilestoneDraft(buildCompletionMilestoneDraft({
+            kind: "KEY_RESULT_COMPLETED",
+            entityId: updated.id,
+            titleZh: updated.titleZh,
+            titleEn: updated.titleEn,
+            parentZh: updated.objective.titleZh,
+            parentEn: updated.objective.titleEn,
+            occurredAt: new Date(),
+          }));
+        }
+        const { objective: _objective, ...record } = updated;
+        void _objective;
+        return record;
+      });
     },
     async deleteKeyResult(id: string) {
       return (await database()).keyResult.delete({ where: { id } });
@@ -163,6 +253,8 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
       return repo.transaction!(async (transaction) => {
         const current = await transaction.findKeyResult(id);
         if (!current) throw new Error("Key Result 不存在");
+        const previousProgress = progressForRecord(current);
+        const recordedAt = new Date();
         const values = current.progressMode === "MANUAL"
           ? { currentValue: current.currentValue ?? null, manualProgress: parsed.manualProgress ?? current.manualProgress ?? 0 }
           : { currentValue: parsed.currentValue ?? current.currentValue ?? current.startValue ?? 0, manualProgress: null };
@@ -177,7 +269,23 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
           calculatedProgress: progress,
           noteZh: parsed.noteZh ?? null,
           noteEn: parsed.noteEn ?? null,
+          recordedAt,
         });
+        const milestone = buildProgressMilestoneDraft({
+          keyResultId: updated.id,
+          keyResultTitleZh: updated.titleZh,
+          keyResultTitleEn: updated.titleEn,
+          objectiveTitleZh: updated.objective.titleZh,
+          objectiveTitleEn: updated.objective.titleEn,
+          cycleNameZh: updated.objective.cycle.nameZh,
+          cycleNameEn: updated.objective.cycle.nameEn,
+          previousProgress,
+          progress,
+          noteZh: parsed.noteZh ?? null,
+          noteEn: parsed.noteEn ?? null,
+          occurredAt: recordedAt,
+        });
+        if (milestone) await transaction.createMilestoneDraft(milestone);
         return { keyResult: updated, progress };
       });
     },

@@ -278,13 +278,19 @@ describe("public data service", () => {
 describe("KR progress updates", () => {
   it("updates the KR and appends the calculated progress history atomically", async () => {
     const history: Array<{ keyResultId: string; calculatedProgress: number }> = [];
-    const keyResult = { id: "kr-1", progressMode: "METRIC", startValue: 0, currentValue: 2, targetValue: 10, manualProgress: null };
+    const milestones: Array<{ sourceKey: string }> = [];
+    const keyResult = {
+      id: "kr-1", progressMode: "METRIC", startValue: 0, currentValue: 2, targetValue: 10, manualProgress: null,
+      titleZh: "完成工作站自动化", titleEn: "Ship workstation automation",
+      objective: { titleZh: "完成工作站 V3", titleEn: "Ship Workstation V3", cycle: { nameZh: "2026 Q3", nameEn: "2026 Q3" } },
+    };
     const service = createOkrService({
       async transaction(run) {
         return run({
           async findKeyResult(id) { return id === keyResult.id ? keyResult : null; },
           async updateKeyResultProgress(_id, values) { Object.assign(keyResult, values); return keyResult; },
           async createProgressUpdate(values) { history.push(values); return values; },
+          async createMilestoneDraft(values) { milestones.push(values); return values; },
         });
       },
     } as never);
@@ -293,7 +299,58 @@ describe("KR progress updates", () => {
 
     expect(updated.progress).toBe(70);
     expect(keyResult.currentValue).toBe(7);
-    expect(history).toEqual([{ keyResultId: "kr-1", currentValue: 7, manualProgress: null, calculatedProgress: 70, noteZh: "完成接口", noteEn: null }]);
+    expect(history).toEqual([expect.objectContaining({ keyResultId: "kr-1", currentValue: 7, manualProgress: null, calculatedProgress: 70, noteZh: "完成接口", noteEn: null })]);
+    expect(milestones).toEqual([expect.objectContaining({ sourceKey: "KR_PROGRESS:kr-1:50" })]);
+  });
+});
+
+describe("OKR completion milestones", () => {
+  it("creates one stable draft when an Objective first becomes completed", async () => {
+    const milestones: Array<{ sourceKey: string }> = [];
+    const objective = {
+      id: "objective-1", cycleId: "cycle-1", status: "IN_PROGRESS",
+      titleZh: "完成工作站 V3", titleEn: "Ship Workstation V3",
+      cycle: { nameZh: "2026 Q3", nameEn: "2026 Q3" },
+    };
+    const service = createOkrService({
+      async entityTransaction(run) {
+        return run({
+          async findObjectiveForUpdate() { return objective; },
+          async updateObjectiveRecord(_id, values) { Object.assign(objective, values); return objective; },
+          async findKeyResultForUpdate() { return null; },
+          async updateKeyResultRecord() { throw new Error("not used"); },
+          async createMilestoneDraft(values) { milestones.push(values); return values; },
+        });
+      },
+    } as never);
+
+    await service.updateObjective("objective-1", { status: "COMPLETED" });
+
+    expect(milestones).toEqual([expect.objectContaining({ sourceKey: "OBJECTIVE_COMPLETED:objective-1" })]);
+  });
+
+  it("does not duplicate a completion draft when the entity was already completed", async () => {
+    const milestones: unknown[] = [];
+    const keyResult = {
+      id: "kr-1", objectiveId: "objective-1", status: "COMPLETED",
+      titleZh: "完成自动化", titleEn: "Finish automation",
+      objective: { titleZh: "完成工作站 V3", titleEn: "Ship Workstation V3", cycle: { nameZh: "2026 Q3", nameEn: "2026 Q3" } },
+    };
+    const service = createOkrService({
+      async entityTransaction(run) {
+        return run({
+          async findObjectiveForUpdate() { return null; },
+          async updateObjectiveRecord() { throw new Error("not used"); },
+          async findKeyResultForUpdate() { return keyResult; },
+          async updateKeyResultRecord(_id, values) { Object.assign(keyResult, values); return keyResult; },
+          async createMilestoneDraft(values) { milestones.push(values); return values; },
+        });
+      },
+    } as never);
+
+    await service.updateKeyResult("kr-1", { status: "COMPLETED" });
+
+    expect(milestones).toEqual([]);
   });
 });
 
