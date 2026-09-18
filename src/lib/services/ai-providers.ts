@@ -33,7 +33,7 @@ export type AiProviderRecord = {
 };
 
 export type AiProviderState = {
-  providers: Array<AiProviderRecord & { credentialConfigured: boolean }>;
+  providers: Array<Omit<AiProviderRecord, "credentialEnvVar"> & { credentialConfigured: boolean }>;
   defaults: unknown[];
   requestLogs: unknown[];
 };
@@ -81,8 +81,10 @@ function credentialConfigured(provider: AiProviderRecord) {
   return Boolean(provider.credentialEnvVar && process.env[provider.credentialEnvVar]?.trim());
 }
 
-function publicProvider(provider: AiProviderRecord): AiProviderRecord & { credentialConfigured: boolean } {
-  return { ...provider, credentialConfigured: credentialConfigured(provider) };
+function publicProvider(provider: AiProviderRecord): Omit<AiProviderRecord, "credentialEnvVar"> & { credentialConfigured: boolean } {
+  const result = { ...provider, credentialConfigured: credentialConfigured(provider) };
+  delete (result as Partial<AiProviderRecord>).credentialEnvVar;
+  return result;
 }
 
 function createData(input: Record<string, unknown>) {
@@ -172,7 +174,15 @@ export function createAiProviderService(repository: AiProviderServiceRepository 
     async update(id: string, input: unknown) {
       const current = await repository.findProvider(id);
       if (!current) throw new Error("AI provider not found");
-      const value = aiProviderInputSchema.parse(input);
+      const rawInput = input && typeof input === "object" ? input as Record<string, unknown> : {};
+      const value = aiProviderInputSchema.parse({
+        ...rawInput,
+        credentialEnvVar: Object.hasOwn(rawInput, "credentialEnvVar")
+          ? rawInput.credentialEnvVar
+          : rawInput.authType === "NONE"
+            ? null
+            : current.credentialEnvVar,
+      });
       const connectionChanged = connectionFields.some((field) => {
         const before = current[field] as unknown;
         return JSON.stringify(before) !== JSON.stringify(value[field]);

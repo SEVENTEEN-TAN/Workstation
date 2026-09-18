@@ -76,11 +76,34 @@ describe("AI provider service", () => {
     });
 
     expect(saved).toMatchObject({ enabled: false, manualModels: ["manual-model"] });
+    expect(saved).not.toHaveProperty("credentialEnvVar");
     expect(repo.created).toMatchObject({
       enabled: false,
       lastTestStatus: "NEVER",
       credentialEnvVar: "WORKSTATION_TEST_AI_KEY",
     });
+  });
+
+  it("does not expose credential references and preserves them when an edit omits the field", async () => {
+    process.env.WORKSTATION_TEST_AI_KEY = "provider-secret";
+    const repo = repository({ ...provider, lastTestStatus: "SUCCESS" });
+    const service = createAiProviderService(repo);
+
+    const state = await service.listState();
+    expect(state.providers[0]).toMatchObject({ credentialConfigured: true });
+    expect(state.providers[0]).not.toHaveProperty("credentialEnvVar");
+
+    const { credentialEnvVar: _credentialEnvVar, ...editableProvider } = provider;
+    const updated = await service.update("provider-1", {
+      ...editableProvider,
+      name: "Renamed provider",
+    });
+
+    expect(repo.updated[0]).toMatchObject({
+      name: "Renamed provider",
+      credentialEnvVar: "WORKSTATION_TEST_AI_KEY",
+    });
+    expect(updated).not.toHaveProperty("credentialEnvVar");
   });
 
   it("records a successful connection test without persisting prompts or responses", async () => {
