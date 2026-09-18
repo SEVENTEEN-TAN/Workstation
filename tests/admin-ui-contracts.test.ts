@@ -52,6 +52,7 @@ describe("admin navigation contracts", () => {
       { id: "resume", href: "/admin/resume" },
       { id: "knowledge", href: "/admin/knowledge" },
       { id: "github", href: "/admin/github" },
+      { id: "ai", href: "/admin/ai" },
       { id: "media", href: "/admin/media" },
     ]);
   });
@@ -102,6 +103,12 @@ describe("administrator entry contracts", () => {
 
     expect(source).toContain("sanitizeAdminReturnPath");
     expect(source).toMatch(/<LoginForm\s+nextPath=\{[^}]+\}/);
+  });
+
+  it("keeps credentials out of the URL when client-side login handling is unavailable", () => {
+    const source = readProjectFile("src/app/admin/login/LoginForm.tsx");
+
+    expect(source).toMatch(/<form[^>]+method="post"/);
   });
 
   it("preserves the requested admin query string through the login redirect", () => {
@@ -271,7 +278,7 @@ describe("admin route contracts", () => {
     expect(source).not.toContain("AdminWorkspace");
   });
 
-  it.each(["overview", "home", "okr", "activities", "weekly", "milestones", "timeline", "projects", "experience", "skills", "resume", "knowledge", "github", "media"])(
+  it.each(["overview", "home", "okr", "activities", "weekly", "milestones", "timeline", "projects", "experience", "skills", "resume", "knowledge", "github", "ai", "media"])(
     "provides a server page for the %s module",
     (moduleName) => {
       const source = readProjectFile(`src/app/admin/(workspace)/${moduleName}/page.tsx`);
@@ -304,6 +311,46 @@ describe("admin route contracts", () => {
     for (const source of [providerRoute, providerItemRoute, testRoute, modelsRoute, defaultsRoute]) {
       expect(source).toContain("withAdminSession");
     }
+  });
+
+  it("provides the complete AI provider configuration workflow", () => {
+    const page = readProjectFile("src/app/admin/(workspace)/ai/page.tsx");
+    const workspace = readProjectFile("src/components/admin/AiProviderWorkspace.tsx");
+
+    expect(page).toContain("AiProviderWorkspace");
+    expect(page).toContain("aiProviderService.listState");
+    expect(workspace).toContain("PageHeader");
+    expect(workspace).toContain("FeedbackCenter");
+    for (const field of [
+      "name",
+      "adapterKind",
+      "baseUrl",
+      "generationEndpoint",
+      "modelEndpoint",
+      "authType",
+      "authHeaderName",
+      "authScheme",
+      "credentialEnvVar",
+      "manualModels",
+      "headers",
+      "requestTemplate",
+      "responseTextPath",
+      "inputTokensPath",
+      "outputTokensPath",
+      "modelListPath",
+      "modelIdPath",
+    ]) {
+      expect(workspace).toContain(`name="${field}"`);
+    }
+    expect(workspace).toContain("保存提供方");
+    expect(workspace).toContain("测试连接");
+    expect(workspace).toContain("刷新模型");
+    expect(workspace).toContain("手工模型");
+    expect(workspace).toContain("默认用例");
+    expect(workspace).toContain("日志仅记录模型、耗时、Token 与结果");
+    expect(workspace).toContain('form.authType === "NONE" ? "无需密钥"');
+    expect(workspace).not.toContain("credentialEnvVar?.");
+    expect(workspace).not.toContain("lastTestError");
   });
 
   it("protects weekly draft APIs and provides generation, editing, and private conversion", () => {

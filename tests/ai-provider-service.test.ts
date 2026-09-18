@@ -93,7 +93,8 @@ describe("AI provider service", () => {
     expect(state.providers[0]).toMatchObject({ credentialConfigured: true });
     expect(state.providers[0]).not.toHaveProperty("credentialEnvVar");
 
-    const { credentialEnvVar: _credentialEnvVar, ...editableProvider } = provider;
+    const editableProvider = { ...provider } as Partial<typeof provider>;
+    delete editableProvider.credentialEnvVar;
     const updated = await service.update("provider-1", {
       ...editableProvider,
       name: "Renamed provider",

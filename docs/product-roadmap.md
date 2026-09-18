@@ -128,15 +128,15 @@ Only the following automation capabilities are in scope.
 
 ### AI Provider Configuration
 
-- [ ] Support built-in OpenAI-compatible and Anthropic Messages adapters.
-- [ ] Support a declarative custom JSON adapter with custom base URL and endpoint.
-- [ ] Support Bearer, `x-api-key`, and configurable authentication headers.
-- [ ] Configure request field mappings, message templates, and response extraction paths without executing arbitrary scripts.
-- [ ] Pull and cache upstream model lists when a provider supports discovery.
-- [ ] Allow manually entered models when discovery is unavailable.
-- [ ] Configure default models by use case.
-- [ ] Test provider connectivity before activation.
-- [ ] Track model, latency, token usage, outcome, and failure reason without exposing credentials.
+- [x] Support built-in OpenAI-compatible and Anthropic Messages adapters.
+- [x] Support a declarative custom JSON adapter with custom base URL and endpoint.
+- [x] Support Bearer, `x-api-key`, and configurable authentication headers.
+- [x] Configure request field mappings, message templates, and response extraction paths without executing arbitrary scripts.
+- [x] Pull and cache upstream model lists when a provider supports discovery.
+- [x] Allow manually entered models when discovery is unavailable.
+- [x] Configure default models by use case.
+- [x] Test provider connectivity before activation.
+- [x] Track model, latency, token usage, outcome, and failure reason without exposing credentials.
 - [ ] Keep all AI output in drafts and preserve source content for comparison.
 
 ## Deferred And Excluded

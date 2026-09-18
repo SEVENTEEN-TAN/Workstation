@@ -53,7 +53,7 @@ export function LoginForm({ nextPath }: LoginFormProps) {
   }
 
   return (
-    <form className={styles.form} onSubmit={submit} aria-busy={busy}>
+    <form className={styles.form} method="post" onSubmit={submit} aria-busy={busy}>
       <label>
         <span>用户名</span>
         <input

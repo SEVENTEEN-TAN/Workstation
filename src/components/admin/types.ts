@@ -367,6 +367,55 @@ export interface GitHubSyncStateData {
   events: GitHubContributionEventData[];
 }
 
+export interface AiProviderData {
+  id: string;
+  name: string;
+  adapterKind: "OPENAI_COMPATIBLE" | "ANTHROPIC_MESSAGES" | "CUSTOM_JSON";
+  baseUrl: string;
+  generationEndpoint: string;
+  modelEndpoint: string | null;
+  authType: "NONE" | "BEARER" | "X_API_KEY" | "CUSTOM_HEADER";
+  authHeaderName: string | null;
+  authScheme: string | null;
+  adapterConfig: Record<string, unknown>;
+  manualModels: string[];
+  cachedModels: string[];
+  enabled: boolean;
+  lastTestStatus: "NEVER" | "SUCCESS" | "FAILED";
+  lastTestedAt: string | null;
+  modelsRefreshedAt: string | null;
+  credentialConfigured: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AiUseCaseSettingData {
+  useCase: "PROJECT_DESCRIPTION" | "WEEKLY_UPDATE" | "OKR_REVIEW";
+  providerId: string;
+  model: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AiRequestLogData {
+  id: string;
+  providerId: string | null;
+  useCase: string;
+  model: string;
+  latencyMs: number;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  outcome: string;
+  failureReason: string | null;
+  createdAt: string;
+}
+
+export interface AiProviderStateData {
+  providers: AiProviderData[];
+  defaults: AiUseCaseSettingData[];
+  requestLogs: AiRequestLogData[];
+}
+
 export interface WeeklyActivityDraftData {
   id: string;
   weekStart: string;

@@ -85,8 +85,8 @@
 - Consumes the provider state and APIs from Task 3.
 - Produces the route-addressable `/admin/ai` configuration workflow.
 
-- [ ] Add failing UI contract tests for the navigation item, protected routes, provider form, connection test, model refresh/manual entry, defaults, and log redaction copy.
-- [ ] Implement the workspace using existing `PageHeader`, `FeedbackCenter`, `ConfirmDialog`, and form styles.
-- [ ] Verify the workflow in a fresh local SQLite database with `admin/admin`.
-- [ ] Run the full test suite, lint, type check, Prisma validation/generation, fresh migrations, production build, and `git diff --check`.
-- [ ] Mark roadmap lines 131-139 complete only after the corresponding behavior is verified.
+- [x] Add failing UI contract tests for the navigation item, protected routes, provider form, connection test, model refresh/manual entry, defaults, and log redaction copy.
+- [x] Implement the workspace using existing `PageHeader`, `FeedbackCenter`, `ConfirmDialog`, and form styles.
+- [x] Verify the workflow in a fresh local SQLite database with `admin/admin`.
+- [x] Run the full test suite, lint, type check, Prisma validation/generation, fresh migrations, production build, and `git diff --check`.
+- [x] Mark roadmap lines 131-139 complete only after the corresponding behavior is verified.
