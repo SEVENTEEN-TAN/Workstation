@@ -105,7 +105,7 @@ async function defaultSource(): Promise<PublicDataSource> {
         objectives: { where: { visibility: "PUBLIC" }, orderBy: { sortOrder: "asc" }, include: { keyResults: { orderBy: { sortOrder: "asc" } } } },
         reviews: { where: { visibility: "PUBLIC" }, orderBy: { reviewedAt: "desc" } },
       },
-    }) as unknown as PublicCycleSourceRecord[],
+    }),
   };
 }
 

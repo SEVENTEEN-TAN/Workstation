@@ -148,4 +148,32 @@ describe("knowledge article service", () => {
     });
     expect(events).toEqual(["database:article-1", "file:snapshot-1"]);
   });
+
+  it("keeps invalid JSON tag entries out of public article data", async () => {
+    const article = {
+      id: "article-1",
+      slug: "typed-tags",
+      markdown: "# Article",
+      title: "Typed tags",
+      summary: null,
+      tags: ["typescript", 42, null],
+      publishedAt: new Date("2026-09-18T08:00:00.000Z"),
+    };
+    const service = createKnowledgeArticleService({
+      async findDraft() { return draft; },
+      async createArticle() { throw new Error("not used"); },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
+      async listPublicArticles() { return [article]; },
+      async getPublicArticle() { return article; },
+    } as Parameters<typeof createKnowledgeArticleService>[0]);
+
+    await expect(service.listPublicArticles()).resolves.toMatchObject([
+      { id: "article-1", tags: ["typescript"] },
+    ]);
+    await expect(service.getPublicArticle("typed-tags")).resolves.toMatchObject({
+      id: "article-1",
+      tags: ["typescript"],
+    });
+  });
 });

@@ -39,13 +39,17 @@ export type PublicKnowledgeArticle = {
   publishedAt: Date;
 };
 
+type PublicKnowledgeArticleSource = Omit<PublicKnowledgeArticle, "tags"> & {
+  tags: Prisma.JsonValue;
+};
+
 type KnowledgeArticleRepository = {
   findDraft(id: string): Promise<DraftRecord | null>;
   createArticle(input: ArticleInput, attachments: ArticleAttachmentSnapshot[]): Promise<{ created: boolean; article: unknown }>;
   findArticle(id: string): Promise<ArticleRecord | null>;
   deleteArticle(id: string): Promise<ArticleRecord>;
-  listPublicArticles(): Promise<PublicKnowledgeArticle[]>;
-  getPublicArticle(slug: string): Promise<PublicKnowledgeArticle | null>;
+  listPublicArticles(): Promise<PublicKnowledgeArticleSource[]>;
+  getPublicArticle(slug: string): Promise<PublicKnowledgeArticleSource | null>;
 };
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -70,6 +74,14 @@ function validatePublication(draft: DraftRecord, slug: string) {
   } catch {
     throw new Error("Article not ready");
   }
+}
+
+function toPublicArticle(article: PublicKnowledgeArticleSource): PublicKnowledgeArticle {
+  const { tags, ...remaining } = article;
+  return {
+    ...remaining,
+    tags: Array.isArray(tags) ? tags.filter((tag): tag is string => typeof tag === "string") : [],
+  };
 }
 
 function defaultRepository(): KnowledgeArticleRepository {
@@ -130,13 +142,13 @@ function defaultRepository(): KnowledgeArticleRepository {
       return (await getDatabase()).knowledgeArticle.findMany({
         orderBy: { publishedAt: "desc" },
         select: { id: true, slug: true, markdown: true, title: true, summary: true, tags: true, publishedAt: true },
-      }) as unknown as PublicKnowledgeArticle[];
+      });
     },
     async getPublicArticle(slug) {
       return (await getDatabase()).knowledgeArticle.findUnique({
         where: { slug },
         select: { id: true, slug: true, markdown: true, title: true, summary: true, tags: true, publishedAt: true },
-      }) as unknown as PublicKnowledgeArticle | null;
+      });
     },
   };
 }
@@ -195,8 +207,11 @@ export function createKnowledgeArticleService(
       }
       return { id: article.id, slug: article.slug, attachmentsRemoved: article.attachments.length, cleanupWarning };
     },
-    listPublicArticles: () => repository.listPublicArticles(),
-    getPublicArticle: (slug: string) => repository.getPublicArticle(slug),
+    listPublicArticles: async () => (await repository.listPublicArticles()).map(toPublicArticle),
+    getPublicArticle: async (slug: string) => {
+      const article = await repository.getPublicArticle(slug);
+      return article ? toPublicArticle(article) : null;
+    },
   };
 }
 
