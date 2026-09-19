@@ -116,6 +116,48 @@ describe("experience record service", () => {
     })).toMatchObject({ id: "experience-1", createdAt, updatedAt });
   });
 
+  it("returns the admin list as JSON-safe experience views", async () => {
+    const service = createExperienceRecordService({
+      async listRecords() {
+        return [parseExperienceRecord({
+          ...completeExperience,
+          isCurrent: false,
+          endedAt: "2025-08-31",
+          id: "experience-1",
+          createdAt: "2026-09-16T00:00:00.000Z",
+          updatedAt: "2026-09-16T01:00:00.000Z",
+        })];
+      },
+      async listPublicRecords() { return []; },
+      async findRecord() { return null; },
+      async createRecord() { throw new Error("not used"); },
+      async updateRecord() { throw new Error("not used"); },
+      async deleteRecord() { throw new Error("not used"); },
+    });
+
+    await expect(service.list()).resolves.toEqual([{
+      kind: "WORK",
+      organizationZh: "示例科技",
+      organizationEn: "Example Technology",
+      titleZh: "高级后端工程师",
+      titleEn: "Senior Backend Engineer",
+      descriptionZh: "负责交易系统架构与核心服务演进。",
+      descriptionEn: "Owned trading-system architecture and core service evolution.",
+      locationZh: "上海",
+      locationEn: "Shanghai",
+      linkUrl: "https://example.com",
+      startedAt: "2024-03-01T00:00:00.000Z",
+      endedAt: "2025-08-31T00:00:00.000Z",
+      isCurrent: false,
+      featured: true,
+      sortOrder: 2,
+      visibility: "PUBLIC",
+      id: "experience-1",
+      createdAt: "2026-09-16T00:00:00.000Z",
+      updatedAt: "2026-09-16T01:00:00.000Z",
+    }]);
+  });
+
   it("delegates validated CRUD operations", async () => {
     const calls: Array<{ type: string; value?: unknown }> = [];
     const current = {

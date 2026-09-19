@@ -182,27 +182,7 @@ export type { CareerActivityData } from "../../lib/services/career-activities";
 
 export type { PortfolioProjectData } from "../../lib/services/portfolio-projects";
 
-export interface ExperienceRecordData {
-  id: string;
-  kind: "WORK" | "EDUCATION";
-  organizationZh: string;
-  organizationEn: string | null;
-  titleZh: string;
-  titleEn: string | null;
-  descriptionZh: string;
-  descriptionEn: string | null;
-  locationZh: string | null;
-  locationEn: string | null;
-  linkUrl: string | null;
-  startedAt: string;
-  endedAt: string | null;
-  isCurrent: boolean;
-  visibility: "PUBLIC" | "PRIVATE";
-  featured: boolean;
-  sortOrder: number;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { ExperienceRecordData } from "../../lib/services/experience-records";
 
 export type {
   ArticleSkillEvidenceData,

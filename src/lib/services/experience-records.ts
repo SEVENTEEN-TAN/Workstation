@@ -11,6 +11,16 @@ export type ExperienceRecord = ExperienceRecordInput & {
   updatedAt: Date;
 };
 
+export type ExperienceRecordData = Omit<
+  ExperienceRecord,
+  "startedAt" | "endedAt" | "createdAt" | "updatedAt"
+> & {
+  startedAt: string;
+  endedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type ExperienceRecordRepository = {
   listRecords(): Promise<ExperienceRecord[]>;
   listPublicRecords(): Promise<ExperienceRecord[]>;
@@ -91,8 +101,16 @@ function isPublicReady(record: ExperienceRecord) {
 
 export function createExperienceRecordService(repository?: ExperienceRecordRepository) {
   const source = repository ?? defaultRepository();
+  const toAdminRecord = (record: ExperienceRecord): ExperienceRecordData => ({
+    ...record,
+    startedAt: record.startedAt.toISOString(),
+    endedAt: record.endedAt ? record.endedAt.toISOString() : null,
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+  });
+
   return {
-    list: () => source.listRecords(),
+    list: async () => (await source.listRecords()).map(toAdminRecord),
     create: (input: unknown) => source.createRecord(experienceRecordInputSchema.parse(input)),
     async update(id: string, input: unknown) {
       const patch = experienceRecordPatchSchema.parse(input);
