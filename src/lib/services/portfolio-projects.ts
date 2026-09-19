@@ -1,5 +1,3 @@
-import type { Prisma } from "@prisma/client";
-
 import { getDatabase } from "../db";
 import { findHomepageProjectReferences } from "../content/homepage-projects";
 import type { SiteVersionRecord } from "./site-content";
@@ -37,10 +35,6 @@ export function parsePortfolioProjectRecord(record: unknown): PortfolioProjectRe
 
 const deserialize = parsePortfolioProjectRecord;
 
-function writeData(value: PortfolioProjectInput) {
-  return { ...value, technologies: value.technologies as Prisma.InputJsonValue, links: value.links as Prisma.InputJsonValue };
-}
-
 function defaultRepository(): PortfolioProjectRepository {
   return {
     async listProjects() {
@@ -63,15 +57,10 @@ function defaultRepository(): PortfolioProjectRepository {
       return record ? deserialize(record) : null;
     },
     createProject(value) {
-      return getDatabase().then((database) => database.portfolioProject.create({ data: writeData(value) }));
+      return getDatabase().then((database) => database.portfolioProject.create({ data: value }));
     },
     updateProject(id, value) {
-      const data = {
-        ...value,
-        ...(value.technologies ? { technologies: value.technologies as Prisma.InputJsonValue } : {}),
-        ...(value.links ? { links: value.links as Prisma.InputJsonValue } : {}),
-      };
-      return getDatabase().then((database) => database.portfolioProject.update({ where: { id }, data }));
+      return getDatabase().then((database) => database.portfolioProject.update({ where: { id }, data: value }));
     },
     deleteProject(id) {
       return getDatabase().then((database) => database.portfolioProject.delete({ where: { id } }));
