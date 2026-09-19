@@ -30,6 +30,14 @@ describe("service boundary types", () => {
       join(projectRoot, "src/lib/services/weekly-activity-drafts.ts"),
       "utf8",
     );
+    const okrMilestoneDraftSource = readFileSync(
+      join(projectRoot, "src/lib/services/okr-milestone-drafts.ts"),
+      "utf8",
+    );
+    const careerTimelineDraftSource = readFileSync(
+      join(projectRoot, "src/lib/services/career-timeline-drafts.ts"),
+      "utf8",
+    );
     const aiProviderSource = readFileSync(
       join(projectRoot, "src/lib/services/ai-providers.ts"),
       "utf8",
@@ -43,6 +51,8 @@ describe("service boundary types", () => {
     expect(aiContentDraftSource).not.toContain("as Promise<DraftRecord | null>");
     expect(aiGenerationSource).not.toContain("as Promise<AiGenerationSetting | null>");
     expect(weeklyActivityDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
+    expect(okrMilestoneDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
+    expect(careerTimelineDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
     expect(aiProviderSource).not.toContain("as unknown as Prisma.AiProviderUncheckedCreateInput");
   });
 });

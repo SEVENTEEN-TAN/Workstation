@@ -30,7 +30,7 @@ export type OkrMilestoneDraftRepository = {
   listDrafts(): Promise<unknown[]>;
   findDraft(id: string): Promise<EditableDraft | null>;
   updateDraft(id: string, value: Record<string, unknown>): Promise<unknown>;
-  convertDraft(id: string, activity: Record<string, unknown>): Promise<unknown>;
+  convertDraft(id: string, activity: Prisma.CareerActivityCreateInput): Promise<unknown>;
 };
 
 type ProgressMilestoneInput = {
@@ -120,7 +120,7 @@ function defaultRepository(): OkrMilestoneDraftRepository {
         const draft = await transaction.okrMilestoneDraft.findUnique({ where: { id } });
         if (!draft) throw new Error("里程碑草稿不存在");
         if (draft.status !== "DRAFT") throw new Error("里程碑草稿已经转换");
-        const created = await transaction.careerActivity.create({ data: activity as Prisma.CareerActivityCreateInput });
+        const created = await transaction.careerActivity.create({ data: activity });
         return transaction.okrMilestoneDraft.update({
           where: { id }, data: { status: "CONVERTED", convertedActivityId: created.id },
         });
