@@ -49,6 +49,54 @@ const structuredProject = parsePortfolioProjectRecord({
 });
 
 describe("site publishing", () => {
+  it("returns site versions as JSON-safe views", async () => {
+    const createdAt = new Date("2026-09-01T08:00:00.000Z");
+    const updatedAt = new Date("2026-09-02T08:00:00.000Z");
+    const publishedAt = new Date("2026-09-03T08:00:00.000Z");
+    const versions = [
+      { id: "published", version: 1, status: "PUBLISHED", content: bootstrapSiteContent, publishedAt, createdAt, updatedAt },
+      { id: "draft", version: 2, status: "DRAFT", content: bootstrapSiteContent, publishedAt: null, createdAt, updatedAt },
+    ];
+    const service = createSiteContentService({
+      transaction: async () => { throw new Error("not used"); },
+      listVersions: async () => versions,
+      findPublished: async () => versions[0],
+      findDraft: async () => versions[1],
+      updateDraft: async () => { throw new Error("not used"); },
+      findProjectsByIds: async () => { throw new Error("not used"); },
+    });
+
+    await expect(service.getOrCreateDraft()).resolves.toEqual({
+      id: "draft",
+      version: 2,
+      status: "DRAFT",
+      content: bootstrapSiteContent,
+      publishedAt: null,
+      createdAt: "2026-09-01T08:00:00.000Z",
+      updatedAt: "2026-09-02T08:00:00.000Z",
+    });
+    await expect(service.listVersions()).resolves.toEqual([
+      {
+        id: "published",
+        version: 1,
+        status: "PUBLISHED",
+        content: bootstrapSiteContent,
+        publishedAt: "2026-09-03T08:00:00.000Z",
+        createdAt: "2026-09-01T08:00:00.000Z",
+        updatedAt: "2026-09-02T08:00:00.000Z",
+      },
+      {
+        id: "draft",
+        version: 2,
+        status: "DRAFT",
+        content: bootstrapSiteContent,
+        publishedAt: null,
+        createdAt: "2026-09-01T08:00:00.000Z",
+        updatedAt: "2026-09-02T08:00:00.000Z",
+      },
+    ]);
+  });
+
   it("archives the former release and publishes one complete validated snapshot in one transaction", async () => {
     const versions = [
       { id: "old", version: 1, status: "PUBLISHED", content: bootstrapSiteContent, publishedAt: new Date() },

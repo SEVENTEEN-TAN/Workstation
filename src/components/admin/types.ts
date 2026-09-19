@@ -13,15 +13,7 @@ export type {
   ReviewData,
 } from "../../lib/services/okr";
 
-export interface SiteVersionData {
-  id: string;
-  version: number;
-  status: string;
-  content: SiteContent;
-  publishedAt: string | null;
-  createdAt?: string;
-  updatedAt?: string;
-}
+export type { SiteVersionData } from "../../lib/services/site-content";
 
 export type { AssetData, AssetReferenceData } from "../../lib/services/assets";
 
@@ -83,4 +75,3 @@ export type {
   KnowledgeCollectionArticleData,
   KnowledgeCollectionData,
 } from "../../lib/services/knowledge-collections";
-import type { SiteContent } from "../../lib/content/schema";

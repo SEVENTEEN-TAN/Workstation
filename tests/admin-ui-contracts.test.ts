@@ -818,7 +818,8 @@ describe("OKR execution workspace contracts", () => {
     const workspaceSource = readProjectFile("src/components/admin/HomeWorkspace.tsx");
     const editorSource = readProjectFile("src/components/admin/home/HomepageEditor.tsx");
 
-    expect(pageSource).toContain("asset.findMany");
+    expect(pageSource).toContain("(await getAssetLibraryService()).list()");
+    expect(pageSource).not.toContain("JSON.parse(JSON.stringify");
     expect(pageSource).toContain("portfolioProjectService.list()");
     expect(pageSource).toContain("initialProjects");
     expect(workspaceSource).toContain("initialProjects");

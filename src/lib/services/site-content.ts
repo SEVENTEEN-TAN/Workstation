@@ -15,6 +15,16 @@ export type SiteVersionRecord = {
   updatedAt?: Date;
 };
 
+export type SiteVersionData = {
+  id: string;
+  version: number;
+  status: string;
+  content: SiteContent;
+  publishedAt: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 type TransactionRepository = {
   findVersion(id: string): Promise<SiteVersionRecord | null>;
   findDraft(): Promise<SiteVersionRecord | null>;
@@ -33,6 +43,18 @@ export type SiteContentRepository = {
   updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
   findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
 };
+
+function toSiteVersionData(record: SiteVersionRecord): SiteVersionData {
+  return {
+    id: record.id,
+    version: record.version,
+    status: record.status,
+    content: siteContentSchema.parse(record.content),
+    publishedAt: record.publishedAt?.toISOString() ?? null,
+    createdAt: record.createdAt?.toISOString(),
+    updatedAt: record.updatedAt?.toISOString(),
+  };
+}
 
 function prismaTransactionRepository(transaction: Prisma.TransactionClient): TransactionRepository {
   return {
@@ -65,31 +87,33 @@ function createPrismaRepository(database: PrismaClient): SiteContentRepository {
 
 export function createSiteContentService(repository: SiteContentRepository) {
   return {
-    listVersions: () => repository.listVersions(),
+    async listVersions(): Promise<SiteVersionData[]> {
+      return (await repository.listVersions()).map(toSiteVersionData);
+    },
     async getPublished(): Promise<SiteContent | null> {
       const version = await repository.findPublished();
       return version ? siteContentSchema.parse(version.content) : null;
     },
     async getOrCreateDraft(createdById?: string | null) {
       const existing = await repository.findDraft();
-      if (existing) return { ...existing, content: siteContentSchema.parse(existing.content) };
+      if (existing) return toSiteVersionData(existing);
       const published = await repository.findPublished();
       if (!published) throw new Error("站点尚未初始化，请先运行数据库种子");
       const content = siteContentSchema.parse(published.content);
       return repository.transaction(async (transaction) => {
-        return transaction.createVersion({
+        return toSiteVersionData(await transaction.createVersion({
           version: (await transaction.latestVersionNumber()) + 1,
           status: "DRAFT",
           content,
           createdById,
-        });
+        }));
       });
     },
     async getVersion(id: string) {
       return repository.transaction(async (transaction) => {
         const version = await transaction.findVersion(id);
         if (!version) throw new Error("内容版本不存在");
-        return { ...version, content: siteContentSchema.parse(version.content) };
+        return toSiteVersionData(version);
       });
     },
     async saveDraft(id: string, input: unknown) {
@@ -101,7 +125,7 @@ export function createSiteContentService(repository: SiteContentRepository) {
       const materializedContent = selectedProjectIds
         ? materializeHomepageProjects(content, await repository.findProjectsByIds(selectedProjectIds))
         : content;
-      return repository.updateDraft(id, materializedContent);
+      return repository.updateDraft(id, materializedContent).then(toSiteVersionData);
     },
     async publish(id: string) {
       return repository.transaction(async (transaction) => {
@@ -109,7 +133,7 @@ export function createSiteContentService(repository: SiteContentRepository) {
         if (!target || target.status !== "DRAFT") throw new Error("仅草稿版本可以发布");
         siteContentSchema.parse(target.content);
         await transaction.archivePublished();
-        return transaction.publishVersion(id, new Date());
+        return toSiteVersionData(await transaction.publishVersion(id, new Date()));
       });
     },
     async rollback(sourceId: string, createdById?: string | null) {
@@ -118,14 +142,14 @@ export function createSiteContentService(repository: SiteContentRepository) {
         if (!source) throw new Error("内容版本不存在");
         const content = siteContentSchema.parse(source.content);
         const draft = await transaction.findDraft();
-        if (draft) return transaction.updateDraft(draft.id, content);
-        return transaction.createVersion({
+        if (draft) return transaction.updateDraft(draft.id, content).then(toSiteVersionData);
+        return toSiteVersionData(await transaction.createVersion({
           version: (await transaction.latestVersionNumber()) + 1,
           status: "DRAFT",
           content,
           publishedAt: null,
           createdById,
-        });
+        }));
       });
     },
   };
