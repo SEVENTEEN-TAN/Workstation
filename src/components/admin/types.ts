@@ -158,10 +158,12 @@ export interface AssetData {
 }
 
 export interface AssetReferenceData {
+  source: "SITE_VERSION" | "KNOWLEDGE_DRAFT";
   versionId: string;
-  version: number;
+  version: number | null;
   status: string;
   path: string;
+  label: string;
 }
 
 export interface CareerActivityData {

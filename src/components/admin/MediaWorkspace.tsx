@@ -28,15 +28,11 @@ export function filterAssets(assets: AssetData[], filters: AssetFilters) {
   });
 }
 
-const VERSION_STATUS_LABELS: Record<string, string> = {
-  DRAFT: "草稿",
-  PUBLISHED: "已发布",
-  ARCHIVED: "历史版本",
-};
-
 function formatReferencePath(path: string) {
   const project = path.match(/^(zh|en)\.projects\.(\d+)\.image$/);
   if (project) return `${project[1] === "zh" ? "中文" : "English"} · 项目 ${Number(project[2]) + 1} · 图片`;
+  const knowledgeAttachment = path.match(/^knowledge\.attachments\.(.+)$/);
+  if (knowledgeAttachment) return `知识发布草稿 · ${knowledgeAttachment[1]}`;
   return path;
 }
 
@@ -204,7 +200,7 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
               <section className={styles.assetReferences} aria-labelledby="asset-reference-title">
                 <div><h3 id="asset-reference-title">使用位置</h3><span>{selectedAsset.references.length} 处</span></div>
                 {selectedAsset.references.length ? (
-                  <ul>{selectedAsset.references.map((reference) => <li key={`${reference.versionId}:${reference.path}`}><strong>版本 {reference.version} · {VERSION_STATUS_LABELS[reference.status] ?? reference.status}</strong><span>{formatReferencePath(reference.path)}</span></li>)}</ul>
+                  <ul>{selectedAsset.references.map((reference) => <li key={`${reference.versionId}:${reference.path}`}><strong>{reference.label}</strong><span>{formatReferencePath(reference.path)}</span></li>)}</ul>
                 ) : <p>当前未被任何内容版本引用，可以安全删除。</p>}
               </section>
               <form key={selectedAsset.id} className={styles.formGrid} onSubmit={saveAltText}>
@@ -222,7 +218,7 @@ export function MediaWorkspace({ initialAssets }: { initialAssets: AssetData[] }
               </section>
               <div className={styles.assetDeleteArea}>
                 <button type="button" className={styles.dangerButton} disabled={altBusy || replaceBusy || selectedAsset.references.length > 0} onClick={() => requestDelete(selectedAsset)}><Trash2 size={17} />删除资源</button>
-                {selectedAsset.references.length ? <p>仍被内容版本引用，无法删除。请先在主页内容中移除所有使用位置。</p> : null}
+                {selectedAsset.references.length ? <p>仍被内容版本引用，无法删除。请先在主页内容或知识发布草稿中移除所有使用位置。</p> : null}
               </div>
             </div>
           </div>

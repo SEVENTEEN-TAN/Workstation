@@ -100,6 +100,8 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const [noteError, setNoteError] = useState("");
   const [isNoteLoading, setIsNoteLoading] = useState(false);
   const [draftSlugs, setDraftSlugs] = useState<Record<string, string>>({});
+  const [unpublishRequest, setUnpublishRequest] = useState<{ article: KnowledgeArticleData; draft: KnowledgePublicationDraftData } | null>(null);
+  const [unpublishWarning, setUnpublishWarning] = useState<string | null>(null);
   const [attachmentAssets, setAttachmentAssets] = useState<AssetData[] | null>(null);
   const [okrCycles, setOkrCycles] = useState<OkrCycleData[] | null>(null);
   const [taskKeyResultId, setTaskKeyResultId] = useState("");
@@ -253,6 +255,35 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
     }));
   }
 
+  async function unpublishArticle() {
+    if (!unpublishRequest) return;
+    const { article, draft } = unpublishRequest;
+    const unpublished = await runAction(`knowledge:article-unpublish:${article.id}`, () => adminRequest<{
+      id: string;
+      cleanupWarning: string | null;
+    }>(
+      `/api/admin/knowledge/articles/${article.id}`,
+      jsonRequest("DELETE", {}),
+    ), "文章已下架，发布草稿和已选附件已保留");
+    if (!unpublished) return;
+    setUnpublishWarning(unpublished.cleanupWarning);
+    setDraftSlugs((current) => ({ ...current, [draft.id]: current[draft.id]?.trim() || article.slug }));
+    setVaults((current) => current.map((vault) => vault.sourceRevisions.some((revision) => revision.draft?.id === draft.id) ? {
+      ...vault,
+      sourceRevisions: vault.sourceRevisions.map((revision) => revision.draft?.id !== draft.id ? revision : {
+        ...revision,
+        draft: { ...revision.draft!, article: null },
+      }),
+    } : vault));
+    setUnpublishRequest(null);
+  }
+
+  function requestUnpublish(revision: KnowledgeSourceRevisionData) {
+    if (!revision.draft?.article) return;
+    setUnpublishWarning(null);
+    setUnpublishRequest({ article: revision.draft.article, draft: revision.draft });
+  }
+
   async function loadTaskTargets() {
     const cycles = await runAction("knowledge:task-targets", () => adminRequest<OkrCycleData[]>("/api/admin/okr"));
     if (!cycles) return;
@@ -318,15 +349,16 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                {unresolvedLinks.length ? <div className={styles.syncChanges}>{unresolvedLinks.slice(0, 8).map((link) => <div key={link.id}><span>未解析</span><small>{link.sourceRelativePath} -&gt; {link.targetRaw}</small></div>)}{unresolvedLinks.length > 8 ? <p>另有 {unresolvedLinks.length - 8} 条未解析链接未展开。</p> : null}</div> : <p className={styles.syncEmpty}>所有内部链接都已解析。</p>}
              </section> : null}
              {viewingNote ? <section className={styles.noteViewer} aria-label="笔记正文">
-               <div className={styles.syncReportHeading}><div><strong>{noteTitle(viewingNote)}</strong><small>{viewingNote.relativePath}</small></div><button type="button" className={styles.iconButton} title="关闭笔记" aria-label="关闭笔记" onClick={() => setViewingNote(null)}><X size={16} /></button></div>
-               {isNoteLoading ? <p className={styles.syncEmpty}>正在读取笔记...</p> : noteError ? <p className={styles.inlineError} role="alert">{noteError}</p> : <ObsidianMarkdownPreview content={noteContent} />}
-               <div className={styles.noteInspector}>
+                <div className={styles.syncReportHeading}><div><strong>{noteTitle(viewingNote)}</strong><small>{viewingNote.relativePath}</small></div><button type="button" className={styles.iconButton} title="关闭笔记" aria-label="关闭笔记" onClick={() => setViewingNote(null)}><X size={16} /></button></div>
+                {isNoteLoading ? <p className={styles.syncEmpty}>正在读取笔记...</p> : noteError ? <p className={styles.inlineError} role="alert">{noteError}</p> : <ObsidianMarkdownPreview content={noteContent} />}
+                {unpublishWarning ? <p className={styles.inlineError} role="alert">{unpublishWarning}</p> : null}
+                <div className={styles.noteInspector}>
                  <section><h3>笔记属性</h3>{viewingProperties.length ? <dl>{viewingProperties.map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl> : <p>没有可展示的 frontmatter 属性。</p>}</section>
                  <section><h3>正向链接</h3>{outgoingLinks.length ? <ul>{outgoingLinks.map((link) => <li key={link.id}>{link.isResolved && link.targetRelativePath ? <button type="button" onClick={() => viewLinkedNote(link.targetRelativePath)}>{link.displayLabel ?? link.targetRelativePath}</button> : <span>{link.displayLabel ?? link.targetRaw}（未解析）</span>}</li>)}</ul> : <p>没有正向链接。</p>}</section>
                  <section><h3>反向链接</h3>{incomingLinks.length ? <ul>{incomingLinks.map((link) => <li key={link.id}><button type="button" onClick={() => viewLinkedNote(link.sourceRelativePath)}>{link.displayLabel ?? link.sourceRelativePath}</button></li>)}</ul> : <p>没有反向链接。</p>}</section>
                   <section><h3>发布检查</h3><ul className={styles.publicationChecks}>{publicationChecks.map((check) => <li key={check.id} className={check.status === "READY" ? styles.publicationReady : check.status === "BLOCKED" ? styles.publicationBlocked : styles.publicationNotice}>{check.label}</li>)}</ul></section>
                   <section><h3>笔记任务</h3>{noteTasks.length ? <div className={styles.noteTaskPromotion}>{okrCycles ? <select value={taskKeyResultId} onChange={(event) => setTaskKeyResultId(event.target.value)} aria-label="目标 KR"><option value="">选择目标 KR</option>{keyResults.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</select> : <button type="button" onClick={loadTaskTargets} disabled={isBusy("knowledge:task-targets")}>{isBusy("knowledge:task-targets") ? "加载 KR 中" : "选择目标 KR"}</button>}{noteTasks.map((task, index) => <div key={`${task.title}-${index}`}><span>{task.completed ? "已完成：" : "待处理："}{task.title}</span><button type="button" onClick={() => promoteTask(task.title)} disabled={!taskKeyResultId || isBusy(`knowledge:task:${task.title}`)}>{isBusy(`knowledge:task:${task.title}`) ? "创建中" : "提升为行动项"}</button></div>)}</div> : <p>没有标准 Markdown 任务。</p>}</section>
-                  <section><h3>源修订</h3>{publicationUpdate?.updateAvailable ? <p className={styles.publicationNotice}>源文件已有新版本，公开文章 /{publicationUpdate.articleSlug} 保持不变；可从最新修订创建新的发布草稿。</p> : null}{viewingRevisions.length ? <ul className={styles.sourceRevisionList}>{viewingRevisions.map((revision) => <li key={revision.id}><div><strong>{revision.contentHash.slice(0, 10)}</strong><time dateTime={revision.capturedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(revision.capturedAt))}</time></div>{revision.draft?.article ? <span>已发布：/{revision.draft.article.slug}</span> : revision.draft ? <div className={styles.articlePublishForm}><span>草稿：{revision.draft.title}</span>{publicationEmbeds.length ? <div className={styles.attachmentSelection}>{attachmentAssets ? publicationEmbeds.map((target) => <label key={target}><span>{target}</span><select value={revision.draft!.attachments.find((item) => item.target === target)?.assetId ?? ""} onChange={(event) => { if (event.target.value) void selectAttachment(revision.draft!, target, event.target.value); }}><option value="">选择图片</option>{attachmentAssets.map((asset) => <option key={asset.id} value={asset.id}>{asset.originalFilename}</option>)}</select></label>) : <button type="button" onClick={loadAttachmentAssets} disabled={isBusy("knowledge:attachment-assets")}>{isBusy("knowledge:attachment-assets") ? "加载图片中" : "选择文章附件"}</button>}</div> : null}<label><span className="srOnly">文章路径</span><input value={draftSlugs[revision.draft.id] ?? ""} onChange={(event) => setDraftSlugs((current) => ({ ...current, [revision.draft!.id]: event.target.value }))} placeholder="article-slug" aria-label="文章路径" maxLength={96} /></label><button type="button" onClick={() => publishArticle(revision.draft!)} disabled={isBusy(`knowledge:article:${revision.draft.id}`)}>{isBusy(`knowledge:article:${revision.draft.id}`) ? "发布中" : "发布文章"}</button></div> : <button type="button" onClick={() => createPublicationDraft(revision)} disabled={isBusy(`knowledge:draft:${revision.id}`)}>{isBusy(`knowledge:draft:${revision.id}`) ? "创建中" : "创建发布草稿"}</button>}</li>)}</ul> : <p>尚未捕获源修订，请重新扫描知识库。</p>}</section>
+                  <section><h3>源修订</h3>{publicationUpdate?.updateAvailable ? <p className={styles.publicationNotice}>源文件已有新版本，公开文章 /{publicationUpdate.articleSlug} 保持不变；可从最新修订创建新的发布草稿。</p> : null}{viewingRevisions.length ? <ul className={styles.sourceRevisionList}>{viewingRevisions.map((revision) => <li key={revision.id}><div><strong>{revision.contentHash.slice(0, 10)}</strong><time dateTime={revision.capturedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(revision.capturedAt))}</time></div>{revision.draft?.article ? <div className={styles.articlePublishForm}><span>已发布：/{revision.draft.article.slug}</span><button type="button" className={styles.dangerButton} onClick={() => requestUnpublish(revision)}>下架文章</button></div> : revision.draft ? <div className={styles.articlePublishForm}><span>草稿：{revision.draft.title}</span>{publicationEmbeds.length ? <div className={styles.attachmentSelection}>{attachmentAssets ? publicationEmbeds.map((target) => <label key={target}><span>{target}</span><select value={revision.draft!.attachments.find((item) => item.target === target)?.assetId ?? ""} onChange={(event) => { if (event.target.value) void selectAttachment(revision.draft!, target, event.target.value); }}><option value="">选择图片</option>{attachmentAssets.map((asset) => <option key={asset.id} value={asset.id}>{asset.originalFilename}</option>)}</select></label>) : <button type="button" onClick={loadAttachmentAssets} disabled={isBusy("knowledge:attachment-assets")}>{isBusy("knowledge:attachment-assets") ? "加载图片中" : "选择文章附件"}</button>}</div> : null}<label><span className="srOnly">文章路径</span><input value={draftSlugs[revision.draft.id] ?? ""} onChange={(event) => setDraftSlugs((current) => ({ ...current, [revision.draft!.id]: event.target.value }))} placeholder="article-slug" aria-label="文章路径" maxLength={96} /></label><button type="button" onClick={() => publishArticle(revision.draft!)} disabled={isBusy(`knowledge:article:${revision.draft.id}`)}>{isBusy(`knowledge:article:${revision.draft.id}`) ? "发布中" : "发布文章"}</button></div> : <button type="button" onClick={() => createPublicationDraft(revision)} disabled={isBusy(`knowledge:draft:${revision.id}`)}>{isBusy(`knowledge:draft:${revision.id}`) ? "创建中" : "创建发布草稿"}</button>}</li>)}</ul> : <p>尚未捕获源修订，请重新扫描知识库。</p>}</section>
                </div>
              </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
@@ -347,6 +379,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
       ) : <EmptyState title="还没有登记知识库" description="先登记本机 Obsidian Vault，再执行只读扫描。" action={null} />}
 
       <ConfirmDialog open={Boolean(deleteRequest)} title="移除知识库登记" target={deleteRequest?.name ?? ""} description="只会删除工作站中的路径配置与索引，不会删除或修改本地 Vault 文件。" busy={deleteRequest ? isBusy(`knowledge:delete:${deleteRequest.id}`) : false} confirmLabel="确认移除" busyLabel="移除中" onConfirm={removeVault} onCancel={() => setDeleteRequest(null)} />
+      <ConfirmDialog open={Boolean(unpublishRequest)} title="下架已发布文章" target={unpublishRequest ? `/${unpublishRequest.article.slug}` : ""} description="公开文章会立即移除，文章附件快照会一并清理；发布草稿和已选附件会保留，可修正后重新发布。" busy={unpublishRequest ? isBusy(`knowledge:article-unpublish:${unpublishRequest.article.id}`) : false} confirmLabel="确认下架" busyLabel="下架中" onConfirm={unpublishArticle} onCancel={() => setUnpublishRequest(null)} />
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
     </section>
   );

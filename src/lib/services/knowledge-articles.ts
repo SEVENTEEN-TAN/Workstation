@@ -23,6 +23,11 @@ type DraftRecord = {
 };
 
 type ArticleInput = Omit<DraftRecord, "id" | "attachments" | "article"> & { id: string; draftId: string; slug: string };
+type ArticleRecord = {
+  id: string;
+  slug: string;
+  attachments: ArticleAttachmentSnapshot[];
+};
 
 export type PublicKnowledgeArticle = {
   id: string;
@@ -37,6 +42,8 @@ export type PublicKnowledgeArticle = {
 type KnowledgeArticleRepository = {
   findDraft(id: string): Promise<DraftRecord | null>;
   createArticle(input: ArticleInput, attachments: ArticleAttachmentSnapshot[]): Promise<{ created: boolean; article: unknown }>;
+  findArticle(id: string): Promise<ArticleRecord | null>;
+  deleteArticle(id: string): Promise<ArticleRecord>;
   listPublicArticles(): Promise<PublicKnowledgeArticle[]>;
   getPublicArticle(slug: string): Promise<PublicKnowledgeArticle | null>;
 };
@@ -94,6 +101,31 @@ function defaultRepository(): KnowledgeArticleRepository {
         throw error;
       }
     },
+    async findArticle(id) {
+      const article = await (await getDatabase()).knowledgeArticle.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          slug: true,
+          attachments: { select: { id: true, target: true, storagePath: true, mimeType: true, sizeBytes: true, sha256: true } },
+        },
+      });
+      return article;
+    },
+    async deleteArticle(id) {
+      const database = await getDatabase();
+      return database.$transaction(async (tx) => {
+        await tx.knowledgeCollectionArticle.deleteMany({ where: { articleId: id } });
+        return tx.knowledgeArticle.delete({
+          where: { id },
+          select: {
+            id: true,
+            slug: true,
+            attachments: { select: { id: true, target: true, storagePath: true, mimeType: true, sizeBytes: true, sha256: true } },
+          },
+        });
+      });
+    },
     async listPublicArticles() {
       return (await getDatabase()).knowledgeArticle.findMany({
         orderBy: { publishedAt: "desc" },
@@ -144,6 +176,24 @@ export function createKnowledgeArticleService(
         await snapshotter.remove(attachments);
         throw error;
       }
+    },
+    async unpublish(id: string) {
+      const article = await repository.findArticle(id);
+      if (!article) {
+        throw new Response(JSON.stringify({ error: "文章不存在或已下架" }), {
+          status: 404,
+          headers: { "content-type": "application/json" },
+        });
+      }
+
+      await repository.deleteArticle(id);
+      let cleanupWarning: string | null = null;
+      try {
+        await snapshotter.remove(article.attachments);
+      } catch {
+        cleanupWarning = "文章已下架，但部分附件快照文件未能清理";
+      }
+      return { id: article.id, slug: article.slug, attachmentsRemoved: article.attachments.length, cleanupWarning };
     },
     listPublicArticles: () => repository.listPublicArticles(),
     getPublicArticle: (slug: string) => repository.getPublicArticle(slug),

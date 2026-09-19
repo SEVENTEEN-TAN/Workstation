@@ -417,8 +417,8 @@ describe("asset reference safety", () => {
     expect(findAssetReferences("asset-1", [
       { id: "draft", version: 4, status: "DRAFT", content: referencedContent },
     ])).toEqual([
-      { versionId: "draft", version: 4, status: "DRAFT", path: "zh.projects.0.image" },
-      { versionId: "draft", version: 4, status: "DRAFT", path: "en.projects.1.image" },
+      { source: "SITE_VERSION", versionId: "draft", version: 4, status: "DRAFT", path: "zh.projects.0.image", label: "版本 4 · 草稿" },
+      { source: "SITE_VERSION", versionId: "draft", version: 4, status: "DRAFT", path: "en.projects.1.image", label: "版本 4 · 草稿" },
     ]);
   });
 
@@ -427,6 +427,7 @@ describe("asset reference safety", () => {
     const service = createAssetLibraryService({
       async listAssets() { return []; },
       async listSiteVersions() { return [{ id: "published", version: 3, status: "PUBLISHED", content: referencedContent }]; },
+      async listKnowledgeDraftAttachments() { return []; },
       async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/image.png" }; },
       async updateAsset() { throw new Error("not used"); },
       async deleteAsset() { deleted = true; },
@@ -439,12 +440,43 @@ describe("asset reference safety", () => {
     expect(deleted).toBe(false);
   });
 
+  it("reports knowledge publication drafts that reference an asset", async () => {
+    const service = createAssetLibraryService({
+      async listAssets() { return [{ id: "asset-1" }]; },
+      async listSiteVersions() { return []; },
+      async listKnowledgeDraftAttachments() {
+        return [{ draftId: "draft-1", draftTitle: "Workstation notes", target: "diagram.png", assetId: "asset-1" }];
+      },
+      async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/image.png" }; },
+      async updateAsset() { throw new Error("not used"); },
+      async deleteAsset() { throw new Error("not used"); },
+    } as Parameters<typeof createAssetLibraryService>[0], async () => {});
+
+    await expect(service.list()).resolves.toMatchObject([
+      {
+        id: "asset-1",
+        isReferenced: true,
+        references: [
+          {
+            source: "KNOWLEDGE_DRAFT",
+            versionId: "draft-1",
+            version: null,
+            status: "DRAFT",
+            path: "knowledge.attachments.diagram.png",
+            label: "知识发布草稿 · Workstation notes",
+          },
+        ],
+      },
+    ]);
+  });
+
   it("deletes an unreferenced asset record and its stored file", async () => {
     let deletedId = "";
     let removedPath = "";
     const service = createAssetLibraryService({
       async listAssets() { return []; },
       async listSiteVersions() { return []; },
+      async listKnowledgeDraftAttachments() { return []; },
       async findAsset(id) { return { id, storagePath: "C:/uploads/image.png" }; },
       async updateAsset() { throw new Error("not used"); },
       async deleteAsset(id) { deletedId = id; },
@@ -472,6 +504,7 @@ describe("asset reference safety", () => {
     const service = createAssetLibraryService({
       async listAssets() { return [asset]; },
       async listSiteVersions() { return []; },
+      async listKnowledgeDraftAttachments() { return []; },
       async findAsset() { return asset; },
       async updateAsset(id, data) {
         events.push(`update:${id}`);
@@ -510,6 +543,7 @@ describe("asset reference safety", () => {
     const service = createAssetLibraryService({
       async listAssets() { return []; },
       async listSiteVersions() { return []; },
+      async listKnowledgeDraftAttachments() { return []; },
       async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/old.png" }; },
       async updateAsset() { throw new Error("database unavailable"); },
       async deleteAsset() { throw new Error("not used"); },
@@ -532,6 +566,7 @@ describe("asset reference safety", () => {
     const service = createAssetLibraryService({
       async listAssets() { return []; },
       async listSiteVersions() { return []; },
+      async listKnowledgeDraftAttachments() { return []; },
       async findAsset() { return { id: "asset-1", storagePath: "C:/uploads/old.png" }; },
       async updateAsset() { throw new Error("database unavailable"); },
       async deleteAsset() { throw new Error("not used"); },
@@ -554,6 +589,7 @@ describe("asset reference safety", () => {
     const service = createAssetLibraryService({
       async listAssets() { return []; },
       async listSiteVersions() { return []; },
+      async listKnowledgeDraftAttachments() { return []; },
       async findAsset() { return null; },
       async updateAsset() { throw new Error("not used"); },
       async deleteAsset() { throw new Error("not used"); },

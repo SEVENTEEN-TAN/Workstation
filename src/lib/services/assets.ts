@@ -10,11 +10,18 @@ const MIME_EXTENSIONS = {
   "image/webp": "webp",
 } as const;
 
+const SITE_VERSION_STATUS_LABELS: Record<string, string> = {
+  DRAFT: "草稿",
+  PUBLISHED: "已发布",
+  ARCHIVED: "历史版本",
+};
+
 const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
 
 type UploadValidationInput = { bytes: Uint8Array; mimeType: string; filename: string; maxBytes?: number };
 type AssetAltTextInput = { altTextZh?: unknown; altTextEn?: unknown };
 type SiteVersionSource = { id: string; version: number; status: string; content: unknown };
+type KnowledgeDraftAttachmentSource = { draftId: string; draftTitle: string; target: string; assetId: string };
 type StoredAsset = { id: string; storagePath: string };
 type AssetFileData = {
   originalFilename: string;
@@ -27,15 +34,18 @@ type AssetFileData = {
 };
 
 export type AssetReference = {
+  source: "SITE_VERSION" | "KNOWLEDGE_DRAFT";
   versionId: string;
-  version: number;
+  version: number | null;
   status: string;
   path: string;
+  label: string;
 };
 
 type AssetLibraryRepository<TAsset extends { id: string }> = {
   listAssets(): Promise<TAsset[]>;
   listSiteVersions(): Promise<SiteVersionSource[]>;
+  listKnowledgeDraftAttachments(): Promise<KnowledgeDraftAttachmentSource[]>;
   findAsset(id: string): Promise<StoredAsset | null>;
   updateAsset(id: string, data: AssetFileData): Promise<TAsset>;
   deleteAsset(id: string): Promise<unknown>;
@@ -61,7 +71,14 @@ export function findAssetReferences(assetId: string, versions: SiteVersionSource
 
   function visit(value: unknown, path: Array<string | number>, version: SiteVersionSource) {
     if (value === target) {
-      references.push({ versionId: version.id, version: version.version, status: version.status, path: path.join(".") });
+      references.push({
+        source: "SITE_VERSION",
+        versionId: version.id,
+        version: version.version,
+        status: version.status,
+        path: path.join("."),
+        label: `版本 ${version.version} · ${SITE_VERSION_STATUS_LABELS[version.status] ?? version.status}`,
+      });
       return;
     }
     if (Array.isArray(value)) {
@@ -75,12 +92,23 @@ export function findAssetReferences(assetId: string, versions: SiteVersionSource
 
   versions.forEach((version) => visit(version.content, [], version));
   return references.sort((left, right) => {
-    const versionOrder = right.version - left.version;
+    const versionOrder = (right.version ?? 0) - (left.version ?? 0);
     if (versionOrder) return versionOrder;
     const leftLocale = left.path.startsWith("zh.") ? 0 : 1;
     const rightLocale = right.path.startsWith("zh.") ? 0 : 1;
     return leftLocale - rightLocale || left.path.localeCompare(right.path);
   });
+}
+
+export function findKnowledgeDraftAssetReferences(assetId: string, attachments: KnowledgeDraftAttachmentSource[]) {
+  return attachments.filter((attachment) => attachment.assetId === assetId).map((attachment) => ({
+    source: "KNOWLEDGE_DRAFT" as const,
+    versionId: attachment.draftId,
+    version: null,
+    status: "DRAFT",
+    path: `knowledge.attachments.${attachment.target}`,
+    label: `知识发布草稿 · ${attachment.draftTitle}`,
+  }));
 }
 
 export function createAssetLibraryService<TAsset extends { id: string }>(
@@ -90,21 +118,35 @@ export function createAssetLibraryService<TAsset extends { id: string }>(
 ) {
   return {
     async list() {
-      const [assets, versions] = await Promise.all([repository.listAssets(), repository.listSiteVersions()]);
+      const [assets, versions, draftAttachments] = await Promise.all([
+        repository.listAssets(),
+        repository.listSiteVersions(),
+        repository.listKnowledgeDraftAttachments(),
+      ]);
       return assets.map((asset) => {
-        const references = findAssetReferences(asset.id, versions);
+        const references = [
+          ...findAssetReferences(asset.id, versions),
+          ...findKnowledgeDraftAssetReferences(asset.id, draftAttachments),
+        ];
         return { ...asset, isReferenced: references.length > 0, references };
       });
     },
     async delete(id: string) {
-      const [asset, versions] = await Promise.all([repository.findAsset(id), repository.listSiteVersions()]);
+      const [asset, versions, draftAttachments] = await Promise.all([
+        repository.findAsset(id),
+        repository.listSiteVersions(),
+        repository.listKnowledgeDraftAttachments(),
+      ]);
       if (!asset) {
         throw new Response(JSON.stringify({ error: "媒体资源不存在" }), {
           status: 404,
           headers: { "content-type": "application/json" },
         });
       }
-      const references = findAssetReferences(id, versions);
+      const references = [
+        ...findAssetReferences(id, versions),
+        ...findKnowledgeDraftAssetReferences(id, draftAttachments),
+      ];
       if (references.length) {
         throw new Response(JSON.stringify({ error: "媒体资源仍被内容版本引用，无法删除", references }), {
           status: 409,
@@ -156,6 +198,14 @@ export async function getAssetLibraryService() {
       orderBy: { version: "desc" },
       select: { id: true, version: true, status: true, content: true },
     }),
+    listKnowledgeDraftAttachments: () => database.knowledgePublicationDraftAttachment.findMany({
+      select: {
+        draftId: true,
+        target: true,
+        assetId: true,
+        draft: { select: { title: true } },
+      },
+    }).then((attachments) => attachments.map(({ draft, ...attachment }) => ({ ...attachment, draftTitle: draft.title }))),
     findAsset: (id) => database.asset.findUnique({ where: { id }, select: { id: true, storagePath: true } }),
     updateAsset: (id, data) => database.asset.update({ where: { id }, data }),
     deleteAsset: (id) => database.asset.delete({ where: { id } }),

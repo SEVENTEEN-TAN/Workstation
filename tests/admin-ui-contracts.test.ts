@@ -567,6 +567,7 @@ describe("admin route contracts", () => {
     const reviewRoute = readProjectFile("src/app/api/admin/knowledge/sync-changes/[id]/review/route.ts");
     const draftRoute = readProjectFile("src/app/api/admin/knowledge/publications/drafts/route.ts");
     const articleRoute = readProjectFile("src/app/api/admin/knowledge/articles/route.ts");
+    const articleItemRoute = readProjectFile("src/app/api/admin/knowledge/articles/[id]/route.ts");
     const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
     const workspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
     const adminStyles = readProjectFile("src/app/admin/admin.module.css");
@@ -582,6 +583,8 @@ describe("admin route contracts", () => {
     expect(draftRoute).toContain("knowledgePublicationService.createDraft");
     expect(articleRoute).toContain("withAdminSession");
     expect(articleRoute).toContain("knowledgeArticleService.publishDraft");
+    expect(articleItemRoute).toContain("withAdminSession");
+    expect(articleItemRoute).toContain("knowledgeArticleService.unpublish");
     expect(page).toContain("KnowledgeWorkspace");
     for (const field of ["name", "rootPath", "ignorePatterns"]) {
       expect(workspace).toContain(`name="${field}"`);
@@ -605,6 +608,12 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("/api/admin/knowledge/publications/drafts");
     expect(workspace).toContain("发布文章");
     expect(workspace).toContain("/api/admin/knowledge/articles");
+    expect(workspace).toContain("下架文章");
+    expect(workspace).toContain("确认下架");
+    expect(workspace).toContain("发布草稿和已选附件会保留，可修正后重新发布");
+    expect(workspace).toContain("cleanupWarning: string | null");
+    expect(workspace).toContain("setUnpublishWarning");
+    expect(workspace).toContain('role="alert"');
     expect(workspace).toContain("源文件已有新版本");
     expect(workspace).toContain("buildKnowledgeNoteTree");
     expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.knowledgeIndexLayout\s*\{\s*grid-template-columns:\s*1fr/);
@@ -775,6 +784,9 @@ describe("media-library contracts", () => {
   it("shows usage locations and protects referenced assets from deletion", () => {
     expect(mediaSource).toContain("使用位置");
     expect(mediaSource).toContain("仍被内容版本引用，无法删除");
+    expect(mediaSource).toContain("reference.label");
+    expect(mediaSource).toContain("知识发布草稿");
+    expect(mediaSource).toContain("请先在主页内容或知识发布草稿中移除所有使用位置");
     expect(mediaSource).toContain("ConfirmDialog");
     expect(mediaSource).toContain('jsonRequest("DELETE", {})');
   });

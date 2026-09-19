@@ -17,6 +17,8 @@ describe("knowledge article service", () => {
     const service = createKnowledgeArticleService({
       async findDraft(id) { return id === draft.id ? draft : null; },
       async createArticle(input) { return { created: true, article: input }; },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
       async listPublicArticles() { return []; },
       async getPublicArticle() { return null; },
     });
@@ -34,6 +36,8 @@ describe("knowledge article service", () => {
     const service = createKnowledgeArticleService({
       async findDraft() { return { ...draft, markdown: "![[private.png]]" }; },
       async createArticle() { throw new Error("not used"); },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
       async listPublicArticles() { return []; },
       async getPublicArticle() { return null; },
     });
@@ -45,6 +49,8 @@ describe("knowledge article service", () => {
     const service = createKnowledgeArticleService({
       async findDraft() { return { ...draft, markdown: "![[private-note.md]]", attachments: [{ target: "private-note.md", assetId: "asset-1" }] }; },
       async createArticle() { throw new Error("not used"); },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
       async listPublicArticles() { return []; },
       async getPublicArticle() { return null; },
     }, {
@@ -60,6 +66,8 @@ describe("knowledge article service", () => {
     const service = createKnowledgeArticleService({
       async findDraft() { return { ...draft, markdown: "![[diagram.png]]", attachments: [{ target: "diagram.png", assetId: "asset-1" }] }; },
       async createArticle(input) { saved.push(input); return { created: true, article: input }; },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
       async listPublicArticles() { return []; },
       async getPublicArticle() { return null; },
     }, {
@@ -76,6 +84,8 @@ describe("knowledge article service", () => {
     const service = createKnowledgeArticleService({
       async findDraft() { return { ...draft, article: existing }; },
       async createArticle() { throw new Error("not used"); },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
       async listPublicArticles() { return []; },
       async getPublicArticle() { return null; },
     }, {
@@ -92,6 +102,8 @@ describe("knowledge article service", () => {
     const service = createKnowledgeArticleService({
       async findDraft() { return { ...draft, markdown: "![[diagram.png]]", attachments: [{ target: "diagram.png", assetId: "asset-1" }] }; },
       async createArticle() { return { created: false, article: existing }; },
+      async findArticle() { return null; },
+      async deleteArticle() { throw new Error("not used"); },
       async listPublicArticles() { return []; },
       async getPublicArticle() { return null; },
     }, {
@@ -101,5 +113,39 @@ describe("knowledge article service", () => {
 
     await expect(service.publishDraft("draft-1", "with-attachment")).resolves.toBe(existing);
     expect(removed).toEqual(["snapshot-1"]);
+  });
+
+  it("unpublishes an article, cleans its snapshots, and keeps the source draft reusable", async () => {
+    const events: string[] = [];
+    const service = createKnowledgeArticleService({
+      async findDraft() { return draft; },
+      async createArticle() { throw new Error("not used"); },
+      async listPublicArticles() { return []; },
+      async getPublicArticle() { return null; },
+      async findArticle(id) {
+        return {
+          id,
+          slug: "published-article",
+          attachments: [{ id: "snapshot-1", target: "diagram.png", storagePath: "C:/snapshots/snapshot-1", mimeType: "image/png", sizeBytes: 4, sha256: "hash" }],
+        };
+      },
+      async deleteArticle(id) {
+        events.push(`database:${id}`);
+        return { id };
+      },
+    } as Parameters<typeof createKnowledgeArticleService>[0], {
+      async snapshot() { throw new Error("not used"); },
+      async remove(snapshots) {
+        events.push(...snapshots.map((snapshot) => `file:${snapshot.id}`));
+      },
+    });
+    const unpublish = (service as { unpublish?: (id: string) => Promise<unknown> }).unpublish;
+
+    await expect(unpublish?.("article-1")).resolves.toMatchObject({
+      id: "article-1",
+      slug: "published-article",
+      attachmentsRemoved: 1,
+    });
+    expect(events).toEqual(["database:article-1", "file:snapshot-1"]);
   });
 });
