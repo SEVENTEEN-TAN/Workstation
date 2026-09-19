@@ -62,6 +62,42 @@ describe("career timeline draft generation", () => {
 });
 
 describe("career timeline draft approval", () => {
+  it("returns the admin list as JSON-safe timeline draft views", async () => {
+    const repo = repository({
+      listDrafts: vi.fn(async () => [{
+        id: "draft-1",
+        sourceKey: "ACTIVITY:activity-1",
+        kind: "ACTIVITY",
+        status: "DRAFT",
+        titleZh: "技术分享",
+        titleEn: "Tech talk",
+        summaryZh: "分享工作站实践",
+        summaryEn: "Shared workstation lessons",
+        occurredAt,
+        sourceSnapshot: { id: "activity-1", occurredAt },
+        convertedActivityId: null,
+        createdAt: occurredAt,
+        updatedAt: occurredAt,
+      }]),
+    });
+
+    await expect(createCareerTimelineDraftService(repo).list()).resolves.toEqual([{
+      id: "draft-1",
+      sourceKey: "ACTIVITY:activity-1",
+      kind: "ACTIVITY",
+      status: "DRAFT",
+      titleZh: "技术分享",
+      titleEn: "Tech talk",
+      summaryZh: "分享工作站实践",
+      summaryEn: "Shared workstation lessons",
+      occurredAt: "2026-09-18T04:00:00.000Z",
+      sourceSnapshot: { id: "activity-1", occurredAt: "2026-09-18T04:00:00.000Z" },
+      convertedActivityId: null,
+      createdAt: "2026-09-18T04:00:00.000Z",
+      updatedAt: "2026-09-18T04:00:00.000Z",
+    }]);
+  });
+
   it("edits only open drafts", async () => {
     const repo = repository({ findDraft: vi.fn(async () => ({ id: "draft-1", status: "DRAFT" })) });
 

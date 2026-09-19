@@ -356,21 +356,7 @@ export interface OkrMilestoneDraftData {
   updatedAt: string;
 }
 
-export interface CareerTimelineDraftData {
-  id: string;
-  sourceKey: string;
-  kind: "ARTICLE" | "PROJECT_COMPLETED" | "ACTIVITY" | "OKR_MILESTONE";
-  status: "DRAFT" | "CONVERTED";
-  titleZh: string;
-  titleEn: string;
-  summaryZh: string;
-  summaryEn: string;
-  occurredAt: string;
-  sourceSnapshot: Record<string, unknown>;
-  convertedActivityId: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { CareerTimelineDraftData } from "../../lib/services/career-timeline-drafts";
 
 export interface KnowledgeSyncChangeData {
   id: string;

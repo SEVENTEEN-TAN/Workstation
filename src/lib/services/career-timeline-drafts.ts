@@ -37,6 +37,22 @@ type EditableDraft = {
   occurredAt?: Date;
 };
 
+export type CareerTimelineDraftData = {
+  id: string;
+  sourceKey: string;
+  kind: "ARTICLE" | "PROJECT_COMPLETED" | "ACTIVITY" | "OKR_MILESTONE";
+  status: "DRAFT" | "CONVERTED";
+  titleZh: string;
+  titleEn: string;
+  summaryZh: string;
+  summaryEn: string;
+  occurredAt: string;
+  sourceSnapshot: Record<string, unknown>;
+  convertedActivityId: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type CareerTimelineDraftRepository = {
   listDrafts(): Promise<unknown[]>;
   timelineSources(): Promise<CareerTimelineSources>;
@@ -45,6 +61,23 @@ export type CareerTimelineDraftRepository = {
   updateDraft(id: string, value: Record<string, unknown>): Promise<unknown>;
   convertDraft(id: string, activity: Prisma.CareerActivityCreateInput): Promise<unknown>;
 };
+
+function toCareerTimelineDraftData(record: unknown): CareerTimelineDraftData {
+  const draft = record as Omit<CareerTimelineDraftData, "occurredAt" | "sourceSnapshot" | "createdAt" | "updatedAt"> & {
+    occurredAt: Date;
+    sourceSnapshot: unknown;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+
+  return {
+    ...draft,
+    occurredAt: draft.occurredAt.toISOString(),
+    sourceSnapshot: parseJsonSnapshot(draft.sourceSnapshot),
+    createdAt: draft.createdAt.toISOString(),
+    updatedAt: draft.updatedAt.toISOString(),
+  };
+}
 
 export function buildCareerTimelineDrafts(sources: CareerTimelineSources): CareerTimelineDraftWrite[] {
   const articles = sources.articles.map((article) => ({
@@ -155,7 +188,7 @@ function defaultRepository(): CareerTimelineDraftRepository {
 
 export function createCareerTimelineDraftService(repository: CareerTimelineDraftRepository = defaultRepository()) {
   return {
-    list: () => repository.listDrafts(),
+    list: async () => (await repository.listDrafts()).map(toCareerTimelineDraftData),
     async sync() {
       return repository.createMissingDrafts(buildCareerTimelineDrafts(await repository.timelineSources()));
     },
