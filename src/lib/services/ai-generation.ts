@@ -58,7 +58,7 @@ function defaultRepository(): AiGenerationRepository {
   return {
     findSetting: (useCase) => getDatabase().then((database) => database.aiUseCaseSetting.findUnique({
       where: { useCase }, include: { provider: true },
-    })) as Promise<AiGenerationSetting | null>,
+    })),
     recordRequestLog: (value) => getDatabase().then((database) => database.aiRequestLog.create({ data: value })),
   };
 }
