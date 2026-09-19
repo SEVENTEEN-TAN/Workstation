@@ -122,6 +122,43 @@ describe("AI content drafts", () => {
     expect(repo.applied).toEqual([{ id: "draft-1", targetId: "project-1", content: generatedProject }]);
   });
 
+  it("returns drafts as JSON-safe admin views", async () => {
+    const repo = repository();
+    repo.listDrafts = vi.fn(async () => [{
+      id: "draft-1",
+      useCase: "PROJECT_DESCRIPTION",
+      targetType: "PORTFOLIO_PROJECT",
+      targetId: "project-1",
+      status: "DRAFT",
+      sourceSnapshot: { summaryZh: "旧摘要" },
+      content: generatedProject,
+      providerId: null,
+      model: "model-1",
+      generatedAt: new Date("2026-09-19T08:00:00.000Z"),
+      appliedAt: null,
+      createdAt: new Date("2026-09-19T08:01:00.000Z"),
+      updatedAt: new Date("2026-09-19T08:02:00.000Z"),
+      databaseOnlyField: "must not cross the service boundary",
+    }] as never);
+    const service = createAiContentDraftService(repo, { generate: vi.fn() });
+
+    await expect(service.list("PROJECT_DESCRIPTION")).resolves.toEqual([{
+      id: "draft-1",
+      useCase: "PROJECT_DESCRIPTION",
+      targetType: "PORTFOLIO_PROJECT",
+      targetId: "project-1",
+      status: "DRAFT",
+      sourceSnapshot: { summaryZh: "旧摘要" },
+      content: generatedProject,
+      providerId: null,
+      model: "model-1",
+      generatedAt: "2026-09-19T08:00:00.000Z",
+      appliedAt: null,
+      createdAt: "2026-09-19T08:01:00.000Z",
+      updatedAt: "2026-09-19T08:02:00.000Z",
+    }]);
+  });
+
   it("lets only one concurrent action win for the same draft", async () => {
     const draft = {
       id: "draft-1", useCase: "PROJECT_DESCRIPTION", targetType: "PORTFOLIO_PROJECT",

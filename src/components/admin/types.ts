@@ -430,21 +430,11 @@ export interface AiProviderStateData {
   requestLogs: AiRequestLogData[];
 }
 
-export interface AiContentDraftData {
-  id: string;
-  useCase: "PROJECT_DESCRIPTION" | "OKR_REVIEW";
-  targetType: "PORTFOLIO_PROJECT" | "OKR_CYCLE";
-  targetId: string;
-  status: "DRAFT" | "APPLIED" | "DISCARDED";
-  sourceSnapshot: Record<string, unknown>;
-  content: Record<string, unknown>;
-  providerId: string | null;
-  model: string;
-  generatedAt: string;
-  appliedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+export type {
+  AiContentDraftData,
+  OkrAiContentDraftData,
+  ProjectAiContentDraftData,
+} from "../../lib/services/ai-content-drafts";
 
 export interface WeeklyActivityDraftData {
   id: string;

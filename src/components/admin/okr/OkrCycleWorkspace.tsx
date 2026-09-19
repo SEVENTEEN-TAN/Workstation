@@ -11,7 +11,7 @@ import { EmptyState } from "../EmptyState";
 import { FeedbackCenter } from "../FeedbackCenter";
 import { PageHeader } from "../PageHeader";
 import { adminRequest } from "../request";
-import type { AiContentDraftData, ObjectiveData, OkrCycleData, ReviewData } from "../types";
+import type { ObjectiveData, OkrAiContentDraftData, OkrCycleData, ReviewData } from "../types";
 import { useAdminAction } from "../useAdminAction";
 import { dateValue, jsonRequest } from "../workspace-utils";
 import { OkrEntityDialog } from "./OkrEntityDialog";
@@ -28,7 +28,7 @@ export function OkrCycleWorkspace({
   initialAiDrafts,
 }: {
   initialCycle: OkrCycleData;
-  initialAiDrafts: AiContentDraftData[];
+  initialAiDrafts: OkrAiContentDraftData[];
 }) {
   const router = useRouter();
   const [editor, setEditor] = useState<EditorState | null>(null);
@@ -108,7 +108,7 @@ export function OkrCycleWorkspace({
 
   async function generateAiReview(objectiveId?: string) {
     const key = `okr:ai:${objectiveId ?? "cycle"}`;
-    const draft = await runAction(key, () => adminRequest<AiContentDraftData>(
+    const draft = await runAction(key, () => adminRequest<OkrAiContentDraftData>(
       "/api/admin/ai/drafts",
       jsonRequest("POST", { useCase: "OKR_REVIEW", targetId: cycle.id, objectiveId: objectiveId ?? null }),
     ), "AI 复盘草稿已生成");
@@ -116,8 +116,8 @@ export function OkrCycleWorkspace({
     setAiDrafts((current) => [draft, ...current.filter((item) => item.id !== draft.id)]);
   }
 
-  async function applyAiReview(draft: AiContentDraftData) {
-    const applied = await runAction(`okr:ai:apply:${draft.id}`, () => adminRequest<AiContentDraftData>(
+  async function applyAiReview(draft: OkrAiContentDraftData) {
+    const applied = await runAction(`okr:ai:apply:${draft.id}`, () => adminRequest<OkrAiContentDraftData>(
       `/api/admin/ai/drafts/${draft.id}/apply`, { method: "POST" },
     ), "AI 草稿已应用为私密复盘");
     if (!applied) return;
@@ -125,8 +125,8 @@ export function OkrCycleWorkspace({
     router.refresh();
   }
 
-  async function discardAiReview(draft: AiContentDraftData) {
-    const discarded = await runAction(`okr:ai:discard:${draft.id}`, () => adminRequest<AiContentDraftData>(
+  async function discardAiReview(draft: OkrAiContentDraftData) {
+    const discarded = await runAction(`okr:ai:discard:${draft.id}`, () => adminRequest<OkrAiContentDraftData>(
       `/api/admin/ai/drafts/${draft.id}`, { method: "DELETE" },
     ), "AI 复盘草稿已丢弃");
     if (discarded) setAiDrafts((current) => current.filter((item) => item.id !== draft.id));

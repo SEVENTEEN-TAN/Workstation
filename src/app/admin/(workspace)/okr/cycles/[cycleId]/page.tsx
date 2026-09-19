@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { OkrCycleWorkspace } from "@/components/admin/okr/OkrCycleWorkspace";
-import type { AiContentDraftData, OkrCycleData } from "@/components/admin/types";
+import type { OkrCycleData } from "@/components/admin/types";
 import { aiContentDraftService } from "@/lib/services/ai-content-drafts";
 import { okrService } from "@/lib/services/okr";
 
@@ -17,6 +17,6 @@ export default async function AdminOkrCyclePage({ params }: Props) {
 
   return <OkrCycleWorkspace
     initialCycle={JSON.parse(JSON.stringify(cycle)) as OkrCycleData}
-    initialAiDrafts={JSON.parse(JSON.stringify(drafts)) as AiContentDraftData[]}
+    initialAiDrafts={drafts.flatMap((draft) => draft.useCase === "OKR_REVIEW" ? [draft] : [])}
   />;
 }

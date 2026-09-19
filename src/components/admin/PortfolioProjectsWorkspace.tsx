@@ -10,7 +10,7 @@ import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
 import { AssetPicker } from "./home/AssetPicker";
 import { adminRequest } from "./request";
-import type { AiContentDraftData, AssetData, PortfolioProjectData } from "./types";
+import type { AssetData, PortfolioProjectData, ProjectAiContentDraftData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 import { jsonRequest } from "./workspace-utils";
 
@@ -32,7 +32,7 @@ function sortProjects(items: PortfolioProjectData[]) {
 }
 
 function serializeProject(project: PortfolioProjectData) {
-  return JSON.parse(JSON.stringify(project)) as PortfolioProjectData;
+  return structuredClone(project);
 }
 
 function dateValue(value?: string | null) {
@@ -95,7 +95,7 @@ export function PortfolioProjectsWorkspace({
 }: {
   initialProjects: PortfolioProjectData[];
   assets: AssetData[];
-  initialAiDrafts: AiContentDraftData[];
+  initialAiDrafts: ProjectAiContentDraftData[];
 }) {
   const [projects, setProjects] = useState(() => sortProjects(initialProjects));
   const [aiDrafts, setAiDrafts] = useState(initialAiDrafts);
@@ -155,7 +155,7 @@ export function PortfolioProjectsWorkspace({
   }
 
   async function generateAiDraft(project: PortfolioProjectData) {
-    const draft = await runAction(`projects:ai:${project.id}`, () => adminRequest<AiContentDraftData>(
+    const draft = await runAction(`projects:ai:${project.id}`, () => adminRequest<ProjectAiContentDraftData>(
       "/api/admin/ai/drafts",
       jsonRequest("POST", { useCase: "PROJECT_DESCRIPTION", targetId: project.id }),
     ), "AI 项目说明草稿已生成");
@@ -163,19 +163,19 @@ export function PortfolioProjectsWorkspace({
     setAiDrafts((current) => [draft, ...current.filter((item) => item.targetId !== project.id)]);
   }
 
-  async function applyAiDraft(draft: AiContentDraftData) {
-    const applied = await runAction(`projects:ai:apply:${draft.id}`, () => adminRequest<AiContentDraftData>(
+  async function applyAiDraft(draft: ProjectAiContentDraftData) {
+    const applied = await runAction(`projects:ai:apply:${draft.id}`, () => adminRequest<ProjectAiContentDraftData>(
       `/api/admin/ai/drafts/${draft.id}/apply`, { method: "POST" },
     ), "AI 草稿已应用到项目");
     if (!applied) return;
     setProjects((current) => sortProjects(current.map((project) => project.id === draft.targetId
-      ? { ...project, ...draft.content, updatedAt: new Date().toISOString() } as PortfolioProjectData
+      ? { ...project, ...draft.content, updatedAt: new Date().toISOString() }
       : project)));
     setAiDrafts((current) => current.filter((item) => item.id !== draft.id));
   }
 
-  async function discardAiDraft(draft: AiContentDraftData) {
-    const discarded = await runAction(`projects:ai:discard:${draft.id}`, () => adminRequest<AiContentDraftData>(
+  async function discardAiDraft(draft: ProjectAiContentDraftData) {
+    const discarded = await runAction(`projects:ai:discard:${draft.id}`, () => adminRequest<ProjectAiContentDraftData>(
       `/api/admin/ai/drafts/${draft.id}`, { method: "DELETE" },
     ), "AI 草稿已丢弃");
     if (discarded) setAiDrafts((current) => current.filter((item) => item.id !== draft.id));

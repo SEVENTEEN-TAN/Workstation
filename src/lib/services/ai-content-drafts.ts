@@ -32,6 +32,33 @@ type ProjectSource = Record<string, unknown>;
 type OkrObjectiveSource = { id: string } & Record<string, unknown>;
 type OkrCycleSource = { objectives: OkrObjectiveSource[] } & Record<string, unknown>;
 
+type AiContentDraftBase = {
+  id: string;
+  targetId: string;
+  status: "DRAFT" | "APPLIED" | "DISCARDED";
+  sourceSnapshot: Record<string, unknown>;
+  providerId: string | null;
+  model: string;
+  generatedAt: string;
+  appliedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export interface ProjectAiContentDraftData extends AiContentDraftBase {
+  useCase: "PROJECT_DESCRIPTION";
+  targetType: "PORTFOLIO_PROJECT";
+  content: ProjectDescriptionDraft;
+}
+
+export interface OkrAiContentDraftData extends AiContentDraftBase {
+  useCase: "OKR_REVIEW";
+  targetType: "OKR_CYCLE";
+  content: OkrReviewDraft;
+}
+
+export type AiContentDraftData = ProjectAiContentDraftData | OkrAiContentDraftData;
+
 export type AiContentDraftRepository = {
   listDrafts(useCase?: string, targetId?: string): Promise<unknown[]>;
   findProject(id: string): Promise<ProjectSource | null>;
@@ -42,6 +69,59 @@ export type AiContentDraftRepository = {
   applyOkrReviewDraft(id: string, targetId: string, content: OkrReviewDraft, objectiveId?: string | null): Promise<unknown>;
   discardDraft(id: string): Promise<unknown>;
 };
+
+function isJsonObject(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function requiredString(source: Record<string, unknown>, field: string) {
+  const value = source[field];
+  if (typeof value !== "string" || !value.trim()) throw new Error(`AI 草稿 ${field} 无效`);
+  return value;
+}
+
+function optionalString(source: Record<string, unknown>, field: string) {
+  const value = source[field];
+  if (value === null) return null;
+  return typeof value === "string" && value.trim() ? value : null;
+}
+
+function requiredDate(source: Record<string, unknown>, field: string) {
+  const value = source[field];
+  if (!(value instanceof Date) || Number.isNaN(value.getTime())) throw new Error(`AI 草稿 ${field} 无效`);
+  return value.toISOString();
+}
+
+function optionalDate(source: Record<string, unknown>, field: string) {
+  const value = source[field];
+  if (value === null) return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString();
+  throw new Error(`AI 草稿 ${field} 无效`);
+}
+
+function toAiContentDraftView(value: unknown): AiContentDraftData {
+  if (!isJsonObject(value)) throw new Error("AI 草稿格式无效");
+  const base = {
+    id: requiredString(value, "id"),
+    targetId: requiredString(value, "targetId"),
+    status: value.status,
+    sourceSnapshot: parseJsonSnapshot(value.sourceSnapshot ?? {}),
+    providerId: optionalString(value, "providerId"),
+    model: requiredString(value, "model"),
+    generatedAt: requiredDate(value, "generatedAt"),
+    appliedAt: optionalDate(value, "appliedAt"),
+    createdAt: requiredDate(value, "createdAt"),
+    updatedAt: requiredDate(value, "updatedAt"),
+  };
+
+  if (base.status === "DRAFT" && value.useCase === "PROJECT_DESCRIPTION" && value.targetType === "PORTFOLIO_PROJECT") {
+    return { ...base, status: base.status, useCase: value.useCase, targetType: value.targetType, content: projectDescriptionDraftSchema.parse(value.content) };
+  }
+  if (base.status === "DRAFT" && value.useCase === "OKR_REVIEW" && value.targetType === "OKR_CYCLE") {
+    return { ...base, status: base.status, useCase: value.useCase, targetType: value.targetType, content: okrReviewDraftSchema.parse(value.content) };
+  }
+  throw new Error("AI 草稿类型不受支持");
+}
 
 function defaultRepository(): AiContentDraftRepository {
   return {
@@ -146,7 +226,10 @@ export function createAiContentDraftService(
   }
 
   return {
-    list: (useCase?: string, targetId?: string) => repository.listDrafts(useCase, targetId),
+    list: async (useCase?: string, targetId?: string) => {
+      const drafts = await repository.listDrafts(useCase, targetId);
+      return drafts.map(toAiContentDraftView);
+    },
     async generateProject(projectId: string) {
       const sourceSnapshot = await repository.findProject(projectId);
       if (!sourceSnapshot) throw new Error("项目不存在");
