@@ -45,7 +45,7 @@ export type WeeklyActivityDraftRepository = {
   upsertDraft(value: WeeklyDraftWrite): Promise<unknown>;
   findDraft(id: string): Promise<EditableDraft | null>;
   updateDraft(id: string, value: Record<string, unknown>): Promise<unknown>;
-  convertDraft(id: string, activity: Record<string, unknown>): Promise<unknown>;
+  convertDraft(id: string, activity: Prisma.CareerActivityCreateInput): Promise<unknown>;
 };
 
 const DAY = 86_400_000;
@@ -185,7 +185,7 @@ function defaultRepository(): WeeklyActivityDraftRepository {
         const draft = await transaction.weeklyActivityDraft.findUnique({ where: { id } });
         if (!draft) throw new Error("周报草稿不存在");
         if (draft.status !== "DRAFT") throw new Error("周报草稿已经转换");
-        const created = await transaction.careerActivity.create({ data: activity as Prisma.CareerActivityCreateInput });
+        const created = await transaction.careerActivity.create({ data: activity });
         return transaction.weeklyActivityDraft.update({
           where: { id }, data: { status: "CONVERTED", convertedActivityId: created.id },
         });
