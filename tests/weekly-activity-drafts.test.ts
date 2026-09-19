@@ -45,6 +45,57 @@ describe("weekly date range", () => {
 });
 
 describe("weekly activity draft service", () => {
+  it("returns the admin list as JSON-safe weekly draft views", async () => {
+    const timestamp = new Date("2026-09-18T03:00:00.000Z");
+    const repo = repository({
+      listDrafts: vi.fn(async () => [{
+        id: "draft-1",
+        weekStart: new Date("2026-09-13T16:00:00.000Z"),
+        weekEnd: new Date("2026-09-19T16:00:00.000Z"),
+        status: "DRAFT",
+        titleZh: "2026-09-14 至 2026-09-20 周动态",
+        titleEn: "Weekly update · Sep 14–20, 2026",
+        summaryZh: "完成工作站同步。",
+        summaryEn: "Finished workstation sync.",
+        sourceSnapshot: {
+          github: [{ id: "gh-1", type: "PushEvent", repository: "SEVENTEEN-TAN/Workstation", url: null, occurredAt: timestamp }],
+          progress: [{ id: "progress-1", titleZh: "完成工作站 V3", titleEn: "Ship Workstation V3", progress: 80, noteZh: null, noteEn: null, recordedAt: timestamp }],
+          actions: [],
+          projects: [],
+          articles: [],
+          activities: [],
+        },
+        convertedActivityId: null,
+        generatedAt: timestamp,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      }]),
+    });
+
+    await expect(createWeeklyActivityDraftService(repo).list()).resolves.toEqual([{
+      id: "draft-1",
+      weekStart: "2026-09-13T16:00:00.000Z",
+      weekEnd: "2026-09-19T16:00:00.000Z",
+      status: "DRAFT",
+      titleZh: "2026-09-14 至 2026-09-20 周动态",
+      titleEn: "Weekly update · Sep 14–20, 2026",
+      summaryZh: "完成工作站同步。",
+      summaryEn: "Finished workstation sync.",
+      sourceSnapshot: {
+        github: [{ id: "gh-1", type: "PushEvent", repository: "SEVENTEEN-TAN/Workstation", url: null, occurredAt: "2026-09-18T03:00:00.000Z" }],
+        progress: [{ id: "progress-1", titleZh: "完成工作站 V3", titleEn: "Ship Workstation V3", progress: 80, noteZh: null, noteEn: null, recordedAt: "2026-09-18T03:00:00.000Z" }],
+        actions: [],
+        projects: [],
+        articles: [],
+        activities: [],
+      },
+      convertedActivityId: null,
+      generatedAt: "2026-09-18T03:00:00.000Z",
+      createdAt: "2026-09-18T03:00:00.000Z",
+      updatedAt: "2026-09-18T03:00:00.000Z",
+    }]);
+  });
+
   it("queries selected GitHub repositories and saves deterministic source copy", async () => {
     const sources: WeeklySourceSnapshot = {
       ...emptySources(),

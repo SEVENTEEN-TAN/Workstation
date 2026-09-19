@@ -15,6 +15,31 @@ export type WeeklySourceSnapshot = {
   activities: { id: string; titleZh: string; titleEn: string | null; summaryZh: string; summaryEn: string | null; occurredAt: Date }[];
 };
 
+export type WeeklySourceSnapshotData = {
+  github: { id: string; type: string; repository: string; url: string | null; occurredAt: string }[];
+  progress: { id: string; titleZh: string; titleEn: string | null; progress: number; noteZh: string | null; noteEn: string | null; recordedAt: string }[];
+  actions: { id: string; titleZh: string; titleEn: string | null; completedAt: string }[];
+  projects: { id: string; titleZh: string; titleEn: string | null; summaryZh: string; summaryEn: string | null; updatedAt: string }[];
+  articles: { id: string; title: string; summary: string | null; publishedAt: string }[];
+  activities: { id: string; titleZh: string; titleEn: string | null; summaryZh: string; summaryEn: string | null; occurredAt: string }[];
+};
+
+export type WeeklyActivityDraftData = {
+  id: string;
+  weekStart: string;
+  weekEnd: string;
+  status: "DRAFT" | "CONVERTED";
+  titleZh: string;
+  titleEn: string;
+  summaryZh: string;
+  summaryEn: string;
+  sourceSnapshot: WeeklySourceSnapshotData;
+  convertedActivityId: string | null;
+  generatedAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type WeeklyDraftWrite = {
   weekStart: Date;
   weekEnd: Date;
@@ -48,6 +73,27 @@ export type WeeklyActivityDraftRepository = {
   updateDraft(id: string, value: Record<string, unknown>): Promise<unknown>;
   convertDraft(id: string, activity: Prisma.CareerActivityCreateInput): Promise<unknown>;
 };
+
+function toWeeklyActivityDraftData(record: unknown): WeeklyActivityDraftData {
+  const draft = record as Omit<WeeklyActivityDraftData, "weekStart" | "weekEnd" | "sourceSnapshot" | "generatedAt" | "createdAt" | "updatedAt"> & {
+    weekStart: Date;
+    weekEnd: Date;
+    sourceSnapshot: unknown;
+    generatedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+
+  return {
+    ...draft,
+    weekStart: draft.weekStart.toISOString(),
+    weekEnd: draft.weekEnd.toISOString(),
+    sourceSnapshot: parseJsonSnapshot(draft.sourceSnapshot) as WeeklySourceSnapshotData,
+    generatedAt: draft.generatedAt.toISOString(),
+    createdAt: draft.createdAt.toISOString(),
+    updatedAt: draft.updatedAt.toISOString(),
+  };
+}
 
 const DAY = 86_400_000;
 
@@ -200,7 +246,7 @@ export function createWeeklyActivityDraftService(
   generator: AiGenerator = aiGenerationService,
 ) {
   return {
-    list: () => repository.listDrafts(),
+    list: async () => (await repository.listDrafts()).map(toWeeklyActivityDraftData),
     async generate(input: unknown) {
       const parsed = weeklyRangeSchema.parse(input);
       const range = normalizeWeeklyRange(parsed);
