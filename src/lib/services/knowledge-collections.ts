@@ -73,8 +73,12 @@ function toArticle(value: { id: string; slug: string; title: string; summary: st
   return { ...value, tags: Array.isArray(value.tags) ? value.tags.filter((tag): tag is string => typeof tag === "string") : [] };
 }
 
+function toVisibility(value: string): KnowledgeCollectionRecord["visibility"] {
+  return value === "PUBLIC" ? "PUBLIC" : "PRIVATE";
+}
+
 function toRecord(value: { id: string; title: string; description: string | null; slug: string; visibility: string; sortOrder: number; createdAt: Date; updatedAt: Date; articles: Array<{ article: { id: string; slug: string; title: string; summary: string | null; tags: unknown; publishedAt: Date } }> }): KnowledgeCollectionRecord {
-  return { ...value, visibility: value.visibility as "PRIVATE" | "PUBLIC", articles: value.articles.map(({ article }) => toArticle(article)) };
+  return { ...value, visibility: toVisibility(value.visibility), articles: value.articles.map(({ article }) => toArticle(article)) };
 }
 
 function defaultRepository(): KnowledgeCollectionRepository {
