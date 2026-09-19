@@ -9,6 +9,16 @@ export type PortfolioProjectRecord = PortfolioProjectInput & {
   updatedAt: Date;
 };
 
+export type PortfolioProjectData = Omit<
+  PortfolioProjectRecord,
+  "startedAt" | "completedAt" | "createdAt" | "updatedAt"
+> & {
+  startedAt: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type PortfolioProjectRepository = {
   listProjects(): Promise<PortfolioProjectRecord[]>;
   listPublicProjects(): Promise<PortfolioProjectRecord[]>;
@@ -78,10 +88,22 @@ function isPublicReady(record: PortfolioProjectRecord) {
   return record.visibility === "PUBLIC" && portfolioProjectInputSchema.safeParse(record).success;
 }
 
+function toAdminProject(record: PortfolioProjectRecord): PortfolioProjectData {
+  return {
+    ...record,
+    startedAt: record.startedAt?.toISOString() ?? null,
+    completedAt: record.completedAt?.toISOString() ?? null,
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+  };
+}
+
 export function createPortfolioProjectService(repository?: PortfolioProjectRepository) {
   const source = repository ?? defaultRepository();
   return {
-    list: () => source.listProjects(),
+    async list() {
+      return (await source.listProjects()).map(toAdminProject);
+    },
     create: (input: unknown) => {
       const value = portfolioProjectInputSchema.parse(input);
       return source.createProject(value);

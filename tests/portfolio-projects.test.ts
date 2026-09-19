@@ -107,6 +107,37 @@ describe("portfolio project service", () => {
     expect(calls[1].value).toEqual({ featured: false });
   });
 
+  it("returns the admin list as JSON-safe project views", async () => {
+    const parsed = portfolioProjectInputSchema.parse(completeProject);
+    const service = createPortfolioProjectService({
+      async listProjects() {
+        return [{
+          ...parsed,
+          id: "project-1",
+          createdAt: new Date("2026-09-15T00:00:00.000Z"),
+          updatedAt: new Date("2026-09-16T00:00:00.000Z"),
+        }];
+      },
+      async listPublicProjects() { return []; },
+      async findProject() { return null; },
+      async findPublicProjectBySlug() { return null; },
+      async createProject() { throw new Error("not used"); },
+      async updateProject() { throw new Error("not used"); },
+      async deleteProject() { throw new Error("not used"); },
+      async countSkillEvidence() { return 0; },
+      async listSiteVersions() { return []; },
+    });
+
+    await expect(service.list()).resolves.toEqual([{
+      ...parsed,
+      id: "project-1",
+      startedAt: "2026-09-01T00:00:00.000Z",
+      completedAt: null,
+      createdAt: "2026-09-15T00:00:00.000Z",
+      updatedAt: "2026-09-16T00:00:00.000Z",
+    }]);
+  });
+
   it("returns only complete public projects in featured order", async () => {
     const publicProject = { id: "public", createdAt: new Date(), updatedAt: new Date(), ...portfolioProjectInputSchema.parse(completeProject) };
     const laterProject = { ...publicProject, id: "later", slug: "later", featured: false, sortOrder: 0 };
