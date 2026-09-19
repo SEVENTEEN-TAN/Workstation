@@ -1,31 +1,6 @@
-export interface DashboardObjective {
-  id: string;
-  titleZh: string;
-  status: string;
-  progress: number;
-  endDate: string | null;
-}
+export type { DashboardData, DashboardObjectiveData } from "../../lib/services/okr";
 
-export interface DashboardData {
-  cycleCount: number;
-  objectiveCount: number;
-  completedObjectives: number;
-  atRiskObjectives: number;
-  averageProgress: number;
-  objectives: DashboardObjective[];
-}
-
-export interface AuditLogData {
-  id: string;
-  userId: string;
-  method: string;
-  path: string;
-  targetId: string | null;
-  statusCode: number;
-  ipAddress: string | null;
-  userAgent: string | null;
-  createdAt: string;
-}
+export type { AuditLogData } from "../../lib/services/audit-logs";
 
 export interface SiteVersionData {
   id: string;

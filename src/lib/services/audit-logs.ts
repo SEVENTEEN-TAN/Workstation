@@ -15,6 +15,10 @@ export type AuditLogRecord = AdminAuditEntry & {
   createdAt: Date;
 };
 
+export type AuditLogData = Omit<AuditLogRecord, "createdAt"> & {
+  createdAt: string;
+};
+
 export type AuditLogRepository = {
   create(input: AdminAuditEntry): Promise<unknown>;
   list(limit: number): Promise<AuditLogRecord[]>;
@@ -37,11 +41,14 @@ function defaultRepository(): AuditLogRepository {
 export function createAuditLogService(repository: AuditLogRepository = defaultRepository()) {
   return {
     record: (input: AdminAuditEntry) => repository.create(input),
-    list(limit = 100) {
+    async list(limit = 100): Promise<AuditLogData[]> {
       const requestedLimit = Math.trunc(limit);
       const normalizedLimit = requestedLimit > 0 ? requestedLimit : 100;
       const boundedLimit = Math.min(normalizedLimit, 200);
-      return repository.list(boundedLimit);
+      return (await repository.list(boundedLimit)).map((entry) => ({
+        ...entry,
+        createdAt: entry.createdAt.toISOString(),
+      }));
     },
   };
 }

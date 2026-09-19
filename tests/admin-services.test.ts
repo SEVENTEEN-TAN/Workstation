@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { siteContentSchema } from "../src/lib/content/schema";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
@@ -587,6 +587,42 @@ describe("OKR completion milestones", () => {
 });
 
 describe("focused OKR queries", () => {
+  it("returns dashboard values as JSON-safe views", async () => {
+    const endDate = new Date("2026-09-30T00:00:00.000Z");
+    const service = createOkrService();
+    vi.spyOn(service, "listAll").mockResolvedValue([{
+      objectives: [{
+        id: "objective-1",
+        titleZh: "发布个人工作站 V1",
+        status: "IN_PROGRESS",
+        endDate,
+        keyResults: [{
+          progressMode: "METRIC",
+          manualProgress: null,
+          startValue: 0,
+          currentValue: 5,
+          targetValue: 10,
+          weight: 1,
+        }],
+      }],
+    }]);
+
+    await expect(service.getDashboard()).resolves.toEqual({
+      cycleCount: 1,
+      objectiveCount: 1,
+      completedObjectives: 0,
+      atRiskObjectives: 0,
+      averageProgress: 50,
+      objectives: [{
+        id: "objective-1",
+        titleZh: "发布个人工作站 V1",
+        status: "IN_PROGRESS",
+        progress: 50,
+        endDate: "2026-09-30T00:00:00.000Z",
+      }],
+    });
+  });
+
   it("returns cycle summaries through the focused list query", async () => {
     const cycles = [{ id: "cycle-1", objectives: [], reviews: [] }];
     const service = createOkrService({

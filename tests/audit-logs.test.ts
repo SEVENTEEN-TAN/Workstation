@@ -198,6 +198,40 @@ describe("admin route audit contracts", () => {
     expect(limits).toEqual([200, 100, 100]);
   });
 
+  it("returns recent audit logs as JSON-safe views", async () => {
+    const createdAt = new Date("2026-09-18T08:30:00.000Z");
+    const service = createAuditLogService({
+      async create() {
+        throw new Error("not used");
+      },
+      async list() {
+        return [{
+          id: "audit-1",
+          userId: "user-1",
+          method: "PATCH",
+          path: "/api/admin/projects/project-1",
+          targetId: "project-1",
+          statusCode: 200,
+          ipAddress: "203.0.113.10",
+          userAgent: "Workstation test browser",
+          createdAt,
+        }];
+      },
+    });
+
+    await expect(service.list(10)).resolves.toEqual([{
+      id: "audit-1",
+      userId: "user-1",
+      method: "PATCH",
+      path: "/api/admin/projects/project-1",
+      targetId: "project-1",
+      statusCode: 200,
+      ipAddress: "203.0.113.10",
+      userAgent: "Workstation test browser",
+      createdAt: "2026-09-18T08:30:00.000Z",
+    }]);
+  });
+
   it("exposes recent audit metadata through the admin API", () => {
     const route = readFileSync(join(projectRoot, "src/app/api/admin/audit/route.ts"), "utf8");
 

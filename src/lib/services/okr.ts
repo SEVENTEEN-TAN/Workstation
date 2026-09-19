@@ -32,6 +32,23 @@ type ProgressUpdateValues = {
   recordedAt: Date;
 };
 
+export type DashboardObjectiveData = {
+  id: string;
+  titleZh: string;
+  status: string;
+  progress: number;
+  endDate: string | null;
+};
+
+export type DashboardData = {
+  cycleCount: number;
+  objectiveCount: number;
+  completedObjectives: number;
+  atRiskObjectives: number;
+  averageProgress: number;
+  objectives: DashboardObjectiveData[];
+};
+
 type EntityTransaction = {
   findObjectiveForUpdate(id: string): Promise<ObjectiveForUpdate | null>;
   updateObjectiveRecord(id: string, values: Prisma.ObjectiveUncheckedUpdateInput): Promise<ObjectiveForUpdate>;
@@ -370,18 +387,27 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
       if (repositoryOverride?.deleteActionItem) return repositoryOverride.deleteActionItem(id);
       return (await database()).actionItem.delete({ where: { id } });
     },
-    async getDashboard() {
+    async getDashboard(): Promise<DashboardData> {
       const cycles = await this.listAll();
-      const objectives = cycles.flatMap((cycle) => cycle.objectives).map((objective) => {
-        const progress = calculateObjectiveProgress(objective.keyResults.map((keyResult) => ({ progress: progressForRecord(keyResult), weight: keyResult.weight })));
-        return { id: objective.id, titleZh: objective.titleZh, status: objective.status, progress, endDate: objective.endDate };
+      const objectiveResults = cycles.flatMap((cycle) => cycle.objectives).map((objective) => ({
+        record: objective,
+        progress: calculateObjectiveProgress(objective.keyResults.map((keyResult) => ({ progress: progressForRecord(keyResult), weight: keyResult.weight }))),
+      }));
+      const objectives = objectiveResults.map(({ record, progress }) => {
+        return {
+          id: record.id,
+          titleZh: record.titleZh,
+          status: record.status,
+          progress,
+          endDate: record.endDate ? record.endDate.toISOString() : null,
+        };
       });
-      const averageProgress = objectives.length ? Math.round((objectives.reduce((sum, objective) => sum + objective.progress, 0) / objectives.length) * 100) / 100 : 0;
+      const averageProgress = objectiveResults.length ? Math.round((objectiveResults.reduce((sum, objective) => sum + objective.progress, 0) / objectiveResults.length) * 100) / 100 : 0;
       return {
         cycleCount: cycles.length,
-        objectiveCount: objectives.length,
-        completedObjectives: objectives.filter((objective) => objective.status === "COMPLETED").length,
-        atRiskObjectives: objectives.filter((objective) => objective.status === "AT_RISK" || (objective.endDate && objective.endDate < new Date() && objective.progress < 100)).length,
+        objectiveCount: objectiveResults.length,
+        completedObjectives: objectiveResults.filter(({ record }) => record.status === "COMPLETED").length,
+        atRiskObjectives: objectiveResults.filter(({ record, progress }) => record.status === "AT_RISK" || (record.endDate && record.endDate < new Date() && progress < 100)).length,
         averageProgress,
         objectives,
       };
