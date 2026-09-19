@@ -8,6 +8,7 @@ import {
   buildProgressMilestoneDraft,
   type OkrMilestoneDraftWrite,
 } from "./okr-milestone-drafts";
+import { parseJsonSnapshot } from "./json-snapshot";
 
 type OkrParent = { titleZh: string; titleEn: string | null; cycle: { nameZh: string; nameEn: string | null } };
 type ProgressKeyResult = KeyResult & { objective: OkrParent };
@@ -64,7 +65,7 @@ function progressRepository(database: PrismaClient): OkrRepositoryOverrides {
       createProgressUpdate: (values) => transaction.krProgressUpdate.create({ data: values }),
       createMilestoneDraft: (values) => transaction.okrMilestoneDraft.upsert({
         where: { sourceKey: values.sourceKey },
-        create: { ...values, sourceSnapshot: JSON.parse(JSON.stringify(values.sourceSnapshot)) as Prisma.InputJsonValue },
+        create: { ...values, sourceSnapshot: parseJsonSnapshot(values.sourceSnapshot) },
         update: {},
       }),
     })),
@@ -84,7 +85,7 @@ function entityRepository(database: PrismaClient): OkrRepositoryOverrides {
       }),
       createMilestoneDraft: (values) => transaction.okrMilestoneDraft.upsert({
         where: { sourceKey: values.sourceKey },
-        create: { ...values, sourceSnapshot: JSON.parse(JSON.stringify(values.sourceSnapshot)) as Prisma.InputJsonValue },
+        create: { ...values, sourceSnapshot: parseJsonSnapshot(values.sourceSnapshot) },
         update: {},
       }),
     })),

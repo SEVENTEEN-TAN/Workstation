@@ -2,6 +2,7 @@ import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
 import { careerTimelineDraftPatchSchema } from "../validators/career-timeline-drafts";
+import { parseJsonSnapshot } from "./json-snapshot";
 
 type ArticleSource = { id: string; title: string; summary: string | null; publishedAt: Date };
 type ProjectSource = { id: string; titleZh: string; titleEn: string | null; summaryZh: string; summaryEn: string | null; completedAt: Date | null };
@@ -119,7 +120,7 @@ function defaultRepository(): CareerTimelineDraftRepository {
         const keys = new Set(existing.map((draft) => draft.sourceKey));
         const missing = drafts.filter((draft) => !keys.has(draft.sourceKey)).map((draft) => ({
           ...draft,
-          sourceSnapshot: JSON.parse(JSON.stringify(draft.sourceSnapshot)) as Prisma.InputJsonValue,
+          sourceSnapshot: parseJsonSnapshot(draft.sourceSnapshot),
         }));
         if (missing.length) await transaction.careerTimelineDraft.createMany({ data: missing });
       });

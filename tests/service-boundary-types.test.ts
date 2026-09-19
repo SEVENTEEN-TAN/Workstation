@@ -80,5 +80,8 @@ describe("service boundary types", () => {
     expect(portfolioProjectSource).not.toContain("as Prisma.InputJsonValue");
     expect(siteContentSource).not.toContain("as Prisma.InputJsonValue");
     expect(aiProviderSource).not.toContain("as unknown as Prisma.AiProviderUncheckedCreateInput");
+    expect(okrSource).not.toContain("as Prisma.InputJsonValue");
+    expect(careerTimelineDraftSource).not.toContain("as Prisma.InputJsonValue");
+    expect(weeklyActivityDraftSource).not.toContain("as Prisma.InputJsonValue");
   });
 });

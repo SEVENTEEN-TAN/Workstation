@@ -4,6 +4,7 @@ import { getDatabase } from "../db";
 import { weeklyUpdateDraftSchema } from "../validators/ai-content-drafts";
 import { weeklyDraftPatchSchema, weeklyRangeSchema } from "../validators/weekly-activity-drafts";
 import { aiGenerationService, type AiGenerator } from "./ai-generation";
+import { parseJsonSnapshot } from "./json-snapshot";
 
 export type WeeklySourceSnapshot = {
   github: { id: string; type: string; repository: string; url: string | null; occurredAt: Date }[];
@@ -161,7 +162,7 @@ function defaultRepository(): WeeklyActivityDraftRepository {
       };
     },
     async upsertDraft(value) {
-      const data = { ...value, sourceSnapshot: JSON.parse(JSON.stringify(value.sourceSnapshot)) as Prisma.InputJsonValue };
+      const data = { ...value, sourceSnapshot: parseJsonSnapshot(value.sourceSnapshot) };
       const database = await getDatabase();
       return database.$transaction(async (transaction) => {
         const existing = await transaction.weeklyActivityDraft.findUnique({ where: { weekStart: value.weekStart } });

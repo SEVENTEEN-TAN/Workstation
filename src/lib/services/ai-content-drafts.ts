@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import { getDatabase } from "../db";
 import {
   okrReviewDraftSchema,
@@ -8,6 +6,7 @@ import {
   type ProjectDescriptionDraft,
 } from "../validators/ai-content-drafts";
 import { aiGenerationService, type AiGenerator } from "./ai-generation";
+import { parseJsonSnapshot } from "./json-snapshot";
 
 type DraftRecord = {
   id: string;
@@ -33,8 +32,6 @@ type ProjectSource = Record<string, unknown>;
 type OkrObjectiveSource = { id: string } & Record<string, unknown>;
 type OkrCycleSource = { objectives: OkrObjectiveSource[] } & Record<string, unknown>;
 
-const jsonSnapshotSchema = z.record(z.string(), z.json());
-
 export type AiContentDraftRepository = {
   listDrafts(useCase?: string, targetId?: string): Promise<unknown[]>;
   findProject(id: string): Promise<ProjectSource | null>;
@@ -45,10 +42,6 @@ export type AiContentDraftRepository = {
   applyOkrReviewDraft(id: string, targetId: string, content: OkrReviewDraft, objectiveId?: string | null): Promise<unknown>;
   discardDraft(id: string): Promise<unknown>;
 };
-
-function json(value: unknown) {
-  return jsonSnapshotSchema.parse(JSON.parse(JSON.stringify(value)));
-}
 
 function defaultRepository(): AiContentDraftRepository {
   return {
@@ -88,7 +81,7 @@ function defaultRepository(): AiContentDraftRepository {
     },
     createDraft(value) {
       return getDatabase().then((database) => database.aiContentDraft.create({
-        data: { ...value, sourceSnapshot: json(value.sourceSnapshot), content: json(value.content) },
+        data: { ...value, sourceSnapshot: parseJsonSnapshot(value.sourceSnapshot), content: parseJsonSnapshot(value.content) },
       }));
     },
     findDraft(id) {
