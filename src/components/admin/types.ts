@@ -178,19 +178,7 @@ export interface AssetReferenceData {
   label: string;
 }
 
-export interface CareerActivityData {
-  id: string;
-  titleZh: string;
-  titleEn: string | null;
-  summaryZh: string;
-  summaryEn: string | null;
-  occurredAt: string;
-  visibility: "PUBLIC" | "PRIVATE";
-  featured: boolean;
-  linkUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { CareerActivityData } from "../../lib/services/career-activities";
 
 export type { PortfolioProjectData } from "../../lib/services/portfolio-projects";
 

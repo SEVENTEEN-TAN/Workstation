@@ -67,6 +67,45 @@ describe("career activity service", () => {
     expect(calls[1].value).toEqual({ featured: true });
   });
 
+  it("returns the admin list as JSON-safe activity views", async () => {
+    const service = createCareerActivityService({
+      async listActivities() {
+        return [{
+          id: "activity-1",
+          titleZh: "发布个人工作站",
+          titleEn: "Personal Workstation launch",
+          summaryZh: "完成第一版公开站点。",
+          summaryEn: "Shipped the first public site.",
+          occurredAt: new Date("2026-09-15T08:00:00.000Z"),
+          visibility: "PUBLIC",
+          featured: true,
+          linkUrl: "https://sqtan.com",
+          createdAt: new Date("2026-09-15T09:00:00.000Z"),
+          updatedAt: new Date("2026-09-15T10:00:00.000Z"),
+        }];
+      },
+      async findActivity() { return null; },
+      async createActivity() { throw new Error("not used"); },
+      async updateActivity() { throw new Error("not used"); },
+      async deleteActivity() { throw new Error("not used"); },
+      async listPublicActivities() { return []; },
+    });
+
+    await expect(service.list()).resolves.toEqual([{
+      id: "activity-1",
+      titleZh: "发布个人工作站",
+      titleEn: "Personal Workstation launch",
+      summaryZh: "完成第一版公开站点。",
+      summaryEn: "Shipped the first public site.",
+      occurredAt: "2026-09-15T08:00:00.000Z",
+      visibility: "PUBLIC",
+      featured: true,
+      linkUrl: "https://sqtan.com",
+      createdAt: "2026-09-15T09:00:00.000Z",
+      updatedAt: "2026-09-15T10:00:00.000Z",
+    }]);
+  });
+
   it("keeps only bilingual public records and orders featured items first", async () => {
     const service = createCareerActivityService({
       async listActivities() { return []; },

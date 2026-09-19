@@ -10,11 +10,20 @@ export type CareerActivityRecord = {
   summaryZh: string;
   summaryEn: string | null;
   occurredAt: Date;
-  visibility: string;
+  visibility: "PUBLIC" | "PRIVATE";
   featured: boolean;
-  linkUrl?: string | null;
-  createdAt?: Date;
-  updatedAt?: Date;
+  linkUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CareerActivityData = Omit<
+  CareerActivityRecord,
+  "occurredAt" | "createdAt" | "updatedAt"
+> & {
+  occurredAt: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type CareerActivityRepository = {
@@ -26,19 +35,34 @@ type CareerActivityRepository = {
   deleteActivity(id: string): Promise<unknown>;
 };
 
+function parseCareerActivityRecord(record: unknown): CareerActivityRecord {
+  const value = careerActivityInputSchema.parse(record);
+  const metadata = record as { id?: unknown; createdAt?: unknown; updatedAt?: unknown };
+  const createdAt = new Date(metadata.createdAt as string | Date);
+  const updatedAt = new Date(metadata.updatedAt as string | Date);
+  if (typeof metadata.id !== "string" || Number.isNaN(createdAt.getTime()) || Number.isNaN(updatedAt.getTime())) {
+    throw new Error("职业动态记录元数据不完整");
+  }
+
+  return { ...value, id: metadata.id, createdAt, updatedAt };
+}
+
 function defaultRepository(): CareerActivityRepository {
   return {
     async listActivities() {
-      return (await getDatabase()).careerActivity.findMany({ orderBy: [{ featured: "desc" }, { occurredAt: "desc" }] });
+      return (await getDatabase()).careerActivity.findMany({ orderBy: [{ featured: "desc" }, { occurredAt: "desc" }] }).then(
+        (records) => records.map(parseCareerActivityRecord),
+      );
     },
     async listPublicActivities() {
       return (await getDatabase()).careerActivity.findMany({
         where: { visibility: "PUBLIC" },
         orderBy: [{ featured: "desc" }, { occurredAt: "desc" }],
-      });
+      }).then((records) => records.map(parseCareerActivityRecord));
     },
     async findActivity(id) {
-      return (await getDatabase()).careerActivity.findUnique({ where: { id } });
+      const record = await (await getDatabase()).careerActivity.findUnique({ where: { id } });
+      return record ? parseCareerActivityRecord(record) : null;
     },
     async createActivity(value) {
       return (await getDatabase()).careerActivity.create({ data: value });
@@ -54,8 +78,15 @@ function defaultRepository(): CareerActivityRepository {
 
 export function createCareerActivityService(repository?: CareerActivityRepository) {
   const source = repository ?? defaultRepository();
+  const toAdminActivity = (activity: CareerActivityRecord): CareerActivityData => ({
+    ...activity,
+    occurredAt: activity.occurredAt.toISOString(),
+    createdAt: activity.createdAt.toISOString(),
+    updatedAt: activity.updatedAt.toISOString(),
+  });
+
   return {
-    list: () => source.listActivities(),
+    list: async () => (await source.listActivities()).map(toAdminActivity),
     create: (input: unknown) => source.createActivity(careerActivityInputSchema.parse(input)),
     async update(id: string, input: unknown) {
       const patch = careerActivityPatchSchema.parse(input);
