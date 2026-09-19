@@ -1,10 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
+import { getDatabase } from "../src/lib/db";
 import {
   githubConfigSchema,
+  getGitHubSyncState,
   normalizeGitHubEvent,
   normalizeGitHubRepository,
 } from "../src/lib/services/github-sync";
+
+vi.mock("../src/lib/db", () => ({ getDatabase: vi.fn() }));
 
 describe("GitHub sync validation", () => {
   it("normalizes configuration and removes duplicate repository selections", () => {
@@ -78,6 +82,49 @@ describe("GitHub sync normalization", () => {
       url: "https://github.com/SEVENTEEN-TAN/Workstation",
       occurredAt: new Date("2026-09-18T01:00:00.000Z"),
       syncedAt,
+    });
+  });
+});
+
+describe("GitHub sync state", () => {
+  it("returns the admin state as JSON-safe views", async () => {
+    const timestamp = new Date("2026-09-18T03:00:00.000Z");
+    const config = {
+      id: "github",
+      username: "SEVENTEEN-TAN",
+      enabled: true,
+      selectedRepositories: ["SEVENTEEN-TAN/Workstation"],
+      lastSyncStatus: "SUCCESS",
+      lastSyncedAt: timestamp,
+      lastSyncError: null,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    };
+    const repository = {
+      id: "repo-1", githubId: "123", fullName: "SEVENTEEN-TAN/Workstation", name: "Workstation",
+      description: "Personal workstation", htmlUrl: "https://github.com/SEVENTEEN-TAN/Workstation",
+      homepageUrl: null, primaryLanguage: "TypeScript", topics: ["nextjs"], stars: 8, forks: 2,
+      isFork: false, isArchived: false, selected: true, pushedAt: null, syncedAt: timestamp,
+    };
+    const event = {
+      id: "event-1", githubId: "event-1", type: "PushEvent", repository: "SEVENTEEN-TAN/Workstation",
+      url: "https://github.com/SEVENTEEN-TAN/Workstation", occurredAt: timestamp, syncedAt: timestamp,
+    };
+    vi.mocked(getDatabase).mockResolvedValue({
+      gitHubSyncConfig: { findUnique: vi.fn(async () => config) },
+      gitHubRepositorySnapshot: { findMany: vi.fn(async () => [repository]) },
+      gitHubContributionEvent: { findMany: vi.fn(async () => [event]) },
+    } as unknown as Awaited<ReturnType<typeof getDatabase>>);
+
+    await expect(getGitHubSyncState()).resolves.toEqual({
+      config: {
+        ...config,
+        lastSyncedAt: "2026-09-18T03:00:00.000Z",
+        createdAt: "2026-09-18T03:00:00.000Z",
+        updatedAt: "2026-09-18T03:00:00.000Z",
+      },
+      repositories: [{ ...repository, syncedAt: "2026-09-18T03:00:00.000Z" }],
+      events: [{ ...event, occurredAt: "2026-09-18T03:00:00.000Z", syncedAt: "2026-09-18T03:00:00.000Z" }],
     });
   });
 });

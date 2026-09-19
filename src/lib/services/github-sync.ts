@@ -20,6 +20,53 @@ const eventSchema = z.object({ id: z.string(), type: z.string(), repo: z.object(
 
 type Fetcher = (request: Request) => Promise<Response>;
 
+export type GitHubSyncConfigData = {
+  id: string;
+  username: string;
+  enabled: boolean;
+  selectedRepositories: string[];
+  lastSyncStatus: "NEVER" | "SUCCESS" | "FAILED";
+  lastSyncedAt: string | null;
+  lastSyncError: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type GitHubRepositorySnapshotData = {
+  id: string;
+  githubId: string;
+  fullName: string;
+  name: string;
+  description: string | null;
+  htmlUrl: string;
+  homepageUrl: string | null;
+  primaryLanguage: string | null;
+  topics: string[];
+  stars: number;
+  forks: number;
+  isFork: boolean;
+  isArchived: boolean;
+  selected: boolean;
+  pushedAt: string | null;
+  syncedAt: string;
+};
+
+export type GitHubContributionEventData = {
+  id: string;
+  githubId: string;
+  type: string;
+  repository: string;
+  url: string | null;
+  occurredAt: string;
+  syncedAt: string;
+};
+
+export type GitHubSyncStateData = {
+  config: GitHubSyncConfigData | null;
+  repositories: GitHubRepositorySnapshotData[];
+  events: GitHubContributionEventData[];
+};
+
 async function githubJson(path: string, fetcher: Fetcher) {
   const headers: Record<string, string> = { accept: "application/vnd.github+json", "x-github-api-version": "2022-11-28", "user-agent": "personal-workstation" };
   if (process.env.GITHUB_TOKEN) headers.authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -43,6 +90,78 @@ export function normalizeGitHubEvent(input: unknown, syncedAt: Date) {
   return { githubId: event.id, type: event.type, repository: event.repo.name, url: `https://github.com/${event.repo.name}`, occurredAt: new Date(event.created_at), syncedAt };
 }
 
+function toGitHubSyncStateData(value: {
+  config: unknown;
+  repositories: unknown[];
+  events: unknown[];
+}): GitHubSyncStateData {
+  return {
+    config: value.config ? toGitHubSyncConfigData(value.config) : null,
+    repositories: value.repositories.map(toGitHubRepositorySnapshotData),
+    events: value.events.map(toGitHubContributionEventData),
+  };
+}
+
+function toGitHubSyncConfigData(record: unknown): GitHubSyncConfigData {
+  const config = record as Omit<GitHubSyncConfigData, "lastSyncedAt" | "createdAt" | "updatedAt"> & {
+    lastSyncedAt: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  return {
+    id: config.id,
+    username: config.username,
+    enabled: config.enabled,
+    selectedRepositories: config.selectedRepositories,
+    lastSyncStatus: config.lastSyncStatus,
+    lastSyncedAt: config.lastSyncedAt?.toISOString() ?? null,
+    lastSyncError: config.lastSyncError,
+    createdAt: config.createdAt.toISOString(),
+    updatedAt: config.updatedAt.toISOString(),
+  };
+}
+
+function toGitHubRepositorySnapshotData(record: unknown): GitHubRepositorySnapshotData {
+  const repository = record as Omit<GitHubRepositorySnapshotData, "pushedAt" | "syncedAt"> & {
+    pushedAt: Date | null;
+    syncedAt: Date;
+  };
+  return {
+    id: repository.id,
+    githubId: repository.githubId,
+    fullName: repository.fullName,
+    name: repository.name,
+    description: repository.description,
+    htmlUrl: repository.htmlUrl,
+    homepageUrl: repository.homepageUrl,
+    primaryLanguage: repository.primaryLanguage,
+    topics: repository.topics,
+    stars: repository.stars,
+    forks: repository.forks,
+    isFork: repository.isFork,
+    isArchived: repository.isArchived,
+    selected: repository.selected,
+    pushedAt: repository.pushedAt?.toISOString() ?? null,
+    syncedAt: repository.syncedAt.toISOString(),
+  };
+}
+
+function toGitHubContributionEventData(record: unknown): GitHubContributionEventData {
+  const event = record as Omit<GitHubContributionEventData, "occurredAt" | "syncedAt"> & {
+    occurredAt: Date;
+    syncedAt: Date;
+  };
+  return {
+    id: event.id,
+    githubId: event.githubId,
+    type: event.type,
+    repository: event.repository,
+    url: event.url,
+    occurredAt: event.occurredAt.toISOString(),
+    syncedAt: event.syncedAt.toISOString(),
+  };
+}
+
 export async function getGitHubSyncState() {
   const database = await getDatabase();
   const [config, repositories, events] = await Promise.all([
@@ -50,7 +169,7 @@ export async function getGitHubSyncState() {
     database.gitHubRepositorySnapshot.findMany({ orderBy: [{ selected: "desc" }, { pushedAt: "desc" }] }),
     database.gitHubContributionEvent.findMany({ orderBy: { occurredAt: "desc" }, take: 100 }),
   ]);
-  return { config, repositories, events };
+  return toGitHubSyncStateData({ config, repositories, events });
 }
 
 export async function configureGitHubSync(input: unknown) {
