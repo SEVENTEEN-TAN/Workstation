@@ -87,14 +87,18 @@ function toPublicArticle(article: PublicKnowledgeArticleSource): PublicKnowledge
 function defaultRepository(): KnowledgeArticleRepository {
   return {
     async findDraft(id) {
-      return (await getDatabase()).knowledgePublicationDraft.findUnique({
+      const draft = await (await getDatabase()).knowledgePublicationDraft.findUnique({
         where: { id },
         select: {
           id: true, sourceRevisionId: true, sourceHash: true, markdown: true, title: true, summary: true, tags: true,
           attachments: { select: { target: true, assetId: true, asset: { select: { storagePath: true, mimeType: true, sizeBytes: true, sha256: true } } } },
           article: { select: { id: true, draftId: true, slug: true, publishedAt: true } },
         },
-      }) as Promise<DraftRecord | null>;
+      });
+      return draft && {
+        ...draft,
+        tags: Array.isArray(draft.tags) ? draft.tags.filter((tag): tag is string => typeof tag === "string") : [],
+      };
     },
     async createArticle(input, attachments) {
       const database = await getDatabase();

@@ -21,6 +21,7 @@ describe("service boundary types", () => {
 
     expect(publicDataSource).not.toContain("as unknown as PublicCycleSourceRecord[]");
     expect(knowledgeArticleSource).not.toContain("as unknown as PublicKnowledgeArticle");
+    expect(knowledgeArticleSource).not.toContain("as Promise<DraftRecord | null>");
     expect(aiProviderSource).not.toContain("as unknown as Prisma.AiProviderUncheckedCreateInput");
   });
 });
