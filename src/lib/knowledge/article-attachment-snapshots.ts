@@ -2,6 +2,8 @@ import { createHash, randomUUID } from "node:crypto";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
 
+import { resolveArticleAttachmentRoot } from "../backup/paths";
+
 export type DraftAttachmentSource = {
   target: string;
   assetId: string;
@@ -22,7 +24,7 @@ export type ArticleAttachmentSnapshot = {
   sha256: string;
 };
 
-export function createArticleAttachmentSnapshotter(root = resolve(process.cwd(), "data", "article-attachments")) {
+export function createArticleAttachmentSnapshotter(root = resolveArticleAttachmentRoot()) {
   const snapshotRoot = resolve(root);
 
   return {

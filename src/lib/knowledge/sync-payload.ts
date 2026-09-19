@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createHash } from "node:crypto";
 
 const hashSchema = z.string().regex(/^[a-f0-9]{64}$/);
 const dateSchema = z.string().datetime({ offset: true }).transform((value) => new Date(value));
@@ -14,6 +15,7 @@ function isSafeRelativePath(value: string) {
 const relativePathSchema = z.string().min(1).max(1_000).refine(isSafeRelativePath, "路径必须是安全的相对路径");
 const markdownPathSchema = relativePathSchema.refine((value) => value.endsWith(".md"), "仅支持 Markdown 笔记");
 const directoryPathSchema = z.string().max(1_000).refine((value) => value === "" || isSafeRelativePath(value), "目录必须是安全的相对路径");
+const textEncoder = new TextEncoder();
 
 const noteSchema = z.object({
   relativePath: markdownPathSchema,
@@ -36,6 +38,10 @@ const noteSchema = z.object({
   const expectedDirectory = segments.length === 1 ? "" : segments.slice(0, -1).join("/");
   if (segments.at(-1) !== note.fileName || note.directoryPath !== expectedDirectory) {
     context.addIssue({ code: "custom", message: "笔记路径元数据不一致" });
+  }
+  const bytes = textEncoder.encode(note.markdown);
+  if (note.sizeBytes !== bytes.byteLength || createHash("sha256").update(bytes).digest("hex") !== note.sha256) {
+    context.addIssue({ code: "custom", message: "笔记内容校验失败" });
   }
 });
 

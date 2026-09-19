@@ -9,10 +9,13 @@
 - 暂存版本：`/opt/personal-workstation-releases/<commit>`
 - 数据库：`/var/lib/personal-workstation/workstation.db`
 - 上传目录：`/var/lib/personal-workstation/uploads`
+- 文章附件快照：`/var/lib/personal-workstation/article-attachments`
 - 备份目录：`/var/backups/personal-workstation`
 - 环境文件：`/etc/personal-workstation.env`
 - systemd 服务：`personal-workstation.service`
 - 应用监听：`127.0.0.1:3000`
+
+环境文件中必须将 `ARTICLE_ATTACHMENT_DIR` 指向 `/var/lib/personal-workstation/article-attachments`。
 
 每次部署前必须重新核对服务器上的 Node 版本、磁盘空间、服务状态、Nginx 配置和当前 `/opt/personal-workstation` 指向。不要把本文当成当前生产状态的实时记录。
 
@@ -57,7 +60,7 @@ set +a
 npm run db:backup
 ```
 
-备份会生成 SQLite 快照、上传文件、公开图片和清单。备份完成后确认新目录包含 `workstation.db`、`uploads/`、`public-images/` 和 `manifest.json`。如果数据库正在使用，先确认没有管理员操作，再执行备份。
+备份会生成 SQLite 快照、上传文件、文章附件快照、公开图片和清单。备份完成后确认新目录包含 `workstation.db`、`uploads/`、`article-attachments/`、`public-images/` 和 `manifest.json`。如果数据库正在使用，先确认没有管理员操作，再执行备份。
 
 ### 3. Clean checkout and build
 
@@ -146,7 +149,7 @@ npx prisma validate
 sqlite3 /var/lib/personal-workstation/workstation.db 'PRAGMA integrity_check;'
 ```
 
-恢复会覆盖当前数据库和上传目录，只能在明确选择备份目录后执行。若新版本没有改变结构，优先保留现有数据，只回滚代码。
+恢复会覆盖当前数据库、上传目录和文章附件快照目录，只能在明确选择备份目录后执行。若新版本没有改变结构，优先保留现有数据，只回滚代码。
 
 5. 启动服务并重复上述 health checks。
 6. 回滚完成后记录原因、保留的新版本目录和下一次修复计划；不要立即删除发布目录，至少等确认稳定后再清理。

@@ -1,15 +1,17 @@
 import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
 
 import { knowledgeSyncPayloadSchema } from "../src/lib/knowledge/sync-payload";
 
-const hash = "a".repeat(64);
+const markdown = "# Entry";
+const hash = createHash("sha256").update(markdown).digest("hex");
 const validPayload = {
   scannedAt: "2026-09-17T12:00:00.000Z",
   notes: [{
     relativePath: "notes/entry.md",
     fileName: "entry.md",
     directoryPath: "notes",
-    markdown: "# Entry",
+    markdown,
     sizeBytes: 7,
     modifiedAt: "2026-09-17T12:00:00.000Z",
     sha256: hash,
@@ -44,5 +46,16 @@ describe("knowledge sync payload", () => {
     expect(() => knowledgeSyncPayloadSchema.parse({ ...validPayload, notes: [{ ...validPayload.notes[0], relativePath: "../secret.md" }] })).toThrow();
     expect(() => knowledgeSyncPayloadSchema.parse({ ...validPayload, notes: [{ ...validPayload.notes[0], sha256: "invalid" }] })).toThrow();
     expect(() => knowledgeSyncPayloadSchema.parse({ ...validPayload, notes: [validPayload.notes[0], { ...validPayload.notes[0] }] })).toThrow();
+  });
+
+  it("rejects note metadata that does not match the Markdown bytes", () => {
+    expect(() => knowledgeSyncPayloadSchema.parse({
+      ...validPayload,
+      notes: [{ ...validPayload.notes[0], sha256: "0".repeat(64) }],
+    })).toThrow("笔记内容校验失败");
+    expect(() => knowledgeSyncPayloadSchema.parse({
+      ...validPayload,
+      notes: [{ ...validPayload.notes[0], sizeBytes: validPayload.notes[0].sizeBytes - 1 }],
+    })).toThrow("笔记内容校验失败");
   });
 });

@@ -17,6 +17,10 @@ export function resolveDatabaseFile(databaseUrl: string, projectRoot = process.c
   return pathApi.resolve(projectRoot, "prisma", value);
 }
 
+export function resolveArticleAttachmentRoot(projectRoot = process.cwd(), configuredRoot = process.env.ARTICLE_ATTACHMENT_DIR) {
+  return path.resolve(/* turbopackIgnore: true */ configuredRoot ?? path.join(projectRoot, "data", "article-attachments"));
+}
+
 export async function validateRestoreSource(sourceDirectory: string) {
   const directory = path.resolve(sourceDirectory);
   const manifestPath = path.join(directory, "manifest.json");

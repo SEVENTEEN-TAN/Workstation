@@ -1,11 +1,16 @@
 import { access, readdir, readFile, stat } from "node:fs/promises";
-import { join, relative, sep } from "node:path";
+import { extname, join, relative, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 
 const guardedRoots = ["src", "tests", "scripts", "prisma"];
 const guardedFiles = ["README.md", "docs/deployment.md"];
+const textExtensions = new Set(["js", "jsx", "ts", "tsx", "css", "json", "md", "sql", "prisma", "yml", "yaml"]);
+
+function isTextFile(filePath: string) {
+  return textExtensions.has(extname(filePath).slice(1).toLowerCase());
+}
 
 async function collectFiles(targets: string[]): Promise<Array<{ path: string; content: string }>> {
   const files: Array<{ path: string; content: string }> = [];
@@ -13,7 +18,9 @@ async function collectFiles(targets: string[]): Promise<Array<{ path: string; co
   for (const target of targets) {
     const targetStat = await stat(target);
     if (targetStat.isFile()) {
-      files.push({ path: target, content: await readFile(target, "utf8") });
+      if (isTextFile(target)) {
+        files.push({ path: target, content: await readFile(target, "utf8") });
+      }
       continue;
     }
 
@@ -25,6 +32,7 @@ async function collectFiles(targets: string[]): Promise<Array<{ path: string; co
         continue;
       }
       if (entry.isFile()) {
+        if (!isTextFile(entryPath)) continue;
         files.push({ path: entryPath, content: await readFile(entryPath, "utf8") });
       }
     }

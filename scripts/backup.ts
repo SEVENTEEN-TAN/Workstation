@@ -3,6 +3,7 @@ import path from "node:path";
 import process from "node:process";
 
 import { buildHomepageBaseline } from "../src/lib/backup/homepage-baseline";
+import { resolveArticleAttachmentRoot } from "../src/lib/backup/paths";
 import { getDatabase } from "../src/lib/db";
 
 function timestamp() {
@@ -12,6 +13,7 @@ function timestamp() {
 async function main() {
   const backupRoot = path.resolve(process.env.BACKUP_DIR ?? path.join(process.cwd(), "data", "backups"));
   const uploadRoot = path.resolve(process.env.UPLOAD_DIR ?? path.join(process.cwd(), "data", "uploads"));
+  const attachmentRoot = resolveArticleAttachmentRoot();
   const destination = path.join(backupRoot, timestamp());
   const databaseSnapshot = path.join(destination, "workstation.db");
 
@@ -27,6 +29,13 @@ async function main() {
   await database.$disconnect();
 
   await cp(uploadRoot, path.join(destination, "uploads"), {
+    recursive: true,
+    force: false,
+    errorOnExist: true,
+  }).catch((error: NodeJS.ErrnoException) => {
+    if (error.code !== "ENOENT") throw error;
+  });
+  await cp(attachmentRoot, path.join(destination, "article-attachments"), {
     recursive: true,
     force: false,
     errorOnExist: true,

@@ -2,7 +2,7 @@ import { copyFile, cp, mkdir, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-import { resolveDatabaseFile, validateRestoreSource } from "../src/lib/backup/paths";
+import { resolveArticleAttachmentRoot, resolveDatabaseFile, validateRestoreSource } from "../src/lib/backup/paths";
 
 function sourceArgument() {
   const index = process.argv.indexOf("--from");
@@ -21,6 +21,7 @@ async function main() {
   if (!databaseUrl) throw new Error("缺少 DATABASE_URL");
   const databasePath = resolveDatabaseFile(databaseUrl);
   const uploadRoot = path.resolve(process.env.UPLOAD_DIR ?? path.join(process.cwd(), "data", "uploads"));
+  const attachmentRoot = resolveArticleAttachmentRoot();
 
   await mkdir(path.dirname(databasePath), { recursive: true });
   await copyFile(source.databasePath, databasePath);
@@ -32,6 +33,11 @@ async function main() {
   const sourceUploads = path.join(source.directory, "uploads");
   await rm(uploadRoot, { recursive: true, force: true });
   await cp(sourceUploads, uploadRoot, { recursive: true }).catch((error: NodeJS.ErrnoException) => {
+    if (error.code !== "ENOENT") throw error;
+  });
+  const sourceAttachments = path.join(source.directory, "article-attachments");
+  await rm(attachmentRoot, { recursive: true, force: true });
+  await cp(sourceAttachments, attachmentRoot, { recursive: true }).catch((error: NodeJS.ErrnoException) => {
     if (error.code !== "ENOENT") throw error;
   });
   console.log(`已从 ${source.directory} 恢复。启动服务前请运行 npm run db:validate。`);
