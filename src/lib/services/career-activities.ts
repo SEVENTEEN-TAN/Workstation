@@ -62,9 +62,15 @@ export function createCareerActivityService(repository?: CareerActivityRepositor
       const current = await source.findActivity(id);
       if (!current) throw new Error("职业动态不存在");
       const complete = careerActivityInputSchema.parse({ ...current, ...patch });
-      const values = Object.fromEntries(
-        Object.keys(patch).map((key) => [key, complete[key as keyof typeof complete]]),
-      ) as Prisma.CareerActivityUpdateInput;
+      const values: Prisma.CareerActivityUpdateInput = {};
+      if (patch.titleZh !== undefined) values.titleZh = complete.titleZh;
+      if (patch.titleEn !== undefined) values.titleEn = complete.titleEn;
+      if (patch.summaryZh !== undefined) values.summaryZh = complete.summaryZh;
+      if (patch.summaryEn !== undefined) values.summaryEn = complete.summaryEn;
+      if (patch.occurredAt !== undefined) values.occurredAt = complete.occurredAt;
+      if (patch.visibility !== undefined) values.visibility = complete.visibility;
+      if (patch.featured !== undefined) values.featured = complete.featured;
+      if (patch.linkUrl !== undefined) values.linkUrl = complete.linkUrl;
       return source.updateActivity(id, values);
     },
     delete: (id: string) => source.deleteActivity(id),
