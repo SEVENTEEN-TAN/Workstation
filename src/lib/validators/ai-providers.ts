@@ -67,6 +67,8 @@ export const aiProviderInputSchema = z.object({
   adapterConfig: value.adapterKind === "CUSTOM_JSON" ? customJsonAdapterConfigSchema.parse(value.adapterConfig) : {},
 }));
 
+export type AiProviderInput = z.infer<typeof aiProviderInputSchema>;
+
 export const aiUseCaseDefaultsSchema = z.object({
   defaults: z.array(z.object({
     useCase: z.enum(AI_USE_CASES),

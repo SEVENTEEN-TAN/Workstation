@@ -1,10 +1,9 @@
-import type { Prisma } from "@prisma/client";
-
 import { getDatabase } from "../db";
 import { generateAiText, discoverProviderModels, type AiFetcher } from "../ai/runtime";
 import {
   aiProviderInputSchema,
   aiUseCaseDefaultsSchema,
+  type AiProviderInput,
 } from "../validators/ai-providers";
 
 export type AiProviderRecord = {
@@ -43,8 +42,8 @@ export type AiProviderServiceRepository = {
     providers: AiProviderRecord[];
   }>;
   findProvider(id: string): Promise<AiProviderRecord | null>;
-  createProvider(value: Record<string, unknown>): Promise<AiProviderRecord>;
-  updateProvider(id: string, value: Record<string, unknown>): Promise<AiProviderRecord>;
+  createProvider(value: AiProviderCreateData): Promise<AiProviderRecord>;
+  updateProvider(id: string, value: AiProviderUpdateData): Promise<AiProviderRecord>;
   replaceDefaults(value: Array<{ useCase: string; providerId: string; model: string }>): Promise<unknown>;
   recordRequestLog(value: {
     providerId: string | null;
@@ -57,6 +56,26 @@ export type AiProviderServiceRepository = {
     failureReason: string | null;
   }): Promise<unknown>;
 };
+
+type AiProviderRuntimeState = {
+  cachedModels: string[];
+  enabled: boolean;
+  lastTestStatus: string;
+  lastTestedAt: Date | null;
+  lastTestError: string | null;
+  modelsRefreshedAt: Date | null;
+};
+
+type AiProviderCreateData = AiProviderInput & {
+  cachedModels: string[];
+  enabled: false;
+  lastTestStatus: "NEVER";
+  lastTestedAt: null;
+  lastTestError: null;
+  modelsRefreshedAt: null;
+};
+
+type AiProviderUpdateData = Partial<AiProviderInput & AiProviderRuntimeState>;
 
 const connectionFields = [
   "adapterKind",
@@ -87,7 +106,7 @@ function publicProvider(provider: AiProviderRecord): Omit<AiProviderRecord, "cre
   return result;
 }
 
-function createData(input: Record<string, unknown>) {
+function createData(input: AiProviderInput): AiProviderCreateData {
   return {
     ...input,
     cachedModels: [],
@@ -131,13 +150,13 @@ function defaultRepository(): AiProviderServiceRepository {
     },
     async createProvider(value) {
       return (await getDatabase()).aiProvider.create({
-        data: createData(value) as unknown as Prisma.AiProviderUncheckedCreateInput,
+        data: value,
       });
     },
     async updateProvider(id, value) {
       return (await getDatabase()).aiProvider.update({
         where: { id },
-        data: value as Prisma.AiProviderUncheckedUpdateInput,
+        data: value,
       });
     },
     async replaceDefaults(value) {
