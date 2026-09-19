@@ -22,7 +22,12 @@ type KnowledgeVaultRepository = {
   listVaults(): Promise<KnowledgeVaultRecord[]>;
   findVault(id: string): Promise<KnowledgeVaultRecord | null>;
   createVault(value: { name: string; rootPath: string; enabled: boolean; ignorePatterns: string[] }): Promise<unknown>;
-  updateVault(id: string, value: Record<string, unknown>): Promise<unknown>;
+  updateVault(id: string, value: {
+    name?: string;
+    rootPath?: string;
+    enabled?: boolean;
+    ignorePatterns?: string[];
+  }): Promise<unknown>;
   deleteVault(id: string): Promise<unknown>;
   replaceIndex(id: string, result: VaultScanResult, report: KnowledgeSyncReportInput, origin: "LOCAL_SCAN" | "WINDOWS_SYNC"): Promise<unknown>;
   markScanFailed(id: string, message: string): Promise<unknown>;
@@ -105,7 +110,7 @@ function defaultRepository(): KnowledgeVaultRepository {
     async updateVault(id, value) {
       return (await getDatabase()).knowledgeVault.update({
         where: { id },
-        data: value as Prisma.KnowledgeVaultUpdateInput,
+        data: value,
         include: vaultDetailsInclude,
       });
     },
@@ -187,9 +192,12 @@ export function createKnowledgeVaultService(
         ignorePatterns: parseIgnorePatterns(current.ignorePatterns),
         ...patch,
       });
-      return repository.updateVault(id, Object.fromEntries(
-        Object.keys(patch).map((key) => [key, complete[key as keyof typeof complete]]),
-      ));
+      const update: Parameters<typeof repository.updateVault>[1] = {};
+      if (patch.name !== undefined) update.name = complete.name;
+      if (patch.rootPath !== undefined) update.rootPath = complete.rootPath;
+      if (patch.ignorePatterns !== undefined) update.ignorePatterns = complete.ignorePatterns;
+      if (patch.enabled !== undefined) update.enabled = complete.enabled;
+      return repository.updateVault(id, update);
     },
     async remove(id: string) {
       const current = await repository.findVault(id);

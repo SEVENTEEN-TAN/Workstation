@@ -38,6 +38,10 @@ describe("service boundary types", () => {
       join(projectRoot, "src/lib/services/career-timeline-drafts.ts"),
       "utf8",
     );
+    const knowledgeVaultSource = readFileSync(
+      join(projectRoot, "src/lib/services/knowledge-vaults.ts"),
+      "utf8",
+    );
     const aiProviderSource = readFileSync(
       join(projectRoot, "src/lib/services/ai-providers.ts"),
       "utf8",
@@ -53,6 +57,7 @@ describe("service boundary types", () => {
     expect(weeklyActivityDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
     expect(okrMilestoneDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
     expect(careerTimelineDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
+    expect(knowledgeVaultSource).not.toContain("as Prisma.KnowledgeVaultUpdateInput");
     expect(aiProviderSource).not.toContain("as unknown as Prisma.AiProviderUncheckedCreateInput");
   });
 });
