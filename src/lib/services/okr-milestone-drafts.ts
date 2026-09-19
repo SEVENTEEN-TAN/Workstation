@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { parseJsonSnapshot } from "./json-snapshot";
 import { okrMilestoneDraftPatchSchema } from "../validators/okr-milestone-drafts";
 
 const PROGRESS_MILESTONES = [25, 50, 75] as const;
@@ -26,12 +27,45 @@ type EditableDraft = {
   occurredAt?: Date;
 };
 
+export type OkrMilestoneDraftData = {
+  id: string;
+  sourceKey: string;
+  kind: "KR_PROGRESS" | "KEY_RESULT_COMPLETED" | "OBJECTIVE_COMPLETED";
+  status: "DRAFT" | "CONVERTED";
+  titleZh: string;
+  titleEn: string;
+  summaryZh: string;
+  summaryEn: string;
+  occurredAt: string;
+  sourceSnapshot: Record<string, unknown>;
+  convertedActivityId: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type OkrMilestoneDraftRepository = {
   listDrafts(): Promise<unknown[]>;
   findDraft(id: string): Promise<EditableDraft | null>;
   updateDraft(id: string, value: Record<string, unknown>): Promise<unknown>;
   convertDraft(id: string, activity: Prisma.CareerActivityCreateInput): Promise<unknown>;
 };
+
+function toOkrMilestoneDraftData(record: unknown): OkrMilestoneDraftData {
+  const draft = record as Omit<OkrMilestoneDraftData, "occurredAt" | "sourceSnapshot" | "createdAt" | "updatedAt"> & {
+    occurredAt: Date;
+    sourceSnapshot: unknown;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+
+  return {
+    ...draft,
+    occurredAt: draft.occurredAt.toISOString(),
+    sourceSnapshot: parseJsonSnapshot(draft.sourceSnapshot),
+    createdAt: draft.createdAt.toISOString(),
+    updatedAt: draft.updatedAt.toISOString(),
+  };
+}
 
 type ProgressMilestoneInput = {
   keyResultId: string;
@@ -131,7 +165,7 @@ function defaultRepository(): OkrMilestoneDraftRepository {
 
 export function createOkrMilestoneDraftService(repository: OkrMilestoneDraftRepository = defaultRepository()) {
   return {
-    list: () => repository.listDrafts(),
+    list: async () => (await repository.listDrafts()).map(toOkrMilestoneDraftData),
     async update(id: string, input: unknown) {
       const draft = await repository.findDraft(id);
       if (!draft) throw new Error("里程碑草稿不存在");

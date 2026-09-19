@@ -340,21 +340,7 @@ export interface WeeklyActivityDraftData {
   updatedAt: string;
 }
 
-export interface OkrMilestoneDraftData {
-  id: string;
-  sourceKey: string;
-  kind: "KR_PROGRESS" | "KEY_RESULT_COMPLETED" | "OBJECTIVE_COMPLETED";
-  status: "DRAFT" | "CONVERTED";
-  titleZh: string;
-  titleEn: string;
-  summaryZh: string;
-  summaryEn: string;
-  occurredAt: string;
-  sourceSnapshot: Record<string, unknown>;
-  convertedActivityId: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+export type { OkrMilestoneDraftData } from "../../lib/services/okr-milestone-drafts";
 
 export type { CareerTimelineDraftData } from "../../lib/services/career-timeline-drafts";
 

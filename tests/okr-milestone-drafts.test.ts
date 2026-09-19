@@ -66,6 +66,43 @@ describe("OKR milestone selection", () => {
 });
 
 describe("OKR milestone draft service", () => {
+  it("returns the admin list as JSON-safe milestone draft views", async () => {
+    const occurredAt = new Date("2026-09-18T03:00:00.000Z");
+    const repo = repository({
+      listDrafts: vi.fn(async () => [{
+        id: "draft-1",
+        sourceKey: "KR_PROGRESS:kr-1:50",
+        kind: "KR_PROGRESS",
+        status: "DRAFT",
+        titleZh: "完成工作站自动化达到 50%",
+        titleEn: "Ship workstation automation reached 50%",
+        summaryZh: "关键结果进度由 20% 提升至 68%。",
+        summaryEn: "Key-result progress increased from 20% to 68%.",
+        occurredAt,
+        sourceSnapshot: { keyResultId: "kr-1", occurredAt },
+        convertedActivityId: null,
+        createdAt: occurredAt,
+        updatedAt: occurredAt,
+      }]),
+    });
+
+    await expect(createOkrMilestoneDraftService(repo).list()).resolves.toEqual([{
+      id: "draft-1",
+      sourceKey: "KR_PROGRESS:kr-1:50",
+      kind: "KR_PROGRESS",
+      status: "DRAFT",
+      titleZh: "完成工作站自动化达到 50%",
+      titleEn: "Ship workstation automation reached 50%",
+      summaryZh: "关键结果进度由 20% 提升至 68%。",
+      summaryEn: "Key-result progress increased from 20% to 68%.",
+      occurredAt: "2026-09-18T03:00:00.000Z",
+      sourceSnapshot: { keyResultId: "kr-1", occurredAt: "2026-09-18T03:00:00.000Z" },
+      convertedActivityId: null,
+      createdAt: "2026-09-18T03:00:00.000Z",
+      updatedAt: "2026-09-18T03:00:00.000Z",
+    }]);
+  });
+
   it("edits only open drafts and preserves cleared English copy", async () => {
     const repo = repository({ findDraft: vi.fn(async () => ({ id: "draft-1", status: "DRAFT" })) });
     const service = createOkrMilestoneDraftService(repo);
