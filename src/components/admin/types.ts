@@ -2,6 +2,17 @@ export type { DashboardData, DashboardObjectiveData } from "../../lib/services/o
 
 export type { AuditLogData } from "../../lib/services/audit-logs";
 
+export type {
+  ActionItemData,
+  KeyResultData,
+  ObjectiveData,
+  ObjectiveDetailData,
+  OkrCycleBriefData,
+  OkrCycleData,
+  ProgressUpdateData,
+  ReviewData,
+} from "../../lib/services/okr";
+
 export interface SiteVersionData {
   id: string;
   version: number;
@@ -10,123 +21,6 @@ export interface SiteVersionData {
   publishedAt: string | null;
   createdAt?: string;
   updatedAt?: string;
-}
-
-export interface ProgressUpdateData {
-  id: string;
-  currentValue: number | null;
-  manualProgress: number | null;
-  calculatedProgress: number;
-  noteZh: string | null;
-  noteEn: string | null;
-  recordedAt: string;
-}
-
-export interface KeyResultData {
-  id: string;
-  objectiveId: string;
-  titleZh: string;
-  titleEn: string | null;
-  descriptionZh: string | null;
-  descriptionEn: string | null;
-  progressMode: string;
-  startValue: number | null;
-  currentValue: number | null;
-  targetValue: number | null;
-  unit: string | null;
-  manualProgress: number | null;
-  weight: number;
-  status: string;
-  sortOrder: number;
-  createdAt: string;
-  updatedAt: string;
-  progressUpdates: ProgressUpdateData[];
-  actionItems: ActionItemData[];
-}
-
-export interface ActionItemData {
-  id: string;
-  keyResultId: string;
-  titleZh: string;
-  titleEn: string | null;
-  status: string;
-  dueDate: string | null;
-  sortOrder: number;
-  recurrenceType: string;
-  recurrenceInterval: number;
-  recurrenceDays: string | null;
-  completedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ObjectiveData {
-  id: string;
-  cycleId: string;
-  titleZh: string;
-  titleEn: string | null;
-  descriptionZh: string | null;
-  descriptionEn: string | null;
-  status: string;
-  visibility: string;
-  sortOrder: number;
-  startDate: string | null;
-  endDate: string | null;
-  createdAt: string;
-  updatedAt: string;
-  keyResults: KeyResultData[];
-}
-
-export interface ReviewData {
-  id: string;
-  cycleId: string;
-  objectiveId: string | null;
-  achievementsZh: string;
-  achievementsEn: string | null;
-  problemsZh: string;
-  problemsEn: string | null;
-  lessonsZh: string;
-  lessonsEn: string | null;
-  nextActionsZh: string;
-  nextActionsEn: string | null;
-  score: number | null;
-  visibility: string;
-  reviewedAt: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface OkrCycleData {
-  id: string;
-  nameZh: string;
-  nameEn: string | null;
-  type: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  visibility: string;
-  createdAt: string;
-  updatedAt: string;
-  objectives: ObjectiveData[];
-  reviews: ReviewData[];
-}
-
-export interface OkrCycleBriefData {
-  id: string;
-  nameZh: string;
-  nameEn: string | null;
-  type: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  visibility: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ObjectiveDetailData extends ObjectiveData {
-  cycle: OkrCycleBriefData;
-  reviews: ReviewData[];
 }
 
 export type { AssetData, AssetReferenceData } from "../../lib/services/assets";

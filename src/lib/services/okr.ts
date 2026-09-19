@@ -49,6 +49,156 @@ export type DashboardData = {
   objectives: DashboardObjectiveData[];
 };
 
+export type ProgressUpdateData = {
+  id: string;
+  currentValue: number | null;
+  manualProgress: number | null;
+  calculatedProgress: number;
+  noteZh: string | null;
+  noteEn: string | null;
+  recordedAt: string;
+};
+
+export type ActionItemData = {
+  id: string;
+  keyResultId: string;
+  titleZh: string;
+  titleEn: string | null;
+  status: string;
+  dueDate: string | null;
+  sortOrder: number;
+  recurrenceType: string;
+  recurrenceInterval: number;
+  recurrenceDays: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type KeyResultData = {
+  id: string;
+  objectiveId: string;
+  titleZh: string;
+  titleEn: string | null;
+  descriptionZh: string | null;
+  descriptionEn: string | null;
+  progressMode: string;
+  startValue: number | null;
+  currentValue: number | null;
+  targetValue: number | null;
+  unit: string | null;
+  manualProgress: number | null;
+  weight: number;
+  status: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+  progressUpdates: ProgressUpdateData[];
+  actionItems: ActionItemData[];
+};
+
+export type ObjectiveData = {
+  id: string;
+  cycleId: string;
+  titleZh: string;
+  titleEn: string | null;
+  descriptionZh: string | null;
+  descriptionEn: string | null;
+  status: string;
+  visibility: string;
+  sortOrder: number;
+  startDate: string | null;
+  endDate: string | null;
+  createdAt: string;
+  updatedAt: string;
+  keyResults: KeyResultData[];
+};
+
+export type ReviewData = {
+  id: string;
+  cycleId: string;
+  objectiveId: string | null;
+  achievementsZh: string;
+  achievementsEn: string | null;
+  problemsZh: string;
+  problemsEn: string | null;
+  lessonsZh: string;
+  lessonsEn: string | null;
+  nextActionsZh: string;
+  nextActionsEn: string | null;
+  score: number | null;
+  visibility: string;
+  reviewedAt: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OkrCycleData = {
+  id: string;
+  nameZh: string;
+  nameEn: string | null;
+  type: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  visibility: string;
+  createdAt: string;
+  updatedAt: string;
+  objectives: ObjectiveData[];
+  reviews: ReviewData[];
+};
+
+export type OkrCycleBriefData = Omit<OkrCycleData, "objectives" | "reviews">;
+
+export type ObjectiveDetailData = ObjectiveData & {
+  cycle: OkrCycleBriefData;
+  reviews: ReviewData[];
+};
+
+type ProgressUpdateRecord = Omit<ProgressUpdateData, "recordedAt"> & { recordedAt: Date };
+type ActionItemRecord = Omit<ActionItemData, "dueDate" | "completedAt" | "createdAt" | "updatedAt"> & {
+  dueDate: Date | null;
+  completedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+type KeyResultRecord = Omit<KeyResultData, "createdAt" | "updatedAt" | "progressUpdates" | "actionItems"> & {
+  createdAt: Date;
+  updatedAt: Date;
+  progressUpdates: ProgressUpdateRecord[];
+  actionItems: ActionItemRecord[];
+};
+type ObjectiveRecord = Omit<ObjectiveData, "startDate" | "endDate" | "createdAt" | "updatedAt" | "keyResults"> & {
+  startDate: Date | null;
+  endDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  keyResults: KeyResultRecord[];
+};
+type ReviewRecord = Omit<ReviewData, "reviewedAt" | "createdAt" | "updatedAt"> & {
+  reviewedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+type OkrCycleRecord = Omit<OkrCycleData, "startDate" | "endDate" | "createdAt" | "updatedAt" | "objectives" | "reviews"> & {
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  objectives: ObjectiveRecord[];
+  reviews: ReviewRecord[];
+};
+type OkrCycleBriefRecord = Omit<OkrCycleBriefData, "startDate" | "endDate" | "createdAt" | "updatedAt"> & {
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+type ObjectiveDetailRecord = ObjectiveRecord & {
+  cycle: OkrCycleBriefRecord;
+  reviews: ReviewRecord[];
+};
+
 type EntityTransaction = {
   findObjectiveForUpdate(id: string): Promise<ObjectiveForUpdate | null>;
   updateObjectiveRecord(id: string, values: Prisma.ObjectiveUncheckedUpdateInput): Promise<ObjectiveForUpdate>;
@@ -65,9 +215,9 @@ type OkrRepositoryOverrides = {
   findActionItem?(id: string): Promise<ActionItem | null>;
   updateActionItem?(id: string, values: Prisma.ActionItemUncheckedUpdateInput): Promise<unknown>;
   deleteActionItem?(id: string): Promise<unknown>;
-  listCycles?(): Promise<unknown[]>;
-  findCycle?(id: string): Promise<unknown | null>;
-  findObjective?(id: string): Promise<{ cycleId: string } & Record<string, unknown> | null>;
+  listCycles?(): Promise<OkrCycleRecord[]>;
+  findCycle?(id: string): Promise<OkrCycleRecord | null>;
+  findObjective?(id: string): Promise<ObjectiveDetailRecord | null>;
 };
 
 function progressRepository(database: PrismaClient): OkrRepositoryOverrides {
@@ -115,12 +265,87 @@ function progressForRecord(record: Pick<KeyResult, "progressMode" | "manualProgr
     : calculateKeyResultProgress({ mode: "METRIC", startValue: record.startValue ?? 0, currentValue: record.currentValue ?? record.startValue ?? 0, targetValue: record.targetValue ?? 0 });
 }
 
+function toProgressUpdateData(record: ProgressUpdateRecord): ProgressUpdateData {
+  return { ...record, recordedAt: record.recordedAt.toISOString() };
+}
+
+function toActionItemData(record: ActionItemRecord): ActionItemData {
+  return {
+    ...record,
+    dueDate: record.dueDate?.toISOString() ?? null,
+    completedAt: record.completedAt?.toISOString() ?? null,
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+  };
+}
+
+function toKeyResultData(record: KeyResultRecord): KeyResultData {
+  return {
+    ...record,
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+    progressUpdates: record.progressUpdates.map(toProgressUpdateData),
+    actionItems: record.actionItems.map(toActionItemData),
+  };
+}
+
+function toObjectiveData(record: ObjectiveRecord): ObjectiveData {
+  return {
+    ...record,
+    startDate: record.startDate?.toISOString() ?? null,
+    endDate: record.endDate?.toISOString() ?? null,
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+    keyResults: record.keyResults.map(toKeyResultData),
+  };
+}
+
+function toReviewData(record: ReviewRecord): ReviewData {
+  return {
+    ...record,
+    reviewedAt: record.reviewedAt.toISOString(),
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+  };
+}
+
+function toOkrCycleData(record: OkrCycleRecord): OkrCycleData {
+  return {
+    ...record,
+    startDate: record.startDate.toISOString(),
+    endDate: record.endDate.toISOString(),
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+    objectives: record.objectives.map(toObjectiveData),
+    reviews: record.reviews.map(toReviewData),
+  };
+}
+
+function toOkrCycleBriefData(record: OkrCycleBriefRecord): OkrCycleBriefData {
+  return {
+    ...record,
+    startDate: record.startDate.toISOString(),
+    endDate: record.endDate.toISOString(),
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+  };
+}
+
+function toObjectiveDetailData(record: ObjectiveDetailRecord): ObjectiveDetailData {
+  return {
+    ...toObjectiveData(record),
+    cycle: toOkrCycleBriefData(record.cycle),
+    reviews: record.reviews.map(toReviewData),
+  };
+}
+
 export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
   const database = () => getDatabase();
   return {
-    async listCycles() {
-      if (repositoryOverride?.listCycles) return repositoryOverride.listCycles();
-      return (await database()).okrCycle.findMany({
+    async listCycles(): Promise<OkrCycleData[]> {
+      const records = repositoryOverride?.listCycles
+        ? await repositoryOverride.listCycles()
+        : await (await database()).okrCycle.findMany({
         orderBy: { startDate: "desc" },
         include: {
           objectives: {
@@ -128,17 +353,22 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
             include: {
               keyResults: {
                 orderBy: { sortOrder: "asc" },
-                include: { progressUpdates: { orderBy: { recordedAt: "desc" }, take: 1 } },
+                include: {
+                  progressUpdates: { orderBy: { recordedAt: "desc" }, take: 1 },
+                  actionItems: { orderBy: { sortOrder: "asc" } },
+                },
               },
             },
           },
           reviews: { orderBy: { reviewedAt: "desc" } },
         },
       });
+      return records.map(toOkrCycleData);
     },
-    async getCycle(id: string) {
-      if (repositoryOverride?.findCycle) return repositoryOverride.findCycle(id);
-      return (await database()).okrCycle.findUnique({
+    async getCycle(id: string): Promise<OkrCycleData | null> {
+      const record = repositoryOverride?.findCycle
+        ? await repositoryOverride.findCycle(id)
+        : await (await database()).okrCycle.findUnique({
         where: { id },
         include: {
           objectives: {
@@ -156,8 +386,9 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
           reviews: { orderBy: { reviewedAt: "desc" } },
         },
       });
+      return record ? toOkrCycleData(record) : null;
     },
-    async getObjective(id: string, cycleId?: string) {
+    async getObjective(id: string, cycleId?: string): Promise<ObjectiveDetailData | null> {
       const objective = repositoryOverride?.findObjective
         ? await repositoryOverride.findObjective(id)
         : await (await database()).objective.findUnique({
@@ -173,9 +404,9 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
             },
             reviews: { orderBy: { reviewedAt: "desc" } },
           },
-        });
+      });
       if (!objective || (cycleId && objective.cycleId !== cycleId)) return null;
-      return objective;
+      return toObjectiveDetailData(objective);
     },
     async listAll() {
       return (await database()).okrCycle.findMany({

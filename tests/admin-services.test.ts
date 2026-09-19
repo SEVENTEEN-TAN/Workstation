@@ -587,6 +587,185 @@ describe("OKR completion milestones", () => {
 });
 
 describe("focused OKR queries", () => {
+  const createdAt = new Date("2026-09-01T08:00:00.000Z");
+  const updatedAt = new Date("2026-09-02T08:00:00.000Z");
+  const startDate = new Date("2026-09-01T00:00:00.000Z");
+  const endDate = new Date("2026-09-30T00:00:00.000Z");
+  const recordedAt = new Date("2026-09-10T10:00:00.000Z");
+  const dueDate = new Date("2026-09-20T00:00:00.000Z");
+  const reviewedAt = new Date("2026-09-18T09:00:00.000Z");
+
+  const progressUpdate = {
+    id: "update-1",
+    keyResultId: "kr-1",
+    currentValue: 5,
+    manualProgress: null,
+    calculatedProgress: 50,
+    noteZh: "完成一半",
+    noteEn: "Half complete",
+    recordedAt,
+  };
+  const actionItem = {
+    id: "action-1",
+    keyResultId: "kr-1",
+    titleZh: "整理发布清单",
+    titleEn: "Prepare release checklist",
+    status: "TODO",
+    dueDate,
+    sortOrder: 1,
+    recurrenceType: "NONE",
+    recurrenceInterval: 1,
+    recurrenceDays: null,
+    completedAt: null,
+    createdAt,
+    updatedAt,
+  };
+  const keyResult = {
+    id: "kr-1",
+    objectiveId: "objective-1",
+    titleZh: "完成 V1 发布",
+    titleEn: "Ship V1",
+    descriptionZh: "完成验收清单",
+    descriptionEn: "Finish acceptance checklist",
+    progressMode: "METRIC",
+    startValue: 0,
+    currentValue: 5,
+    targetValue: 10,
+    unit: "项",
+    manualProgress: null,
+    weight: 1,
+    status: "IN_PROGRESS",
+    sortOrder: 1,
+    createdAt,
+    updatedAt,
+    progressUpdates: [progressUpdate],
+    actionItems: [actionItem],
+  };
+  const objective = {
+    id: "objective-1",
+    cycleId: "cycle-1",
+    titleZh: "发布个人工作站",
+    titleEn: "Release Personal Workstation",
+    descriptionZh: "完成 V1 收尾",
+    descriptionEn: "Finish V1",
+    status: "IN_PROGRESS",
+    visibility: "PUBLIC",
+    sortOrder: 1,
+    startDate,
+    endDate,
+    createdAt,
+    updatedAt,
+    keyResults: [keyResult],
+  };
+  const review = {
+    id: "review-1",
+    cycleId: "cycle-1",
+    objectiveId: null,
+    achievementsZh: "完成发布",
+    achievementsEn: "Shipped",
+    problemsZh: "节奏偏紧",
+    problemsEn: "Tight schedule",
+    lessonsZh: "验收先行",
+    lessonsEn: "Acceptance first",
+    nextActionsZh: "继续迭代",
+    nextActionsEn: "Keep iterating",
+    score: 4,
+    visibility: "PUBLIC",
+    reviewedAt,
+    createdAt,
+    updatedAt,
+  };
+  const cycle = {
+    id: "cycle-1",
+    nameZh: "2026 Q3",
+    nameEn: "2026 Q3",
+    type: "QUARTER",
+    startDate,
+    endDate,
+    status: "ACTIVE",
+    visibility: "PUBLIC",
+    createdAt,
+    updatedAt,
+    objectives: [objective],
+    reviews: [review],
+  };
+  const cycleBrief = {
+    id: cycle.id,
+    nameZh: cycle.nameZh,
+    nameEn: cycle.nameEn,
+    type: cycle.type,
+    startDate,
+    endDate,
+    status: cycle.status,
+    visibility: cycle.visibility,
+    createdAt,
+    updatedAt,
+  };
+
+  const iso = (value: Date) => value.toISOString();
+  const jsonSafeCycle = () => ({
+    ...cycle,
+    startDate: iso(startDate),
+    endDate: iso(endDate),
+    createdAt: iso(createdAt),
+    updatedAt: iso(updatedAt),
+    objectives: [{
+      ...objective,
+      startDate: iso(startDate),
+      endDate: iso(endDate),
+      createdAt: iso(createdAt),
+      updatedAt: iso(updatedAt),
+      keyResults: [{
+        ...keyResult,
+        createdAt: iso(createdAt),
+        updatedAt: iso(updatedAt),
+        progressUpdates: [{ ...progressUpdate, recordedAt: iso(recordedAt) }],
+        actionItems: [{
+          ...actionItem,
+          dueDate: iso(dueDate),
+          completedAt: null,
+          createdAt: iso(createdAt),
+          updatedAt: iso(updatedAt),
+        }],
+      }],
+    }],
+    reviews: [{ ...review, reviewedAt: iso(reviewedAt), createdAt: iso(createdAt), updatedAt: iso(updatedAt) }],
+  });
+
+  it("returns cycle lists as JSON-safe views", async () => {
+    const service = createOkrService({
+      async listCycles() { return [cycle]; },
+    });
+
+    await expect(service.listCycles()).resolves.toEqual([jsonSafeCycle()]);
+  });
+
+  it("returns cycle details as JSON-safe views", async () => {
+    const service = createOkrService({
+      async findCycle() { return cycle; },
+    });
+
+    await expect(service.getCycle("cycle-1")).resolves.toEqual(jsonSafeCycle());
+  });
+
+  it("returns objective details as JSON-safe views", async () => {
+    const service = createOkrService({
+      async findObjective() { return { ...objective, cycle: cycleBrief, reviews: [review] }; },
+    });
+
+    await expect(service.getObjective("objective-1", "cycle-1")).resolves.toEqual({
+      ...jsonSafeCycle().objectives[0],
+      cycle: {
+        ...cycleBrief,
+        startDate: iso(startDate),
+        endDate: iso(endDate),
+        createdAt: iso(createdAt),
+        updatedAt: iso(updatedAt),
+      },
+      reviews: [{ ...review, reviewedAt: iso(reviewedAt), createdAt: iso(createdAt), updatedAt: iso(updatedAt) }],
+    });
+  });
+
   it("returns dashboard values as JSON-safe views", async () => {
     const endDate = new Date("2026-09-30T00:00:00.000Z");
     const service = createOkrService();
@@ -623,15 +802,6 @@ describe("focused OKR queries", () => {
     });
   });
 
-  it("returns cycle summaries through the focused list query", async () => {
-    const cycles = [{ id: "cycle-1", objectives: [], reviews: [] }];
-    const service = createOkrService({
-      async listCycles() { return cycles; },
-    });
-
-    await expect(service.listCycles()).resolves.toBe(cycles);
-  });
-
   it("returns null for a missing cycle", async () => {
     const service = createOkrService({
       async findCycle() { return null; },
@@ -643,7 +813,12 @@ describe("focused OKR queries", () => {
   it("rejects an Objective that does not belong to the requested cycle", async () => {
     const service = createOkrService({
       async findObjective() {
-        return { id: "objective-1", cycleId: "cycle-a", cycle: { id: "cycle-a" }, keyResults: [], reviews: [] };
+        return {
+          ...objective,
+          cycleId: "cycle-a",
+          cycle: { ...cycleBrief, id: "cycle-a" },
+          reviews: [],
+        };
       },
     });
 
