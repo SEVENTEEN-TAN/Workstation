@@ -29,10 +29,14 @@ type DraftWrite = {
   model: string;
 };
 
+type ProjectSource = Record<string, unknown>;
+type OkrObjectiveSource = { id: string } & Record<string, unknown>;
+type OkrCycleSource = { objectives: OkrObjectiveSource[] } & Record<string, unknown>;
+
 export type AiContentDraftRepository = {
   listDrafts(useCase?: string, targetId?: string): Promise<unknown[]>;
-  findProject(id: string): Promise<Record<string, unknown> | null>;
-  findCycle(id: string): Promise<Record<string, unknown> | null>;
+  findProject(id: string): Promise<ProjectSource | null>;
+  findCycle(id: string): Promise<OkrCycleSource | null>;
   createDraft(value: DraftWrite): Promise<unknown>;
   findDraft(id: string): Promise<DraftRecord | null>;
   applyProjectDraft(id: string, targetId: string, content: ProjectDescriptionDraft): Promise<unknown>;
@@ -53,26 +57,32 @@ function defaultRepository(): AiContentDraftRepository {
       }));
     },
     findProject(id) {
-      return getDatabase().then((database) => database.portfolioProject.findUnique({ where: { id } })) as Promise<Record<string, unknown> | null>;
+      return getDatabase().then(async (database) => {
+        const project = await database.portfolioProject.findUnique({ where: { id } });
+        return project ? { ...project } : null;
+      });
     },
     findCycle(id) {
-      return getDatabase().then((database) => database.okrCycle.findUnique({
-        where: { id },
-        include: {
-          objectives: {
-            orderBy: { sortOrder: "asc" },
-            include: {
-              keyResults: {
-                orderBy: { sortOrder: "asc" },
-                include: {
-                  progressUpdates: { orderBy: { recordedAt: "desc" }, take: 10 },
-                  actionItems: { orderBy: { sortOrder: "asc" } },
+      return getDatabase().then(async (database) => {
+        const cycle = await database.okrCycle.findUnique({
+          where: { id },
+          include: {
+            objectives: {
+              orderBy: { sortOrder: "asc" },
+              include: {
+                keyResults: {
+                  orderBy: { sortOrder: "asc" },
+                  include: {
+                    progressUpdates: { orderBy: { recordedAt: "desc" }, take: 10 },
+                    actionItems: { orderBy: { sortOrder: "asc" } },
+                  },
                 },
               },
             },
           },
-        },
-      })) as Promise<Record<string, unknown> | null>;
+        });
+        return cycle ? { ...cycle, objectives: cycle.objectives.map((objective) => ({ ...objective })) } : null;
+      });
     },
     createDraft(value) {
       return getDatabase().then((database) => database.aiContentDraft.create({
@@ -80,7 +90,7 @@ function defaultRepository(): AiContentDraftRepository {
       }));
     },
     findDraft(id) {
-      return getDatabase().then((database) => database.aiContentDraft.findUnique({ where: { id } })) as Promise<DraftRecord | null>;
+      return getDatabase().then((database) => database.aiContentDraft.findUnique({ where: { id } }));
     },
     applyProjectDraft(id, targetId, content) {
       return getDatabase().then((database) => database.$transaction(async (transaction) => {
@@ -158,10 +168,9 @@ export function createAiContentDraftService(
     async generateOkrReview(cycleId: string, objectiveId?: string | null) {
       const cycle = await repository.findCycle(cycleId);
       if (!cycle) throw new Error("OKR 周期不存在");
-      let sourceSnapshot: Record<string, unknown> = cycle;
+      let sourceSnapshot: OkrCycleSource = cycle;
       if (objectiveId) {
-        const objectives = Array.isArray(cycle.objectives) ? cycle.objectives : [];
-        const objective = objectives.find((item) => item && typeof item === "object" && Reflect.get(item, "id") === objectiveId);
+        const objective = cycle.objectives.find((item) => item.id === objectiveId);
         if (!objective) throw new Error("Objective 不属于该周期");
         sourceSnapshot = { ...cycle, objectiveId, objectives: [objective] };
       }

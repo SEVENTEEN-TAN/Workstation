@@ -18,6 +18,10 @@ describe("service boundary types", () => {
       join(projectRoot, "src/lib/services/knowledge-collections.ts"),
       "utf8",
     );
+    const aiContentDraftSource = readFileSync(
+      join(projectRoot, "src/lib/services/ai-content-drafts.ts"),
+      "utf8",
+    );
     const aiProviderSource = readFileSync(
       join(projectRoot, "src/lib/services/ai-providers.ts"),
       "utf8",
@@ -27,6 +31,8 @@ describe("service boundary types", () => {
     expect(knowledgeArticleSource).not.toContain("as unknown as PublicKnowledgeArticle");
     expect(knowledgeArticleSource).not.toContain("as Promise<DraftRecord | null>");
     expect(knowledgeCollectionSource).not.toContain('visibility: value.visibility as "PRIVATE" | "PUBLIC"');
+    expect(aiContentDraftSource).not.toContain("as Promise<Record<string, unknown> | null>");
+    expect(aiContentDraftSource).not.toContain("as Promise<DraftRecord | null>");
     expect(aiProviderSource).not.toContain("as unknown as Prisma.AiProviderUncheckedCreateInput");
   });
 });
