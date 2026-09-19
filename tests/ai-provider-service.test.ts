@@ -107,6 +107,67 @@ describe("AI provider service", () => {
     expect(updated).not.toHaveProperty("credentialEnvVar");
   });
 
+  it("returns the admin state as JSON-safe views without credential references", async () => {
+    const timestamp = new Date("2026-09-18T03:00:00.000Z");
+    const repo = repository({
+      ...provider,
+      lastTestStatus: "SUCCESS",
+      lastTestedAt: timestamp,
+      lastTestError: null,
+      modelsRefreshedAt: timestamp,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    });
+    repo.listState = vi.fn(async () => ({
+      providers: [{
+        ...provider,
+        lastTestStatus: "SUCCESS",
+        lastTestedAt: timestamp,
+        modelsRefreshedAt: timestamp,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      }],
+      defaults: [{ useCase: "PROJECT_DESCRIPTION", providerId: "provider-1", model: "manual-model", createdAt: timestamp, updatedAt: timestamp }],
+      requestLogs: [{
+        id: "log-1", providerId: "provider-1", useCase: "CONNECTION_TEST", model: "manual-model",
+        latencyMs: 120, inputTokens: 3, outputTokens: 1, outcome: "SUCCESS", failureReason: null, createdAt: timestamp,
+      }],
+    }));
+
+    await expect(createAiProviderService(repo).listState()).resolves.toEqual({
+      providers: [{
+        id: "provider-1",
+        name: "Local OpenAI",
+        adapterKind: "OPENAI_COMPATIBLE",
+        baseUrl: "https://models.example.com/v1",
+        generationEndpoint: "/chat/completions",
+        modelEndpoint: "/models",
+        authType: "BEARER",
+        authHeaderName: null,
+        authScheme: "Bearer",
+        adapterConfig: {},
+        manualModels: ["manual-model"],
+        cachedModels: [],
+        enabled: false,
+        lastTestStatus: "SUCCESS",
+        lastTestedAt: "2026-09-18T03:00:00.000Z",
+        modelsRefreshedAt: "2026-09-18T03:00:00.000Z",
+        credentialConfigured: false,
+        createdAt: "2026-09-18T03:00:00.000Z",
+        updatedAt: "2026-09-18T03:00:00.000Z",
+      }],
+      defaults: [{
+        useCase: "PROJECT_DESCRIPTION", providerId: "provider-1", model: "manual-model",
+        createdAt: "2026-09-18T03:00:00.000Z", updatedAt: "2026-09-18T03:00:00.000Z",
+      }],
+      requestLogs: [{
+        id: "log-1", providerId: "provider-1", useCase: "CONNECTION_TEST", model: "manual-model",
+        latencyMs: 120, inputTokens: 3, outputTokens: 1, outcome: "SUCCESS", failureReason: null,
+        createdAt: "2026-09-18T03:00:00.000Z",
+      }],
+    });
+  });
+
   it("records a successful connection test without persisting prompts or responses", async () => {
     process.env.WORKSTATION_TEST_AI_KEY = "provider-secret";
     const repo = repository({ ...provider, cachedModels: ["cached-model"] });

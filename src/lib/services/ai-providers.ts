@@ -31,15 +31,70 @@ export type AiProviderRecord = {
   requestLogs?: unknown[];
 };
 
-export type AiProviderState = {
-  providers: Array<Omit<AiProviderRecord, "credentialEnvVar"> & { credentialConfigured: boolean }>;
-  defaults: unknown[];
-  requestLogs: unknown[];
+export type AiProviderData = {
+  id: string;
+  name: string;
+  adapterKind: "OPENAI_COMPATIBLE" | "ANTHROPIC_MESSAGES" | "CUSTOM_JSON";
+  baseUrl: string;
+  generationEndpoint: string;
+  modelEndpoint: string | null;
+  authType: "NONE" | "BEARER" | "X_API_KEY" | "CUSTOM_HEADER";
+  authHeaderName: string | null;
+  authScheme: string | null;
+  adapterConfig: Record<string, unknown>;
+  manualModels: string[];
+  cachedModels: string[];
+  enabled: boolean;
+  lastTestStatus: "NEVER" | "SUCCESS" | "FAILED";
+  lastTestedAt: string | null;
+  modelsRefreshedAt: string | null;
+  credentialConfigured: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AiUseCaseSettingData = {
+  useCase: "PROJECT_DESCRIPTION" | "WEEKLY_UPDATE" | "OKR_REVIEW";
+  providerId: string;
+  model: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AiRequestLogData = {
+  id: string;
+  providerId: string | null;
+  useCase: string;
+  model: string;
+  latencyMs: number;
+  inputTokens: number | null;
+  outputTokens: number | null;
+  outcome: string;
+  failureReason: string | null;
+  createdAt: string;
+};
+
+export type AiProviderStateData = {
+  providers: AiProviderData[];
+  defaults: AiUseCaseSettingData[];
+  requestLogs: AiRequestLogData[];
+};
+
+type AiUseCaseSettingRecord = Omit<AiUseCaseSettingData, "useCase" | "createdAt" | "updatedAt"> & {
+  useCase: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type AiRequestLogRecord = Omit<AiRequestLogData, "createdAt"> & {
+  createdAt: Date;
 };
 
 export type AiProviderServiceRepository = {
-  listState(): Promise<Omit<AiProviderState, "providers"> & {
+  listState(): Promise<{
     providers: AiProviderRecord[];
+    defaults: AiUseCaseSettingRecord[];
+    requestLogs: AiRequestLogRecord[];
   }>;
   findProvider(id: string): Promise<AiProviderRecord | null>;
   createProvider(value: AiProviderCreateData): Promise<AiProviderRecord>;
@@ -104,6 +159,59 @@ function publicProvider(provider: AiProviderRecord): Omit<AiProviderRecord, "cre
   const result = { ...provider, credentialConfigured: credentialConfigured(provider) };
   delete (result as Partial<AiProviderRecord>).credentialEnvVar;
   return result;
+}
+
+function nullableIso(value: Date | null): string | null {
+  return value?.toISOString() ?? null;
+}
+
+function providerView(provider: AiProviderRecord): AiProviderData {
+  return {
+    id: provider.id,
+    name: provider.name,
+    adapterKind: provider.adapterKind as AiProviderData["adapterKind"],
+    baseUrl: provider.baseUrl,
+    generationEndpoint: provider.generationEndpoint,
+    modelEndpoint: provider.modelEndpoint,
+    authType: provider.authType as AiProviderData["authType"],
+    authHeaderName: provider.authHeaderName,
+    authScheme: provider.authScheme,
+    adapterConfig: (provider.adapterConfig ?? {}) as Record<string, unknown>,
+    manualModels: modelList(provider.manualModels),
+    cachedModels: modelList(provider.cachedModels),
+    enabled: provider.enabled,
+    lastTestStatus: provider.lastTestStatus as AiProviderData["lastTestStatus"],
+    lastTestedAt: nullableIso(provider.lastTestedAt),
+    modelsRefreshedAt: nullableIso(provider.modelsRefreshedAt),
+    credentialConfigured: credentialConfigured(provider),
+    createdAt: provider.createdAt.toISOString(),
+    updatedAt: provider.updatedAt.toISOString(),
+  };
+}
+
+function useCaseSettingView(setting: AiUseCaseSettingRecord): AiUseCaseSettingData {
+  return {
+    useCase: setting.useCase as AiUseCaseSettingData["useCase"],
+    providerId: setting.providerId,
+    model: setting.model,
+    createdAt: setting.createdAt.toISOString(),
+    updatedAt: setting.updatedAt.toISOString(),
+  };
+}
+
+function requestLogView(log: AiRequestLogRecord): AiRequestLogData {
+  return {
+    id: log.id,
+    providerId: log.providerId,
+    useCase: log.useCase,
+    model: log.model,
+    latencyMs: log.latencyMs,
+    inputTokens: log.inputTokens,
+    outputTokens: log.outputTokens,
+    outcome: log.outcome,
+    failureReason: log.failureReason,
+    createdAt: log.createdAt.toISOString(),
+  };
 }
 
 function createData(input: AiProviderInput): AiProviderCreateData {
@@ -177,11 +285,12 @@ function defaultRepository(): AiProviderServiceRepository {
 
 export function createAiProviderService(repository: AiProviderServiceRepository = defaultRepository()) {
   return {
-    async listState(): Promise<AiProviderState> {
+    async listState(): Promise<AiProviderStateData> {
       const state = await repository.listState();
       return {
-        ...state,
-        providers: state.providers.map(publicProvider),
+        providers: state.providers.map(providerView),
+        defaults: state.defaults.map(useCaseSettingView),
+        requestLogs: state.requestLogs.map(requestLogView),
       };
     },
 
