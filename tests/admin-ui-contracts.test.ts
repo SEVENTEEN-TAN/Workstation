@@ -747,6 +747,15 @@ describe("homepage version safety contracts", () => {
     expect(source).toContain("setRollbackRequest(version)");
     expect(source).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="恢复为草稿"/);
   });
+
+  it("prioritizes the hero portrait without replacing the native image behavior", () => {
+    const heroSource = readProjectFile("src/components/public/Hero.tsx");
+
+    expect(heroSource).toContain('src="/images/zedian-portrait-v3.png"');
+    expect(heroSource).toContain('loading="eager"');
+    expect(heroSource).toContain('fetchPriority="high"');
+    expect(heroSource).toContain("The native image preserves the legacy browser sizing and loading behavior.");
+  });
 });
 
 describe("OKR execution workspace contracts", () => {

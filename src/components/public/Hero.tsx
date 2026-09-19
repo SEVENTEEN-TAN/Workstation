@@ -68,7 +68,7 @@ export function Hero() {
                 <div className="absolute left-1/2 top-2 z-20 h-2 w-10 -translate-x-1/2 rounded-full border border-white/10 bg-black/60 md:top-4 md:h-3 md:w-16" />
                 {/* The native image preserves the legacy browser sizing and loading behavior. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/images/zedian-portrait-v3.png" alt={copy.hero.portraitAlt} width="1024" height="1280" loading="eager" className="h-full w-full rounded-[1rem] object-cover grayscale-[0.1] md:rounded-[1.55rem]" />
+                <img src="/images/zedian-portrait-v3.png" alt={copy.hero.portraitAlt} width="1024" height="1280" loading="eager" fetchPriority="high" className="h-full w-full rounded-[1rem] object-cover grayscale-[0.1] md:rounded-[1.55rem]" />
                 <div className="absolute inset-x-0 bottom-0 rounded-b-[1rem] bg-gradient-to-t from-[#090c10] via-[#090c10]/85 to-transparent px-3 pb-3 pt-14 md:rounded-b-[1.55rem] md:px-7 md:pb-7 md:pt-28">
                   <div className="mb-1.5 h-px w-full bg-gradient-to-r from-accent/70 to-transparent md:mb-3" />
                   <p className="font-display text-base font-extrabold tracking-tight md:text-3xl">SEVENTEEN<span className="text-accent">.</span></p>
