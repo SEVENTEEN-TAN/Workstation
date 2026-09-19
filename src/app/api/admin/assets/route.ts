@@ -15,5 +15,5 @@ export async function POST(request: Request) {
       const asset = await saveImageAsset(file, String(form.get("altTextZh") ?? ""), String(form.get("altTextEn") ?? ""));
       return Response.json({ ...asset, url: `/api/assets/${asset.id}` }, { status: 201 });
     } catch (error) { return jsonError(error); }
-  });
+  }, request);
 }

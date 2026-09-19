@@ -36,6 +36,22 @@ model Session {
   @@map("sessions")
 }
 
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  method     String
+  path       String
+  targetId   String?  @map("target_id")
+  statusCode Int      @map("status_code")
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
 model SiteVersion {
   id          String    @id @default(cuid())
   version     Int       @unique

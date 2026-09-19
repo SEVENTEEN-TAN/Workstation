@@ -11,7 +11,7 @@ export async function PATCH(request: Request, context: Context) {
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }
 
 export async function PUT(request: Request, context: Context) {
@@ -24,15 +24,15 @@ export async function PUT(request: Request, context: Context) {
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }
 
-export async function DELETE(_request: Request, context: Context) {
+export async function DELETE(request: Request, context: Context) {
   return withAdminSession(async () => {
     try {
       return Response.json(await (await getAssetLibraryService()).delete((await context.params).id));
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }

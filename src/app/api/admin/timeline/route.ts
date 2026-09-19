@@ -6,12 +6,12 @@ export async function GET() {
   return withAdminSession(async () => Response.json(await careerTimelineDraftService.list()));
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   return withAdminSession(async () => {
     try {
       return Response.json(await careerTimelineDraftService.sync());
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }

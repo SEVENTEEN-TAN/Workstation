@@ -11,5 +11,5 @@ export async function PATCH(request: Request, context: Context) {
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }

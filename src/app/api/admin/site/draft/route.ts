@@ -13,5 +13,5 @@ export async function PUT(request: Request) {
       if (!body.id) throw new Error("缺少草稿 ID");
       return Response.json(await (await getSiteContentService()).saveDraft(body.id, body.content));
     } catch (error) { return jsonError(error); }
-  });
+  }, request);
 }

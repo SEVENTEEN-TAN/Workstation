@@ -9,6 +9,7 @@ coverage/
 /prisma/*.db-journal
 /prisma/*.db-shm
 /prisma/*.db-wal
+/workstation.db*
 /uploads/
 /backups/
 /.superpowers/

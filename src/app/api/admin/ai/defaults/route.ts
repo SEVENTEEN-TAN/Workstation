@@ -19,5 +19,5 @@ export async function PUT(request: Request) {
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }

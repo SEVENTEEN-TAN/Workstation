@@ -14,5 +14,5 @@ export async function POST(request: Request) {
     } catch (error) {
       return jsonError(error);
     }
-  });
+  }, request);
 }

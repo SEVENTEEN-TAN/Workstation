@@ -7,5 +7,5 @@ export async function PUT(request: Request) {
   return withAdminSession(async () => {
     try { return Response.json(await configureGitHubSync(await readJson(request))); }
     catch (error) { return jsonError(error); }
-  });
+  }, request);
 }

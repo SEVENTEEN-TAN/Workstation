@@ -9,5 +9,5 @@ export async function POST(request: Request) {
       if (!id) throw new Error("缺少版本 ID");
       return Response.json(await (await getSiteContentService()).rollback(id, session!.userId));
     } catch (error) { return jsonError(error); }
-  });
+  }, request);
 }
