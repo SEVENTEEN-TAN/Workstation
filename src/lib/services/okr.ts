@@ -349,9 +349,16 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
           : await db!.keyResult.findUnique({ where: { id: patch.keyResultId }, select: { id: true } });
         if (!keyResult) throw new Error("Key Result 不存在");
       }
-      const values = Object.fromEntries(
-        Object.keys(patch).map((key) => [key, normalized[key as keyof typeof normalized]]),
-      ) as Prisma.ActionItemUncheckedUpdateInput;
+      const values: Prisma.ActionItemUncheckedUpdateInput = {};
+      if (patch.keyResultId !== undefined) values.keyResultId = normalized.keyResultId;
+      if (patch.titleZh !== undefined) values.titleZh = normalized.titleZh;
+      if (patch.titleEn !== undefined) values.titleEn = normalized.titleEn;
+      if (patch.status !== undefined) values.status = normalized.status;
+      if (patch.dueDate !== undefined) values.dueDate = normalized.dueDate ?? null;
+      if (patch.sortOrder !== undefined) values.sortOrder = normalized.sortOrder;
+      if (patch.recurrenceType !== undefined) values.recurrenceType = normalized.recurrenceType;
+      if (patch.recurrenceInterval !== undefined) values.recurrenceInterval = normalized.recurrenceInterval;
+      if (patch.recurrenceDays !== undefined) values.recurrenceDays = normalized.recurrenceDays;
       if (patch.status === "DONE") values.completedAt = existing.completedAt ?? new Date();
       if (patch.status && patch.status !== "DONE") values.completedAt = null;
       return repositoryOverride?.updateActionItem
