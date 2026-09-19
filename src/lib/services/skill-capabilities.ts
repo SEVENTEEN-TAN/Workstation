@@ -30,6 +30,40 @@ export type SkillAreaRecord = Omit<SkillAreaInput, "skills"> & {
   skills: SkillRecord[];
 };
 
+export type ProjectSkillEvidenceData = {
+  id: string;
+  kind: "PROJECT";
+  projectId: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ArticleSkillEvidenceData = {
+  id: string;
+  kind: "ARTICLE";
+  titleZh: string;
+  titleEn: string | null;
+  url: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SkillEvidenceData = ProjectSkillEvidenceData | ArticleSkillEvidenceData;
+
+export type SkillData = Omit<SkillRecord, "createdAt" | "updatedAt" | "evidence"> & {
+  createdAt: string;
+  updatedAt: string;
+  evidence: SkillEvidenceData[];
+};
+
+export type SkillAreaData = Omit<SkillAreaRecord, "createdAt" | "updatedAt" | "skills"> & {
+  createdAt: string;
+  updatedAt: string;
+  skills: SkillData[];
+};
+
 export type PublicSkillEvidence = {
   id: string;
   kind: "PROJECT" | "ARTICLE";
@@ -139,6 +173,43 @@ function areaWrite(value: SkillAreaInput) {
   };
 }
 
+function toAdminEvidence(evidence: SkillEvidenceRecord): SkillEvidenceData {
+  const base = {
+    id: evidence.id,
+    sortOrder: evidence.sortOrder,
+    createdAt: evidence.createdAt.toISOString(),
+    updatedAt: evidence.updatedAt.toISOString(),
+  };
+
+  return evidence.kind === "PROJECT"
+    ? { ...base, kind: evidence.kind, projectId: evidence.projectId }
+    : {
+      ...base,
+      kind: evidence.kind,
+      titleZh: evidence.titleZh,
+      titleEn: evidence.titleEn,
+      url: evidence.url,
+    };
+}
+
+function toAdminSkill(skill: SkillRecord): SkillData {
+  return {
+    ...skill,
+    createdAt: skill.createdAt.toISOString(),
+    updatedAt: skill.updatedAt.toISOString(),
+    evidence: skill.evidence.map(toAdminEvidence),
+  };
+}
+
+function toAdminArea(area: SkillAreaRecord): SkillAreaData {
+  return {
+    ...area,
+    createdAt: area.createdAt.toISOString(),
+    updatedAt: area.updatedAt.toISOString(),
+    skills: area.skills.map(toAdminSkill),
+  };
+}
+
 const include = {
   skills: {
     orderBy: { sortOrder: "asc" as const },
@@ -226,7 +297,7 @@ export function createSkillCapabilityService(
   }
 
   return {
-    list: () => source.listAreas(),
+    list: async (): Promise<SkillAreaData[]> => (await source.listAreas()).map(toAdminArea),
     create: (input: unknown) => source.createArea(skillAreaInputSchema.parse(input)),
     async update(id: string, input: unknown) {
       const patch = skillAreaPatchSchema.parse(input);

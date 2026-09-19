@@ -1,5 +1,4 @@
 import { SkillAreasWorkspace } from "@/components/admin/SkillAreasWorkspace";
-import type { SkillAreaData } from "@/components/admin/types";
 import { portfolioProjectService } from "@/lib/services/portfolio-projects";
 import { skillCapabilityService } from "@/lib/services/skill-capabilities";
 
@@ -11,7 +10,7 @@ export default async function AdminSkillsPage() {
 
   return (
     <SkillAreasWorkspace
-      initialAreas={JSON.parse(JSON.stringify(areas)) as SkillAreaData[]}
+      initialAreas={areas}
       projects={projects}
     />
   );

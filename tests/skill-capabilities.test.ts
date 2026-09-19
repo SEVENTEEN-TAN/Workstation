@@ -171,6 +171,37 @@ describe("skill capability service", () => {
     expect(calls[1].value).toMatchObject({ descriptionZh: "更新后的说明", nameZh: "后端工程" });
   });
 
+  it("returns the admin list as JSON-safe skill area views", async () => {
+    const area = record();
+    area.createdAt = new Date("2026-09-15T01:00:00.000Z");
+    area.updatedAt = new Date("2026-09-15T02:00:00.000Z");
+    area.skills[0]!.createdAt = new Date("2026-09-15T03:00:00.000Z");
+    area.skills[0]!.updatedAt = new Date("2026-09-15T04:00:00.000Z");
+    area.skills[0]!.evidence[0]!.createdAt = new Date("2026-09-15T05:00:00.000Z");
+    area.skills[0]!.evidence[0]!.updatedAt = new Date("2026-09-15T06:00:00.000Z");
+    const service = createSkillCapabilityService({
+      async listAreas() { return [area]; },
+      async findArea() { return null; },
+      async createArea() { throw new Error("not used"); },
+      async replaceArea() { throw new Error("not used"); },
+      async deleteArea() { throw new Error("not used"); },
+    });
+
+    const [view] = await service.list();
+    expect(view).toMatchObject({
+      createdAt: "2026-09-15T01:00:00.000Z",
+      updatedAt: "2026-09-15T02:00:00.000Z",
+    });
+    expect(view?.skills[0]).toMatchObject({
+      createdAt: "2026-09-15T03:00:00.000Z",
+      updatedAt: "2026-09-15T04:00:00.000Z",
+    });
+    expect(view?.skills[0]?.evidence[0]).toMatchObject({
+      createdAt: "2026-09-15T05:00:00.000Z",
+      updatedAt: "2026-09-15T06:00:00.000Z",
+    });
+  });
+
   it("returns public areas with only public skills and resolvable evidence", async () => {
     const publicArea = record({
       skills: [
