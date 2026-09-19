@@ -49,7 +49,8 @@ describe("article attachment persistence", () => {
   it("includes attachment snapshots in backup and restore contracts", () => {
     expect(readProjectFile("scripts/backup.ts")).toContain("resolveArticleAttachmentRoot");
     expect(readProjectFile("scripts/backup.ts")).toContain('"article-attachments"');
+    expect(readProjectFile("src/lib/backup/paths.ts")).toContain('"article-attachments"');
     expect(readProjectFile("scripts/restore.ts")).toContain("resolveArticleAttachmentRoot");
-    expect(readProjectFile("scripts/restore.ts")).toContain('"article-attachments"');
+    expect(readProjectFile("scripts/restore.ts")).toContain("source.attachmentsPath");
   });
 });

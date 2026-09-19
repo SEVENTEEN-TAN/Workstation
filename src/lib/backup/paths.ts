@@ -1,4 +1,4 @@
-import { access } from "node:fs/promises";
+import { access, stat } from "node:fs/promises";
 import path from "node:path";
 
 export function resolveDatabaseFile(databaseUrl: string, projectRoot = process.cwd()) {
@@ -25,6 +25,8 @@ export async function validateRestoreSource(sourceDirectory: string) {
   const directory = path.resolve(sourceDirectory);
   const manifestPath = path.join(directory, "manifest.json");
   const databasePath = path.join(directory, "workstation.db");
+  const uploadsPath = await optionalRestoreDirectory(path.join(directory, "uploads"), "uploads");
+  const attachmentsPath = await optionalRestoreDirectory(path.join(directory, "article-attachments"), "article-attachments");
 
   try {
     await Promise.all([access(manifestPath), access(databasePath)]);
@@ -32,5 +34,16 @@ export async function validateRestoreSource(sourceDirectory: string) {
     throw new Error("备份目录不完整：缺少 manifest.json 或 workstation.db");
   }
 
-  return { directory, manifestPath, databasePath };
+  return { directory, manifestPath, databasePath, uploadsPath, attachmentsPath };
+}
+
+async function optionalRestoreDirectory(candidate: string, name: string) {
+  try {
+    const result = await stat(candidate);
+    if (!result.isDirectory()) throw new Error(`备份目录不完整：${name} 不是目录`);
+    return candidate;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
 }

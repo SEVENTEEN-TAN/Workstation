@@ -30,16 +30,14 @@ async function main() {
     rm(`${databasePath}-shm`, { force: true }),
   ]);
 
-  const sourceUploads = path.join(source.directory, "uploads");
-  await rm(uploadRoot, { recursive: true, force: true });
-  await cp(sourceUploads, uploadRoot, { recursive: true }).catch((error: NodeJS.ErrnoException) => {
-    if (error.code !== "ENOENT") throw error;
-  });
-  const sourceAttachments = path.join(source.directory, "article-attachments");
-  await rm(attachmentRoot, { recursive: true, force: true });
-  await cp(sourceAttachments, attachmentRoot, { recursive: true }).catch((error: NodeJS.ErrnoException) => {
-    if (error.code !== "ENOENT") throw error;
-  });
+  if (source.uploadsPath) {
+    await rm(uploadRoot, { recursive: true, force: true });
+    await cp(source.uploadsPath, uploadRoot, { recursive: true });
+  }
+  if (source.attachmentsPath) {
+    await rm(attachmentRoot, { recursive: true, force: true });
+    await cp(source.attachmentsPath, attachmentRoot, { recursive: true });
+  }
   console.log(`已从 ${source.directory} 恢复。启动服务前请运行 npm run db:validate。`);
 }
 
