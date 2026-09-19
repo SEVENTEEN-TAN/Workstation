@@ -27,6 +27,11 @@ export type ResumeFileRecord = ResumeStoredFile & {
   updatedAt: Date;
 };
 
+export type ResumeFileData = Omit<ResumeFileRecord, "storagePath" | "createdAt" | "updatedAt"> & {
+  createdAt: string;
+  updatedAt: string;
+};
+
 type ResumeFileCreateData = ResumeStoredFile & {
   locale: ResumeLocale;
   visibility: ResumeVisibility;
@@ -122,9 +127,25 @@ export function createResumeFileService(
   removeFile: (path: string) => Promise<void> = removeResumeFile,
   storeFile: (file: File) => Promise<ResumeStoredFile> = writeResumeFile,
 ) {
+  const toAdminFile = (file: ResumeFileRecord): ResumeFileData => {
+    return {
+      id: file.id,
+      locale: file.locale,
+      originalFilename: file.originalFilename,
+      mimeType: file.mimeType,
+      sizeBytes: file.sizeBytes,
+      sha256: file.sha256,
+      visibility: file.visibility,
+      createdAt: file.createdAt.toISOString(),
+      updatedAt: file.updatedAt.toISOString(),
+    };
+  };
+
   return {
     async list() {
-      return (await repository.listFiles()).sort((left, right) => left.locale.localeCompare(right.locale));
+      return (await repository.listFiles())
+        .sort((left, right) => left.locale.localeCompare(right.locale))
+        .map(toAdminFile);
     },
     async upload(localeInput: unknown, file: File) {
       const locale = parseResumeLocale(localeInput);

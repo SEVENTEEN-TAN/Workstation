@@ -29,7 +29,7 @@ export type PublicResumeSources = {
   loadProjects: () => Promise<PortfolioProjectRecord[]>;
   loadSkills: () => Promise<PublicSkillArea[]>;
   loadActivities: () => Promise<CareerActivityRecord[]>;
-  loadResumeFiles: () => Promise<ResumeFileRecord[]>;
+  loadResumeFiles: () => Promise<Array<Pick<ResumeFileRecord, "locale" | "visibility">>>;
 };
 
 function serialize<T>(value: T): Serializable<T> {

@@ -88,6 +88,26 @@ describe("resume PDF validation", () => {
 });
 
 describe("resume file lifecycle", () => {
+  it("returns the admin list as JSON-safe resume views without storage paths", async () => {
+    const current = record({
+      createdAt: new Date("2026-09-01T08:00:00.000Z"),
+      updatedAt: new Date("2026-09-02T09:00:00.000Z"),
+    });
+    const service = createResumeFileService(repository([current]).source);
+
+    await expect(service.list()).resolves.toEqual([{
+      id: "resume-zh",
+      locale: "ZH",
+      originalFilename: "old.pdf",
+      mimeType: "application/pdf",
+      sizeBytes: 8,
+      sha256: "old-hash",
+      visibility: "PUBLIC",
+      createdAt: "2026-09-01T08:00:00.000Z",
+      updatedAt: "2026-09-02T09:00:00.000Z",
+    }]);
+  });
+
   it("creates a missing locale as private", async () => {
     const repo = repository();
     const stored: ResumeStoredFile = {

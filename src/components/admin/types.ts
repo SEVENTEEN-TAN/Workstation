@@ -192,17 +192,7 @@ export type {
   SkillEvidenceData,
 } from "../../lib/services/skill-capabilities";
 
-export interface ResumeFileData {
-  id: string;
-  locale: "ZH" | "EN";
-  originalFilename: string;
-  mimeType: "application/pdf";
-  sizeBytes: number;
-  sha256: string;
-  visibility: "PRIVATE" | "PUBLIC";
-  createdAt: string;
-  updatedAt: string;
-}
+export type { ResumeFileData } from "../../lib/services/resume-files";
 
 export interface KnowledgeNoteData {
   id: string;
