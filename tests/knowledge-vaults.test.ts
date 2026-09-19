@@ -17,6 +17,149 @@ const vault = {
 };
 
 describe("knowledge vault service", () => {
+  it("returns vault lists as JSON-safe views", async () => {
+    const createdAt = new Date("2026-09-01T08:00:00.000Z");
+    const updatedAt = new Date("2026-09-02T08:00:00.000Z");
+    const indexedAt = new Date("2026-09-03T08:00:00.000Z");
+    const modifiedAt = new Date("2026-09-03T09:00:00.000Z");
+    const capturedAt = new Date("2026-09-04T08:00:00.000Z");
+    const publishedAt = new Date("2026-09-05T08:00:00.000Z");
+    const scannedAt = new Date("2026-09-06T08:00:00.000Z");
+    const reviewedAt = new Date("2026-09-06T09:00:00.000Z");
+    const iso = (value: Date) => value.toISOString();
+    const record = {
+      id: "vault-1",
+      name: "Personal Tech",
+      rootPath: "F:\\Project\\Obsidian\\PersonalTech",
+      enabled: true,
+      ignorePatterns: ["private"],
+      lastScanStatus: "SUCCESS",
+      lastScannedAt: scannedAt,
+      lastScanFileCount: 1,
+      lastScanError: null,
+      createdAt,
+      updatedAt,
+      notes: [{
+        id: "note-1",
+        vaultId: "vault-1",
+        relativePath: "notes/a.md",
+        fileName: "a.md",
+        directoryPath: "notes",
+        sizeBytes: 12,
+        modifiedAt,
+        contentHash: "hash-a",
+        visibility: "PRIVATE",
+        hasFrontmatter: true,
+        hasWikilinks: true,
+        hasEmbeds: false,
+        hasCallouts: false,
+        hasDataview: false,
+        hasTasks: true,
+        isMoc: false,
+        frontmatterJson: null,
+        indexedAt,
+      }],
+      noteLinks: [{
+        id: "link-1",
+        vaultId: "vault-1",
+        kind: "LINK",
+        sourceRelativePath: "notes/a.md",
+        targetRaw: "[[b]]",
+        targetRelativePath: "notes/b.md",
+        targetHeading: null,
+        displayLabel: "b",
+        isResolved: true,
+        indexedAt,
+      }],
+      sourceRevisions: [{
+        id: "revision-1",
+        vaultId: "vault-1",
+        relativePath: "notes/a.md",
+        contentHash: "hash-a",
+        origin: "LOCAL_SCAN",
+        capturedAt,
+        draft: {
+          id: "draft-1",
+          sourceRevisionId: "revision-1",
+          sourceHash: "hash-a",
+          title: "A",
+          summary: "Note A",
+          tags: ["obsidian"],
+          status: "DRAFT",
+          createdAt,
+          updatedAt,
+          attachments: [{ id: "attachment-1", target: "assets/a.png", assetId: "asset-1" }],
+          article: { id: "article-1", draftId: "draft-1", slug: "a", publishedAt },
+        },
+      }],
+      syncReports: [{
+        id: "report-1",
+        vaultId: "vault-1",
+        scannedAt,
+        addedCount: 1,
+        modifiedCount: 0,
+        movedCount: 0,
+        missingCount: 0,
+        unchangedCount: 0,
+        changes: [{
+          id: "change-1",
+          type: "ADDED",
+          previousRelativePath: null,
+          currentRelativePath: "notes/a.md",
+          previousContentHash: null,
+          currentContentHash: "hash-a",
+          previousModifiedAt: null,
+          currentModifiedAt: modifiedAt,
+          reviewDecision: "ACKNOWLEDGED",
+          reviewedAt,
+        }],
+      }],
+    };
+    const service = createKnowledgeVaultService({
+      async listVaults() { return [record]; },
+      async findVault() { return null; },
+      async createVault() { throw new Error("not used"); },
+      async updateVault() { throw new Error("not used"); },
+      async deleteVault() { throw new Error("not used"); },
+      async replaceIndex() { throw new Error("not used"); },
+      async markScanFailed() { throw new Error("not used"); },
+      async findLatestSourceRevision() { return null; },
+    });
+
+    await expect(service.list()).resolves.toEqual([{
+      ...record,
+      lastScannedAt: iso(scannedAt),
+      createdAt: iso(createdAt),
+      updatedAt: iso(updatedAt),
+      notes: [{ ...record.notes[0], modifiedAt: iso(modifiedAt), indexedAt: iso(indexedAt) }],
+      noteLinks: [{ ...record.noteLinks[0], indexedAt: iso(indexedAt) }],
+      sourceRevisions: [{
+        ...record.sourceRevisions[0],
+        capturedAt: iso(capturedAt),
+        draft: {
+          ...record.sourceRevisions[0].draft,
+          createdAt: iso(createdAt),
+          updatedAt: iso(updatedAt),
+          article: { ...record.sourceRevisions[0].draft.article, publishedAt: iso(publishedAt) },
+        },
+      }],
+      syncReports: [{
+        id: "report-1",
+        scannedAt: iso(scannedAt),
+        addedCount: 1,
+        modifiedCount: 0,
+        movedCount: 0,
+        missingCount: 0,
+        unchangedCount: 0,
+        changes: [{
+          ...record.syncReports[0].changes[0],
+          currentModifiedAt: iso(modifiedAt),
+          reviewedAt: iso(reviewedAt),
+        }],
+      }],
+    }]);
+  });
+
   it("keeps only unseen path and hash pairs for append-only source revisions", () => {
     const rows = sourceRevisionRows("vault-1", new Date("2026-09-17T00:00:00.000Z"), [{
       relativePath: "notes/a.md",

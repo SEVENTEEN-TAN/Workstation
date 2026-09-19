@@ -5,6 +5,118 @@ import { scanVault, type ScannedKnowledgeLink, type ScannedKnowledgeNote, type V
 import { buildKnowledgeSyncReport, type KnowledgeNoteSnapshot, type KnowledgeSyncReportInput } from "../knowledge/sync-report";
 import { knowledgeVaultInputSchema, knowledgeVaultPatchSchema } from "../validators/knowledge-vaults";
 
+export type KnowledgeNoteData = {
+  id: string;
+  vaultId: string;
+  relativePath: string;
+  fileName: string;
+  directoryPath: string;
+  sizeBytes: number;
+  modifiedAt: string;
+  contentHash: string;
+  visibility: "PRIVATE" | "PUBLIC";
+  hasFrontmatter: boolean;
+  hasWikilinks: boolean;
+  hasEmbeds: boolean;
+  hasCallouts: boolean;
+  hasDataview: boolean;
+  hasTasks: boolean;
+  isMoc: boolean;
+  frontmatterJson: string | null;
+  indexedAt: string;
+};
+
+export type KnowledgeNoteLinkData = {
+  id: string;
+  kind: "LINK" | "EMBED";
+  sourceRelativePath: string;
+  targetRaw: string;
+  targetRelativePath: string | null;
+  targetHeading: string | null;
+  displayLabel: string | null;
+  isResolved: boolean;
+  indexedAt: string;
+};
+
+export type KnowledgePublicationDraftAttachmentData = {
+  id: string;
+  target: string;
+  assetId: string;
+};
+
+export type KnowledgeArticleData = {
+  id: string;
+  draftId: string;
+  slug: string;
+  publishedAt: string;
+};
+
+export type KnowledgePublicationDraftData = {
+  id: string;
+  sourceRevisionId: string;
+  sourceHash: string;
+  title: string;
+  summary: string | null;
+  tags: string[];
+  status: "DRAFT";
+  createdAt: string;
+  updatedAt: string;
+  attachments: KnowledgePublicationDraftAttachmentData[];
+  article: KnowledgeArticleData | null;
+};
+
+export type KnowledgeSourceRevisionData = {
+  id: string;
+  vaultId: string;
+  relativePath: string;
+  contentHash: string;
+  origin: "LOCAL_SCAN" | "WINDOWS_SYNC";
+  capturedAt: string;
+  draft: KnowledgePublicationDraftData | null;
+};
+
+export type KnowledgeSyncChangeData = {
+  id: string;
+  type: "ADDED" | "MODIFIED" | "MOVED" | "MISSING";
+  previousRelativePath: string | null;
+  currentRelativePath: string | null;
+  previousContentHash: string | null;
+  currentContentHash: string | null;
+  previousModifiedAt: string | null;
+  currentModifiedAt: string | null;
+  reviewDecision: "ACKNOWLEDGED" | "IGNORED" | null;
+  reviewedAt: string | null;
+};
+
+export type KnowledgeSyncReportData = {
+  id: string;
+  scannedAt: string;
+  addedCount: number;
+  modifiedCount: number;
+  movedCount: number;
+  missingCount: number;
+  unchangedCount: number;
+  changes: KnowledgeSyncChangeData[];
+};
+
+export type KnowledgeVaultData = {
+  id: string;
+  name: string;
+  rootPath: string;
+  enabled: boolean;
+  ignorePatterns: string[];
+  lastScanStatus: "NEVER" | "SUCCESS" | "FAILED";
+  lastScannedAt: string | null;
+  lastScanFileCount: number;
+  lastScanError: string | null;
+  createdAt: string;
+  updatedAt: string;
+  notes: KnowledgeNoteData[];
+  noteLinks: KnowledgeNoteLinkData[];
+  sourceRevisions: KnowledgeSourceRevisionData[];
+  syncReports: KnowledgeSyncReportData[];
+};
+
 export type KnowledgeVaultRecord = {
   id: string;
   name: string;
@@ -18,8 +130,63 @@ export type KnowledgeVaultRecord = {
   notes?: KnowledgeNoteSnapshot[];
 };
 
+type KnowledgeNoteRecord = Omit<KnowledgeNoteData, "visibility" | "modifiedAt" | "indexedAt"> & {
+  visibility: string;
+  modifiedAt: Date;
+  indexedAt: Date;
+};
+type KnowledgeNoteLinkRecord = Omit<KnowledgeNoteLinkData, "kind" | "indexedAt"> & {
+  kind: string;
+  indexedAt: Date;
+};
+type KnowledgeArticleRecord = Omit<KnowledgeArticleData, "publishedAt"> & { publishedAt: Date };
+type KnowledgePublicationDraftRecord = Omit<
+  KnowledgePublicationDraftData,
+  "tags" | "status" | "createdAt" | "updatedAt" | "attachments" | "article"
+> & {
+  tags: unknown;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  attachments: KnowledgePublicationDraftAttachmentData[];
+  article: KnowledgeArticleRecord | null;
+};
+type KnowledgeSourceRevisionRecord = Omit<KnowledgeSourceRevisionData, "origin" | "capturedAt" | "draft"> & {
+  origin: string;
+  capturedAt: Date;
+  draft: KnowledgePublicationDraftRecord | null;
+};
+type KnowledgeSyncChangeRecord = Omit<
+  KnowledgeSyncChangeData,
+  "type" | "previousModifiedAt" | "currentModifiedAt" | "reviewDecision" | "reviewedAt"
+> & {
+  type: string;
+  previousModifiedAt: Date | null;
+  currentModifiedAt: Date | null;
+  reviewDecision: string | null;
+  reviewedAt: Date | null;
+};
+type KnowledgeSyncReportRecord = Omit<KnowledgeSyncReportData, "scannedAt" | "changes"> & {
+  scannedAt: Date;
+  changes: KnowledgeSyncChangeRecord[];
+};
+type KnowledgeVaultListRecord = Omit<
+  KnowledgeVaultData,
+  "ignorePatterns" | "lastScanStatus" | "lastScannedAt" | "createdAt" | "updatedAt" | "notes" | "noteLinks" | "sourceRevisions" | "syncReports"
+> & {
+  ignorePatterns: unknown;
+  lastScanStatus: string;
+  lastScannedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  notes: KnowledgeNoteRecord[];
+  noteLinks: KnowledgeNoteLinkRecord[];
+  sourceRevisions: KnowledgeSourceRevisionRecord[];
+  syncReports: KnowledgeSyncReportRecord[];
+};
+
 type KnowledgeVaultRepository = {
-  listVaults(): Promise<KnowledgeVaultRecord[]>;
+  listVaults(): Promise<KnowledgeVaultListRecord[]>;
   findVault(id: string): Promise<KnowledgeVaultRecord | null>;
   createVault(value: { name: string; rootPath: string; enabled: boolean; ignorePatterns: string[] }): Promise<unknown>;
   updateVault(id: string, value: {
@@ -52,8 +219,92 @@ const vaultDetailsInclude = {
   syncReports: { orderBy: { scannedAt: "desc" }, take: 1, include: { changes: true } },
 } satisfies Prisma.KnowledgeVaultInclude;
 
-function parseIgnorePatterns(value: unknown): string[] {
+function parseStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function optionalIso(value: Date | null): string | null {
+  return value?.toISOString() ?? null;
+}
+
+function toKnowledgeNoteData(record: KnowledgeNoteRecord): KnowledgeNoteData {
+  return {
+    ...record,
+    visibility: record.visibility as KnowledgeNoteData["visibility"],
+    modifiedAt: record.modifiedAt.toISOString(),
+    indexedAt: record.indexedAt.toISOString(),
+  };
+}
+
+function toKnowledgeNoteLinkData(record: KnowledgeNoteLinkRecord): KnowledgeNoteLinkData {
+  return {
+    ...record,
+    kind: record.kind as KnowledgeNoteLinkData["kind"],
+    indexedAt: record.indexedAt.toISOString(),
+  };
+}
+
+function toKnowledgeArticleData(record: KnowledgeArticleRecord): KnowledgeArticleData {
+  return { ...record, publishedAt: record.publishedAt.toISOString() };
+}
+
+function toKnowledgePublicationDraftData(record: KnowledgePublicationDraftRecord | null): KnowledgePublicationDraftData | null {
+  return record && {
+    ...record,
+    tags: parseStringArray(record.tags),
+    status: record.status as KnowledgePublicationDraftData["status"],
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+    article: record.article && toKnowledgeArticleData(record.article),
+  };
+}
+
+function toKnowledgeSourceRevisionData(record: KnowledgeSourceRevisionRecord): KnowledgeSourceRevisionData {
+  return {
+    ...record,
+    origin: record.origin as KnowledgeSourceRevisionData["origin"],
+    capturedAt: record.capturedAt.toISOString(),
+    draft: toKnowledgePublicationDraftData(record.draft),
+  };
+}
+
+function toKnowledgeSyncChangeData(record: KnowledgeSyncChangeRecord): KnowledgeSyncChangeData {
+  return {
+    ...record,
+    type: record.type as KnowledgeSyncChangeData["type"],
+    previousModifiedAt: optionalIso(record.previousModifiedAt),
+    currentModifiedAt: optionalIso(record.currentModifiedAt),
+    reviewDecision: record.reviewDecision as KnowledgeSyncChangeData["reviewDecision"],
+    reviewedAt: optionalIso(record.reviewedAt),
+  };
+}
+
+function toKnowledgeSyncReportData(record: KnowledgeSyncReportRecord): KnowledgeSyncReportData {
+  return {
+    id: record.id,
+    scannedAt: record.scannedAt.toISOString(),
+    addedCount: record.addedCount,
+    modifiedCount: record.modifiedCount,
+    movedCount: record.movedCount,
+    missingCount: record.missingCount,
+    unchangedCount: record.unchangedCount,
+    changes: record.changes.map(toKnowledgeSyncChangeData),
+  };
+}
+
+function toKnowledgeVaultData(record: KnowledgeVaultListRecord): KnowledgeVaultData {
+  return {
+    ...record,
+    ignorePatterns: parseStringArray(record.ignorePatterns),
+    lastScanStatus: record.lastScanStatus as KnowledgeVaultData["lastScanStatus"],
+    lastScannedAt: optionalIso(record.lastScannedAt),
+    createdAt: record.createdAt.toISOString(),
+    updatedAt: record.updatedAt.toISOString(),
+    notes: record.notes.map(toKnowledgeNoteData),
+    noteLinks: record.noteLinks.map(toKnowledgeNoteLinkData),
+    sourceRevisions: record.sourceRevisions.map(toKnowledgeSourceRevisionData),
+    syncReports: record.syncReports.map(toKnowledgeSyncReportData),
+  };
 }
 
 function noteData(vaultId: string, indexedAt: Date, note: ScannedKnowledgeNote) {
@@ -181,7 +432,9 @@ export function createKnowledgeVaultService(
   scanner: (rootPath: string, ignorePatterns: readonly string[]) => Promise<VaultScanResult> = scanVault,
 ) {
   return {
-    list: () => repository.listVaults(),
+    async list(): Promise<KnowledgeVaultData[]> {
+      return (await repository.listVaults()).map(toKnowledgeVaultData);
+    },
     create: (input: unknown) => repository.createVault(knowledgeVaultInputSchema.parse(input)),
     async update(id: string, input: unknown) {
       const patch = knowledgeVaultPatchSchema.parse(input);
@@ -189,7 +442,7 @@ export function createKnowledgeVaultService(
       if (!current) throw new Error("Knowledge vault not found");
       const complete = knowledgeVaultInputSchema.parse({
         ...current,
-        ignorePatterns: parseIgnorePatterns(current.ignorePatterns),
+        ignorePatterns: parseStringArray(current.ignorePatterns),
         ...patch,
       });
       const update: Parameters<typeof repository.updateVault>[1] = {};
@@ -218,7 +471,7 @@ export function createKnowledgeVaultService(
       if (!current) throw new Error("Knowledge vault not found");
       if (!current.enabled) throw new Error("Vault is disabled");
       try {
-        const result = await scanner(current.rootPath, parseIgnorePatterns(current.ignorePatterns));
+        const result = await scanner(current.rootPath, parseStringArray(current.ignorePatterns));
         const report = buildKnowledgeSyncReport(current.notes ?? [], result.notes.map((note) => ({
           relativePath: note.relativePath,
           contentHash: note.sha256,
