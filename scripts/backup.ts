@@ -4,6 +4,7 @@ import process from "node:process";
 
 import { buildHomepageBaseline } from "../src/lib/backup/homepage-baseline";
 import { resolveArticleAttachmentRoot } from "../src/lib/backup/paths";
+import { pruneExpiredBackups } from "../src/lib/backup/retention";
 import { getDatabase } from "../src/lib/db";
 
 function timestamp() {
@@ -58,7 +59,15 @@ async function main() {
     JSON.stringify(homepageBaseline, null, 2),
     "utf8",
   );
+  const retentionDays = Number.parseInt(process.env.BACKUP_RETENTION_DAYS ?? "30", 10);
+  const prunedBackups = await pruneExpiredBackups(backupRoot, {
+    retentionDays: Number.isFinite(retentionDays) && retentionDays > 0 ? retentionDays : 30,
+    exclude: [path.basename(destination)],
+  });
   console.log(destination);
+  if (prunedBackups.length > 0) {
+    console.log(`Pruned ${prunedBackups.length} expired backup(s).`);
+  }
 }
 
 main().catch((error) => {

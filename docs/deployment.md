@@ -62,7 +62,25 @@ npm run db:backup
 
 备份会生成 SQLite 快照、上传文件、文章附件快照、公开图片和清单。备份完成后确认新目录包含 `workstation.db`、`uploads/`、`article-attachments/`、`public-images/` 和 `manifest.json`。如果数据库正在使用，先确认没有管理员操作，再执行备份。
 
-### 3. Clean checkout and build
+### 3. Scheduled backups and retention
+
+仓库提供 `deploy/personal-workstation-backup.service` 和 `deploy/personal-workstation-backup.timer` 作为每日备份模板。默认在 03:00 触发，允许 15 分钟随机延迟，并使用 `Persistent=true` 在服务器停机错过周期后补跑。
+
+在服务器上启用前，先确认 `command -v npm` 输出为 `/usr/bin/npm`；若 Node 安装路径不同，需要同步修改 service 中的 `ExecStart`。备份目录必须允许 `personal-workstation` 账号写入：
+
+```bash
+install -d -o personal-workstation -g personal-workstation -m 0750 /var/backups/personal-workstation
+cp deploy/personal-workstation-backup.service deploy/personal-workstation-backup.timer /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable --now personal-workstation-backup.timer
+systemctl list-timers personal-workstation-backup.timer
+```
+
+在 `/etc/personal-workstation.env` 中设置 `BACKUP_RETENTION_DAYS=30` 可调整保留天数，默认 30 天。清理只针对严格匹配时间戳格式的备份目录，且只在本次备份的 `manifest.json` 写入完成后执行；手工复制或手工命名的目录不会被删除。
+
+这些文件只是部署模板，只有在服务器上实际启用并通过 timer 与一次手动备份验证后，生产定时备份才算生效。
+
+### 4. Clean checkout and build
 
 为待发布 commit 创建独立源码目录，并强制核对提交号：
 
@@ -92,7 +110,7 @@ cp -a prisma "$release_app/prisma"
 
 运行目录中必须能找到 `server.js`、`.next/static`、`public` 和 `prisma/migrations`。
 
-### 4. Migrate
+### 5. Migrate
 
 在切流前，用待发布源码对持久化数据库执行迁移。只包含向后兼容迁移时可以保持旧版本运行；若迁移会让旧版本无法继续读写，先进入维护窗口并停止 `personal-workstation.service`，再执行下面的命令：
 
@@ -110,7 +128,7 @@ sqlite3 /var/lib/personal-workstation/workstation.db 'PRAGMA integrity_check;'
 
 如果 `DATABASE_URL` 是 `file:/var/lib/personal-workstation/workstation.db`，对应检查文件是 `/var/lib/personal-workstation/workstation.db`。`integrity_check` 必须返回 `ok`。
 
-### 5. Atomic service switch
+### 6. Atomic service switch
 
 `/opt/personal-workstation` 应是指向当前运行目录的符号链接。用临时链接完成替换，再重启服务：
 
@@ -122,7 +140,7 @@ systemctl restart personal-workstation.service
 
 环境文件由 systemd 读取，应用只监听 `127.0.0.1:3000`。不要把数据库、上传文件或备份放进任何版本目录。
 
-### 6. Health checks
+### 7. Health checks
 
 1. 确认 `systemctl is-active personal-workstation.service`。
 2. 直接检查 `http://127.0.0.1:3000/`、`/okr` 和 `/admin`。

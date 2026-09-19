@@ -1,0 +1,11 @@
+[Unit]
+Description=Personal Workstation daily backup
+
+[Service]
+Type=oneshot
+User=personal-workstation
+Group=personal-workstation
+WorkingDirectory=/opt/personal-workstation
+EnvironmentFile=/etc/personal-workstation.env
+ExecStart=/usr/bin/npm run db:backup
+Nice=10

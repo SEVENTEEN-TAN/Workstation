@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { access, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -69,6 +69,69 @@ describe("backup paths", () => {
     expect(restoreScript).toContain("if (source.attachmentsPath)");
     expect(restoreScript).not.toContain('path.join(source.directory, "uploads")');
     expect(restoreScript).not.toContain('path.join(source.directory, "article-attachments")');
+  });
+
+  it("prunes only timestamped backup directories beyond the retention window", async () => {
+    const backupRetention = await import("../src/lib/backup/retention").catch(() => null);
+    expect(backupRetention).toBeTruthy();
+    if (!backupRetention) return;
+
+    const now = new Date("2026-09-19T08:00:00.000Z");
+    expect(backupRetention.selectExpiredBackupDirectoryNames(
+      [
+        "2026-08-18T08-00-00-000Z",
+        "2026-08-20T08-00-00-000Z",
+        "manual-copy",
+        "../2026-01-01T00-00-00-000Z",
+      ],
+      now,
+      30,
+    )).toEqual(["2026-08-18T08-00-00-000Z"]);
+
+    const backupRoot = await mkdtemp(path.join(tmpdir(), "workstation-retention-"));
+    const expired = path.join(backupRoot, "2026-08-18T08-00-00-000Z");
+    const current = path.join(backupRoot, "2026-09-19T08-00-00-000Z");
+    const manual = path.join(backupRoot, "manual-copy");
+    await Promise.all([mkdir(expired, { recursive: true }), mkdir(current, { recursive: true }), mkdir(manual, { recursive: true })]);
+
+    try {
+      const pruned = await backupRetention.pruneExpiredBackups(backupRoot, {
+        now,
+        retentionDays: 30,
+        exclude: [path.basename(current)],
+      });
+
+      expect(pruned).toEqual(["2026-08-18T08-00-00-000Z"]);
+      await expect(access(expired)).rejects.toThrow();
+      await expect(access(current)).resolves.toBeUndefined();
+      await expect(access(manual)).resolves.toBeUndefined();
+    } finally {
+      await rm(backupRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("applies retention only after a backup is complete", () => {
+    const backupScript = readProjectFile("scripts/backup.ts");
+    const manifestWriteIndex = backupScript.indexOf('path.join(destination, "manifest.json")');
+    const retentionIndex = backupScript.lastIndexOf("pruneExpiredBackups");
+
+    expect(backupScript).toContain("BACKUP_RETENTION_DAYS");
+    expect(retentionIndex).toBeGreaterThan(manifestWriteIndex);
+  });
+
+  it("ships a persistent daily backup timer template", () => {
+    const service = readProjectFile("deploy/personal-workstation-backup.service");
+    const timer = readProjectFile("deploy/personal-workstation-backup.timer");
+    const deploymentGuide = readProjectFile("docs/deployment.md");
+
+    expect(service).toContain("User=personal-workstation");
+    expect(service).toContain("EnvironmentFile=/etc/personal-workstation.env");
+    expect(service).toContain("ExecStart=/usr/bin/npm run db:backup");
+    expect(timer).toContain("OnCalendar=*-*-* 03:00:00");
+    expect(timer).toContain("Persistent=true");
+    expect(deploymentGuide).toContain("BACKUP_RETENTION_DAYS");
+    expect(deploymentGuide).toContain("personal-workstation-backup.timer");
+    expect(deploymentGuide).toContain("实际启用");
   });
 
   it("exports the latest published and draft snapshots with resolved asset references", () => {
