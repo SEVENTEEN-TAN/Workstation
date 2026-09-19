@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import { z } from "zod";
 
 import { getDatabase } from "../db";
 import {
@@ -33,6 +33,8 @@ type ProjectSource = Record<string, unknown>;
 type OkrObjectiveSource = { id: string } & Record<string, unknown>;
 type OkrCycleSource = { objectives: OkrObjectiveSource[] } & Record<string, unknown>;
 
+const jsonSnapshotSchema = z.record(z.string(), z.json());
+
 export type AiContentDraftRepository = {
   listDrafts(useCase?: string, targetId?: string): Promise<unknown[]>;
   findProject(id: string): Promise<ProjectSource | null>;
@@ -45,7 +47,7 @@ export type AiContentDraftRepository = {
 };
 
 function json(value: unknown) {
-  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
+  return jsonSnapshotSchema.parse(JSON.parse(JSON.stringify(value)));
 }
 
 function defaultRepository(): AiContentDraftRepository {

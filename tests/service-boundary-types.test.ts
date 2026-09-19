@@ -69,6 +69,7 @@ describe("service boundary types", () => {
     expect(knowledgeCollectionSource).not.toContain('visibility: value.visibility as "PRIVATE" | "PUBLIC"');
     expect(aiContentDraftSource).not.toContain("as Promise<Record<string, unknown> | null>");
     expect(aiContentDraftSource).not.toContain("as Promise<DraftRecord | null>");
+    expect(aiContentDraftSource).not.toContain("as Prisma.InputJsonValue");
     expect(aiGenerationSource).not.toContain("as Promise<AiGenerationSetting | null>");
     expect(weeklyActivityDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
     expect(okrMilestoneDraftSource).not.toContain("as Prisma.CareerActivityCreateInput");
