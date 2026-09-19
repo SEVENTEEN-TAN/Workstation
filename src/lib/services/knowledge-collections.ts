@@ -31,9 +31,19 @@ export type KnowledgeCollectionRecord = {
   slug: string;
   visibility: "PRIVATE" | "PUBLIC";
   sortOrder: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   articles: KnowledgeCollectionArticle[];
+};
+
+export type KnowledgeCollectionArticleData = Omit<KnowledgeCollectionArticle, "publishedAt"> & {
+  publishedAt: string;
+};
+
+export type KnowledgeCollectionData = Omit<KnowledgeCollectionRecord, "createdAt" | "updatedAt" | "articles"> & {
+  createdAt: string;
+  updatedAt: string;
+  articles: KnowledgeCollectionArticleData[];
 };
 
 type KnowledgeCollectionInput = z.output<typeof knowledgeCollectionInputSchema>;
@@ -75,6 +85,19 @@ function toArticle(value: { id: string; slug: string; title: string; summary: st
 
 function toVisibility(value: string): KnowledgeCollectionRecord["visibility"] {
   return value === "PUBLIC" ? "PUBLIC" : "PRIVATE";
+}
+
+function articleView(value: KnowledgeCollectionArticle): KnowledgeCollectionArticleData {
+  return { ...value, publishedAt: value.publishedAt.toISOString() };
+}
+
+function collectionView(value: KnowledgeCollectionRecord): KnowledgeCollectionData {
+  return {
+    ...value,
+    createdAt: value.createdAt.toISOString(),
+    updatedAt: value.updatedAt.toISOString(),
+    articles: value.articles.map(articleView),
+  };
 }
 
 function toRecord(value: { id: string; title: string; description: string | null; slug: string; visibility: string; sortOrder: number; createdAt: Date; updatedAt: Date; articles: Array<{ article: { id: string; slug: string; title: string; summary: string | null; tags: unknown; publishedAt: Date } }> }): KnowledgeCollectionRecord {
@@ -129,8 +152,12 @@ async function assertPublishedArticles(source: KnowledgeCollectionRepository, ar
 
 export function createKnowledgeCollectionService(repository: KnowledgeCollectionRepository = defaultRepository()) {
   return {
-    listAdmin: () => repository.listAdmin(),
-    listPublishedArticles: () => repository.listPublishedArticles(),
+    async listAdmin(): Promise<KnowledgeCollectionData[]> {
+      return (await repository.listAdmin()).map(collectionView);
+    },
+    async listPublishedArticles(): Promise<KnowledgeCollectionArticleData[]> {
+      return (await repository.listPublishedArticles()).map(articleView);
+    },
     async create(input: unknown) {
       const value = knowledgeCollectionInputSchema.parse(input);
       await assertPublishedArticles(repository, value.articleIds);

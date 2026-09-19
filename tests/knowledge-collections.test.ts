@@ -5,6 +5,41 @@ import { createKnowledgeCollectionService } from "../src/lib/services/knowledge-
 const publicArticle = { id: "article-1", slug: "java", title: "Java", summary: null, tags: ["Java"], publishedAt: new Date("2026-09-17T00:00:00.000Z") };
 
 describe("knowledge collection service", () => {
+  it("returns admin lists as JSON-safe views", async () => {
+    const timestamp = new Date("2026-09-18T05:00:00.000Z");
+    const collection = {
+      id: "collection-1",
+      title: "Java Notes",
+      description: "Java learning path",
+      slug: "java-notes",
+      visibility: "PUBLIC" as const,
+      sortOrder: 2,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      articles: [publicArticle],
+    };
+    const service = createKnowledgeCollectionService({
+      async listAdmin() { return [collection]; },
+      async listPublishedArticles() { return [publicArticle]; },
+      async findAdmin() { return null; },
+      async create() { throw new Error("not used"); },
+      async update() { throw new Error("not used"); },
+      async remove() { throw new Error("not used"); },
+      async listPublic() { return []; },
+      async getPublic() { return null; },
+    });
+
+    await expect(service.listAdmin()).resolves.toEqual([{
+      ...collection,
+      createdAt: "2026-09-18T05:00:00.000Z",
+      updatedAt: "2026-09-18T05:00:00.000Z",
+      articles: [{ ...publicArticle, publishedAt: "2026-09-17T00:00:00.000Z" }],
+    }]);
+    await expect(service.listPublishedArticles()).resolves.toEqual([
+      { ...publicArticle, publishedAt: "2026-09-17T00:00:00.000Z" },
+    ]);
+  });
+
   it("keeps supplied published article order when creating a collection", async () => {
     const writes: Array<{ articleIds: string[] }> = [];
     const service = createKnowledgeCollectionService({

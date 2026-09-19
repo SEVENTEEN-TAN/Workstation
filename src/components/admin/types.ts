@@ -270,26 +270,10 @@ export interface KnowledgeArticleData {
   publishedAt: string;
 }
 
-export interface KnowledgeCollectionArticleData {
-  id: string;
-  slug: string;
-  title: string;
-  summary: string | null;
-  tags: string[];
-  publishedAt: string;
-}
-
-export interface KnowledgeCollectionData {
-  id: string;
-  title: string;
-  description: string | null;
-  slug: string;
-  visibility: "PRIVATE" | "PUBLIC";
-  sortOrder: number;
-  createdAt: string;
-  updatedAt: string;
-  articles: KnowledgeCollectionArticleData[];
-}
+export type {
+  KnowledgeCollectionArticleData,
+  KnowledgeCollectionData,
+} from "../../lib/services/knowledge-collections";
 
 export interface KnowledgeSourceRevisionData {
   id: string;

@@ -1,5 +1,4 @@
 import { KnowledgeCollectionsWorkspace } from "@/components/admin/KnowledgeCollectionsWorkspace";
-import type { KnowledgeCollectionArticleData, KnowledgeCollectionData } from "@/components/admin/types";
 import { knowledgeCollectionService } from "@/lib/services/knowledge-collections";
 
 export default async function AdminKnowledgeCollectionsPage() {
@@ -8,7 +7,7 @@ export default async function AdminKnowledgeCollectionsPage() {
     knowledgeCollectionService.listPublishedArticles(),
   ]);
   return <KnowledgeCollectionsWorkspace
-    initialCollections={JSON.parse(JSON.stringify(collections)) as KnowledgeCollectionData[]}
-    initialArticles={JSON.parse(JSON.stringify(articles)) as KnowledgeCollectionArticleData[]}
+    initialCollections={collections}
+    initialArticles={articles}
   />;
 }
