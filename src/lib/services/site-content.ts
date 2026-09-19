@@ -1,4 +1,4 @@
-import { Prisma, type PrismaClient } from "@prisma/client";
+import type { Prisma, PrismaClient } from "@prisma/client";
 
 import { siteContentSchema, type SiteContent } from "../content/schema";
 import { materializeHomepageProjects } from "../content/homepage-projects";
@@ -38,13 +38,13 @@ function prismaTransactionRepository(transaction: Prisma.TransactionClient): Tra
   return {
     findVersion: (id) => transaction.siteVersion.findUnique({ where: { id } }),
     findDraft: () => transaction.siteVersion.findFirst({ where: { status: "DRAFT" }, orderBy: { version: "desc" } }),
-    updateDraft: (id, content) => transaction.siteVersion.update({ where: { id }, data: { content: content as Prisma.InputJsonValue } }),
+    updateDraft: (id, content) => transaction.siteVersion.update({ where: { id }, data: { content } }),
     archivePublished: () => transaction.siteVersion.updateMany({ where: { status: "PUBLISHED" }, data: { status: "ARCHIVED" } }),
     publishVersion: (id, publishedAt) => transaction.siteVersion.update({ where: { id }, data: { status: "PUBLISHED", publishedAt } }),
     async latestVersionNumber() {
       return (await transaction.siteVersion.aggregate({ _max: { version: true } }))._max.version ?? 0;
     },
-    createVersion: ({ content, ...data }) => transaction.siteVersion.create({ data: { ...data, content: content as Prisma.InputJsonValue } }),
+    createVersion: ({ content, ...data }) => transaction.siteVersion.create({ data: { ...data, content } }),
   };
 }
 
@@ -54,7 +54,7 @@ function createPrismaRepository(database: PrismaClient): SiteContentRepository {
     listVersions: () => database.siteVersion.findMany({ orderBy: { version: "desc" } }),
     findPublished: () => database.siteVersion.findFirst({ where: { status: "PUBLISHED" }, orderBy: { publishedAt: "desc" } }),
     findDraft: () => database.siteVersion.findFirst({ where: { status: "DRAFT" }, orderBy: { version: "desc" } }),
-    updateDraft: (id, content) => database.siteVersion.update({ where: { id }, data: { content: content as Prisma.InputJsonValue } }),
+    updateDraft: (id, content) => database.siteVersion.update({ where: { id }, data: { content } }),
     async findProjectsByIds(ids: string[]) {
       if (!ids.length) return [];
       const records = await database.portfolioProject.findMany({ where: { id: { in: ids } } });
