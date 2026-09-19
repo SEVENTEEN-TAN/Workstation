@@ -121,4 +121,39 @@ describe("AI content drafts", () => {
     await service.apply("draft-1");
     expect(repo.applied).toEqual([{ id: "draft-1", targetId: "project-1", content: generatedProject }]);
   });
+
+  it("lets only one concurrent action win for the same draft", async () => {
+    const draft = {
+      id: "draft-1", useCase: "PROJECT_DESCRIPTION", targetType: "PORTFOLIO_PROJECT",
+      targetId: "project-1", status: "DRAFT", content: generatedProject,
+    };
+    const state = { status: "DRAFT", projectUpdated: false };
+    const repo = repository();
+    repo.findDraft = vi.fn(async () => ({ ...draft, status: state.status }) as never);
+    repo.applyProjectDraft = vi.fn(async () => {
+      state.status = "APPLIED";
+      state.projectUpdated = true;
+      return { id: "draft-1", status: "APPLIED" };
+    });
+    repo.discardDraft = vi.fn(async () => {
+      state.status = "DISCARDED";
+      return { id: "draft-1", status: "DISCARDED" };
+    });
+    const service = createAiContentDraftService(repo, { generate: vi.fn() });
+
+    const results = await Promise.allSettled([
+      service.apply("draft-1"),
+      service.discard("draft-1"),
+    ]);
+
+    const fulfilled = results.filter((result) => result.status === "fulfilled");
+    const rejected = results.filter((result) => result.status === "rejected");
+    expect(fulfilled).toHaveLength(1);
+    expect(rejected).toHaveLength(1);
+    expect(state).toEqual(
+      state.status === "APPLIED"
+        ? { status: "APPLIED", projectUpdated: true }
+        : { status: "DISCARDED", projectUpdated: false },
+    );
+  });
 });

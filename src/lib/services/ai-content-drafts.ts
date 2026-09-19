@@ -128,6 +128,18 @@ export function createAiContentDraftService(
   repository: AiContentDraftRepository = defaultRepository(),
   generator: AiGenerator = aiGenerationService,
 ) {
+  const draftActions = new Map<string, Promise<unknown>>();
+
+  function runDraftAction<T>(id: string, action: () => Promise<T>): Promise<T> {
+    const previous = draftActions.get(id) ?? Promise.resolve();
+    const result = previous.catch(() => undefined).then(action);
+    draftActions.set(id, result);
+    void result.then(() => undefined, () => undefined).then(() => {
+      if (draftActions.get(id) === result) draftActions.delete(id);
+    });
+    return result;
+  }
+
   return {
     list: (useCase?: string, targetId?: string) => repository.listDrafts(useCase, targetId),
     async generateProject(projectId: string) {
@@ -163,7 +175,7 @@ export function createAiContentDraftService(
         sourceSnapshot, content: generated.content, providerId: generated.providerId, model: generated.model,
       });
     },
-    async apply(id: string) {
+    apply: (id: string) => runDraftAction(id, async () => {
       const draft = await repository.findDraft(id);
       if (!draft) throw new Error("AI 草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("AI 草稿已经处理");
@@ -179,13 +191,13 @@ export function createAiContentDraftService(
         );
       }
       throw new Error("AI 草稿类型不受支持");
-    },
-    async discard(id: string) {
+    }),
+    discard: (id: string) => runDraftAction(id, async () => {
       const draft = await repository.findDraft(id);
       if (!draft) throw new Error("AI 草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("AI 草稿已经处理");
       return repository.discardDraft(id);
-    },
+    }),
   };
 }
 

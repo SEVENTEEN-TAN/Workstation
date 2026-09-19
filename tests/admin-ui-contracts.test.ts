@@ -570,6 +570,7 @@ describe("admin route contracts", () => {
     const articleItemRoute = readProjectFile("src/app/api/admin/knowledge/articles/[id]/route.ts");
     const page = readProjectFile("src/app/admin/(workspace)/knowledge/page.tsx");
     const workspace = readProjectFile("src/components/admin/KnowledgeWorkspace.tsx");
+    const removalGuidance = readProjectFile("src/components/admin/knowledge-vault-removal.ts");
     const adminStyles = readProjectFile("src/app/admin/admin.module.css");
 
     expect(collectionRoute).toContain("withAdminSession");
@@ -625,6 +626,8 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("确认变更");
     expect(workspace).toContain("ConfirmDialog");
     expect(workspace).toContain("FeedbackCenter");
+    expect(workspace).toContain("describeVaultRemoval(deleteRequest)");
+    expect(removalGuidance).toContain("发布草稿或已发布文章依赖源修订，系统会阻止移除");
   });
 
   it("links the homepage skill summary to the structured capability page", () => {

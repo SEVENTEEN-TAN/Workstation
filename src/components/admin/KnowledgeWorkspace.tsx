@@ -11,6 +11,7 @@ import { FeedbackCenter } from "./FeedbackCenter";
 import { buildKnowledgeNoteTree, readKnowledgeProperties, type KnowledgeTreeItem } from "./knowledge-note-tree";
 import { inspectKnowledgePublication } from "./knowledge-publication-inspector";
 import { getPublicationUpdate } from "./knowledge-publication-update";
+import { describeVaultRemoval } from "./knowledge-vault-removal";
 import { extractKnowledgeTasks } from "../../lib/knowledge/note-tasks";
 import { ObsidianMarkdownPreview } from "./ObsidianMarkdownPreview";
 import { PageHeader } from "./PageHeader";
@@ -378,7 +379,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
         </div>
       ) : <EmptyState title="还没有登记知识库" description="先登记本机 Obsidian Vault，再执行只读扫描。" action={null} />}
 
-      <ConfirmDialog open={Boolean(deleteRequest)} title="移除知识库登记" target={deleteRequest?.name ?? ""} description="只会删除工作站中的路径配置与索引，不会删除或修改本地 Vault 文件。" busy={deleteRequest ? isBusy(`knowledge:delete:${deleteRequest.id}`) : false} confirmLabel="确认移除" busyLabel="移除中" onConfirm={removeVault} onCancel={() => setDeleteRequest(null)} />
+      <ConfirmDialog open={Boolean(deleteRequest)} title="移除知识库登记" target={deleteRequest?.name ?? ""} description={deleteRequest ? describeVaultRemoval(deleteRequest) : "只会删除工作站中的路径配置与索引，不会删除或修改本地 Vault 文件。"} busy={deleteRequest ? isBusy(`knowledge:delete:${deleteRequest.id}`) : false} confirmLabel="确认移除" busyLabel="移除中" onConfirm={removeVault} onCancel={() => setDeleteRequest(null)} />
       <ConfirmDialog open={Boolean(unpublishRequest)} title="下架已发布文章" target={unpublishRequest ? `/${unpublishRequest.article.slug}` : ""} description="公开文章会立即移除，文章附件快照会一并清理；发布草稿和已选附件会保留，可修正后重新发布。" busy={unpublishRequest ? isBusy(`knowledge:article-unpublish:${unpublishRequest.article.id}`) : false} confirmLabel="确认下架" busyLabel="下架中" onConfirm={unpublishArticle} onCancel={() => setUnpublishRequest(null)} />
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
     </section>
