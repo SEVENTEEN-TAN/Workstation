@@ -14,9 +14,10 @@ import { AdminRequestError, adminRequest } from "../src/components/admin/request
 import { createFeedback } from "../src/components/admin/useAdminAction";
 import { EmptyState } from "../src/components/admin/EmptyState";
 import { ObsidianMarkdownPreview } from "../src/components/admin/ObsidianMarkdownPreview";
+import { OverviewWorkspace } from "../src/components/admin/OverviewWorkspace";
 import { PageHeader } from "../src/components/admin/PageHeader";
 import { OkrEntityDialog } from "../src/components/admin/okr/OkrEntityDialog";
-import type { AssetData } from "../src/components/admin/types";
+import type { AssetData, AuditLogData, DashboardData } from "../src/components/admin/types";
 
 const projectRoot = resolve(import.meta.dirname, "..");
 
@@ -634,6 +635,60 @@ describe("admin route contracts", () => {
     const about = readProjectFile("src/components/public/About.tsx");
 
     expect(about).toContain('href="/skills"');
+  });
+});
+
+describe("admin overview audit contracts", () => {
+  const dashboard: DashboardData = {
+    cycleCount: 1,
+    objectiveCount: 2,
+    completedObjectives: 0,
+    atRiskObjectives: 0,
+    averageProgress: 40,
+    objectives: [],
+  };
+  const auditLog: AuditLogData = {
+    id: "audit-1",
+    userId: "user-1",
+    method: "PATCH",
+    path: "/api/admin/projects/project-1",
+    targetId: "project-1",
+    statusCode: 200,
+    ipAddress: "203.0.113.10",
+    userAgent: "Workstation test browser",
+    createdAt: "2026-09-19T08:00:00.000Z",
+  };
+
+  it("loads recent audit metadata on the overview server page", () => {
+    const source = readProjectFile("src/app/admin/(workspace)/overview/page.tsx");
+    const route = readProjectFile("src/app/api/admin/audit/route.ts");
+
+    expect(source).toContain("auditLogService.list(10)");
+    expect(source).toContain("initialAuditLogs");
+    expect(route).toContain("auditLogService.list(10)");
+  });
+
+  it("renders recent admin actions with their outcome and timestamp", () => {
+    const markup = renderToStaticMarkup(createElement(OverviewWorkspace, {
+      initialDashboard: dashboard,
+      initialAuditLogs: [auditLog],
+    }));
+
+    expect(markup).toContain("最近审计日志");
+    expect(markup).toContain("PATCH");
+    expect(markup).toContain("/api/admin/projects/project-1");
+    expect(markup).toContain("成功");
+    expect(markup).toContain('dateTime="2026-09-19T08:00:00.000Z"');
+  });
+
+  it("explains the audit panel when no action has been recorded", () => {
+    const markup = renderToStaticMarkup(createElement(OverviewWorkspace, {
+      initialDashboard: dashboard,
+      initialAuditLogs: [],
+    }));
+
+    expect(markup).toContain("还没有管理操作记录");
+    expect(markup).toContain("执行保存、发布或删除操作后，这里会显示最近结果。");
   });
 });
 

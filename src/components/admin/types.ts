@@ -15,6 +15,18 @@ export interface DashboardData {
   objectives: DashboardObjective[];
 }
 
+export interface AuditLogData {
+  id: string;
+  userId: string;
+  method: string;
+  path: string;
+  targetId: string | null;
+  statusCode: number;
+  ipAddress: string | null;
+  userAgent: string | null;
+  createdAt: string;
+}
+
 export interface SiteVersionData {
   id: string;
   version: number;

@@ -202,6 +202,6 @@ describe("admin route audit contracts", () => {
     const route = readFileSync(join(projectRoot, "src/app/api/admin/audit/route.ts"), "utf8");
 
     expect(route).toContain("withAdminSession");
-    expect(route).toContain("auditLogService.list()");
+    expect(route).toContain("auditLogService.list(10)");
   });
 });
