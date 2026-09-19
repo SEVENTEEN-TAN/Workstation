@@ -5,6 +5,17 @@ import { describe, expect, it } from "vitest";
 
 import { readKnowledgeSyncConfig, resolveRequestedAttachment, syncKnowledge } from "../src/lib/knowledge/sync-client";
 
+const validSummary = { addedCount: 0, modifiedCount: 0, movedCount: 0, missingCount: 0, unchangedCount: 0 };
+
+function createSyncConfig(vaultPath = "F:\\Project\\Obsidian\\PersonalTech") {
+  return readKnowledgeSyncConfig({
+    KNOWLEDGE_SYNC_URL: "https://workstation.example",
+    KNOWLEDGE_SYNC_TOKEN: "secret-token",
+    KNOWLEDGE_SYNC_VAULT_ID: "vault-1",
+    KNOWLEDGE_SYNC_VAULT_PATH: vaultPath,
+  });
+}
+
 describe("Windows knowledge sync client", () => {
   it("reads required client configuration without accepting an insecure endpoint", () => {
     expect(readKnowledgeSyncConfig({
@@ -80,5 +91,40 @@ describe("Windows knowledge sync client", () => {
       "GET /api/sync/knowledge/vaults/vault-1/attachments",
       "POST /api/sync/knowledge/attachments/request-1",
     ]);
+  });
+
+  it("reports a snapshot request failure without echoing the response body", async () => {
+    await expect(syncKnowledge(createSyncConfig(), async () => ({ scannedAt: new Date(), notes: [], links: [] }), async () => (
+      new Response("secret-token", { status: 502 })
+    ))).rejects.toThrow("Knowledge sync request failed");
+  });
+
+  it("reports an invalid snapshot response without echoing payload values", async () => {
+    await expect(syncKnowledge(createSyncConfig(), async () => ({ scannedAt: new Date(), notes: [], links: [] }), async () => (
+      Response.json({ summary: { addedCount: "secret-token" } })
+    ))).rejects.toThrow("Knowledge sync response is invalid");
+  });
+
+  it("reports an invalid attachment queue response without echoing payload values", async () => {
+    await expect(syncKnowledge(createSyncConfig(), async () => ({ scannedAt: new Date(), notes: [], links: [] }), async (request) => {
+      if (request.method === "POST") return Response.json({ summary: validSummary });
+      return Response.json({ requests: [{ id: 1 }] });
+    })).rejects.toThrow("Knowledge attachment sync response is invalid");
+  });
+
+  it("reports an attachment upload failure without echoing the response body", async () => {
+    const root = await mkdtemp(join(tmpdir(), "knowledge-sync-upload-failure-"));
+    await mkdir(join(root, "assets"), { recursive: true });
+    await writeFile(join(root, "assets", "diagram.png"), new Uint8Array([0x89, 0x50, 0x4e, 0x47]));
+
+    await expect(syncKnowledge(createSyncConfig(root), async () => ({ scannedAt: new Date(), notes: [], links: [] }), async (request) => {
+      if (request.method === "POST" && request.url.endsWith("/vault-1")) {
+        return Response.json({ summary: validSummary });
+      }
+      if (request.method === "GET") {
+        return Response.json({ requests: [{ id: "request-1", target: "diagram.png", sourceRevision: { relativePath: "entry.md" } }] });
+      }
+      return new Response("secret-token", { status: 500 });
+    })).rejects.toThrow("Knowledge attachment upload failed");
   });
 });

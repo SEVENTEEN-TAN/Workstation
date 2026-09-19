@@ -85,34 +85,54 @@ export async function resolveRequestedAttachment(vaultPath: string, noteRelative
 
 async function syncRequestedAttachments(config: KnowledgeSyncConfig, fetcher: Fetcher) {
   const endpoint = new URL(`/api/sync/knowledge/vaults/${encodeURIComponent(config.vaultId)}/attachments`, config.serverUrl);
-  const response = await fetcher(new Request(endpoint, { headers: { authorization: `Bearer ${config.token}` } }));
-  if (!response.ok) throw new Error("Knowledge attachment sync failed");
-  const pending = attachmentRequestsSchema.parse(await response.json());
+  let response: Response;
+  try {
+    response = await fetcher(new Request(endpoint, { headers: { authorization: `Bearer ${config.token}` } }));
+  } catch {
+    throw new Error("Knowledge attachment sync request failed");
+  }
+  if (!response.ok) throw new Error("Knowledge attachment sync request failed");
+  let pending: z.infer<typeof attachmentRequestsSchema>;
+  try {
+    pending = attachmentRequestsSchema.parse(await response.json());
+  } catch {
+    throw new Error("Knowledge attachment sync response is invalid");
+  }
   for (const request of pending.requests) {
-    const path = await resolveRequestedAttachment(config.vaultPath, request.sourceRevision.relativePath, request.target);
-    if (!path) continue;
-    const form = new FormData();
-    form.set("file", new File([await readFile(path)], basename(path), { type: attachmentMimeTypes[extname(path).toLowerCase()] }));
-    const upload = new URL(`/api/sync/knowledge/attachments/${encodeURIComponent(request.id)}`, config.serverUrl);
-    const uploaded = await fetcher(new Request(upload, { method: "POST", headers: { authorization: `Bearer ${config.token}` }, body: form }));
-    if (!uploaded.ok) throw new Error("Knowledge attachment sync failed");
+    try {
+      const path = await resolveRequestedAttachment(config.vaultPath, request.sourceRevision.relativePath, request.target);
+      if (!path) continue;
+      const form = new FormData();
+      form.set("file", new File([await readFile(path)], basename(path), { type: attachmentMimeTypes[extname(path).toLowerCase()] }));
+      const upload = new URL(`/api/sync/knowledge/attachments/${encodeURIComponent(request.id)}`, config.serverUrl);
+      const uploaded = await fetcher(new Request(upload, { method: "POST", headers: { authorization: `Bearer ${config.token}` }, body: form }));
+      if (!uploaded.ok) throw new Error("Knowledge attachment upload failed");
+    } catch {
+      throw new Error("Knowledge attachment upload failed");
+    }
   }
 }
 
 export async function syncKnowledge(config: KnowledgeSyncConfig, scan: Scanner, fetcher: Fetcher = (request) => fetch(request)) {
   const snapshot = await scan(config.vaultPath, config.ignorePatterns);
   const endpoint = new URL(`/api/sync/knowledge/vaults/${encodeURIComponent(config.vaultId)}`, config.serverUrl);
-  const response = await fetcher(new Request(endpoint, {
-    method: "POST",
-    headers: { authorization: `Bearer ${config.token}`, "content-type": "application/json" },
-    body: JSON.stringify(snapshot),
-  }));
-  if (!response.ok) throw new Error("Knowledge sync failed");
+  let response: Response;
   try {
-    const summary = summarySchema.parse((await response.json()).summary);
-    await syncRequestedAttachments(config, fetcher);
-    return summary;
+    response = await fetcher(new Request(endpoint, {
+      method: "POST",
+      headers: { authorization: `Bearer ${config.token}`, "content-type": "application/json" },
+      body: JSON.stringify(snapshot),
+    }));
   } catch {
-    throw new Error("Knowledge sync failed");
+    throw new Error("Knowledge sync request failed");
   }
+  if (!response.ok) throw new Error("Knowledge sync request failed");
+  let summary: z.infer<typeof summarySchema>;
+  try {
+    summary = summarySchema.parse((await response.json()).summary);
+  } catch {
+    throw new Error("Knowledge sync response is invalid");
+  }
+  await syncRequestedAttachments(config, fetcher);
+  return summary;
 }
