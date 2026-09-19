@@ -243,11 +243,57 @@ describe("public data service", () => {
       async findPublishedSiteVersion() { return { content: bootstrapSiteContent }; },
       async findOkrCycles() {
         return [
-          { id: "private-cycle", visibility: "PRIVATE", objectives: [{ id: "leak", visibility: "PUBLIC", keyResults: [] }], reviews: [] },
-          { id: "public-cycle", visibility: "PUBLIC", nameEn: "2026 Q3", objectives: [
-            { id: "public-objective", visibility: "PUBLIC", titleEn: "Public objective", sortOrder: 1, keyResults: [] },
-            { id: "private-objective", visibility: "PRIVATE", sortOrder: 2, keyResults: [] },
-          ], reviews: [{ id: "public-review", visibility: "PUBLIC", achievementsEn: "Delivered", problemsEn: "Scope risk", lessonsEn: "Review weekly", nextActionsEn: "Ship next iteration" }, { id: "private-review", visibility: "PRIVATE" }] },
+          {
+            id: "private-cycle",
+            nameZh: "私密周期",
+            nameEn: "Private cycle",
+            type: "QUARTER",
+            status: "ACTIVE",
+            visibility: "PRIVATE",
+            startDate: new Date("2026-01-01T00:00:00.000Z"),
+            endDate: new Date("2026-03-31T23:59:59.000Z"),
+            objectives: [
+              {
+                id: "leak", titleZh: "不应公开", titleEn: "Must stay private", status: "IN_PROGRESS",
+                visibility: "PUBLIC", sortOrder: 1, keyResults: [],
+              },
+            ],
+            reviews: [],
+          },
+          {
+            id: "public-cycle",
+            nameZh: "2026 第三季度",
+            nameEn: "2026 Q3",
+            type: "QUARTER",
+            status: "ACTIVE",
+            visibility: "PUBLIC",
+            startDate: new Date("2026-07-01T00:00:00.000Z"),
+            endDate: new Date("2026-09-30T23:59:59.000Z"),
+            objectives: [
+              {
+                id: "public-objective", titleZh: "公开目标", titleEn: "Public objective", status: "IN_PROGRESS",
+                visibility: "PUBLIC", sortOrder: 1, keyResults: [],
+              },
+              {
+                id: "private-objective", titleZh: "私密目标", titleEn: "Private objective", status: "IN_PROGRESS",
+                visibility: "PRIVATE", sortOrder: 2, keyResults: [],
+              },
+            ],
+            reviews: [
+              {
+                id: "public-review", visibility: "PUBLIC", achievementsZh: "成果", achievementsEn: "Delivered",
+                problemsZh: "问题", problemsEn: "Scope risk", lessonsZh: "经验", lessonsEn: "Review weekly",
+                nextActionsZh: "行动", nextActionsEn: "Ship next iteration", score: 8,
+                reviewedAt: new Date("2026-09-30T00:00:00.000Z"),
+              },
+              {
+                id: "private-review", visibility: "PRIVATE", achievementsZh: "成果", achievementsEn: "Private",
+                problemsZh: "问题", problemsEn: "Private", lessonsZh: "经验", lessonsEn: "Private",
+                nextActionsZh: "行动", nextActionsEn: "Private", score: 7,
+                reviewedAt: new Date("2026-09-30T00:00:00.000Z"),
+              },
+            ],
+          },
         ];
       },
     });
@@ -321,6 +367,129 @@ describe("public data service", () => {
     expect(result.map((cycle) => cycle.id)).toEqual(["public-cycle"]);
     expect(result[0].objectives.map((objective) => objective.id)).toEqual(["public-objective"]);
     expect(result[0].reviews.map((review) => review.id)).toEqual(["public-review"]);
+  });
+
+  it("normalizes public OKR records to the public page contract", async () => {
+    const service = createPublicDataService({
+      async findPublishedSiteVersion() { return null; },
+      async findOkrCycles() {
+        return [
+          {
+            id: "public-cycle",
+            nameZh: "2026 第四季度",
+            nameEn: "2026 Q4",
+            type: "QUARTER",
+            status: "ACTIVE",
+            visibility: "PUBLIC",
+            startDate: new Date("2026-10-01T00:00:00.000Z"),
+            endDate: new Date("2026-12-31T23:59:59.000Z"),
+            objectives: [
+              {
+                id: "public-objective",
+                titleZh: "公开目标",
+                titleEn: "Public objective",
+                descriptionZh: "中文说明",
+                descriptionEn: "English description",
+                status: "IN_PROGRESS",
+                visibility: "PUBLIC",
+                sortOrder: 1,
+                keyResults: [
+                  {
+                    id: "metric-kr",
+                    titleZh: "公开指标",
+                    titleEn: "Public metric",
+                    descriptionZh: null,
+                    descriptionEn: null,
+                    progressMode: "METRIC",
+                    startValue: 0,
+                    currentValue: 6,
+                    targetValue: 10,
+                    manualProgress: null,
+                    unit: "页",
+                    weight: 2,
+                    status: "IN_PROGRESS",
+                  },
+                ],
+              },
+            ],
+            reviews: [
+              {
+                id: "public-review",
+                achievementsZh: "成果",
+                achievementsEn: "Achievements",
+                problemsZh: "问题",
+                problemsEn: "Problems",
+                lessonsZh: "经验",
+                lessonsEn: "Lessons",
+                nextActionsZh: "行动",
+                nextActionsEn: "Next actions",
+                score: 9,
+                visibility: "PUBLIC",
+                reviewedAt: new Date("2026-12-31T00:00:00.000Z"),
+              },
+            ],
+          },
+        ];
+      },
+    });
+
+    await expect(service.getPublicOkrData()).resolves.toEqual([
+      {
+        id: "public-cycle",
+        nameZh: "2026 第四季度",
+        nameEn: "2026 Q4",
+        type: "QUARTER",
+        status: "ACTIVE",
+        visibility: "PUBLIC",
+        startDate: "2026-10-01T00:00:00.000Z",
+        endDate: "2026-12-31T23:59:59.000Z",
+        objectives: [
+          {
+            id: "public-objective",
+            titleZh: "公开目标",
+            titleEn: "Public objective",
+            descriptionZh: "中文说明",
+            descriptionEn: "English description",
+            status: "IN_PROGRESS",
+            visibility: "PUBLIC",
+            sortOrder: 1,
+            keyResults: [
+              {
+                id: "metric-kr",
+                titleZh: "公开指标",
+                titleEn: "Public metric",
+                descriptionZh: null,
+                descriptionEn: null,
+                mode: "METRIC",
+                startValue: 0,
+                currentValue: 6,
+                targetValue: 10,
+                manualProgress: null,
+                unit: "页",
+                weight: 2,
+                status: "IN_PROGRESS",
+              },
+            ],
+          },
+        ],
+        reviews: [
+          {
+            id: "public-review",
+            achievementsZh: "成果",
+            achievementsEn: "Achievements",
+            problemsZh: "问题",
+            problemsEn: "Problems",
+            lessonsZh: "经验",
+            lessonsEn: "Lessons",
+            nextActionsZh: "行动",
+            nextActionsEn: "Next actions",
+            score: 9,
+            visibility: "PUBLIC",
+            reviewedAt: "2026-12-31T00:00:00.000Z",
+          },
+        ],
+      },
+    ]);
   });
 
   it("reports an uninitialized site instead of manufacturing content", async () => {
