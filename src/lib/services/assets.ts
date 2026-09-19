@@ -33,7 +33,7 @@ type AssetFileData = {
   sha256: string;
 };
 
-export type AssetReference = {
+export type AssetReferenceData = {
   source: "SITE_VERSION" | "KNOWLEDGE_DRAFT";
   versionId: string;
   version: number | null;
@@ -42,7 +42,37 @@ export type AssetReference = {
   label: string;
 };
 
-type AssetLibraryRepository<TAsset extends { id: string }> = {
+export type AssetData = {
+  id: string;
+  originalFilename: string;
+  mimeType: string;
+  width: number | null;
+  height: number | null;
+  sizeBytes: number;
+  sha256: string;
+  altTextZh: string | null;
+  altTextEn: string | null;
+  isReferenced: boolean;
+  references: AssetReferenceData[];
+  createdAt: string;
+};
+
+type AssetRecord = {
+  id: string;
+  originalFilename: string;
+  storagePath: string;
+  mimeType: string;
+  width: number | null;
+  height: number | null;
+  sizeBytes: number;
+  sha256: string;
+  altTextZh: string | null;
+  altTextEn: string | null;
+  isReferenced?: boolean;
+  createdAt: Date;
+};
+
+type AssetLibraryRepository<TAsset extends AssetRecord> = {
   listAssets(): Promise<TAsset[]>;
   listSiteVersions(): Promise<SiteVersionSource[]>;
   listKnowledgeDraftAttachments(): Promise<KnowledgeDraftAttachmentSource[]>;
@@ -67,7 +97,7 @@ export function normalizeAssetAltText(input: AssetAltTextInput) {
 
 export function findAssetReferences(assetId: string, versions: SiteVersionSource[]) {
   const target = `/api/assets/${assetId}`;
-  const references: AssetReference[] = [];
+  const references: AssetReferenceData[] = [];
 
   function visit(value: unknown, path: Array<string | number>, version: SiteVersionSource) {
     if (value === target) {
@@ -111,13 +141,13 @@ export function findKnowledgeDraftAssetReferences(assetId: string, attachments: 
   }));
 }
 
-export function createAssetLibraryService<TAsset extends { id: string }>(
+export function createAssetLibraryService<TAsset extends AssetRecord>(
   repository: AssetLibraryRepository<TAsset>,
   removeFile: (path: string) => Promise<void> = (path) => rm(path, { force: true }),
   storeFile: (file: File) => Promise<AssetFileData> = writeImageFile,
 ) {
   return {
-    async list() {
+    async list(): Promise<AssetData[]> {
       const [assets, versions, draftAttachments] = await Promise.all([
         repository.listAssets(),
         repository.listSiteVersions(),
@@ -128,7 +158,20 @@ export function createAssetLibraryService<TAsset extends { id: string }>(
           ...findAssetReferences(asset.id, versions),
           ...findKnowledgeDraftAssetReferences(asset.id, draftAttachments),
         ];
-        return { ...asset, isReferenced: references.length > 0, references };
+        return {
+          id: asset.id,
+          originalFilename: asset.originalFilename,
+          mimeType: asset.mimeType,
+          width: asset.width,
+          height: asset.height,
+          sizeBytes: asset.sizeBytes,
+          sha256: asset.sha256,
+          altTextZh: asset.altTextZh,
+          altTextEn: asset.altTextEn,
+          isReferenced: references.length > 0,
+          references,
+          createdAt: asset.createdAt.toISOString(),
+        };
       });
     },
     async delete(id: string) {

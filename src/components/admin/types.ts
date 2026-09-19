@@ -154,29 +154,7 @@ export interface ObjectiveDetailData extends ObjectiveData {
   reviews: ReviewData[];
 }
 
-export interface AssetData {
-  id: string;
-  originalFilename: string;
-  mimeType: string;
-  width: number | null;
-  height: number | null;
-  sizeBytes: number;
-  sha256: string;
-  altTextZh: string | null;
-  altTextEn: string | null;
-  isReferenced: boolean;
-  references: AssetReferenceData[];
-  createdAt: string;
-}
-
-export interface AssetReferenceData {
-  source: "SITE_VERSION" | "KNOWLEDGE_DRAFT";
-  versionId: string;
-  version: number | null;
-  status: string;
-  path: string;
-  label: string;
-}
+export type { AssetData, AssetReferenceData } from "../../lib/services/assets";
 
 export type { CareerActivityData } from "../../lib/services/career-activities";
 

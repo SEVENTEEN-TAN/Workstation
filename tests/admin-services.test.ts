@@ -674,7 +674,22 @@ describe("asset reference safety", () => {
 
   it("reports knowledge publication drafts that reference an asset", async () => {
     const service = createAssetLibraryService({
-      async listAssets() { return [{ id: "asset-1" }]; },
+      async listAssets() {
+        return [{
+          id: "asset-1",
+          originalFilename: "diagram.png",
+          storagePath: "C:/uploads/private/diagram.png",
+          mimeType: "image/png",
+          width: 120,
+          height: 80,
+          sizeBytes: 9,
+          sha256: "asset-hash",
+          altTextZh: null,
+          altTextEn: null,
+          isReferenced: false,
+          createdAt: new Date("2026-09-18T04:00:00.000Z"),
+        }];
+      },
       async listSiteVersions() { return []; },
       async listKnowledgeDraftAttachments() {
         return [{ draftId: "draft-1", draftTitle: "Workstation notes", target: "diagram.png", assetId: "asset-1" }];
@@ -700,6 +715,57 @@ describe("asset reference safety", () => {
         ],
       },
     ]);
+  });
+
+  it("returns the media library as JSON-safe views without storage paths", async () => {
+    const createdAt = new Date("2026-09-18T04:00:00.000Z");
+    const service = createAssetLibraryService({
+      async listAssets() {
+        return [{
+          id: "asset-1",
+          originalFilename: "portrait.png",
+          storagePath: "C:/uploads/private/portrait.png",
+          mimeType: "image/png",
+          width: 120,
+          height: 80,
+          sizeBytes: 9,
+          sha256: "asset-hash",
+          altTextZh: "项目界面",
+          altTextEn: "Project interface",
+          isReferenced: true,
+          createdAt,
+        }];
+      },
+      async listSiteVersions() {
+        return [{ id: "draft", version: 4, status: "DRAFT", content: { zh: { image: "/api/assets/asset-1" } } }];
+      },
+      async listKnowledgeDraftAttachments() { return []; },
+      async findAsset() { throw new Error("not used"); },
+      async updateAsset() { throw new Error("not used"); },
+      async deleteAsset() { throw new Error("not used"); },
+    }, async () => {});
+
+    await expect(service.list()).resolves.toEqual([{
+      id: "asset-1",
+      originalFilename: "portrait.png",
+      mimeType: "image/png",
+      width: 120,
+      height: 80,
+      sizeBytes: 9,
+      sha256: "asset-hash",
+      altTextZh: "项目界面",
+      altTextEn: "Project interface",
+      isReferenced: true,
+      references: [{
+        source: "SITE_VERSION",
+        versionId: "draft",
+        version: 4,
+        status: "DRAFT",
+        path: "zh.image",
+        label: "版本 4 · 草稿",
+      }],
+      createdAt: "2026-09-18T04:00:00.000Z",
+    }]);
   });
 
   it("deletes an unreferenced asset record and its stored file", async () => {
