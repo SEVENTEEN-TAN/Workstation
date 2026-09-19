@@ -723,6 +723,23 @@ describe("OKR execution workspace contracts", () => {
     expect(cycleSource).toContain('cycle.status === "COMPLETED"');
   });
 
+  it("supports the English evidence required by public reviews", () => {
+    for (const field of ["achievementsEn", "problemsEn", "lessonsEn", "nextActionsEn"]) {
+      expect(cycleSource).toContain(`name="${field}"`);
+    }
+    expect(cycleSource).toContain("英文成果（公开必填）");
+    expect(cycleSource).not.toContain('type="hidden" name="achievementsEn"');
+  });
+
+  it("labels the English fields required for public OKR evidence", () => {
+    expect(listSource).toContain("英文名称（公开必填）");
+    expect(cycleSource).toContain("英文标题（公开必填）");
+    expect(cycleSource).toContain("英文说明（中文填写时公开必填）");
+    expect(objectiveSource).toContain("英文标题（公开必填）");
+    expect(objectiveSource).toContain("英文说明（中文填写时公开必填）");
+    expect(objectiveSource.split("英文说明（中文填写时公开必填）").length - 1).toBe(2);
+  });
+
   it("shows weekday choices only for weekly recurring actions", () => {
     expect(actionSource).toContain('recurrenceType === "WEEKLY" ? <fieldset');
   });

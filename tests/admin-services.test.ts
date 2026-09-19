@@ -244,10 +244,10 @@ describe("public data service", () => {
       async findOkrCycles() {
         return [
           { id: "private-cycle", visibility: "PRIVATE", objectives: [{ id: "leak", visibility: "PUBLIC", keyResults: [] }], reviews: [] },
-          { id: "public-cycle", visibility: "PUBLIC", objectives: [
-            { id: "public-objective", visibility: "PUBLIC", sortOrder: 1, keyResults: [] },
+          { id: "public-cycle", visibility: "PUBLIC", nameEn: "2026 Q3", objectives: [
+            { id: "public-objective", visibility: "PUBLIC", titleEn: "Public objective", sortOrder: 1, keyResults: [] },
             { id: "private-objective", visibility: "PRIVATE", sortOrder: 2, keyResults: [] },
-          ], reviews: [{ id: "public-review", visibility: "PUBLIC" }, { id: "private-review", visibility: "PRIVATE" }] },
+          ], reviews: [{ id: "public-review", visibility: "PUBLIC", achievementsEn: "Delivered", problemsEn: "Scope risk", lessonsEn: "Review weekly", nextActionsEn: "Ship next iteration" }, { id: "private-review", visibility: "PRIVATE" }] },
         ];
       },
     });
@@ -258,6 +258,69 @@ describe("public data service", () => {
     expect(result[0].objectives.map((objective) => objective.id)).toEqual(["public-objective"]);
     expect(result[0].reviews.map((review) => review.id)).toEqual(["public-review"]);
     await expect(service.getPublishedSiteContent()).resolves.toEqual(bootstrapSiteContent);
+  });
+
+  it("returns only public OKR records with complete bilingual evidence", async () => {
+    const service = createPublicDataService({
+      async findOkrCycles() {
+        return [
+          {
+            id: "cycle-without-english-name", visibility: "PUBLIC", nameZh: "2026 第三季度", nameEn: null,
+            status: "ACTIVE", startDate: new Date("2026-07-01"), endDate: new Date("2026-09-30"),
+            objectives: [], reviews: [],
+          },
+          {
+            id: "public-cycle", visibility: "PUBLIC", nameZh: "2026 第四季度", nameEn: "2026 Q4",
+            status: "ACTIVE", startDate: new Date("2026-10-01"), endDate: new Date("2026-12-31"),
+            objectives: [
+              {
+                id: "objective-without-english-title", visibility: "PUBLIC", sortOrder: 1,
+                titleZh: "缺失英文标题", titleEn: null, status: "IN_PROGRESS", keyResults: [],
+              },
+              {
+                id: "objective-with-unpaired-description", visibility: "PUBLIC", sortOrder: 2,
+                titleZh: "说明未成对", titleEn: "Unpaired description", descriptionZh: "中文说明",
+                status: "IN_PROGRESS", keyResults: [],
+              },
+              {
+                id: "objective-with-incomplete-kr", visibility: "PUBLIC", sortOrder: 3,
+                titleZh: "KR 未翻译", titleEn: "Incomplete key result", status: "IN_PROGRESS",
+                keyResults: [{ id: "kr-without-english-title", titleZh: "未翻译 KR", titleEn: null }],
+              },
+              {
+                id: "public-objective", visibility: "PUBLIC", sortOrder: 4,
+                titleZh: "公开目标", titleEn: "Public objective", status: "IN_PROGRESS",
+                keyResults: [{ id: "public-kr", titleZh: "公开 KR", titleEn: "Public key result" }],
+              },
+            ],
+            reviews: [
+              {
+                id: "review-without-english-lessons", visibility: "PUBLIC",
+                achievementsZh: "成果", achievementsEn: "Achievements",
+                problemsZh: "问题", problemsEn: "Problems",
+                lessonsZh: "经验", lessonsEn: null,
+                nextActionsZh: "行动", nextActionsEn: "Next actions",
+                score: 8, reviewedAt: new Date("2026-12-31"),
+              },
+              {
+                id: "public-review", visibility: "PUBLIC",
+                achievementsZh: "成果", achievementsEn: "Achievements",
+                problemsZh: "问题", problemsEn: "Problems",
+                lessonsZh: "经验", lessonsEn: "Lessons",
+                nextActionsZh: "行动", nextActionsEn: "Next actions",
+                score: 9, reviewedAt: new Date("2026-12-31"),
+              },
+            ],
+          },
+        ];
+      },
+    });
+
+    const result = await service.getPublicOkrData();
+
+    expect(result.map((cycle) => cycle.id)).toEqual(["public-cycle"]);
+    expect(result[0].objectives.map((objective) => objective.id)).toEqual(["public-objective"]);
+    expect(result[0].reviews.map((review) => review.id)).toEqual(["public-review"]);
   });
 
   it("reports an uninitialized site instead of manufacturing content", async () => {

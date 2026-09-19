@@ -76,8 +76,11 @@ export function OkrCycleWorkspace({
         achievementsZh: form.get("achievementsZh"),
         achievementsEn: form.get("achievementsEn") || null,
         problemsZh: form.get("problemsZh"),
+        problemsEn: form.get("problemsEn") || null,
         lessonsZh: form.get("lessonsZh"),
+        lessonsEn: form.get("lessonsEn") || null,
         nextActionsZh: form.get("nextActionsZh"),
+        nextActionsEn: form.get("nextActionsEn") || null,
         score: form.get("score") ? Number(form.get("score")) : null,
         visibility: form.get("visibility"),
         reviewedAt: new Date().toISOString(),
@@ -198,8 +201,8 @@ export function OkrCycleWorkspace({
 
       <OkrEntityDialog open={editor?.kind === "objective"} title={objectiveRecord ? "编辑 Objective" : "新建 Objective"} description="目标负责表达方向，关键结果在目标详情中拆解。" onClose={() => setEditor(null)}>
         <form className={styles.entityForm} onSubmit={saveObjective}>
-          <label><span>中文标题</span><input name="titleZh" required defaultValue={objectiveRecord?.titleZh ?? ""} /></label><label><span>英文标题</span><input name="titleEn" defaultValue={objectiveRecord?.titleEn ?? ""} /></label>
-          <label className={styles.fullField}><span>中文说明</span><textarea name="descriptionZh" defaultValue={objectiveRecord?.descriptionZh ?? ""} /></label><label className={styles.fullField}><span>英文说明</span><textarea name="descriptionEn" defaultValue={objectiveRecord?.descriptionEn ?? ""} /></label>
+          <label><span>中文标题</span><input name="titleZh" required defaultValue={objectiveRecord?.titleZh ?? ""} /></label><label><span>英文标题（公开必填）</span><input name="titleEn" defaultValue={objectiveRecord?.titleEn ?? ""} /></label>
+          <label className={styles.fullField}><span>中文说明</span><textarea name="descriptionZh" defaultValue={objectiveRecord?.descriptionZh ?? ""} /></label><label className={styles.fullField}><span>英文说明（中文填写时公开必填）</span><textarea name="descriptionEn" defaultValue={objectiveRecord?.descriptionEn ?? ""} /></label>
           <label><span>状态</span><select name="status" defaultValue={objectiveRecord?.status ?? "NOT_STARTED"}>{Object.entries(objectiveStatusLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
           <label><span>可见性</span><select name="visibility" defaultValue={objectiveRecord?.visibility ?? "PRIVATE"}><option value="PRIVATE">私密</option><option value="PUBLIC">公开</option></select></label>
           <label><span>开始日期</span><input type="date" name="startDate" defaultValue={dateInput(objectiveRecord?.startDate)} /></label><label><span>结束日期</span><input type="date" name="endDate" defaultValue={dateInput(objectiveRecord?.endDate)} /></label>
@@ -213,11 +216,14 @@ export function OkrCycleWorkspace({
           <label><span>关联范围</span><select name="objectiveId" defaultValue={reviewRecord?.objectiveId ?? ""}><option value="">周期复盘</option>{cycle.objectives.map((objective) => <option value={objective.id} key={objective.id}>{objective.titleZh}</option>)}</select></label>
           <label><span>评分（0-10）</span><input name="score" type="number" min="0" max="10" step="0.1" defaultValue={reviewRecord?.score ?? ""} /></label>
           <label className={styles.fullField}><span>成果</span><textarea name="achievementsZh" required defaultValue={reviewRecord?.achievementsZh ?? ""} /></label>
+          <label className={styles.fullField}><span>英文成果（公开必填）</span><textarea name="achievementsEn" defaultValue={reviewRecord?.achievementsEn ?? ""} /></label>
           <label className={styles.fullField}><span>问题</span><textarea name="problemsZh" required defaultValue={reviewRecord?.problemsZh ?? ""} /></label>
+          <label className={styles.fullField}><span>英文问题（公开必填）</span><textarea name="problemsEn" defaultValue={reviewRecord?.problemsEn ?? ""} /></label>
           <label className={styles.fullField}><span>经验</span><textarea name="lessonsZh" required defaultValue={reviewRecord?.lessonsZh ?? ""} /></label>
+          <label className={styles.fullField}><span>英文经验（公开必填）</span><textarea name="lessonsEn" defaultValue={reviewRecord?.lessonsEn ?? ""} /></label>
           <label className={styles.fullField}><span>下一步</span><textarea name="nextActionsZh" required defaultValue={reviewRecord?.nextActionsZh ?? ""} /></label>
+          <label className={styles.fullField}><span>英文下一步（公开必填）</span><textarea name="nextActionsEn" defaultValue={reviewRecord?.nextActionsEn ?? ""} /></label>
           <label><span>可见性</span><select name="visibility" defaultValue={reviewRecord?.visibility ?? "PRIVATE"}><option value="PRIVATE">私密</option><option value="PUBLIC">公开</option></select></label>
-          <input type="hidden" name="achievementsEn" value={reviewRecord?.achievementsEn ?? ""} />
           <div className={styles.entityFormActions}><button type="button" onClick={() => setEditor(null)}>取消</button><button className={styles.primaryButton} disabled={isBusy("okr:save-review")}>{isBusy("okr:save-review") ? <LoaderCircle className={styles.spin} size={16} /> : null}{reviewRecord ? "保存修改" : "创建复盘"}</button></div>
         </form>
       </OkrEntityDialog>

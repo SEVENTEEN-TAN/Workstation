@@ -113,7 +113,7 @@ export function OkrCycleListWorkspace({ initialCycles }: { initialCycles: OkrCyc
       <OkrEntityDialog open={Boolean(editor)} title={editingCycle ? "编辑周期" : "新建周期"} description="周期负责统一目标范围、时间和公开状态。" onClose={() => setEditor(null)}>
         <form className={styles.entityForm} onSubmit={saveCycle}>
           <label><span>中文名称</span><input name="nameZh" required defaultValue={editingCycle?.nameZh ?? ""} /></label>
-          <label><span>英文名称</span><input name="nameEn" defaultValue={editingCycle?.nameEn ?? ""} /></label>
+          <label><span>英文名称（公开必填）</span><input name="nameEn" defaultValue={editingCycle?.nameEn ?? ""} /></label>
           <label><span>周期类型</span><select name="type" defaultValue={editingCycle?.type ?? "QUARTER"}><option value="QUARTER">季度</option><option value="YEAR">年度</option><option value="CUSTOM">自定义</option></select></label>
           <label><span>状态</span><select name="status" defaultValue={editingCycle?.status ?? "DRAFT"}>{Object.entries(cycleStatusLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label>
           <label><span>开始日期</span><input name="startDate" type="date" required defaultValue={dateInput(editingCycle?.startDate)} /></label>

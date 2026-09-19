@@ -45,6 +45,34 @@ type PublicCycleSourceRecord = {
   reviews: PublicReviewSourceRecord[];
 };
 
+function hasText(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function hasPairedText(zh: unknown, en: unknown) {
+  return (!hasText(zh) && !hasText(en)) || (hasText(zh) && hasText(en));
+}
+
+function hasCompleteKeyResultEvidence(keyResults: unknown[]) {
+  return keyResults.every((entry) => {
+    const keyResult = entry as Record<string, unknown>;
+    return hasText(keyResult.titleEn) && hasPairedText(keyResult.descriptionZh, keyResult.descriptionEn);
+  });
+}
+
+function hasCompleteObjectiveEvidence(objective: PublicObjectiveSourceRecord) {
+  return hasText(objective.titleEn)
+    && hasPairedText(objective.descriptionZh, objective.descriptionEn)
+    && hasCompleteKeyResultEvidence(objective.keyResults);
+}
+
+function hasCompleteReviewEvidence(review: PublicReviewSourceRecord) {
+  return hasText(review.achievementsEn)
+    && hasText(review.problemsEn)
+    && hasText(review.lessonsEn)
+    && hasText(review.nextActionsEn);
+}
+
 export function createPublicDataService(source: PublicDataSource) {
   return {
     async getPublishedSiteContent(): Promise<SiteContent | null> {
@@ -54,13 +82,13 @@ export function createPublicDataService(source: PublicDataSource) {
     async getPublicOkrData() {
       const cycles = await source.findOkrCycles();
       return cycles
-        .filter((cycle) => cycle.visibility === "PUBLIC")
+        .filter((cycle) => cycle.visibility === "PUBLIC" && hasText(cycle.nameEn))
         .map((cycle) => ({
           ...cycle,
           objectives: cycle.objectives
-            .filter((objective) => objective.visibility === "PUBLIC")
+            .filter((objective) => objective.visibility === "PUBLIC" && hasCompleteObjectiveEvidence(objective))
             .sort((left, right) => left.sortOrder - right.sortOrder),
-          reviews: cycle.reviews.filter((review) => review.visibility === "PUBLIC"),
+          reviews: cycle.reviews.filter((review) => review.visibility === "PUBLIC" && hasCompleteReviewEvidence(review)),
         }));
     },
   };
