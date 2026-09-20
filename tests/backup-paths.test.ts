@@ -125,6 +125,7 @@ describe("backup paths", () => {
     const deploymentGuide = readProjectFile("docs/deployment.md");
 
     expect(service).toContain("User=personal-workstation");
+    expect(service).toContain("WorkingDirectory=/opt/personal-workstation/source");
     expect(service).toContain("EnvironmentFile=/etc/personal-workstation.env");
     expect(service).toContain("ExecStart=/usr/bin/npm run db:backup");
     expect(timer).toContain("OnCalendar=*-*-* 03:00:00");

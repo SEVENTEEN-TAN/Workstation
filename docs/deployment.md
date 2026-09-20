@@ -1,12 +1,14 @@
 # Personal Workstation 部署与回滚
 
-本文只描述 WorkStation 的 Linux 原生发布流程。发布目录在 `/opt/personal-workstation`，SQLite、上传文件和备份都在发布目录之外，避免替换版本时丢失数据。
+本文只描述 WorkStation 的 Linux 原生发布流程。运行版本放在 `/opt/personal-workstation/releases`，当前运行版与源码分别通过 `/opt/personal-workstation/current` 和 `/opt/personal-workstation/source` 指向，SQLite、上传文件和备份都在发布目录之外，避免替换版本时丢失数据。
 
 ## 路径与前提
 
 - 源码仓库：`https://github.com/SEVENTEEN-TAN/Workstation.git`
-- 运行目录：`/opt/personal-workstation`
-- 暂存版本：`/opt/personal-workstation-releases/<commit>`
+- 源码目录：`/opt/personal-workstation-releases/<commit>/source`
+- 运行版本：`/opt/personal-workstation/releases/<commit>`
+- 当前运行版：`/opt/personal-workstation/current`
+- 当前源码：`/opt/personal-workstation/source`
 - 数据库：`/var/lib/personal-workstation/workstation.db`
 - 上传目录：`/var/lib/personal-workstation/uploads`
 - 文章附件快照：`/var/lib/personal-workstation/article-attachments`
@@ -66,7 +68,7 @@ npm run db:backup
 
 仓库提供 `deploy/personal-workstation-backup.service` 和 `deploy/personal-workstation-backup.timer` 作为每日备份模板。默认在 03:00 触发，允许 15 分钟随机延迟，并使用 `Persistent=true` 在服务器停机错过周期后补跑。
 
-在服务器上启用前，先确认 `command -v npm` 输出为 `/usr/bin/npm`；若 Node 安装路径不同，需要同步修改 service 中的 `ExecStart`。备份目录必须允许 `personal-workstation` 账号写入：
+在服务器上启用前，先确认 `/opt/personal-workstation/source` 指向当前版本的完整源码，且 `command -v npm` 输出为 `/usr/bin/npm`；若 Node 安装路径不同，需要同步修改 service 中的 `ExecStart`。备份目录必须允许 `personal-workstation` 账号写入：
 
 ```bash
 install -d -o personal-workstation -g personal-workstation -m 0750 /var/backups/personal-workstation
@@ -100,7 +102,7 @@ npm run build
 在源码目录构建 Linux 原生 standalone 输出，随后组装运行目录：
 
 ```bash
-release_app=/opt/personal-workstation-releases/<commit>/app
+release_app=/opt/personal-workstation/releases/<commit>
 mkdir -p "$release_app"
 cp -a .next/standalone/. "$release_app/"
 cp -a .next/static "$release_app/.next/static"
@@ -130,11 +132,13 @@ sqlite3 /var/lib/personal-workstation/workstation.db 'PRAGMA integrity_check;'
 
 ### 6. Atomic service switch
 
-`/opt/personal-workstation` 应是指向当前运行目录的符号链接。用临时链接完成替换，再重启服务：
+`/opt/personal-workstation/current` 和 `/opt/personal-workstation/source` 应分别指向当前运行目录和完整源码目录。用临时链接完成替换，再重启服务：
 
 ```bash
-ln -sfn /opt/personal-workstation-releases/<commit>/app /opt/personal-workstation.next
-mv -Tf /opt/personal-workstation.next /opt/personal-workstation
+ln -sfn /opt/personal-workstation-releases/<commit>/source /opt/personal-workstation/source.next
+mv -Tf /opt/personal-workstation/source.next /opt/personal-workstation/source
+ln -sfn /opt/personal-workstation/releases/<commit> /opt/personal-workstation/current.next
+mv -Tf /opt/personal-workstation/current.next /opt/personal-workstation/current
 systemctl restart personal-workstation.service
 ```
 
@@ -154,7 +158,7 @@ systemctl restart personal-workstation.service
 
 1. 先确认故障来自新版本，并记录当前 commit、日志和数据库迁移状态。
 2. 停止服务：`systemctl stop personal-workstation.service`。
-3. 将 `/opt/personal-workstation` 指回上一个已验证的 `app` 目录，使用与发布相同的临时符号链接替换方式。
+3. 将 `/opt/personal-workstation/current` 和 `/opt/personal-workstation/source` 指回上一个已验证版本的运行目录与源码目录，使用与发布相同的临时符号链接替换方式。
 4. 若新版本改变了数据库结构，或旧代码无法读取当前数据库，从发布前备份恢复同一套数据库和上传文件：
 
 ```bash
