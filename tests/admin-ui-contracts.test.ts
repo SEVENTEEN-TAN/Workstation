@@ -759,6 +759,7 @@ describe("homepage version safety contracts", () => {
 });
 
 describe("OKR execution workspace contracts", () => {
+  const globalStyles = readProjectFile("src/app/globals.css");
   const listSource = readOptionalProjectFile("src/components/admin/okr/OkrCycleListWorkspace.tsx");
   const cycleSource = readOptionalProjectFile("src/components/admin/okr/OkrCycleWorkspace.tsx");
   const objectiveSource = readOptionalProjectFile("src/components/admin/okr/ObjectiveWorkspace.tsx");
@@ -766,6 +767,10 @@ describe("OKR execution workspace contracts", () => {
   const checkInSource = readOptionalProjectFile("src/components/admin/okr/KrCheckInPanel.tsx");
   const actionSource = readOptionalProjectFile("src/components/admin/okr/ActionItemList.tsx");
   const allSources = [listSource, cycleSource, objectiveSource, dialogSource, checkInSource, actionSource].join("\n");
+
+  it("restores native dialog centering after the global style reset", () => {
+    expect(globalStyles).toMatch(/dialog\s*\{\s*margin:\s*auto;\s*\}/);
+  });
 
   it("replaces JSON prompt editing with structured dialogs", () => {
     expect(allSources).toContain("OkrEntityDialog");
