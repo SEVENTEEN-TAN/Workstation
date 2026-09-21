@@ -19,13 +19,14 @@ type HomeExperienceProps = {
   skills?: PublicResumeData["skills"];
   experiences?: PublicResumeData["experiences"];
   resumeDownloads?: PublicResumeData["downloads"];
+  editor?: boolean;
 };
 
-export function HomeExperience({ content, activities, skills, experiences, resumeDownloads }: HomeExperienceProps) {
+export function HomeExperience({ content, activities, skills, experiences, resumeDownloads, editor }: HomeExperienceProps) {
   const composedHomepage = activities !== undefined && experiences !== undefined;
 
   return (
-    <I18nProvider content={content}>
+    <I18nProvider content={content} editor={editor}>
       <div className="min-h-screen overflow-x-hidden bg-ink text-white selection:bg-accent selection:text-ink">
         <Navbar />
         <main>

@@ -13,7 +13,7 @@ const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ b
 export function Hero() {
   const dragArea = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
-  const { locale, copy, settings } = useI18n();
+  const { locale, copy, settings, editor } = useI18n();
   const [isDesktop, setIsDesktop] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
   const dragEnabled = shouldEnableCardDrag(reduceMotion, isDesktop);
@@ -46,14 +46,14 @@ export function Hero() {
           <div className={isCompact ? "hero-heading-zone" : undefined}>
             <div className="mb-8 flex items-center gap-3 text-xs font-bold tracking-[0.28em] text-gray-400 sm:text-sm">
               <span className="size-2 shrink-0 rounded-full bg-accent shadow-[0_0_12px_rgba(0,223,143,0.65)]" />
-              {copy.hero.role}
+              <span data-cms-path={editor ? `${locale}.hero.role` : undefined} contentEditable={editor} suppressContentEditableWarning>{copy.hero.role}</span>
             </div>
             <h1 aria-label={copy.hero.headingLabel} className={`font-display font-black leading-[0.84] ${headingSize}`}>
-              <span className="block text-white">{copy.hero.lineOne}</span>
-              <span className={`outline-title block ${locale === "en" ? "whitespace-nowrap" : ""}`}>{copy.hero.lineTwo}<span className="solid-dot">.</span></span>
+              <span data-cms-path={editor ? `${locale}.hero.lineOne` : undefined} contentEditable={editor} suppressContentEditableWarning className="block text-white">{copy.hero.lineOne}</span>
+              <span className={`outline-title block ${locale === "en" ? "whitespace-nowrap" : ""}`}><span data-cms-path={editor ? `${locale}.hero.lineTwo` : undefined} contentEditable={editor} suppressContentEditableWarning>{copy.hero.lineTwo}</span><span className="solid-dot">.</span></span>
             </h1>
           </div>
-          <p className={`${isCompact ? "mt-6" : "mt-9"} max-w-xl text-base leading-relaxed text-gray-400 sm:text-lg`}>{copy.hero.intro}</p>
+          <p data-cms-path={editor ? `${locale}.hero.intro` : undefined} contentEditable={editor} suppressContentEditableWarning className={`${isCompact ? "mt-6" : "mt-9"} max-w-xl text-base leading-relaxed text-gray-400 sm:text-lg`}>{copy.hero.intro}</p>
           <div className="mt-10 flex flex-wrap gap-4">
             <button type="button" onClick={() => scrollTo("work")} className="primary-button focus-ring group">{copy.hero.work}<ArrowDownRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" /></button>
             <button type="button" onClick={() => scrollTo("contact")} className="secondary-button focus-ring group"><span className="size-2 rounded-full bg-accent" />{copy.hero.contact}<ArrowUpRight className="size-4 text-gray-400 transition-colors group-hover:text-accent" /></button>

@@ -13,6 +13,7 @@ type I18nValue = {
   setLocale: (locale: Locale) => void;
   copy: SiteContent[Locale];
   settings: SiteContent["settings"];
+  editor: boolean;
 };
 
 const I18nContext = createContext<I18nValue | null>(null);
@@ -26,10 +27,12 @@ export function I18nProvider({
   children,
   content,
   initialLocale = "en",
+  editor = false,
 }: {
   children: React.ReactNode;
   content: SiteContent;
   initialLocale?: Locale;
+  editor?: boolean;
 }) {
   const [locale, setLocale] = useState<Locale>(initialLocale);
 
@@ -46,7 +49,7 @@ export function I18nProvider({
     document.querySelector('meta[name="description"]')?.setAttribute("content", content[locale].meta.description);
   }, [content, locale]);
 
-  const value = useMemo(() => ({ locale, setLocale, copy: content[locale], settings: content.settings }), [content, locale]);
+  const value = useMemo(() => ({ locale, setLocale, copy: content[locale], settings: content.settings, editor }), [content, editor, locale]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 

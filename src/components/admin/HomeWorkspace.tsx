@@ -6,7 +6,8 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import styles from "../../app/admin/admin.module.css";
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { HomepageEditor } from "./home/HomepageEditor";
-import { isSiteContentDirty, validateSiteContent } from "./home/content-editor";
+import { isSiteContentDirty, updateVisualContent, validateSiteContent } from "./home/content-editor";
+import { parseIframeMessage } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
@@ -37,10 +38,31 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
   const [view, setView] = useState<"edit" | "history">("edit");
   const [versions, setVersions] = useState(initialVersions);
   const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
+  const visualPreviewRef = useRef<HTMLIFrameElement>(null);
+  const [visualPreviewReady, setVisualPreviewReady] = useState(false);
   const rollbackTriggerRef = useRef<HTMLElement | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const validation = useMemo(() => validateSiteContent(content), [content]);
   const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
+
+  useEffect(() => {
+    function receivePreviewMessage(event: MessageEvent) {
+      if (event.origin !== window.location.origin || event.source !== visualPreviewRef.current?.contentWindow) return;
+      const message = parseIframeMessage(event.data);
+      if (message?.type === "homepage-editor:ready") setVisualPreviewReady(true);
+      if (message?.type === "homepage-editor:commit") {
+        try { setContent((current) => updateVisualContent(current, message.path, message.value)); } catch { /* Ignore rejected iframe messages. */ }
+      }
+    }
+
+    window.addEventListener("message", receivePreviewMessage);
+    return () => window.removeEventListener("message", receivePreviewMessage);
+  }, []);
+
+  useEffect(() => {
+    if (!visualPreviewReady) return;
+    visualPreviewRef.current?.contentWindow?.postMessage({ type: "homepage-editor:content", content }, window.location.origin);
+  }, [content, visualPreviewReady]);
 
   useEffect(() => {
     if (!dirty) return;
@@ -188,6 +210,9 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
                     : "当前已保存草稿可预览并发布。"
                   : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
               </p>
+            </section>
+            <section className={styles.panel} aria-label="主页实时预览">
+              <iframe ref={visualPreviewRef} title="主页实时预览" src="/admin/home/visual-preview" className="min-h-[720px] w-full border-0 bg-ink" />
             </section>
             <HomepageEditor
               projects={projects}

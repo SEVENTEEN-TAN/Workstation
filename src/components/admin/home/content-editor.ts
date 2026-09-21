@@ -3,6 +3,7 @@ import {
   type LocalizedSiteContent,
   type SiteContent,
 } from "../../../lib/content/schema";
+import { isVisualEditField } from "./visual-editor-protocol";
 
 export type SiteLocale = "zh" | "en";
 
@@ -56,6 +57,11 @@ export function updateContentAtPath(
   }
 
   return updateValueAtPath(content, path, value) as SiteContent;
+}
+
+export function updateVisualContent(content: SiteContent, path: string, value: string): SiteContent {
+  if (!isVisualEditField(path)) throw new Error("Field is not editable");
+  return updateContentAtPath(content, path.split("."), value);
 }
 
 export function updateHomepageProjectSelection(
