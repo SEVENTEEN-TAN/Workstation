@@ -49,6 +49,40 @@ const structuredProject = parsePortfolioProjectRecord({
 });
 
 describe("site publishing", () => {
+  it("rejects a draft that references a missing homepage media-library image", async () => {
+    const draftContent = structuredClone(bootstrapSiteContent);
+    draftContent.settings.portraitImage = "/api/assets/missing-image";
+    const versions = [{ id: "draft", version: 1, status: "DRAFT", content: draftContent, publishedAt: null }];
+    const service = createSiteContentService({
+      transaction: async () => { throw new Error("not used"); },
+      async listVersions() { return versions; },
+      async findPublished() { return null; },
+      async findDraft() { return versions[0]; },
+      async updateDraft() { throw new Error("a missing image must not be saved"); },
+      async findProjectsByIds() { return []; },
+      async findAssetsByIds() { return []; },
+    });
+
+    await expect(service.saveDraft("draft", draftContent)).rejects.toThrow("主页图片资源不存在或不是图片");
+  });
+
+  it("rejects a draft that references a non-image homepage media-library asset", async () => {
+    const draftContent = structuredClone(bootstrapSiteContent);
+    draftContent.settings.wechatQrImage = "/api/assets/not-an-image";
+    const versions = [{ id: "draft", version: 1, status: "DRAFT", content: draftContent, publishedAt: null }];
+    const service = createSiteContentService({
+      transaction: async () => { throw new Error("not used"); },
+      async listVersions() { return versions; },
+      async findPublished() { return null; },
+      async findDraft() { return versions[0]; },
+      async updateDraft() { throw new Error("a non-image asset must not be saved"); },
+      async findProjectsByIds() { return []; },
+      async findAssetsByIds() { return [{ id: "not-an-image", mimeType: "application/pdf" }]; },
+    });
+
+    await expect(service.saveDraft("draft", draftContent)).rejects.toThrow("主页图片资源不存在或不是图片");
+  });
+
   it("returns site versions as JSON-safe views", async () => {
     const createdAt = new Date("2026-09-01T08:00:00.000Z");
     const updatedAt = new Date("2026-09-02T08:00:00.000Z");

@@ -13,10 +13,18 @@ import { useAdminAction } from "./useAdminAction";
 
 interface AdminShellProps {
   username: string;
+  brandImage?: string;
   children: ReactNode;
 }
 
-export function AdminShell({ username, children }: AdminShellProps) {
+function BrandMark({ brandImage }: { brandImage?: string }) {
+  return <span className={styles.brandMark}>{brandImage ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={brandImage} alt="" className="h-full w-full rounded-[5px] object-cover" />
+  ) : "17"}</span>;
+}
+
+export function AdminShell({ username, brandImage, children }: AdminShellProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [menuPath, setMenuPath] = useState<string | null>(null);
@@ -60,7 +68,7 @@ export function AdminShell({ username, children }: AdminShellProps) {
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <div className={styles.brandBlock}>
-          <span className={styles.brandMark}>17</span>
+          <BrandMark brandImage={brandImage} />
           <div>
             <span className={styles.kicker}>SEVENTEEN</span>
             <strong>WORKSTATION</strong>
@@ -77,7 +85,7 @@ export function AdminShell({ username, children }: AdminShellProps) {
 
       <header className={styles.mobileHeader}>
         <Link href="/admin/overview" className={styles.mobileBrand}>
-          <span className={styles.brandMark}>17</span>
+          <BrandMark brandImage={brandImage} />
           <strong>WORKSTATION</strong>
         </Link>
         <button

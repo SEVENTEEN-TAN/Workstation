@@ -4,6 +4,25 @@ const text = z.string().trim().min(1);
 const textList = z.array(text).min(1);
 const heading = z.tuple([text, text]);
 
+export const DEFAULT_HOMEPAGE_SETTINGS = {
+  portraitImage: "/images/zedian-portrait-v3.png",
+  wechatQrImage: "/images/wechat-qr.png",
+  email: "m13145215766@163.com",
+  githubUrl: "https://github.com/SEVENTEEN-TAN",
+} as const;
+
+export const homepageImagePathSchema = z.string().regex(
+  /^\/(?:images\/[^?#]+|api\/assets\/[^/?#]+)$/,
+  "图片必须使用本地静态路径或媒体库资源",
+);
+
+const homepageSettingsSchema = z.object({
+  portraitImage: homepageImagePathSchema,
+  wechatQrImage: homepageImagePathSchema,
+  email: z.string().email(),
+  githubUrl: z.string().url().refine((value) => new URL(value).protocol === "https:", "GitHub 地址必须使用 HTTPS"),
+}).default(DEFAULT_HOMEPAGE_SETTINGS);
+
 const metaSchema = z.object({
   title: text,
   description: text,
@@ -107,6 +126,7 @@ export const localizedSiteContentSchema = z.object({
 
 export const siteContentSchema = z.object({
   selectedProjectIds: z.array(text).refine((ids) => new Set(ids).size === ids.length, "主页项目不能重复").optional(),
+  settings: homepageSettingsSchema,
   en: localizedSiteContentSchema,
   zh: localizedSiteContentSchema,
 });

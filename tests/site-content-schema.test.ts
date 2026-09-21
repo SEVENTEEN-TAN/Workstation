@@ -90,6 +90,28 @@ describe("siteContentSchema", () => {
     expect(siteContentSchema.safeParse({ en: locale, zh: locale }).success).toBe(true);
   });
 
+  it("supplies deterministic settings for legacy snapshots", () => {
+    expect(siteContentSchema.parse({ en: locale, zh: locale }).settings).toEqual({
+      portraitImage: "/images/zedian-portrait-v3.png",
+      wechatQrImage: "/images/wechat-qr.png",
+      email: "m13145215766@163.com",
+      githubUrl: "https://github.com/SEVENTEEN-TAN",
+    });
+  });
+
+  it("rejects remote homepage images", () => {
+    expect(siteContentSchema.safeParse({
+      en: locale,
+      zh: locale,
+      settings: {
+        portraitImage: "https://example.com/portrait.png",
+        wechatQrImage: "/images/wechat-qr.png",
+        email: "m13145215766@163.com",
+        githubUrl: "https://github.com/SEVENTEEN-TAN",
+      },
+    }).success).toBe(false);
+  });
+
   it("distinguishes legacy projects from explicit structured selections", () => {
     const legacy = { en: locale, zh: locale };
 

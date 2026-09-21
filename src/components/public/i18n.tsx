@@ -12,6 +12,7 @@ type I18nValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   copy: SiteContent[Locale];
+  settings: SiteContent["settings"];
 };
 
 const I18nContext = createContext<I18nValue | null>(null);
@@ -45,7 +46,7 @@ export function I18nProvider({
     document.querySelector('meta[name="description"]')?.setAttribute("content", content[locale].meta.description);
   }, [content, locale]);
 
-  const value = useMemo(() => ({ locale, setLocale, copy: content[locale] }), [content, locale]);
+  const value = useMemo(() => ({ locale, setLocale, copy: content[locale], settings: content.settings }), [content, locale]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 

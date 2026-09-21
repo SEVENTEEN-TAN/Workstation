@@ -42,7 +42,20 @@ export type SiteContentRepository = {
   findDraft(): Promise<SiteVersionRecord | null>;
   updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
   findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
+  findAssetsByIds?(ids: string[]): Promise<Array<{ id: string; mimeType: string }>>;
 };
+
+function homepageSettingAssetIds(content: SiteContent) {
+  return [...new Set([content.settings.portraitImage, content.settings.wechatQrImage]
+    .filter((path) => path.startsWith("/api/assets/"))
+    .map((path) => path.slice("/api/assets/".length)))];
+}
+
+export function validateHomepageSettingAssets(content: SiteContent, assets: Array<{ id: string; mimeType: string }>) {
+  const expectedIds = homepageSettingAssetIds(content);
+  const validIds = new Set(assets.filter((asset) => asset.mimeType.startsWith("image/")).map((asset) => asset.id));
+  if (expectedIds.some((id) => !validIds.has(id))) throw new Error("主页图片资源不存在或不是图片");
+}
 
 function toSiteVersionData(record: SiteVersionRecord): SiteVersionData {
   return {
@@ -82,6 +95,10 @@ function createPrismaRepository(database: PrismaClient): SiteContentRepository {
       const records = await database.portfolioProject.findMany({ where: { id: { in: ids } } });
       return records.map(parsePortfolioProjectRecord);
     },
+    findAssetsByIds: (ids) => database.asset.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, mimeType: true },
+    }),
   };
 }
 
@@ -121,6 +138,11 @@ export function createSiteContentService(repository: SiteContentRepository) {
       const versions = await repository.listVersions();
       const draft = versions.find((version) => version.id === id && version.status === "DRAFT");
       if (!draft) throw new Error("仅草稿版本可以保存");
+      const assetIds = homepageSettingAssetIds(content);
+      if (assetIds.length) {
+        if (!repository.findAssetsByIds) throw new Error("主页图片资源不存在或不是图片");
+        validateHomepageSettingAssets(content, await repository.findAssetsByIds(assetIds));
+      }
       const selectedProjectIds = content.selectedProjectIds;
       const materializedContent = selectedProjectIds
         ? materializeHomepageProjects(content, await repository.findProjectsByIds(selectedProjectIds))

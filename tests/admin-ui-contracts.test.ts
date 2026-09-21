@@ -748,10 +748,18 @@ describe("homepage version safety contracts", () => {
     expect(source).toMatch(/<ConfirmDialog[\s\S]*confirmLabel="恢复为草稿"/);
   });
 
-  it("prioritizes the hero portrait without replacing the native image behavior", () => {
+  it("drives public contact media and the admin brand from homepage settings", () => {
     const heroSource = readProjectFile("src/components/public/Hero.tsx");
+    const footerSource = readProjectFile("src/components/public/Footer.tsx");
+    const shellSource = readProjectFile("src/components/admin/AdminShell.tsx");
+    const layoutSource = readProjectFile("src/app/admin/(workspace)/layout.tsx");
 
-    expect(heroSource).toContain('src="/images/zedian-portrait-v3.png"');
+    expect(heroSource).toContain("settings.portraitImage");
+    expect(footerSource).toContain("settings.wechatQrImage");
+    expect(footerSource).toContain("settings.email");
+    expect(footerSource).toContain("settings.githubUrl");
+    expect(shellSource).toContain("brandImage");
+    expect(layoutSource).toContain("getPublished");
     expect(heroSource).toContain('loading="eager"');
     expect(heroSource).toContain('fetchPriority="high"');
     expect(heroSource).toContain("The native image preserves the legacy browser sizing and loading behavior.");
