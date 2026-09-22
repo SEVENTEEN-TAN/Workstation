@@ -34,6 +34,39 @@ function sectionPositions(markup: string) {
 }
 
 describe("public homepage composition", () => {
+  it("marks every CMS-owned public section only in editor mode", () => {
+    const editorMarkup = renderToStaticMarkup(createElement(HomeExperience, {
+      content: bootstrapSiteContent,
+      editor: true,
+      locale: "en",
+      onLocaleChange: () => undefined,
+    }));
+    const publicMarkup = renderToStaticMarkup(createElement(HomeExperience, {
+      content: bootstrapSiteContent,
+      locale: "en",
+      onLocaleChange: () => undefined,
+    }));
+
+    for (const path of [
+      "en.nav.brand",
+      "en.hero.work",
+      "settings.portraitImage",
+      "en.about.heading.0",
+      "en.about.stats.0.value",
+      "en.works.heading",
+      "en.services.items.0.1",
+      "en.footer.github",
+      "settings.email",
+      "settings.githubUrl",
+      "settings.wechatQrImage",
+    ]) {
+      expect(editorMarkup).toContain(`data-cms-path="${path}"`);
+      expect(publicMarkup).not.toContain(`data-cms-path="${path}"`);
+    }
+    expect(editorMarkup).not.toContain('data-cms-path="activities.');
+    expect(editorMarkup).not.toContain('data-cms-path="experiences.');
+  });
+
   it("renders the complete homepage from public resume data", () => {
     const markup = renderToStaticMarkup(createElement(HomeVisualEditor, { initialData: previewData }));
 

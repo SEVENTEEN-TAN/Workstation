@@ -9,8 +9,38 @@ import {
   parseParentMessage,
   sendEditorPreviewState,
 } from "../src/components/admin/home/visual-editor-protocol";
+import {
+  createTextCommit,
+  editableTextProps,
+  safeEditorLinkTarget,
+  selectableFieldProps,
+} from "../src/components/public/visual-editing";
 
 describe("homepage visual-editor protocol", () => {
+  it("builds editor-only attributes and safe text commits", () => {
+    expect(editableTextProps(false, "en.hero.lineOne")).toEqual({});
+    expect(selectableFieldProps(false, "settings.portraitImage")).toEqual({});
+    expect(editableTextProps(true, "en.hero.lineOne")).toEqual({
+      "data-cms-path": "en.hero.lineOne",
+      contentEditable: true,
+      suppressContentEditableWarning: true,
+      tabIndex: 0,
+    });
+    expect(selectableFieldProps(true, "settings.portraitImage")).toEqual({
+      "data-cms-path": "settings.portraitImage",
+      role: "button",
+      tabIndex: 0,
+    });
+    expect(createTextCommit(bootstrapSiteContent, "en.hero.lineOne", "中文输入", true)).toBeNull();
+    expect(createTextCommit(bootstrapSiteContent, "en.hero.lineOne", "中文输入", false)).toEqual({
+      type: "homepage-editor:commit",
+      path: "en.hero.lineOne",
+      value: "中文输入",
+    });
+    expect(safeEditorLinkTarget("github", "javascript:alert(1)")).toBeUndefined();
+    expect(safeEditorLinkTarget("github", "https://github.com/SEVENTEEN-TAN")).toBe("https://github.com/SEVENTEEN-TAN");
+  });
+
   it("accepts only registered homepage content paths", () => {
     expect(isVisualEditField("en.hero.intro")).toBe(true);
     expect(isVisualEditField("settings.githubUrl")).toBe(true);

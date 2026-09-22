@@ -29,7 +29,7 @@ export function HomeExperience({ content, activities, skills, experiences, resum
 
   return (
     <I18nProvider content={content} editor={editor} locale={locale} onLocaleChange={onLocaleChange}>
-      <div className="min-h-screen overflow-x-hidden bg-ink text-white selection:bg-accent selection:text-ink">
+      <div data-homepage-editor={editor ? "true" : undefined} className="min-h-screen overflow-x-hidden bg-ink text-white selection:bg-accent selection:text-ink">
         <Navbar />
         <main>
           <Hero />

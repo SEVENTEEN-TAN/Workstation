@@ -3,13 +3,14 @@
 import Link from "next/link";
 
 import { useI18n } from "./i18n";
+import { editableTextProps } from "./visual-editing";
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export function Navbar() {
-  const { locale, setLocale, copy } = useI18n();
+  const { locale, setLocale, copy, editor } = useI18n();
   const navItems = [
     { label: copy.nav.about, target: "about" },
     { label: copy.nav.work, target: "work" },
@@ -19,15 +20,21 @@ export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-24 border-b border-white/[0.07] bg-[#0f1115]/80 backdrop-blur-xl sm:h-24">
       <nav className="page-shell relative flex h-full items-start justify-between pt-4 sm:items-center sm:pt-0" aria-label="Primary navigation">
-        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="focus-ring text-lg font-black tracking-[-0.04em] sm:text-xl" aria-label={copy.nav.brand} title={copy.nav.top}>
-          {copy.nav.brand}<span className="text-accent">.</span>
+        <button type="button" onClick={(event) => {
+          if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }} className="focus-ring text-lg font-black tracking-[-0.04em] sm:text-xl" aria-label={copy.nav.brand} title={copy.nav.top}>
+          <span {...editableTextProps(editor, `${locale}.nav.brand`)}>{copy.nav.brand}</span><span className="text-accent">.</span>
         </button>
 
         <div className="ml-auto flex items-center gap-3 sm:gap-6 lg:gap-9">
           <div role="group" aria-label="Section navigation" className="absolute inset-x-5 bottom-2 flex items-center justify-between sm:static sm:justify-start sm:gap-6 lg:gap-9">
             {navItems.map((item) => (
-              <button key={item.target} type="button" onClick={() => scrollToSection(item.target)} className="focus-ring text-xs font-semibold tracking-[0.14em] text-gray-300 transition-colors duration-300 hover:text-accent sm:text-sm sm:tracking-widest">
-                {item.label}
+              <button key={item.target} type="button" onClick={(event) => {
+                if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
+                scrollToSection(item.target);
+              }} className="focus-ring text-xs font-semibold tracking-[0.14em] text-gray-300 transition-colors duration-300 hover:text-accent sm:text-sm sm:tracking-widest">
+                <span {...editableTextProps(editor, `${locale}.nav.${item.target}`)}>{item.label}</span>
               </button>
             ))}
             <Link href="/okr" className="focus-ring text-xs font-semibold tracking-[0.14em] text-accent transition-colors duration-300 hover:text-white sm:text-sm sm:tracking-widest">

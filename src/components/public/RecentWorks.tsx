@@ -8,11 +8,12 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { toRecentProjectViews } from "./data";
 import { useI18n } from "./i18n";
 import { luxuryEase, reveal } from "./motion";
+import { editableTextProps } from "./visual-editing";
 
 export function RecentWorks({ sectionNumber }: { sectionNumber?: string } = {}) {
   const [activeIdx, setActiveIdx] = useState(0);
   const reduceMotion = useReducedMotion();
-  const { copy, locale } = useI18n();
+  const { copy, locale, editor } = useI18n();
   const projects = toRecentProjectViews(locale, copy.projects);
   const activeProject = projects[activeIdx] ?? projects[0];
 
@@ -24,8 +25,8 @@ export function RecentWorks({ sectionNumber }: { sectionNumber?: string } = {}) 
     <section id="work" className="scroll-mt-20 py-24 sm:py-32">
       <div className="page-shell">
         <motion.div {...reveal} transition={{ duration: 0.7 }} className="mb-16 flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
-          <div><p className="eyebrow">{sectionNumber ? copy.works.eyebrow.replace(/^\d{2}/, sectionNumber) : copy.works.eyebrow}</p><h2 className="section-heading mt-7">{copy.works.heading}</h2></div>
-          <Link href="/projects" className="text-link focus-ring group self-start sm:self-auto">{copy.works.viewAll}<ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
+          <div><p {...editableTextProps(editor, `${locale}.works.eyebrow`)} className="eyebrow">{sectionNumber ? copy.works.eyebrow.replace(/^\d{2}/, sectionNumber) : copy.works.eyebrow}</p><h2 {...editableTextProps(editor, `${locale}.works.heading`)} className="section-heading mt-7">{copy.works.heading}</h2></div>
+          <Link href="/projects" className="text-link focus-ring group self-start sm:self-auto"><span {...editableTextProps(editor, `${locale}.works.viewAll`)}>{copy.works.viewAll}</span><ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
         </motion.div>
 
         <div className="grid items-start gap-16 lg:grid-cols-12 lg:gap-12">
@@ -57,7 +58,7 @@ export function RecentWorks({ sectionNumber }: { sectionNumber?: string } = {}) 
               <motion.div key={activeProject.title} initial={{ opacity: 0, y: reduceMotion ? 0 : 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduceMotion ? 0 : -16 }} transition={{ duration: reduceMotion ? 0.01 : 0.45, ease: luxuryEase }}>
                 <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">{activeProject.category}</p><h3 className="mt-6 font-display text-4xl font-black leading-none tracking-tighter sm:text-5xl lg:text-6xl">{activeProject.title}</h3><p className="mt-7 max-w-lg text-base leading-relaxed text-gray-400 sm:text-lg">{activeProject.description}</p>
                 <div className="mt-8 flex flex-wrap gap-2">{activeProject.tags.map((tag) => <span key={tag} className="rounded-full border border-white/10 px-3.5 py-2 text-xs text-gray-400">{tag}</span>)}</div>
-                <Link href={activeProject.slug ? `/projects/${activeProject.slug}` : "/projects"} className="primary-button focus-ring group mt-10">{copy.works.explore}<ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
+                <Link href={activeProject.slug ? `/projects/${activeProject.slug}` : "/projects"} className="primary-button focus-ring group mt-10"><span {...editableTextProps(editor, `${locale}.works.explore`)}>{copy.works.explore}</span><ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
               </motion.div>
             </AnimatePresence>
           </div>
