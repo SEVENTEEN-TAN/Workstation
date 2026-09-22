@@ -6,6 +6,7 @@ import { useMemo, useRef, useState, type FormEvent, type MouseEvent } from "reac
 import { useRouter } from "next/navigation";
 
 import styles from "../../../app/admin/admin.module.css";
+import { getCyclePublicIssues } from "../../../lib/okr/public-readiness";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { EmptyState } from "../EmptyState";
 import { FeedbackCenter } from "../FeedbackCenter";
@@ -15,6 +16,7 @@ import type { OkrCycleData } from "../types";
 import { useAdminAction } from "../useAdminAction";
 import { dateValue, jsonRequest } from "../workspace-utils";
 import { OkrEntityDialog } from "./OkrEntityDialog";
+import { PublicReadiness } from "./PublicReadiness";
 import { cycleStatusLabels, dateInput, formatDate, getCycleSummary } from "./utils";
 
 type EditorState = { mode: "create" } | { mode: "edit"; cycle: OkrCycleData };
@@ -82,7 +84,7 @@ export function OkrCycleListWorkspace({ initialCycles }: { initialCycles: OkrCyc
         <article><span>全部周期</span><strong>{initialCycles.length}</strong></article>
         <article><span>进行中</span><strong>{activeCount}</strong></article>
         <article><span>待复盘</span><strong>{reviewPending}</strong></article>
-        <article><span>公开周期</span><strong>{initialCycles.filter((cycle) => cycle.visibility === "PUBLIC").length}</strong></article>
+        <article><span>满足展示条件的周期</span><strong>{initialCycles.filter((cycle) => getCyclePublicIssues(cycle).length === 0).length}</strong></article>
       </div>
 
       <section className={`${styles.panel} ${styles.okrFilterBar}`}>
@@ -101,6 +103,7 @@ export function OkrCycleListWorkspace({ initialCycles }: { initialCycles: OkrCyc
             </div>
             <div className={styles.cycleProgress}><div><i style={{ width: `${summary.progress}%` }} /></div><strong>{summary.progress}%</strong></div>
             <div className={styles.cycleStats}><span>{summary.counts.objectives} 个目标</span><span>{summary.counts.keyResults} 个 KR</span><span>{summary.counts.atRisk} 个风险项</span></div>
+            <PublicReadiness issues={getCyclePublicIssues(cycle)} />
             <div className={styles.cardActions}>
               <Link className={styles.primaryButton} href={`/admin/okr/cycles/${cycle.id}`}>进入周期</Link>
               <button type="button" className={styles.iconButton} title="编辑周期" aria-label={`编辑周期 ${cycle.nameZh}`} onClick={() => setEditor({ mode: "edit", cycle })}><Pencil size={17} /></button>

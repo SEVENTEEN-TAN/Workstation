@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { careerActivityInputSchema } from "../validators/career-activities";
 import { careerTimelineDraftPatchSchema } from "../validators/career-timeline-drafts";
 import { parseJsonSnapshot } from "./json-snapshot";
 
@@ -177,7 +178,15 @@ function defaultRepository(): CareerTimelineDraftRepository {
         const draft = await transaction.careerTimelineDraft.findUnique({ where: { id } });
         if (!draft) throw new Error("时间线草稿不存在");
         if (draft.status !== "DRAFT") throw new Error("时间线草稿已经转换");
-        const created = await transaction.careerActivity.create({ data: activity });
+        const data = careerActivityInputSchema.parse({
+          ...activity,
+          titleZh: draft.titleZh,
+          titleEn: draft.titleEn,
+          summaryZh: draft.summaryZh,
+          summaryEn: draft.summaryEn,
+          occurredAt: draft.occurredAt,
+        });
+        const created = await transaction.careerActivity.create({ data });
         return transaction.careerTimelineDraft.update({
           where: { id }, data: { status: "CONVERTED", convertedActivityId: created.id },
         });
@@ -203,7 +212,7 @@ export function createCareerTimelineDraftService(repository: CareerTimelineDraft
       if (!draft) throw new Error("时间线草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("时间线草稿已经转换");
       if (!draft.titleZh || !draft.summaryZh || !draft.occurredAt) throw new Error("时间线草稿内容不完整");
-      return repository.convertDraft(id, {
+      return repository.convertDraft(id, careerActivityInputSchema.parse({
         titleZh: draft.titleZh,
         titleEn: draft.titleEn || null,
         summaryZh: draft.summaryZh,
@@ -212,7 +221,7 @@ export function createCareerTimelineDraftService(repository: CareerTimelineDraft
         visibility: "PRIVATE",
         featured: false,
         linkUrl: null,
-      });
+      }));
     },
   };
 }

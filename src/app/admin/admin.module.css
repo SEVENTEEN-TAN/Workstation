@@ -3014,3 +3014,11 @@
   .spin,
   .loadingMark { animation-duration: 1ms; animation-iteration-count: 1; }
 }
+.publicReadiness {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}

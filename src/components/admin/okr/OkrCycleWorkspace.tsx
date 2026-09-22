@@ -6,6 +6,7 @@ import { useRef, useState, type FormEvent, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 
 import styles from "../../../app/admin/admin.module.css";
+import { getCyclePublicIssues, getObjectivePublicIssues, getReviewPublicIssues } from "../../../lib/okr/public-readiness";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { EmptyState } from "../EmptyState";
 import { FeedbackCenter } from "../FeedbackCenter";
@@ -15,6 +16,7 @@ import type { ObjectiveData, OkrAiContentDraftData, OkrCycleData, ReviewData } f
 import { useAdminAction } from "../useAdminAction";
 import { dateValue, jsonRequest } from "../workspace-utils";
 import { OkrEntityDialog } from "./OkrEntityDialog";
+import { PublicReadiness } from "./PublicReadiness";
 import { dateInput, formatDate, getCycleSummary, getObjectiveSummary, objectiveStatusLabels } from "./utils";
 
 type EditorState =
@@ -138,7 +140,8 @@ export function OkrCycleWorkspace({
   return (
     <section>
       <Link className={styles.backLink} href="/admin/okr"><ArrowLeft size={16} />返回周期列表</Link>
-      <PageHeader title={cycle.nameZh} description={`${formatDate(cycle.startDate)} - ${formatDate(cycle.endDate)} · ${cycle.visibility === "PUBLIC" ? "公开" : "私密"}`} action={<button type="button" className={styles.primaryButton} onClick={() => setEditor({ kind: "objective" })}><Plus size={18} />新建目标</button>} />
+      <PageHeader title={cycle.nameZh} description={`${formatDate(cycle.startDate)} - ${formatDate(cycle.endDate)} · ${cycle.visibility === "PUBLIC" ? "已设为公开" : "私密"}`} action={<button type="button" className={styles.primaryButton} onClick={() => setEditor({ kind: "objective" })}><Plus size={18} />新建目标</button>} />
+      <PublicReadiness issues={getCyclePublicIssues(cycle)} />
 
       <div className={styles.metrics}>
         <article><span>周期进度</span><strong>{summary.progress}%</strong></article>
@@ -160,7 +163,7 @@ export function OkrCycleWorkspace({
           const objectiveSummary = getObjectiveSummary(objective, cycle.endDate);
           return (
             <article className={styles.objectiveRow} key={objective.id}>
-              <div className={styles.objectiveCopy}><span className={styles.statusBadge}>{objectiveStatusLabels[objective.status] ?? objective.status}</span><h3>{objective.titleZh}</h3><p>{objective.descriptionZh || "尚未补充目标说明"}</p><small>{objective.keyResults.length} 个 KR · {objectiveSummary.counts.atRisk} 个风险项</small></div>
+              <div className={styles.objectiveCopy}><span className={styles.statusBadge}>{objectiveStatusLabels[objective.status] ?? objective.status}</span><h3>{objective.titleZh}</h3><p>{objective.descriptionZh || "尚未补充目标说明"}</p><small>{objective.keyResults.length} 个 KR · {objectiveSummary.counts.atRisk} 个风险项</small><PublicReadiness issues={getObjectivePublicIssues(objective, cycle)} /></div>
               <div className={styles.objectiveProgress}><strong>{objectiveSummary.progress}%</strong><div><i style={{ width: `${objectiveSummary.progress}%` }} /></div></div>
               <div className={styles.rowActions}>
                 <Link className={styles.primaryButton} href={`/admin/okr/cycles/${cycle.id}/objectives/${objective.id}`}>进入目标</Link>
@@ -192,7 +195,7 @@ export function OkrCycleWorkspace({
         })}</div> : null}
         {cycle.reviews.length ? <div className={styles.reviewList}>{cycle.reviews.map((review) => (
           <div className={styles.listRow} key={review.id}>
-            <span><strong>{review.objectiveId ? "目标复盘" : "周期复盘"} · {review.achievementsZh}</strong><small>{review.visibility} · 评分 {review.score ?? "-"}</small></span>
+            <span><strong>{review.objectiveId ? "目标复盘" : "周期复盘"} · {review.achievementsZh}</strong><small>{review.visibility} · 评分 {review.score ?? "-"}</small><PublicReadiness issues={getReviewPublicIssues(review, cycle)} /></span>
             <time>{formatDate(review.reviewedAt)}</time>
             <div className={styles.rowActions}><button type="button" className={styles.iconButton} title="编辑复盘" aria-label="编辑复盘" onClick={() => setEditor({ kind: "review", record: review })}><Pencil size={16} /></button><button type="button" className={styles.iconButton} title="删除复盘" aria-label="删除复盘" onClick={(event) => requestDelete(event, { key: `delete-review:${review.id}`, path: `/api/admin/okr/reviews/${review.id}`, target: review.achievementsZh, description: "复盘会永久删除，但不会改变 OKR 进度。" })}><Trash2 size={16} /></button></div>
           </div>

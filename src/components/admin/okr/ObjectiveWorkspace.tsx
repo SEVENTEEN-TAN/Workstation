@@ -6,6 +6,7 @@ import { useRef, useState, type FormEvent, type MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 
 import styles from "../../../app/admin/admin.module.css";
+import { getKeyResultPublicIssues, getObjectivePublicIssues } from "../../../lib/okr/public-readiness";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { EmptyState } from "../EmptyState";
 import { FeedbackCenter } from "../FeedbackCenter";
@@ -17,6 +18,7 @@ import { dateValue, jsonRequest } from "../workspace-utils";
 import { ActionItemList } from "./ActionItemList";
 import { KrCheckInPanel } from "./KrCheckInPanel";
 import { OkrEntityDialog } from "./OkrEntityDialog";
+import { PublicReadiness } from "./PublicReadiness";
 import { dateInput, getObjectiveSummary, objectiveStatusLabels } from "./utils";
 
 type EditorState = { kind: "objective" } | { kind: "kr"; record?: KeyResultData };
@@ -99,6 +101,7 @@ export function ObjectiveWorkspace({ initialObjective }: { initialObjective: Obj
     <section>
       <Link className={styles.backLink} href={`/admin/okr/cycles/${objective.cycle.id}`}><ArrowLeft size={16} />返回 {objective.cycle.nameZh}</Link>
       <PageHeader title={objective.titleZh} description={objective.descriptionZh || "围绕这个 Objective 管理关键结果、执行动作与进度历史。"} action={<div className={styles.actions}><button type="button" onClick={() => setEditor({ kind: "objective" })}><Pencil size={17} />编辑目标</button><button type="button" className={styles.primaryButton} onClick={() => setEditor({ kind: "kr" })}><Plus size={18} />添加 KR</button></div>} />
+      <PublicReadiness issues={getObjectivePublicIssues(objective, objective.cycle)} />
 
       <div className={styles.metrics}><article><span>目标进度</span><strong>{summary.progress}%</strong></article><article><span>关键结果</span><strong>{summary.counts.total}</strong></article><article><span>已完成</span><strong>{summary.counts.completed}</strong></article><article><span>风险项</span><strong>{summary.counts.atRisk}</strong></article></div>
 
@@ -114,6 +117,7 @@ export function ObjectiveWorkspace({ initialObjective }: { initialObjective: Obj
                   <b>{state.progress}%</b>
                 </button>
                 <div className={styles.riskBadges}>{state.overdue ? <span className={styles.riskBadge}>已逾期</span> : null}{state.stale ? <span className={styles.warningBadge}>长期未更新</span> : null}{state.atRisk ? <span className={styles.riskBadge}>有风险</span> : null}</div>
+                {getKeyResultPublicIssues(keyResult).length ? <span className={styles.publicReadiness}><strong>阻止所属目标公开展示</strong>{getKeyResultPublicIssues(keyResult).map((issue) => <span key={issue}>{issue}</span>)}</span> : null}
                 <div className={styles.krCardActions}><select aria-label={`KR 状态 ${keyResult.titleZh}`} value={keyResult.status} disabled={isBusy(`kr:status:${keyResult.id}`)} onChange={(event) => updateKeyResultStatus(keyResult, event.currentTarget.value)}>{Object.entries(objectiveStatusLabels).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select><button type="button" className={styles.iconButton} title="编辑 KR" aria-label={`编辑 KR ${keyResult.titleZh}`} onClick={() => setEditor({ kind: "kr", record: keyResult })}><Pencil size={15} /></button><button type="button" className={styles.iconButton} title="删除 KR" aria-label={`删除 KR ${keyResult.titleZh}`} onClick={(event) => requestDelete(event, keyResult)}><Trash2 size={15} /></button></div>
                 <ActionItemList keyResultId={keyResult.id} items={keyResult.actionItems} />
               </article>

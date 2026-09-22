@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-const optionalText = (maximum: number) => z.string().trim().max(maximum).nullable().optional()
+const optionalText = (maximum: number, message?: string) => z.string().trim().max(maximum, message).nullable().optional()
   .transform((value) => value === "" ? null : value);
 
 const careerActivityFields = z.object({
-  titleZh: z.string().trim().min(1, "中文标题不能为空").max(120),
-  titleEn: optionalText(120),
-  summaryZh: z.string().trim().min(1, "中文摘要不能为空").max(1_000),
-  summaryEn: optionalText(1_000),
+  titleZh: z.string().trim().min(1, "中文标题不能为空").max(120, "中文标题不能超过 120 字"),
+  titleEn: optionalText(120, "英文标题不能超过 120 字"),
+  summaryZh: z.string().trim().min(1, "中文摘要不能为空").max(1_000, "中文摘要不能超过 1000 字"),
+  summaryEn: optionalText(1_000, "英文摘要不能超过 1000 字"),
   occurredAt: z.coerce.date(),
   visibility: z.enum(["PUBLIC", "PRIVATE"]),
   featured: z.boolean(),

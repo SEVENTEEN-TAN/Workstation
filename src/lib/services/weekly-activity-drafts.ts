@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { careerActivityInputSchema } from "../validators/career-activities";
 import { weeklyUpdateDraftSchema } from "../validators/ai-content-drafts";
 import { weeklyDraftPatchSchema, weeklyRangeSchema } from "../validators/weekly-activity-drafts";
 import { aiGenerationService, type AiGenerator } from "./ai-generation";
@@ -232,7 +233,15 @@ function defaultRepository(): WeeklyActivityDraftRepository {
         const draft = await transaction.weeklyActivityDraft.findUnique({ where: { id } });
         if (!draft) throw new Error("周报草稿不存在");
         if (draft.status !== "DRAFT") throw new Error("周报草稿已经转换");
-        const created = await transaction.careerActivity.create({ data: activity });
+        const data = careerActivityInputSchema.parse({
+          ...activity,
+          titleZh: draft.titleZh,
+          titleEn: draft.titleEn,
+          summaryZh: draft.summaryZh,
+          summaryEn: draft.summaryEn,
+          occurredAt: draft.weekEnd,
+        });
+        const created = await transaction.careerActivity.create({ data });
         return transaction.weeklyActivityDraft.update({
           where: { id }, data: { status: "CONVERTED", convertedActivityId: created.id },
         });
@@ -288,7 +297,7 @@ export function createWeeklyActivityDraftService(
       if (!draft) throw new Error("周报草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("周报草稿已经转换");
       if (!draft.titleZh || !draft.summaryZh || !draft.weekEnd) throw new Error("周报草稿内容不完整");
-      return repository.convertDraft(id, {
+      return repository.convertDraft(id, careerActivityInputSchema.parse({
         titleZh: draft.titleZh,
         titleEn: draft.titleEn ?? null,
         summaryZh: draft.summaryZh,
@@ -297,7 +306,7 @@ export function createWeeklyActivityDraftService(
         visibility: "PRIVATE",
         featured: false,
         linkUrl: null,
-      });
+      }));
     },
   };
 }

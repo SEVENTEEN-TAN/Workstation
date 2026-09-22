@@ -1,5 +1,6 @@
 import { siteContentSchema, type SiteContent } from "../content/schema";
 import { getDatabase } from "../db";
+import { getCyclePublicIssues, getObjectivePublicIssues, getReviewPublicIssues } from "../okr/public-readiness";
 import type {
   PublicOkrCycleRecord,
   PublicOkrKeyResultRecord,
@@ -68,31 +69,6 @@ type PublicCycleSourceRecord = {
   reviews: PublicReviewSourceRecord[];
 };
 
-function hasText(value: unknown) {
-  return typeof value === "string" && value.trim().length > 0;
-}
-
-function hasPairedText(zh: unknown, en: unknown) {
-  return (!hasText(zh) && !hasText(en)) || (hasText(zh) && hasText(en));
-}
-
-function hasCompleteKeyResultEvidence(keyResults: PublicKeyResultSourceRecord[]) {
-  return keyResults.every((keyResult) => hasText(keyResult.titleEn) && hasPairedText(keyResult.descriptionZh, keyResult.descriptionEn));
-}
-
-function hasCompleteObjectiveEvidence(objective: PublicObjectiveSourceRecord) {
-  return hasText(objective.titleEn)
-    && hasPairedText(objective.descriptionZh, objective.descriptionEn)
-    && hasCompleteKeyResultEvidence(objective.keyResults);
-}
-
-function hasCompleteReviewEvidence(review: PublicReviewSourceRecord) {
-  return hasText(review.achievementsEn)
-    && hasText(review.problemsEn)
-    && hasText(review.lessonsEn)
-    && hasText(review.nextActionsEn);
-}
-
 function toPublicKeyResult(keyResult: PublicKeyResultSourceRecord): PublicOkrKeyResultRecord {
   return {
     id: keyResult.id,
@@ -153,11 +129,11 @@ function toPublicCycle(cycle: PublicCycleSourceRecord): PublicOkrCycleRecord {
     startDate: cycle.startDate.toISOString(),
     endDate: cycle.endDate.toISOString(),
     objectives: cycle.objectives
-      .filter((objective) => objective.visibility === "PUBLIC" && hasCompleteObjectiveEvidence(objective))
+      .filter((objective) => getObjectivePublicIssues(objective, cycle).length === 0)
       .sort((left, right) => left.sortOrder - right.sortOrder)
       .map(toPublicObjective),
     reviews: cycle.reviews
-      .filter((review) => review.visibility === "PUBLIC" && hasCompleteReviewEvidence(review))
+      .filter((review) => getReviewPublicIssues(review, cycle).length === 0)
       .map(toPublicReview),
   };
 }
@@ -171,7 +147,7 @@ export function createPublicDataService(source: PublicDataSource) {
     async getPublicOkrData(): Promise<PublicOkrCycleRecord[]> {
       const cycles = await source.findOkrCycles();
       return cycles
-        .filter((cycle) => cycle.visibility === "PUBLIC" && hasText(cycle.nameEn))
+        .filter((cycle) => getCyclePublicIssues(cycle).length === 0)
         .map(toPublicCycle);
     },
   };

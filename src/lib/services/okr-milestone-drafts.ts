@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { careerActivityInputSchema } from "../validators/career-activities";
 import { parseJsonSnapshot } from "./json-snapshot";
 import { okrMilestoneDraftPatchSchema } from "../validators/okr-milestone-drafts";
 
@@ -154,7 +155,15 @@ function defaultRepository(): OkrMilestoneDraftRepository {
         const draft = await transaction.okrMilestoneDraft.findUnique({ where: { id } });
         if (!draft) throw new Error("里程碑草稿不存在");
         if (draft.status !== "DRAFT") throw new Error("里程碑草稿已经转换");
-        const created = await transaction.careerActivity.create({ data: activity });
+        const data = careerActivityInputSchema.parse({
+          ...activity,
+          titleZh: draft.titleZh,
+          titleEn: draft.titleEn,
+          summaryZh: draft.summaryZh,
+          summaryEn: draft.summaryEn,
+          occurredAt: draft.occurredAt,
+        });
+        const created = await transaction.careerActivity.create({ data });
         return transaction.okrMilestoneDraft.update({
           where: { id }, data: { status: "CONVERTED", convertedActivityId: created.id },
         });
@@ -177,7 +186,7 @@ export function createOkrMilestoneDraftService(repository: OkrMilestoneDraftRepo
       if (!draft) throw new Error("里程碑草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("里程碑草稿已经转换");
       if (!draft.titleZh || !draft.summaryZh || !draft.occurredAt) throw new Error("里程碑草稿内容不完整");
-      return repository.convertDraft(id, {
+      return repository.convertDraft(id, careerActivityInputSchema.parse({
         titleZh: draft.titleZh,
         titleEn: draft.titleEn || null,
         summaryZh: draft.summaryZh,
@@ -186,7 +195,7 @@ export function createOkrMilestoneDraftService(repository: OkrMilestoneDraftRepo
         visibility: "PRIVATE",
         featured: false,
         linkUrl: null,
-      });
+      }));
     },
   };
 }
