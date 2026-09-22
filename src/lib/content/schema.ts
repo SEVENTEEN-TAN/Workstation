@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-const text = z.string().trim().min(1);
-const textList = z.array(text).min(1);
-const heading = z.tuple([text, text]);
-
 export const DEFAULT_HOMEPAGE_SETTINGS = {
   portraitImage: "/images/zedian-portrait-v3.png",
   wechatQrImage: "/images/wechat-qr.png",
@@ -16,120 +12,143 @@ export const homepageImagePathSchema = z.string().regex(
   "图片必须使用本地静态路径或媒体库资源",
 );
 
-const homepageSettingsSchema = z.object({
+export const homepageEmailSchema = z.string().trim().min(1).max(10_000).email();
+export const homepageGithubUrlSchema = z.string().trim().min(1).max(10_000).url().refine(
+  (value) => URL.canParse(value) && new URL(value).protocol === "https:",
+  "GitHub 地址必须使用 HTTPS",
+);
+
+const editingText = z.string().max(10_000);
+const savedText = z.string().trim().min(1).max(10_000);
+
+const editingSettingsSchema = z.object({
   portraitImage: homepageImagePathSchema,
   wechatQrImage: homepageImagePathSchema,
-  email: z.string().email(),
-  githubUrl: z.string().url().refine((value) => new URL(value).protocol === "https:", "GitHub 地址必须使用 HTTPS"),
+  email: editingText,
+  githubUrl: editingText,
 }).default(DEFAULT_HOMEPAGE_SETTINGS);
 
-const metaSchema = z.object({
-  title: text,
-  description: text,
-});
+const savedSettingsSchema = z.object({
+  portraitImage: homepageImagePathSchema,
+  wechatQrImage: homepageImagePathSchema,
+  email: homepageEmailSchema,
+  githubUrl: homepageGithubUrlSchema,
+}).default(DEFAULT_HOMEPAGE_SETTINGS);
 
-const navSchema = z.object({
-  brand: text,
-  about: text,
-  work: text,
-  contact: text,
-  top: text,
-  goContact: text,
-  switchLanguage: text,
-  switchLabel: text,
-});
+function buildLocalizedSiteContentSchema(textField: z.ZodString) {
+  const textList = z.array(textField).min(1);
+  const heading = z.tuple([textField, textField]);
 
-const heroSchema = z.object({
-  backdrop: text,
-  role: text,
-  lineOne: text,
-  lineTwo: text,
-  headingLabel: text,
-  intro: text,
-  work: text,
-  contact: text,
-  badgeArea: text,
-  badgeLabel: text,
-  portraitAlt: text,
-  badgeRole: text,
-  active: text,
-});
+  return z.object({
+    meta: z.object({ title: textField, description: textField }),
+    nav: z.object({
+      brand: textField,
+      about: textField,
+      work: textField,
+      contact: textField,
+      top: textField,
+      goContact: textField,
+      switchLanguage: textField,
+      switchLabel: textField,
+    }),
+    hero: z.object({
+      backdrop: textField,
+      role: textField,
+      lineOne: textField,
+      lineTwo: textField,
+      headingLabel: textField,
+      intro: textField,
+      work: textField,
+      contact: textField,
+      badgeArea: textField,
+      badgeLabel: textField,
+      portraitAlt: textField,
+      badgeRole: textField,
+      active: textField,
+    }),
+    about: z.object({
+      eyebrow: textField,
+      heading,
+      headingLabel: textField,
+      paragraphs: textList,
+      stats: z.array(z.object({ value: textField, accent: textField, label: textField })).min(1),
+      toolkit: textField,
+      skillCount: textField,
+      skills: textList,
+      quote: textField,
+    }),
+    works: z.object({
+      eyebrow: textField,
+      heading: textField,
+      viewAll: textField,
+      explore: textField,
+      navigation: textField,
+      project: textField,
+      showProject: textField,
+    }),
+    services: z.object({
+      eyebrow: textField,
+      headingStart: textField,
+      headingOutline: textField,
+      headingLabel: textField,
+      items: z.array(z.tuple([textField, textField])).min(1),
+    }),
+    footer: z.object({
+      backdrop: textField,
+      eyebrow: textField,
+      heading,
+      headingLabel: textField,
+      intro: textField,
+      menu: textField,
+      socials: textField,
+      links: textList,
+      github: textField,
+      wechat: textField,
+      wechatHint: textField,
+      wechatAlt: textField,
+      copyright: textField,
+      privacy: textField,
+      terms: textField,
+    }),
+    projects: z.array(z.object({
+      slug: textField.optional(),
+      image: z.string(),
+      category: textField,
+      title: textField,
+      description: textField,
+      tags: textList,
+      alt: textField,
+    })),
+  });
+}
 
-const aboutSchema = z.object({
-  eyebrow: text,
-  heading,
-  headingLabel: text,
-  paragraphs: textList,
-  stats: z.array(z.object({ value: text, accent: text, label: text })).min(1),
-  toolkit: text,
-  skillCount: text,
-  skills: textList,
-  quote: text,
-});
+function buildSiteContentSchema<
+  TLocalized extends z.ZodType,
+  TSettings extends z.ZodType,
+>(
+  localized: TLocalized,
+  settingsSchema: TSettings,
+) {
+  return z.object({
+    selectedProjectIds: z.array(savedText)
+      .refine((ids) => new Set(ids).size === ids.length, "主页项目不能重复")
+      .optional(),
+    settings: settingsSchema,
+    en: localized,
+    zh: localized,
+  });
+}
 
-const worksSchema = z.object({
-  eyebrow: text,
-  heading: text,
-  viewAll: text,
-  explore: text,
-  navigation: text,
-  project: text,
-  showProject: text,
-});
-
-const servicesSchema = z.object({
-  eyebrow: text,
-  headingStart: text,
-  headingOutline: text,
-  headingLabel: text,
-  items: z.array(z.tuple([text, text])).min(1),
-});
-
-const footerSchema = z.object({
-  backdrop: text,
-  eyebrow: text,
-  heading,
-  headingLabel: text,
-  intro: text,
-  menu: text,
-  socials: text,
-  links: textList,
-  github: text,
-  wechat: text,
-  wechatHint: text,
-  wechatAlt: text,
-  copyright: text,
-  privacy: text,
-  terms: text,
-});
-
-const projectSchema = z.object({
-  slug: text.optional(),
-  image: z.string(),
-  category: text,
-  title: text,
-  description: text,
-  tags: textList,
-  alt: text,
-});
-
-export const localizedSiteContentSchema = z.object({
-  meta: metaSchema,
-  nav: navSchema,
-  hero: heroSchema,
-  about: aboutSchema,
-  works: worksSchema,
-  services: servicesSchema,
-  footer: footerSchema,
-  projects: z.array(projectSchema),
-});
-
-export const siteContentSchema = z.object({
-  selectedProjectIds: z.array(text).refine((ids) => new Set(ids).size === ids.length, "主页项目不能重复").optional(),
-  settings: homepageSettingsSchema,
-  en: localizedSiteContentSchema,
-  zh: localizedSiteContentSchema,
-});
+const localizedSiteContentEditingSchema = buildLocalizedSiteContentSchema(editingText);
+export const localizedSiteContentSchema = buildLocalizedSiteContentSchema(savedText);
+export const siteContentEditingSchema = buildSiteContentSchema(
+  localizedSiteContentEditingSchema,
+  editingSettingsSchema,
+);
+export const siteContentSchema = buildSiteContentSchema(
+  localizedSiteContentSchema,
+  savedSettingsSchema,
+);
 
 export type LocalizedSiteContent = z.infer<typeof localizedSiteContentSchema>;
 export type SiteContent = z.infer<typeof siteContentSchema>;

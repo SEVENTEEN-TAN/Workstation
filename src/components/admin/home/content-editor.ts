@@ -3,7 +3,7 @@ import {
   type LocalizedSiteContent,
   type SiteContent,
 } from "../../../lib/content/schema";
-import { isVisualEditField } from "./visual-editor-protocol";
+import { getVisualEditField } from "./visual-editor-protocol";
 
 export type SiteLocale = "zh" | "en";
 
@@ -60,7 +60,7 @@ export function updateContentAtPath(
 }
 
 export function updateVisualContent(content: SiteContent, path: string, value: string): SiteContent {
-  if (!isVisualEditField(path)) throw new Error("Field is not editable");
+  if (!getVisualEditField(content, path)) throw new Error("Field is not editable");
   return updateContentAtPath(content, path.split("."), value);
 }
 

@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { isVisualEditField, parseIframeMessage } from "../src/components/admin/home/visual-editor-protocol";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
+import {
+  getVisualEditField,
+  isVisualEditField,
+  parseIframeMessage,
+} from "../src/components/admin/home/visual-editor-protocol";
 
 describe("homepage visual-editor protocol", () => {
   it("accepts only registered homepage content paths", () => {
@@ -19,5 +24,19 @@ describe("homepage visual-editor protocol", () => {
       path: "en.hero.intro",
       value: "Updated intro",
     });
+  });
+
+  it("finds only concrete editable content paths", () => {
+    const editing = structuredClone(bootstrapSiteContent);
+    const paragraphPath = `en.about.paragraphs.${editing.en.about.paragraphs.length - 1}`;
+
+    expect(getVisualEditField(editing, paragraphPath)?.kind).toBe("text");
+    expect(getVisualEditField(editing, "en.services.items.0.1")?.section).toBe("capability");
+    expect(getVisualEditField(editing, "settings.portraitImage")).toMatchObject({
+      kind: "image",
+      altPaths: { zh: "zh.hero.portraitAlt", en: "en.hero.portraitAlt" },
+    });
+    expect(getVisualEditField(editing, "activities.0.titleEn")).toBeNull();
+    expect(getVisualEditField(editing, "__proto__.polluted")).toBeNull();
   });
 });

@@ -6,6 +6,7 @@ import {
   moveHomepageProjectSelection,
   updateHomepageProjectSelection,
   updateContentAtPath,
+  updateVisualContent,
   validateSiteContent,
 } from "../src/components/admin/home/content-editor";
 import { siteContentSchema, type SiteContent } from "../src/lib/content/schema";
@@ -135,6 +136,16 @@ describe("homepage content editor contracts", () => {
     expect(updated.zh.about.paragraphs).toEqual(["Updated paragraph"]);
     expect(content.zh.about.paragraphs).toEqual(["Paragraph"]);
     expect(updated.zh.about.paragraphs).not.toBe(content.zh.about.paragraphs);
+  });
+
+  it("updates current visual collection items immutably and rejects stale indices", () => {
+    const content = createContent();
+    const updated = updateVisualContent(content, "en.about.paragraphs.0", "Updated paragraph");
+
+    expect(updated.en.about.paragraphs).toEqual(["Updated paragraph"]);
+    expect(content.en.about.paragraphs).toEqual(["Paragraph"]);
+    expect(updated.en.about.paragraphs).not.toBe(content.en.about.paragraphs);
+    expect(() => updateVisualContent(content, "en.about.paragraphs.1", "Stale")).toThrow(/editable/i);
   });
 
   it("rejects an empty update path", () => {

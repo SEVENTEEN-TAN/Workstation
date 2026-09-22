@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { siteContentSchema } from "../src/lib/content/schema";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
+import { siteContentEditingSchema, siteContentSchema } from "../src/lib/content/schema";
 
 const locale = {
   meta: { title: "Title", description: "Description" },
@@ -137,5 +138,18 @@ describe("siteContentSchema", () => {
       zh: { ...locale, projects: [{ image: "/project.webp" }] },
     };
     expect(siteContentSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("permits unfinished editable copy while retaining strict image paths", () => {
+    const editing = structuredClone(bootstrapSiteContent);
+    editing.en.hero.lineOne = "";
+    editing.settings.githubUrl = "https://";
+
+    expect(siteContentEditingSchema.safeParse(editing).success).toBe(true);
+    expect(siteContentSchema.safeParse(editing).success).toBe(false);
+    expect(siteContentEditingSchema.safeParse({
+      ...editing,
+      settings: { ...editing.settings, portraitImage: "javascript:alert(1)" },
+    }).success).toBe(false);
   });
 });
