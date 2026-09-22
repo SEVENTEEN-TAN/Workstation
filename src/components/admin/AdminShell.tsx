@@ -17,11 +17,24 @@ interface AdminShellProps {
   children: ReactNode;
 }
 
-function BrandMark({ brandImage }: { brandImage?: string }) {
-  return <span className={styles.brandMark}>{brandImage ? (
+function BrandImage({ src }: { src: string }) {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  if (imageFailed) return <>17</>;
+
+  return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={brandImage} alt="" className="h-full w-full rounded-[5px] object-cover" />
-  ) : "17"}</span>;
+    <img
+      src={src}
+      alt=""
+      className="h-full w-full rounded-[5px] object-cover"
+      onError={() => setImageFailed(true)}
+    />
+  );
+}
+
+function BrandMark({ brandImage }: { brandImage?: string }) {
+  return <span className={styles.brandMark}>{brandImage ? <BrandImage key={brandImage} src={brandImage} /> : "17"}</span>;
 }
 
 export function AdminShell({ username, brandImage, children }: AdminShellProps) {

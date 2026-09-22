@@ -783,6 +783,15 @@ describe("homepage version safety contracts", () => {
     expect(heroSource).toContain("The native image preserves the legacy browser sizing and loading behavior.");
   });
 
+  it("falls back to 17 when the admin brand image fails and retries changed sources", () => {
+    const shellSource = readProjectFile("src/components/admin/AdminShell.tsx");
+
+    expect(shellSource).toContain("imageFailed");
+    expect(shellSource).toContain("onError");
+    expect(shellSource).toContain("key={brandImage}");
+    expect(shellSource).toContain('"17"');
+  });
+
   it("places the authenticated homepage preview outside the admin shell route group", () => {
     expect(existsSync(resolve(projectRoot, "src/app/admin/(workspace)/home/visual-preview/page.tsx"))).toBe(false);
     expect(existsSync(resolve(projectRoot, "src/app/admin/(preview)/home/visual-preview/page.tsx"))).toBe(true);
