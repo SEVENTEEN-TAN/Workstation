@@ -10,7 +10,8 @@
 - [阶段 1A 执行计划与进度](superpowers/plans/2026-09-22-data-reliability-stage-1a.md)
 - [阶段 1B 执行计划与进度](superpowers/plans/2026-09-22-weekly-draft-safety-stage-1b.md)
 - [原首页设计](superpowers/specs/2026-09-21-homepage-visual-editor-design.md)
-- [阶段 2 真实首页可视化编辑器设计（待审阅）](superpowers/specs/2026-09-22-homepage-real-visual-editor-design.md)
+- [阶段 2 真实首页可视化编辑器设计（已批准）](superpowers/specs/2026-09-22-homepage-real-visual-editor-design.md)
+- [阶段 2 实施计划（待执行）](superpowers/plans/2026-09-22-homepage-real-visual-editor.md)
 
 ## A. 数据与操作可靠性
 
@@ -26,7 +27,7 @@
 - [ ] **B3 链接编辑**：选中链接，在设置面板修改目标，编辑时不误跳转。
 - [ ] **B4 图片原位替换**：点击人物图、二维码打开媒体库，即时替换并维护说明。
 - [ ] **B5 后台头像复用**：使用已发布人物卡图片，缺失或加载失败都有回退。
-- [ ] **B6 选中项设置面板**：页面结构、真实预览、所选内容设置的三栏工作区；实施前补齐交互定义。
+- [ ] **B6 选中项设置面板**：页面结构、真实预览、所选内容设置的三栏工作区；交互定义已批准，功能待实施与验收。
 - [ ] **B7 双语与设备预览**：中英文、桌面和手机切换不丢未保存内容。
 - [ ] **B8 保存与发布边界**：编辑只改预览，保存进草稿，明确发布才影响前台；保留历史与恢复为草稿。
 - [ ] **B9 辅助编辑与异常恢复**：高级表单入口保留；预览失败可继续维护并解释原因。
