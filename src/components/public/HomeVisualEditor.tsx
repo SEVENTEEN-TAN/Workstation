@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import type { SiteContent } from "../../lib/content/schema";
+import type { PublicResumeData } from "../../lib/services/public-resume";
 import { parseParentContentMessage } from "../admin/home/visual-editor-protocol";
 import { HomeExperience } from "./HomeExperience";
 
-export function HomeVisualEditor({ initialContent }: { initialContent: SiteContent }) {
-  const [content, setContent] = useState(initialContent);
+export function HomeVisualEditor({ initialData }: { initialData: PublicResumeData }) {
+  const [content, setContent] = useState(initialData.content);
 
   useEffect(() => {
     function receiveContent(event: MessageEvent) {
@@ -33,5 +33,12 @@ export function HomeVisualEditor({ initialContent }: { initialContent: SiteConte
     return () => document.removeEventListener("focusout", commit);
   }, []);
 
-  return <HomeExperience content={content} editor />;
+  return <HomeExperience
+    content={content}
+    activities={initialData.activities}
+    skills={initialData.skills}
+    experiences={initialData.experiences}
+    resumeDownloads={initialData.downloads}
+    editor
+  />;
 }

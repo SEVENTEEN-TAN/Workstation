@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { createElement } from "react";
@@ -764,6 +764,11 @@ describe("homepage version safety contracts", () => {
     expect(heroSource).toContain('loading="eager"');
     expect(heroSource).toContain('fetchPriority="high"');
     expect(heroSource).toContain("The native image preserves the legacy browser sizing and loading behavior.");
+  });
+
+  it("places the authenticated homepage preview outside the admin shell route group", () => {
+    expect(existsSync(resolve(projectRoot, "src/app/admin/(workspace)/home/visual-preview/page.tsx"))).toBe(false);
+    expect(existsSync(resolve(projectRoot, "src/app/admin/(preview)/home/visual-preview/page.tsx"))).toBe(true);
   });
 });
 

@@ -14,8 +14,10 @@ function readProjectFile(path: string) {
 
 describe("public resume aggregation", () => {
   it("returns published career evidence and only public download availability", async () => {
+    const draftContent = structuredClone(bootstrapSiteContent);
+    draftContent.en.meta.title = "Draft homepage preview";
     const data = await createPublicResumeService({
-      loadSiteContent: async () => bootstrapSiteContent,
+      loadSiteContent: async () => draftContent,
       loadExperiences: async () => [{
         id: "experience-public",
         visibility: "PUBLIC",
@@ -47,6 +49,8 @@ describe("public resume aggregation", () => {
     }).getData();
 
     expect(data).not.toBeNull();
+    expect(data?.content).toBe(draftContent);
+    expect(data?.content.en.meta.title).toBe("Draft homepage preview");
     expect(data?.downloads).toEqual({ zh: true, en: false });
     expect(data?.experiences[0]).toMatchObject({ id: "experience-public", startedAt: "2024-01-01T00:00:00.000Z" });
     expect(data?.projects[0]).toMatchObject({ id: "project-public", updatedAt: "2024-02-01T00:00:00.000Z" });

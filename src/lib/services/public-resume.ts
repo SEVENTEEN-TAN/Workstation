@@ -72,14 +72,24 @@ export function createPublicResumeService(sources: PublicResumeSources) {
   };
 }
 
-export async function getPublicResumeData() {
+async function getDefaultPublicResumeData(loadSiteContent: PublicResumeSources["loadSiteContent"]) {
   const resumeFiles = await getResumeFileService();
   return createPublicResumeService({
-    loadSiteContent: getPublishedSiteContent,
+    loadSiteContent,
     loadExperiences: () => experienceRecordService.listPublic(),
     loadProjects: () => portfolioProjectService.listPublic(),
     loadSkills: () => skillCapabilityService.listPublic(),
     loadActivities: () => careerActivityService.listPublic(),
     loadResumeFiles: () => resumeFiles.list(),
   }).getData();
+}
+
+export function getPublicResumeData() {
+  return getDefaultPublicResumeData(getPublishedSiteContent);
+}
+
+export async function getPublicResumeDataForContent(content: SiteContent): Promise<PublicResumeData> {
+  const data = await getDefaultPublicResumeData(async () => content);
+  if (!data) throw new Error("首页预览内容不可用");
+  return data;
 }

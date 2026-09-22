@@ -3,14 +3,44 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import { HomeExperience } from "../src/components/public/HomeExperience";
+import { HomeVisualEditor } from "../src/components/public/HomeVisualEditor";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
+import type { PublicResumeData } from "../src/lib/services/public-resume";
+
+const previewData = {
+  content: bootstrapSiteContent,
+  activities: [{
+    id: "activity-preview",
+    titleZh: "预览动态",
+    titleEn: "Preview activity",
+    summaryZh: "只读公开动态",
+    summaryEn: "Read-only public activity",
+    occurredAt: "2026-09-22T00:00:00.000Z",
+    visibility: "PUBLIC",
+    featured: true,
+    linkUrl: null,
+    createdAt: "2026-09-22T00:00:00.000Z",
+    updatedAt: "2026-09-22T00:00:00.000Z",
+  }],
+  projects: [],
+  skills: [],
+  experiences: [],
+  downloads: { zh: true, en: false },
+} satisfies PublicResumeData;
 
 function sectionPositions(markup: string) {
-  return ["identity", "now", "work", "capability", "journey", "contact"]
+  return ["identity", "about", "now", "work", "capability", "journey", "contact"]
     .map((id) => markup.indexOf(`id="${id}"`));
 }
 
 describe("public homepage composition", () => {
+  it("renders the complete homepage from public resume data", () => {
+    const markup = renderToStaticMarkup(createElement(HomeVisualEditor, { initialData: previewData }));
+
+    expect(markup).toContain("Preview activity");
+    expect(markup).toContain('id="now"');
+  });
+
   it("presents identity, current work, proof, capability, journey and contact in order", () => {
     const markup = renderToStaticMarkup(createElement(HomeExperience, {
       content: bootstrapSiteContent,
