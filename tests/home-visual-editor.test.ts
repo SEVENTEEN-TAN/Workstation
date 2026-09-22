@@ -11,6 +11,7 @@ describe("homepage visual-editor protocol", () => {
   });
 
   it("rejects malformed commits and HTML payloads", () => {
+    expect(parseIframeMessage({ type: "homepage-editor:commit", path: "en.hero.intro", value: 42 })).toBeNull();
     expect(parseIframeMessage({ type: "homepage-editor:commit", path: "settings.portraitImage", value: "<img>" })).toBeNull();
     expect(parseIframeMessage({ type: "homepage-editor:commit", path: "unknown.path", value: "Text" })).toBeNull();
     expect(parseIframeMessage({ type: "homepage-editor:commit", path: "en.hero.intro", value: "Updated intro" })).toEqual({

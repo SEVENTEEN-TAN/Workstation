@@ -31,7 +31,7 @@ export function isVisualEditField(path: unknown): path is string {
   return typeof path === "string" && fieldsByPath.has(path);
 }
 
-function isPlainEditorValue(value: unknown) {
+function isPlainEditorValue(value: unknown): value is string {
   return typeof value === "string" && value.length <= 10_000 && !/[<>]/.test(value);
 }
 
