@@ -10,6 +10,7 @@
 - [阶段 1A 执行计划与进度](superpowers/plans/2026-09-22-data-reliability-stage-1a.md)
 - [阶段 1B 执行计划与进度](superpowers/plans/2026-09-22-weekly-draft-safety-stage-1b.md)
 - [原首页设计](superpowers/specs/2026-09-21-homepage-visual-editor-design.md)
+- [阶段 2 真实首页可视化编辑器设计（待审阅）](superpowers/specs/2026-09-22-homepage-real-visual-editor-design.md)
 
 ## A. 数据与操作可靠性
 

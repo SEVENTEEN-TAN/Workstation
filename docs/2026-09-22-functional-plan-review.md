@@ -43,5 +43,6 @@
 - [TODO](2026-09-22-functional-optimization-todo.md) 保留全部 30 项稳定编号。
 - [阶段 1A 计划](superpowers/plans/2026-09-22-data-reliability-stage-1a.md) 记录精确文件、接口、测试和完成证据。
 - [阶段 1B 计划](superpowers/plans/2026-09-22-weekly-draft-safety-stage-1b.md) 记录周报防覆盖、AI 候选、恢复副本和并发保存保护；完整浏览器矩阵仍归 F2。
+- [阶段 2 修订设计](superpowers/specs/2026-09-22-homepage-real-visual-editor-design.md) 已按真实首页装配、编辑校验分层、通信生命周期、字段归属和可执行验收重写，当前待用户书面审阅。
 - 独立审查尝试未获得有效任务传递，不声称独立复审通过；主代理承担直接复核。
 - 未通过浏览器验收的项目不标记前端操作闭环完成；推送不等于合并或部署。
