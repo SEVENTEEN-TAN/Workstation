@@ -41,6 +41,16 @@ describe("public homepage composition", () => {
     expect(markup).toContain('id="now"');
   });
 
+  it("uses an editor-controlled locale without changing public caller defaults", () => {
+    const markup = renderToStaticMarkup(createElement(HomeExperience, {
+      content: bootstrapSiteContent,
+      locale: "zh",
+      onLocaleChange: () => undefined,
+    }));
+
+    expect(markup).toContain(bootstrapSiteContent.zh.hero.lineOne);
+  });
+
   it("presents identity, current work, proof, capability, journey and contact in order", () => {
     const markup = renderToStaticMarkup(createElement(HomeExperience, {
       content: bootstrapSiteContent,

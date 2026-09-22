@@ -1,4 +1,4 @@
-import { homepageImagePathSchema, siteContentSchema, type SiteContent } from "../../../lib/content/schema";
+import { siteContentEditingSchema, type SiteContent } from "../../../lib/content/schema";
 
 export type VisualEditKind = "text" | "link" | "image";
 export type VisualEditSection = "identity" | "about" | "work" | "capability" | "contact";
@@ -12,6 +12,17 @@ export type VisualEditField = {
 };
 
 export type HomepageImagePath = "settings.portraitImage" | "settings.wechatQrImage";
+
+export const HOME_PREVIEW_SECTIONS = [
+  "identity", "about", "now", "work", "capability", "journey", "contact",
+] as const;
+
+export type HomePreviewSection = (typeof HOME_PREVIEW_SECTIONS)[number];
+export type EditorPreviewState = {
+  content: SiteContent;
+  locale: "zh" | "en";
+  selectedPath: string | null;
+};
 
 const FIXED_LOCALIZED_FIELDS = [
   ["nav.brand", "导航品牌", "identity"], ["nav.about", "导航关于", "identity"], ["nav.work", "导航作品", "identity"], ["nav.contact", "导航联系", "identity"],
@@ -77,30 +88,67 @@ export function isVisualEditField(path: unknown): path is string {
 }
 
 function isPlainEditorValue(value: unknown): value is string {
-  return typeof value === "string" && value.length <= 10_000 && !/[<>]/.test(value);
+  return typeof value === "string" && value.length <= 10_000;
 }
 
 export type IframeCommitMessage = { type: "homepage-editor:commit"; path: string; value: string };
 export type IframeReadyMessage = { type: "homepage-editor:ready" };
 export type IframeSelectMessage = { type: "homepage-editor:select"; path: string };
-export type IframeMessage = IframeCommitMessage | IframeReadyMessage | IframeSelectMessage;
+export type IframeLocaleMessage = { type: "homepage-editor:locale"; locale: "zh" | "en" };
+export type IframeMessage = IframeCommitMessage | IframeReadyMessage | IframeSelectMessage | IframeLocaleMessage;
 
-export function parseIframeMessage(value: unknown): IframeMessage | null {
+export function parseIframeMessage(value: unknown, content: SiteContent): IframeMessage | null {
   if (!value || typeof value !== "object") return null;
-  const message = value as { type?: unknown; path?: unknown; value?: unknown };
+  const message = value as { type?: unknown; path?: unknown; value?: unknown; locale?: unknown };
   if (message.type === "homepage-editor:ready") return { type: message.type };
-  if (message.type === "homepage-editor:select" && isVisualEditField(message.path)) return { type: message.type, path: message.path };
-  if (message.type !== "homepage-editor:commit" || !isVisualEditField(message.path) || !isPlainEditorValue(message.value)) return null;
-  const field = fieldsByPath.get(message.path)!;
-  if (field.kind === "image" && !homepageImagePathSchema.safeParse(message.value).success) return null;
-  return { type: message.type, path: message.path, value: message.value };
+  if (message.type === "homepage-editor:locale" && (message.locale === "zh" || message.locale === "en")) return { type: message.type, locale: message.locale };
+  const field = getVisualEditField(content, message.path);
+  if (message.type === "homepage-editor:select" && field) return { type: message.type, path: field.path };
+  if (message.type !== "homepage-editor:commit" || !field || field.kind !== "text" || !isPlainEditorValue(message.value)) return null;
+  return { type: message.type, path: field.path, value: message.value };
 }
 
-export type ParentContentMessage = { type: "homepage-editor:content"; content: SiteContent };
+export type ParentContentMessage = { type: "homepage-editor:content" } & EditorPreviewState;
+export type ParentFocusMessage = { type: "homepage-editor:focus"; section: HomePreviewSection };
+export type ParentMessage = ParentContentMessage | ParentFocusMessage;
 
-export function parseParentContentMessage(value: unknown): ParentContentMessage | null {
+export function isTrustedEditorMessage(
+  event: Pick<MessageEvent, "origin" | "source">,
+  expectedOrigin: string,
+  expectedSource: MessageEventSource | null,
+) {
+  return expectedSource !== null
+    && event.origin === expectedOrigin
+    && event.source === expectedSource;
+}
+
+type EditorMessageTarget = {
+  postMessage(message: unknown, targetOrigin: string): void;
+};
+
+export function sendEditorPreviewState(
+  target: EditorMessageTarget,
+  origin: string,
+  state: EditorPreviewState,
+) {
+  target.postMessage({ type: "homepage-editor:content", ...state }, origin);
+}
+
+export function parseParentMessage(value: unknown): ParentMessage | null {
   if (!value || typeof value !== "object") return null;
-  const message = value as { type?: unknown; content?: unknown };
-  const parsed = message.type === "homepage-editor:content" ? siteContentSchema.safeParse(message.content) : null;
-  return parsed?.success ? { type: "homepage-editor:content", content: parsed.data } : null;
+  const message = value as { type?: unknown; content?: unknown; locale?: unknown; selectedPath?: unknown; section?: unknown };
+  if (message.type === "homepage-editor:focus") {
+    return typeof message.section === "string" && HOME_PREVIEW_SECTIONS.includes(message.section as HomePreviewSection)
+      ? { type: message.type, section: message.section as HomePreviewSection }
+      : null;
+  }
+  if (message.type !== "homepage-editor:content" || (message.locale !== "zh" && message.locale !== "en")) return null;
+  if (message.selectedPath !== null && typeof message.selectedPath !== "string") return null;
+  const parsed = siteContentEditingSchema.safeParse(message.content);
+  if (!parsed.success) return null;
+  const content = parsed.data as SiteContent;
+  const selectedPath = message.selectedPath && getVisualEditField(content, message.selectedPath)
+    ? message.selectedPath
+    : null;
+  return { type: "homepage-editor:content", content, locale: message.locale, selectedPath };
 }

@@ -8,7 +8,7 @@ import { Hero } from "./Hero";
 import { HomeCapabilities } from "./HomeCapabilities";
 import { HomeJourney } from "./HomeJourney";
 import { HomeNow } from "./HomeNow";
-import { I18nProvider } from "./i18n";
+import { I18nProvider, type Locale } from "./i18n";
 import { Navbar } from "./Navbar";
 import { RecentWorks } from "./RecentWorks";
 import { Services } from "./Services";
@@ -20,13 +20,15 @@ type HomeExperienceProps = {
   experiences?: PublicResumeData["experiences"];
   resumeDownloads?: PublicResumeData["downloads"];
   editor?: boolean;
+  locale?: Locale;
+  onLocaleChange?: (locale: Locale) => void;
 };
 
-export function HomeExperience({ content, activities, skills, experiences, resumeDownloads, editor }: HomeExperienceProps) {
+export function HomeExperience({ content, activities, skills, experiences, resumeDownloads, editor, locale, onLocaleChange }: HomeExperienceProps) {
   const composedHomepage = activities !== undefined && experiences !== undefined;
 
   return (
-    <I18nProvider content={content} editor={editor}>
+    <I18nProvider content={content} editor={editor} locale={locale} onLocaleChange={onLocaleChange}>
       <div className="min-h-screen overflow-x-hidden bg-ink text-white selection:bg-accent selection:text-ink">
         <Navbar />
         <main>

@@ -1,13 +1,13 @@
 "use client";
 
 import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lucide-react";
-import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { HomepageEditor } from "./home/HomepageEditor";
-import { isSiteContentDirty, updateVisualContent, validateSiteContent } from "./home/content-editor";
-import { parseIframeMessage } from "./home/visual-editor-protocol";
+import { isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
+import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
@@ -39,30 +39,82 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
   const [versions, setVersions] = useState(initialVersions);
   const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
   const visualPreviewRef = useRef<HTMLIFrameElement>(null);
-  const [visualPreviewReady, setVisualPreviewReady] = useState(false);
+  const contentRef = useRef(content);
+  const localeRef = useRef<SiteLocale>("zh");
+  const selectedPathRef = useRef<string | null>(null);
+  const previewTimeoutRef = useRef<number | null>(null);
+  const [previewLocale, setPreviewLocale] = useState<SiteLocale>("zh");
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
+  const [previewStatus, setPreviewStatus] = useState<"loading" | "ready" | "error">("loading");
   const rollbackTriggerRef = useRef<HTMLElement | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const validation = useMemo(() => validateSiteContent(content), [content]);
   const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
 
+  contentRef.current = content;
+  localeRef.current = previewLocale;
+  selectedPathRef.current = selectedPath;
+
+  const clearPreviewTimeout = useCallback(() => {
+    if (previewTimeoutRef.current !== null) {
+      window.clearTimeout(previewTimeoutRef.current);
+      previewTimeoutRef.current = null;
+    }
+  }, []);
+
+  const sendPreviewState = useCallback(() => {
+    const target = visualPreviewRef.current?.contentWindow;
+    if (!target) return;
+    sendEditorPreviewState(target, window.location.origin, {
+      content: contentRef.current,
+      locale: localeRef.current,
+      selectedPath: selectedPathRef.current,
+    });
+  }, []);
+
+  const changePreviewLocale = useCallback((nextLocale: SiteLocale) => {
+    setPreviewLocale(nextLocale);
+    setSelectedPath((current) => {
+      if (!current || (!current.startsWith("zh.") && !current.startsWith("en."))) return current;
+      const counterpart = `${nextLocale}.${current.slice(3)}`;
+      return getVisualEditField(contentRef.current, counterpart)?.path ?? null;
+    });
+  }, []);
+
+  const handlePreviewLoad = useCallback(() => {
+    clearPreviewTimeout();
+    setPreviewStatus("loading");
+    previewTimeoutRef.current = window.setTimeout(() => {
+      setPreviewStatus((current) => current === "loading" ? "error" : current);
+    }, 10_000);
+  }, [clearPreviewTimeout]);
+
   useEffect(() => {
     function receivePreviewMessage(event: MessageEvent) {
-      if (event.origin !== window.location.origin || event.source !== visualPreviewRef.current?.contentWindow) return;
-      const message = parseIframeMessage(event.data);
-      if (message?.type === "homepage-editor:ready") setVisualPreviewReady(true);
+      if (!isTrustedEditorMessage(event, window.location.origin, visualPreviewRef.current?.contentWindow ?? null)) return;
+      const message = parseIframeMessage(event.data, contentRef.current);
+      if (message?.type === "homepage-editor:ready") {
+        clearPreviewTimeout();
+        setPreviewStatus("ready");
+        sendPreviewState();
+      }
       if (message?.type === "homepage-editor:commit") {
         try { setContent((current) => updateVisualContent(current, message.path, message.value)); } catch { /* Ignore rejected iframe messages. */ }
       }
+      if (message?.type === "homepage-editor:locale") changePreviewLocale(message.locale);
+      if (message?.type === "homepage-editor:select") setSelectedPath(message.path);
     }
 
     window.addEventListener("message", receivePreviewMessage);
-    return () => window.removeEventListener("message", receivePreviewMessage);
-  }, []);
+    return () => {
+      window.removeEventListener("message", receivePreviewMessage);
+      clearPreviewTimeout();
+    };
+  }, [changePreviewLocale, clearPreviewTimeout, sendPreviewState]);
 
   useEffect(() => {
-    if (!visualPreviewReady) return;
-    visualPreviewRef.current?.contentWindow?.postMessage({ type: "homepage-editor:content", content }, window.location.origin);
-  }, [content, visualPreviewReady]);
+    if (previewStatus === "ready") sendPreviewState();
+  }, [content, previewLocale, previewStatus, selectedPath, sendPreviewState]);
 
   useEffect(() => {
     if (!dirty) return;
@@ -212,7 +264,13 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
               </p>
             </section>
             <section className={styles.panel} aria-label="主页实时预览">
-              <iframe ref={visualPreviewRef} title="主页实时预览" src="/admin/home/visual-preview" className="min-h-[720px] w-full border-0 bg-ink" />
+              <div className={styles.actions}>
+                <span>预览语言</span>
+                <button type="button" aria-pressed={previewLocale === "zh"} onClick={() => changePreviewLocale("zh")}>中文</button>
+                <button type="button" aria-pressed={previewLocale === "en"} onClick={() => changePreviewLocale("en")}>English</button>
+                <span role="status">{previewStatus === "error" ? "预览加载失败，请刷新页面重试。" : previewStatus === "loading" ? "预览加载中" : "预览已同步"}</span>
+              </div>
+              <iframe ref={visualPreviewRef} onLoad={handlePreviewLoad} title="主页实时预览" src="/admin/home/visual-preview" className="min-h-[720px] w-full border-0 bg-ink" />
             </section>
             <HomepageEditor
               projects={projects}

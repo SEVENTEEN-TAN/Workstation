@@ -770,6 +770,20 @@ describe("homepage version safety contracts", () => {
     expect(existsSync(resolve(projectRoot, "src/app/admin/(workspace)/home/visual-preview/page.tsx"))).toBe(false);
     expect(existsSync(resolve(projectRoot, "src/app/admin/(preview)/home/visual-preview/page.tsx"))).toBe(true);
   });
+
+  it("replays current preview state after iframe reloads and verifies message origin and source", () => {
+    const protocolSource = readProjectFile("src/components/admin/home/visual-editor-protocol.ts");
+    const previewSource = readProjectFile("src/components/public/HomeVisualEditor.tsx");
+
+    expect(workspaceSource).toContain("sendEditorPreviewState");
+    expect(workspaceSource).toContain("isTrustedEditorMessage");
+    expect(workspaceSource).toContain('"loading" | "ready" | "error"');
+    expect(workspaceSource).toContain("setTimeout");
+    expect(workspaceSource).toContain("changePreviewLocale");
+    expect(protocolSource).toContain("siteContentEditingSchema");
+    expect(previewSource).toContain("window.parent");
+    expect(previewSource).toContain("homepage-editor:locale");
+  });
 });
 
 describe("OKR execution workspace contracts", () => {
