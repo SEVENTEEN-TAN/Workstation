@@ -3022,3 +3022,13 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
+
+.weeklyEditorNotice {
+  margin: 10px 0 0;
+  padding: 9px 11px;
+  border-left: 2px solid rgba(0, 223, 143, 0.55);
+  background: rgba(0, 223, 143, 0.045);
+  color: #aeb8bf;
+  font-size: 12px;
+  line-height: 1.6;
+}

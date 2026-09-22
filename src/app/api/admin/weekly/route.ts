@@ -9,7 +9,8 @@ export async function GET() {
 export async function POST(request: Request) {
   return withAdminSession(async () => {
     try {
-      return Response.json(await weeklyActivityDraftService.generate(await readJson(request)), { status: 201 });
+      const result = await weeklyActivityDraftService.generate(await readJson(request));
+      return Response.json(result, { status: result.created ? 201 : 200 });
     } catch (error) {
       return jsonError(error);
     }

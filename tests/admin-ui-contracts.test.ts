@@ -366,7 +366,8 @@ describe("admin route contracts", () => {
     for (const field of ["weekStart", "weekEnd", "titleZh", "titleEn", "summaryZh", "summaryEn"]) {
       expect(workspace).toContain(`name="${field}"`);
     }
-    expect(workspace).toContain("生成周报草稿");
+    expect(workspace).toContain("生成或打开周报");
+    expect(workspace).toContain("候选不会自动覆盖当前草稿");
     expect(workspace).toContain("转为私有职业动态");
     expect(workspace).toContain("FeedbackCenter");
   });

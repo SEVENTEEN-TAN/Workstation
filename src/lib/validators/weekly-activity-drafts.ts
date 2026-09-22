@@ -13,3 +13,7 @@ export const weeklyDraftPatchSchema = z.object({
   summaryZh: z.string().trim().min(1, "中文摘要不能为空").max(4_000),
   summaryEn: z.string().trim().max(4_000),
 });
+
+export const weeklyDraftSaveSchema = weeklyDraftPatchSchema.extend({
+  expectedUpdatedAt: z.string().datetime("草稿版本时间无效"),
+});

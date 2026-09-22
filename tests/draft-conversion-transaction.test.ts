@@ -94,3 +94,28 @@ describe.each(cases)("$name real SQLite conversion", ({ name, table, service, se
     }
   });
 });
+
+describe("weekly draft optimistic save", () => {
+  it("rejects a second save from the same version and keeps the first writer", async () => {
+    const original = await database.weeklyActivityDraft.create({
+      data: {
+        ...copy,
+        id: "weekly-concurrent-save",
+        weekStart: new Date("2027-01-04T00:00:00Z"),
+        weekEnd: new Date("2027-01-10T00:00:00Z"),
+        updatedAt: new Date("2020-01-01T00:00:00Z"),
+      },
+    });
+    const service = createWeeklyActivityDraftService();
+    const first = { expectedUpdatedAt: original.updatedAt.toISOString(), titleZh: "第一份", titleEn: "First", summaryZh: "第一份已保存", summaryEn: "First saved" };
+    const second = { ...first, titleZh: "第二份", summaryZh: "第二份不应覆盖" };
+
+    await service.update(original.id, first);
+    await expect(service.update(original.id, second)).rejects.toMatchObject({ status: 409 });
+
+    await expect(database.weeklyActivityDraft.findUniqueOrThrow({ where: { id: original.id } })).resolves.toMatchObject({
+      titleZh: "第一份",
+      summaryZh: "第一份已保存",
+    });
+  });
+});

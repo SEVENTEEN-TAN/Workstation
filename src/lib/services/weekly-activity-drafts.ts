@@ -3,7 +3,7 @@ import type { Prisma } from "@prisma/client";
 import { getDatabase } from "../db";
 import { careerActivityInputSchema } from "../validators/career-activities";
 import { weeklyUpdateDraftSchema } from "../validators/ai-content-drafts";
-import { weeklyDraftPatchSchema, weeklyRangeSchema } from "../validators/weekly-activity-drafts";
+import { weeklyDraftSaveSchema, weeklyRangeSchema } from "../validators/weekly-activity-drafts";
 import { aiGenerationService, type AiGenerator } from "./ai-generation";
 import { parseJsonSnapshot } from "./json-snapshot";
 
@@ -41,6 +41,19 @@ export type WeeklyActivityDraftData = {
   updatedAt: string;
 };
 
+export type WeeklyDraftCopy = Pick<WeeklyActivityDraftData, "titleZh" | "titleEn" | "summaryZh" | "summaryEn">;
+
+export type WeeklyGenerationResult = {
+  created: boolean;
+  draft: WeeklyActivityDraftData;
+};
+
+export type WeeklyAiRewriteCandidate = {
+  baseUpdatedAt: string;
+  source: WeeklyDraftCopy;
+  candidate: WeeklyDraftCopy;
+};
+
 type WeeklyDraftWrite = {
   weekStart: Date;
   weekEnd: Date;
@@ -62,6 +75,7 @@ type EditableDraft = {
   weekEnd?: Date;
   convertedActivityId?: string | null;
   sourceSnapshot?: unknown;
+  updatedAt?: Date;
 };
 
 export type WeeklyActivityDraftRepository = {
@@ -69,9 +83,9 @@ export type WeeklyActivityDraftRepository = {
   findDraftByWeekStart(weekStart: Date): Promise<EditableDraft | null>;
   selectedRepositories(): Promise<string[]>;
   weeklySources(start: Date, endExclusive: Date, repositories: string[]): Promise<WeeklySourceSnapshot>;
-  upsertDraft(value: WeeklyDraftWrite): Promise<unknown>;
+  upsertDraft(value: WeeklyDraftWrite): Promise<{ created: boolean; record: unknown }>;
   findDraft(id: string): Promise<EditableDraft | null>;
-  updateDraft(id: string, value: Record<string, unknown>): Promise<unknown>;
+  updateDraft(id: string, value: Record<string, unknown>, expectedUpdatedAt: Date): Promise<unknown>;
   convertDraft(id: string, activity: Prisma.CareerActivityCreateInput): Promise<unknown>;
 };
 
@@ -94,6 +108,17 @@ function toWeeklyActivityDraftData(record: unknown): WeeklyActivityDraftData {
     createdAt: draft.createdAt.toISOString(),
     updatedAt: draft.updatedAt.toISOString(),
   };
+}
+
+function conflictResponse() {
+  return new Response(JSON.stringify({ error: "周报草稿已在其他位置更新，请刷新后合并修改" }), {
+    status: 409,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+function requireCurrentVersion(draft: EditableDraft, expectedUpdatedAt: Date) {
+  if (!draft.updatedAt || draft.updatedAt.getTime() !== expectedUpdatedAt.getTime()) throw conflictResponse();
 }
 
 const DAY = 86_400_000;
@@ -214,18 +239,27 @@ function defaultRepository(): WeeklyActivityDraftRepository {
       return database.$transaction(async (transaction) => {
         const existing = await transaction.weeklyActivityDraft.findUnique({ where: { weekStart: value.weekStart } });
         if (existing?.status === "CONVERTED") throw new Error("已转换的周报不能重新生成");
-        return transaction.weeklyActivityDraft.upsert({
+        if (existing) return { created: false, record: existing };
+        const record = await transaction.weeklyActivityDraft.upsert({
           where: { weekStart: value.weekStart },
           create: { ...data, status: "DRAFT" },
-          update: data,
+          update: {},
         });
+        return { created: record.generatedAt.getTime() === value.generatedAt.getTime(), record };
       });
     },
     async findDraft(id) {
       return (await getDatabase()).weeklyActivityDraft.findUnique({ where: { id } });
     },
-    async updateDraft(id, value) {
-      return (await getDatabase()).weeklyActivityDraft.update({ where: { id }, data: value });
+    async updateDraft(id, value, expectedUpdatedAt) {
+      const database = await getDatabase();
+      return database.$transaction(async (transaction) => {
+        const draft = await transaction.weeklyActivityDraft.findUnique({ where: { id } });
+        if (!draft) throw new Error("周报草稿不存在");
+        if (draft.status !== "DRAFT") throw new Error("已转换的周报不能继续编辑");
+        requireCurrentVersion(draft, expectedUpdatedAt);
+        return transaction.weeklyActivityDraft.update({ where: { id }, data: value });
+      });
     },
     async convertDraft(id, activity) {
       const database = await getDatabase();
@@ -256,15 +290,16 @@ export function createWeeklyActivityDraftService(
 ) {
   return {
     list: async () => (await repository.listDrafts()).map(toWeeklyActivityDraftData),
-    async generate(input: unknown) {
+    async generate(input: unknown): Promise<WeeklyGenerationResult> {
       const parsed = weeklyRangeSchema.parse(input);
       const range = normalizeWeeklyRange(parsed);
       const existing = await repository.findDraftByWeekStart(range.weekStart);
       if (existing?.status === "CONVERTED") throw new Error("已转换的周报不能重新生成");
+      if (existing) return { created: false, draft: toWeeklyActivityDraftData(existing) };
       const repositories = await repository.selectedRepositories();
       const sources = await repository.weeklySources(range.weekStart, range.endExclusive, repositories);
       const copy = sourceCopy(sources);
-      return repository.upsertDraft({
+      const saved = await repository.upsertDraft({
         weekStart: range.weekStart,
         weekEnd: range.weekEnd,
         titleZh: `${parsed.weekStart} 至 ${parsed.weekEnd} 周动态`,
@@ -273,24 +308,37 @@ export function createWeeklyActivityDraftService(
         sourceSnapshot: sources,
         generatedAt: new Date(),
       });
+      return { created: saved.created, draft: toWeeklyActivityDraftData(saved.record) };
     },
     async update(id: string, input: unknown) {
       const draft = await repository.findDraft(id);
       if (!draft) throw new Error("周报草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("已转换的周报不能继续编辑");
-      return repository.updateDraft(id, weeklyDraftPatchSchema.parse(input));
+      const parsed = weeklyDraftSaveSchema.parse(input);
+      const { expectedUpdatedAt: expectedVersion, ...copy } = parsed;
+      const expectedUpdatedAt = new Date(expectedVersion);
+      requireCurrentVersion(draft, expectedUpdatedAt);
+      return repository.updateDraft(id, copy, expectedUpdatedAt);
     },
-    async rewriteWithAi(id: string) {
+    async rewriteWithAi(id: string, input: unknown): Promise<WeeklyAiRewriteCandidate> {
       const draft = await repository.findDraft(id);
       if (!draft) throw new Error("周报草稿不存在");
       if (draft.status !== "DRAFT") throw new Error("已转换的周报不能继续编辑");
       if (!draft.sourceSnapshot) throw new Error("周报草稿缺少来源快照");
+      const parsed = weeklyDraftSaveSchema.parse(input);
+      const { expectedUpdatedAt: expectedVersion, ...source } = parsed;
+      const expectedUpdatedAt = new Date(expectedVersion);
+      requireCurrentVersion(draft, expectedUpdatedAt);
       const generated = await generator.generate("WEEKLY_UPDATE", {
         system: "You create concise bilingual weekly updates from verified private work evidence.",
-        prompt: `请基于来源事实润色周报草稿。只返回 JSON，不要 Markdown。字段必须为 titleZh, titleEn, summaryZh, summaryEn，不得虚构事实。\n\nCURRENT:\n${JSON.stringify({ titleZh: draft.titleZh, titleEn: draft.titleEn, summaryZh: draft.summaryZh, summaryEn: draft.summaryEn })}\n\nSOURCE:\n${JSON.stringify(draft.sourceSnapshot)}`,
+        prompt: `请基于来源事实润色周报草稿。只返回 JSON，不要 Markdown。字段必须为 titleZh, titleEn, summaryZh, summaryEn，不得虚构事实。\n\nCURRENT:\n${JSON.stringify(source)}\n\nSOURCE:\n${JSON.stringify(draft.sourceSnapshot)}`,
         schema: weeklyUpdateDraftSchema,
       });
-      return repository.updateDraft(id, weeklyUpdateDraftSchema.parse(generated.content));
+      return {
+        baseUpdatedAt: draft.updatedAt!.toISOString(),
+        source,
+        candidate: weeklyUpdateDraftSchema.parse(generated.content),
+      };
     },
     async convert(id: string) {
       const draft = await repository.findDraft(id);
