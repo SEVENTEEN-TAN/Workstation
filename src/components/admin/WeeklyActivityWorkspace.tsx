@@ -26,6 +26,7 @@ import { jsonRequest } from "./workspace-utils";
 type EditingState = {
   draft: WeeklyActivityDraftData;
   values: WeeklyDraftCopy;
+  baseUpdatedAt: string;
   candidate: WeeklyAiRewriteCandidate | null;
   recovered: boolean;
 };
@@ -75,9 +76,9 @@ function readRecovery(id: string) {
   }
 }
 
-function writeRecovery(id: string, values: WeeklyDraftCopy) {
+function writeRecovery(id: string, values: WeeklyDraftCopy, expectedUpdatedAt: string) {
   try {
-    sessionStorage.setItem(weeklyDraftRecoveryKey(id), JSON.stringify(values));
+    sessionStorage.setItem(weeklyDraftRecoveryKey(id), JSON.stringify({ values, expectedUpdatedAt }));
   } catch {
     // The form stays in memory when browser storage is unavailable.
   }
@@ -93,7 +94,19 @@ function clearRecovery(id: string) {
 
 function editorForDraft(draft: WeeklyActivityDraftData): EditingState {
   const recovered = readRecovery(draft.id);
-  return { draft, values: recovered ?? copyFromWeeklyDraft(draft), candidate: null, recovered: Boolean(recovered) };
+  return {
+    draft,
+    values: recovered?.values ?? copyFromWeeklyDraft(draft),
+    baseUpdatedAt: recovered?.expectedUpdatedAt ?? draft.updatedAt,
+    candidate: null,
+    recovered: Boolean(recovered),
+  };
+}
+
+function recoveredNotice(editing: EditingState) {
+  return editing.baseUpdatedAt === editing.draft.updatedAt
+    ? "已恢复这个浏览器中尚未保存的修改。"
+    : "已恢复未保存的修改，但服务端版本已经变化；直接保存会提示冲突，请先核对合并。";
 }
 
 export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: WeeklyActivityDraftData[] }) {
@@ -110,7 +123,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
 
   useEffect(() => {
     if (!editing) return;
-    if (dirty) writeRecovery(editing.draft.id, editing.values);
+    if (dirty) writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt);
     else clearRecovery(editing.draft.id);
   }, [dirty, editing]);
 
@@ -142,7 +155,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     if (dirty && !window.confirm("当前周报有未保存修改，切换后会保留在本浏览器。仍要切换吗？")) return false;
     const next = editorForDraft(draft);
     setEditing(next);
-    setEditorNotice(next.recovered ? "已恢复这个浏览器中尚未保存的修改。" : null);
+    setEditorNotice(next.recovered ? recoveredNotice(next) : null);
     return true;
   }
 
@@ -172,7 +185,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     const next = editorForDraft(result.draft);
     setEditing(result.draft.status === "DRAFT" ? next : null);
     setGenerationNotice(result.created ? "已生成新的私有周报草稿。" : "已打开这一周的现有草稿，人工修改没有被覆盖。");
-    setEditorNotice(next.recovered ? "已恢复这个浏览器中尚未保存的修改。" : null);
+    setEditorNotice(next.recovered ? recoveredNotice(next) : null);
   }
 
   async function save(event: FormEvent<HTMLFormElement>) {
@@ -180,7 +193,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     if (!editing) return;
     const saved = await runAction("weekly:save", () => adminRequest<WeeklyActivityDraftData>(
       `/api/admin/weekly/${editing.draft.id}`,
-      jsonRequest("PATCH", { ...editing.values, expectedUpdatedAt: editing.draft.updatedAt }),
+      jsonRequest("PATCH", { ...editing.values, expectedUpdatedAt: editing.baseUpdatedAt }),
     ), "周报草稿已保存");
     if (!saved) return;
     clearRecovery(saved.id);
@@ -205,10 +218,10 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
 
   async function rewriteWithAi(draft: WeeklyActivityDraftData) {
     if (editing?.draft.id !== draft.id && !openEditor(draft)) return;
-    const source = editing?.draft.id === draft.id ? editing.values : editorForDraft(draft).values;
+    const sourceState = editing?.draft.id === draft.id ? editing : editorForDraft(draft);
     const candidate = await runAction(`weekly:ai:${draft.id}`, () => adminRequest<WeeklyAiRewriteCandidate>(
       `/api/admin/weekly/${draft.id}/ai`,
-      jsonRequest("POST", { ...source, expectedUpdatedAt: draft.updatedAt }),
+      jsonRequest("POST", { ...sourceState.values, expectedUpdatedAt: sourceState.baseUpdatedAt }),
     ), "AI 候选已生成，请对照后决定是否采用");
     if (!candidate) return;
     setEditing((current) => current?.draft.id === draft.id ? { ...current, candidate } : current);
