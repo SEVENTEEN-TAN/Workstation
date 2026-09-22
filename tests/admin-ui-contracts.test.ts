@@ -857,6 +857,8 @@ describe("OKR execution workspace contracts", () => {
     expect(pageSource).toContain("initialProjects");
     expect(workspaceSource).toContain("initialProjects");
     expect(workspaceSource).toContain("projects={projects}");
+    expect(workspaceSource).toContain("<AssetPicker");
+    expect(workspaceSource).toContain("onRequestAsset={requestAsset}");
     expect(editorSource).toContain("selectedProjectIds");
     expect(editorSource).toContain("旧版项目快照");
     expect(editorSource).toContain("迁移为结构化项目");
@@ -868,9 +870,12 @@ describe("OKR execution workspace contracts", () => {
     expect(editorSource).toContain("信息待完善");
     expect(editorSource).toContain("公开可展示");
     expect(editorSource).not.toContain('pairedField(["projects", projectIndex, "title"]');
-    expect(editorSource).not.toContain("AssetPicker");
+    expect(editorSource).toContain("settings.email");
+    expect(editorSource).toContain("settings.githubUrl");
+    expect(editorSource).toContain("settings.portraitImage");
+    expect(editorSource).toContain("settings.wechatQrImage");
     expect(editorSource).not.toContain("图片路径或 URL");
-    expect(editorSource).not.toContain("选择媒体");
+    expect(editorSource).not.toContain('type="url"');
   });
 
   it("renders the public homepage only from its saved site snapshot", () => {

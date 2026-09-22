@@ -1,13 +1,22 @@
-import type { PortfolioProjectRecord } from "../services/portfolio-projects";
+import type { PortfolioProjectInput } from "../validators/portfolio-projects";
 import type { SiteVersionRecord } from "../services/site-content";
 import { portfolioProjectInputSchema } from "../validators/portfolio-projects";
 import { siteContentSchema, type SiteContent } from "./schema";
 
-function isSelectableProject(project: PortfolioProjectRecord) {
+export type HomepageProjectCandidate = Omit<
+  PortfolioProjectInput,
+  "startedAt" | "completedAt"
+> & {
+  id: string;
+  startedAt: Date | string | null;
+  completedAt: Date | string | null;
+};
+
+function isSelectableProject(project: HomepageProjectCandidate) {
   return project.visibility === "PUBLIC" && portfolioProjectInputSchema.safeParse(project).success;
 }
 
-function toLocalizedProject(project: PortfolioProjectRecord, locale: "en" | "zh") {
+function toLocalizedProject(project: HomepageProjectCandidate, locale: "en" | "zh") {
   const title = locale === "zh" ? project.titleZh : project.titleEn;
   const description = locale === "zh" ? project.summaryZh : project.summaryEn;
   if (!title || !description) throw new Error("主页引用的项目不存在或不可公开");
@@ -24,7 +33,7 @@ function toLocalizedProject(project: PortfolioProjectRecord, locale: "en" | "zh"
 
 export function materializeHomepageProjects(
   content: SiteContent,
-  projects: PortfolioProjectRecord[],
+  projects: HomepageProjectCandidate[],
 ): SiteContent {
   const selectedProjectIds = content.selectedProjectIds;
   if (!selectedProjectIds) return content;
@@ -41,6 +50,17 @@ export function materializeHomepageProjects(
     en: { ...content.en, projects: selectedProjects.map((project) => toLocalizedProject(project, "en")) },
     zh: { ...content.zh, projects: selectedProjects.map((project) => toLocalizedProject(project, "zh")) },
   };
+}
+
+export function materializeHomepageProjectsForPreview(
+  content: SiteContent,
+  projects: HomepageProjectCandidate[],
+): SiteContent {
+  try {
+    return materializeHomepageProjects(content, projects);
+  } catch {
+    return content;
+  }
 }
 
 export function findHomepageProjectReferences(

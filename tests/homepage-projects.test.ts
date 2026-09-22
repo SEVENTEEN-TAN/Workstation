@@ -4,9 +4,10 @@ import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import {
   findHomepageProjectReferences,
   materializeHomepageProjects,
+  materializeHomepageProjectsForPreview,
 } from "../src/lib/content/homepage-projects";
 import { portfolioProjectInputSchema } from "../src/lib/validators/portfolio-projects";
-import type { PortfolioProjectRecord } from "../src/lib/services/portfolio-projects";
+import type { PortfolioProjectData, PortfolioProjectRecord } from "../src/lib/services/portfolio-projects";
 
 const baseProject = portfolioProjectInputSchema.parse({
   slug: "personal-workstation",
@@ -69,6 +70,37 @@ describe("homepage project materialization", () => {
     expect(materialized.selectedProjectIds).toEqual([]);
     expect(materialized.en.projects).toEqual([]);
     expect(materialized.zh.projects).toEqual([]);
+  });
+
+  it("materializes serializable project selections for the unsaved preview and keeps unavailable cards", () => {
+    const first: PortfolioProjectData = {
+      ...project("first", { slug: "first", titleZh: "第一项", titleEn: "First" }),
+      startedAt: "2026-01-01T00:00:00.000Z",
+      completedAt: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+      updatedAt: "2026-01-02T00:00:00.000Z",
+    };
+    const second: PortfolioProjectData = {
+      ...project("second", { slug: "second", titleZh: "第二项", titleEn: "Second" }),
+      startedAt: null,
+      completedAt: "2026-02-01T00:00:00.000Z",
+      createdAt: "2026-02-01T00:00:00.000Z",
+      updatedAt: "2026-02-02T00:00:00.000Z",
+    };
+    const original = structuredClone(bootstrapSiteContent);
+    const preview = materializeHomepageProjectsForPreview(
+      { ...original, selectedProjectIds: [second.id, first.id] },
+      [first, second],
+    );
+    const unavailable = materializeHomepageProjectsForPreview(
+      { ...original, selectedProjectIds: ["missing-project"] },
+      [first],
+    );
+
+    expect(preview.en.projects.map((item) => item.slug)).toEqual(["second", "first"]);
+    expect(preview.zh.projects.map((item) => item.slug)).toEqual(["second", "first"]);
+    expect(unavailable.en.projects).toEqual(original.en.projects);
+    expect(unavailable.zh.projects).toEqual(original.zh.projects);
   });
 
   it("rejects missing, private, or incomplete public projects", () => {

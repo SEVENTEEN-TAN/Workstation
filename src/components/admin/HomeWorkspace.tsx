@@ -4,10 +4,12 @@ import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lu
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { materializeHomepageProjectsForPreview } from "../../lib/content/homepage-projects";
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
+import { AssetPicker } from "./home/AssetPicker";
 import { HomepageEditor } from "./home/HomepageEditor";
 import { isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
-import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState } from "./home/visual-editor-protocol";
+import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState, type HomepageImagePath } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
@@ -29,7 +31,7 @@ function formatVersionDate(version: SiteVersionData) {
   return value ? new Date(value).toLocaleString("zh-CN") : "未知时间";
 }
 
-export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }: HomeWorkspaceProps) {
+export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, assets }: HomeWorkspaceProps) {
   const [draft, setDraft] = useState(initialDraft);
   const projects = initialProjects;
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
@@ -43,6 +45,8 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
   const localeRef = useRef<SiteLocale>("zh");
   const selectedPathRef = useRef<string | null>(null);
   const previewTimeoutRef = useRef<number | null>(null);
+  const [assetTarget, setAssetTarget] = useState<HomepageImagePath | null>(null);
+  const assetPickerTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [previewLocale, setPreviewLocale] = useState<SiteLocale>("zh");
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [previewStatus, setPreviewStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -50,12 +54,21 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const validation = useMemo(() => validateSiteContent(content), [content]);
   const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
+  const previewContent = useMemo(
+    () => materializeHomepageProjectsForPreview(content, projects),
+    [content, projects],
+  );
+  const previewContentRef = useRef(previewContent);
 
   useEffect(() => {
     contentRef.current = content;
     localeRef.current = previewLocale;
     selectedPathRef.current = selectedPath;
   }, [content, previewLocale, selectedPath]);
+
+  useEffect(() => {
+    previewContentRef.current = previewContent;
+  }, [previewContent]);
 
   const clearPreviewTimeout = useCallback(() => {
     if (previewTimeoutRef.current !== null) {
@@ -68,7 +81,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
     const target = visualPreviewRef.current?.contentWindow;
     if (!target) return;
     sendEditorPreviewState(target, window.location.origin, {
-      content: contentRef.current,
+      content: previewContentRef.current,
       locale: localeRef.current,
       selectedPath: selectedPathRef.current,
     });
@@ -180,6 +193,11 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
     }, "主页已发布");
   }
 
+  function requestAsset(path: HomepageImagePath, trigger: HTMLButtonElement) {
+    assetPickerTriggerRef.current = trigger;
+    setAssetTarget(path);
+  }
+
   function requestRollback(event: MouseEvent<HTMLButtonElement>, version: SiteVersionData) {
     rollbackTriggerRef.current = event.currentTarget;
     setRollbackRequest(version);
@@ -279,6 +297,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
               content={content}
               validation={validation}
               onContentChange={setContent}
+              onRequestAsset={requestAsset}
             />
           </>
         ) : (
@@ -317,6 +336,17 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
         triggerRef={rollbackTriggerRef}
         onConfirm={confirmRollback}
         onCancel={() => setRollbackRequest(null)}
+      />
+      <AssetPicker
+        assets={assets}
+        open={assetTarget !== null}
+        triggerRef={assetPickerTriggerRef}
+        onSelect={(asset) => {
+          if (!assetTarget) return;
+          setContent(updateVisualContent(contentRef.current, assetTarget, `/api/assets/${asset.id}`));
+          setAssetTarget(null);
+        }}
+        onClose={() => setAssetTarget(null)}
       />
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
     </section>

@@ -1,4 +1,5 @@
 import { ArrowDown, ArrowUp, ExternalLink, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { useState, type ChangeEvent, type ReactNode } from "react";
 
 import styles from "../../../app/admin/admin.module.css";
@@ -14,8 +15,10 @@ import {
   moveHomepageProjectSelection,
   updateHomepageProjectSelection,
   updateContentAtPath,
+  updateVisualContent,
 } from "./content-editor";
 import { FieldError } from "./FieldError";
+import type { HomepageImagePath } from "./visual-editor-protocol";
 
 type HomeSectionDefinition = {
   id: SiteSectionId;
@@ -161,6 +164,7 @@ interface HomepageEditorProps {
   content: SiteContent;
   validation: SiteContentValidation;
   onContentChange: (content: SiteContent) => void;
+  onRequestAsset: (path: HomepageImagePath, trigger: HTMLButtonElement) => void;
 }
 
 function pathId(path: string) {
@@ -178,7 +182,7 @@ function sectionDefinition(section: SiteSectionId) {
   return HOME_SECTION_DEFINITIONS.find((item) => item.id === section);
 }
 
-export function HomepageEditor({ projects, content, validation, onContentChange }: HomepageEditorProps) {
+export function HomepageEditor({ projects, content, validation, onContentChange, onRequestAsset }: HomepageEditorProps) {
   const [task, setTask] = useState<HomeTaskId>("identity");
 
   function update(locale: SiteLocale, path: ContentPath, value: unknown) {
@@ -233,6 +237,38 @@ export function HomepageEditor({ projects, content, validation, onContentChange 
           </details>
         ) : null}
       </>
+    );
+  }
+
+  function settingsTextField(path: "settings.email" | "settings.githubUrl", label: string) {
+    const error = validation.fieldErrors[path];
+    const inputId = pathId(path);
+    const errorId = `${inputId}-error`;
+    const value = path === "settings.email" ? content.settings.email : content.settings.githubUrl;
+
+    return (
+      <label className={styles.homeField} htmlFor={inputId}>
+        <span>{label}</span>
+        <input
+          id={inputId}
+          type="text"
+          value={value}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          onChange={(event) => onContentChange(updateVisualContent(content, path, event.target.value))}
+        />
+        <FieldError id={errorId} path={path} message={error} />
+      </label>
+    );
+  }
+
+  function settingsImageField(path: HomepageImagePath, label: string, buttonLabel: string) {
+    return (
+      <div className={styles.homeField}>
+        <span>{label}</span>
+        <Image src={path === "settings.portraitImage" ? content.settings.portraitImage : content.settings.wechatQrImage} alt="" width={80} height={80} className="h-20 w-20 object-cover" unoptimized />
+        <button type="button" className={styles.secondaryButton} onClick={(event) => onRequestAsset(path, event.currentTarget)}>{buttonLabel}</button>
+      </div>
     );
   }
 
@@ -292,6 +328,7 @@ export function HomepageEditor({ projects, content, validation, onContentChange 
     if (scope === "identity") {
       return (
         <>
+          {settingsImageField("settings.portraitImage", "人物图", "从媒体库替换人物图")}
           {scalarFields("about", ABOUT_SCALARS.slice(0, 2))}
           {pairedField(["about", "heading", 0], "标题第一段")}
           {pairedField(["about", "heading", 1], "标题第二段")}
@@ -358,6 +395,16 @@ export function HomepageEditor({ projects, content, validation, onContentChange 
         </div>
         {scalarFields("footer", FOOTER_SCALARS.slice(8))}
       </>
+    );
+  }
+
+  function renderContactSettings() {
+    return (
+      <div className={styles.homeFormGrid}>
+        {settingsTextField("settings.email", "联系邮箱")}
+        {settingsTextField("settings.githubUrl", "GitHub 地址")}
+        {settingsImageField("settings.wechatQrImage", "微信二维码", "从媒体库替换二维码")}
+      </div>
     );
   }
 
@@ -514,6 +561,7 @@ export function HomepageEditor({ projects, content, validation, onContentChange 
           {section === "about" ? renderAbout(task === "capability" ? "capability" : "identity") : null}
           {section === "services" ? renderServices() : null}
           {section === "footer" ? renderFooter() : null}
+          {section === "footer" && task === "contact" ? renderContactSettings() : null}
           {section === "projects" ? renderProjects() : null}
         </div>
       </section>
