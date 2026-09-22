@@ -1330,7 +1330,7 @@
 
 .workspaceTabs {
   display: inline-grid;
-  grid-template-columns: repeat(2, minmax(104px, 1fr));
+  grid-template-columns: repeat(3, minmax(104px, 1fr));
   gap: 4px;
   padding: 3px;
   border: 1px solid rgba(255, 255, 255, 0.11);
@@ -1349,6 +1349,30 @@
   background: rgba(0, 223, 143, 0.09);
   color: #00df8f;
 }
+
+.homeVisualWorkspace { min-width: 0; margin-top: 16px; }
+.homeVisualLayout { display: grid; grid-template-columns: minmax(170px, 0.55fr) minmax(480px, 2fr) minmax(230px, 0.8fr); gap: 16px; align-items: start; }
+.homeVisualPaneTabs { display: none; }
+.homeVisualPane { display: grid; min-width: 0; gap: 12px; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 7px; background: #10141a; }
+.homeVisualPaneHeading h2 { margin: 4px 0 0; color: #f4f6f5; font-size: 16px; }
+.homeVisualStructureList { display: grid; gap: 7px; }
+.homeVisualStructureList article { display: grid; gap: 6px; padding: 9px; border-left: 2px solid rgba(0, 223, 143, 0.22); background: rgba(255, 255, 255, 0.025); }
+.homeVisualStructureList button { display: grid; gap: 4px; padding: 0; border: 0; background: transparent; text-align: left; }
+.homeVisualStructureList strong { color: #e6e9eb; font-size: 13px; }
+.homeVisualStructureList span, .homeVisualStructureList a, .homeVisualInspector small, .homeVisualInspector p, .homeVisualInspectorEmpty p, .homePreviewStatus { color: #85909b; font-size: 11px; line-height: 1.55; }
+.homeVisualStructureList a, .homeVisualInspector a { color: #79cfac; }
+.homeVisualPreviewHeader { display: grid; gap: 12px; }
+.homeVisualControls { display: flex; flex-wrap: wrap; gap: 8px; }
+.homeVisualControls > div { display: inline-flex; gap: 4px; }
+.homeVisualControls button[aria-pressed="true"] { border-color: rgba(0, 223, 143, 0.42); background: rgba(0, 223, 143, 0.09); color: #00df8f; }
+.homePreviewStatus { margin: 0; }
+.homePreviewFrameWrap { min-height: 720px; overflow: auto; background: #090d11; }
+.homePreviewFrame { display: block; width: 100%; min-height: 720px; border: 0; background: #090d11; }
+.homePreviewFrame[data-device="mobile"] { width: min(390px, 100%); margin-inline: auto; }
+.homeVisualInspector, .homeVisualInspectorEmpty, .homePreviewRecovery { display: grid; gap: 10px; }
+.homeVisualInspector p, .homeVisualInspectorEmpty p { margin: 0; }
+.homeVisualInspector img { width: 100%; max-height: 180px; object-fit: cover; }
+.homePreviewRecovery { padding-top: 12px; border-top: 1px solid rgba(255, 107, 95, 0.22); }
 
 .homeEditorLayout {
   display: grid;
@@ -2875,6 +2899,10 @@
   .homeActionBar { grid-template-columns: minmax(0, 1fr); }
   .homeActionBar .actions { width: 100%; }
   .workspaceTabs { width: 100%; }
+  .homeVisualLayout { grid-template-columns: minmax(0, 1fr); }
+  .homeVisualPaneTabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-bottom: 10px; }
+  .homeVisualPaneTabs button[aria-selected="true"] { border-color: rgba(0, 223, 143, 0.42); background: rgba(0, 223, 143, 0.09); color: #00df8f; }
+  .homeVisualPane[data-mobile-active="false"] { display: none; }
   .resumeFileGrid { grid-template-columns: 1fr; }
   .knowledgeLayout { grid-template-columns: 1fr; }
   .knowledgeIndexLayout { grid-template-columns: 1fr; }

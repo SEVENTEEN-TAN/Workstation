@@ -10,6 +10,7 @@ import {
   validateSiteContent,
 } from "../src/components/admin/home/content-editor";
 import { siteContentSchema, type SiteContent } from "../src/lib/content/schema";
+import { HOME_VISUAL_STRUCTURE } from "../src/components/admin/home/HomepageVisualWorkspace";
 
 const locale: SiteContent["en"] = {
   meta: { title: "Title", description: "Description" },
@@ -100,6 +101,18 @@ const createContent = (): SiteContent => ({
 });
 
 describe("homepage content editor contracts", () => {
+  it("keeps fixed homepage structure connected to the appropriate content sources", () => {
+    expect(HOME_VISUAL_STRUCTURE).toEqual([
+      { id: "identity", label: "首屏", source: "snapshot" },
+      { id: "about", label: "关于", source: "snapshot" },
+      { id: "now", label: "当前动态", source: "business", adminHref: "/admin/activities" },
+      { id: "work", label: "项目", source: "mixed", adminHref: "/admin/projects" },
+      { id: "capability", label: "能力", source: "business", adminHref: "/admin/skills" },
+      { id: "journey", label: "经历与简历", source: "business", adminHref: "/admin/experience" },
+      { id: "contact", label: "联系", source: "snapshot" },
+    ]);
+  });
+
   it("exposes sections in the editor order", () => {
     expect(SITE_SECTION_IDS).toEqual([
       "meta",

@@ -697,7 +697,24 @@ describe("homepage version safety contracts", () => {
   const workspaceSource = readProjectFile("src/components/admin/HomeWorkspace.tsx");
   const editorSource = readOptionalProjectFile("src/components/admin/home/HomepageEditor.tsx");
   const adminStyles = readProjectFile("src/app/admin/admin.module.css");
+  const visualWorkspaceSource = readOptionalProjectFile("src/components/admin/home/HomepageVisualWorkspace.tsx");
   const homepageCmsSource = `${workspaceSource}\n${editorSource}`;
+
+  it("provides separate visual, field, and history views with a responsive three-pane visual workspace", () => {
+    for (const label of ["可视化编辑", "字段编辑", "发布记录"]) {
+      expect(workspaceSource).toContain(label);
+    }
+    for (const label of ["页面结构", "真实首页预览", "选中项设置"]) {
+      expect(visualWorkspaceSource).toContain(label);
+    }
+    expect(visualWorkspaceSource).toContain("桌面预览");
+    expect(visualWorkspaceSource).toContain("手机预览");
+    expect(visualWorkspaceSource).toContain("中文");
+    expect(visualWorkspaceSource).toContain("English");
+    expect(visualWorkspaceSource).toContain("重试预览");
+    expect(adminStyles).toMatch(/\.homeVisualLayout[\s\S]*grid-template-columns/);
+    expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.homeVisualPaneTabs/);
+  });
 
   it("organizes homepage editing around four resume tasks with paired bilingual fields", () => {
     for (const section of ["meta", "nav", "hero", "about", "works", "services", "footer", "projects"]) {
@@ -715,7 +732,7 @@ describe("homepage version safety contracts", () => {
   it("keeps rare copy collapsed and separates editing from publication history", () => {
     expect(editorSource).toContain("高级文案");
     expect(editorSource).toContain("<details");
-    expect(workspaceSource).toContain("编辑内容");
+    expect(workspaceSource).toContain("字段编辑");
     expect(workspaceSource).toContain("发布记录");
     expect(workspaceSource).toContain("homeActionBar");
   });

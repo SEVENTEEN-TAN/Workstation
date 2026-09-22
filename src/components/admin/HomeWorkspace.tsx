@@ -8,6 +8,7 @@ import { materializeHomepageProjectsForPreview } from "../../lib/content/homepag
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { AssetPicker } from "./home/AssetPicker";
 import { HomepageEditor } from "./home/HomepageEditor";
+import { HomepageVisualWorkspace } from "./home/HomepageVisualWorkspace";
 import { isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
 import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState, type HomepageImagePath } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
@@ -37,7 +38,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
   const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
-  const [view, setView] = useState<"edit" | "history">("edit");
+  const [view, setView] = useState<"visual" | "fields" | "history">("visual");
   const [versions, setVersions] = useState(initialVersions);
   const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
   const visualPreviewRef = useRef<HTMLIFrameElement>(null);
@@ -48,8 +49,10 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const [assetTarget, setAssetTarget] = useState<HomepageImagePath | null>(null);
   const assetPickerTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [previewLocale, setPreviewLocale] = useState<SiteLocale>("zh");
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [previewStatus, setPreviewStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [previewKey, setPreviewKey] = useState(0);
   const rollbackTriggerRef = useRef<HTMLElement | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const validation = useMemo(() => validateSiteContent(content), [content]);
@@ -102,6 +105,12 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     previewTimeoutRef.current = window.setTimeout(() => {
       setPreviewStatus((current) => current === "loading" ? "error" : current);
     }, 10_000);
+  }, [clearPreviewTimeout]);
+
+  const retryPreview = useCallback(() => {
+    clearPreviewTimeout();
+    setPreviewStatus("loading");
+    setPreviewKey((current) => current + 1);
   }, [clearPreviewTimeout]);
 
   useEffect(() => {
@@ -258,40 +267,51 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             </button>
           </div>
           <div className={styles.workspaceTabs} role="tablist" aria-label="主页管理视图">
-            <button type="button" role="tab" aria-selected={view === "edit"} onClick={() => setView("edit")}>编辑内容</button>
+            <button type="button" role="tab" aria-selected={view === "visual"} onClick={() => setView("visual")}>可视化编辑</button>
+            <button type="button" role="tab" aria-selected={view === "fields"} onClick={() => setView("fields")}>字段编辑</button>
             <button type="button" role="tab" aria-selected={view === "history"} onClick={() => setView("history")}>发布记录</button>
           </div>
         </div>
-        {view === "edit" ? (
+        <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
+          <div>
+            <span className={styles.kicker}>READINESS</span>
+            <h2 id="publish-readiness-title">发布就绪</h2>
+          </div>
+          <dl>
+            <div><dt>中文</dt><dd>{zhIssues ? `${zhIssues} 个问题` : "完整"}</dd></div>
+            <div><dt>English</dt><dd>{enIssues ? `${enIssues} 个问题` : "完整"}</dd></div>
+            <div><dt>总计</dt><dd>{validation.errorCount ? `${validation.errorCount} 个问题` : "无问题"}</dd></div>
+            <div><dt>状态</dt><dd>{dirty ? "有未保存修改" : "已保存"}</dd></div>
+          </dl>
+          <p>
+            {validation.valid
+              ? "实时可视化预览使用当前工作副本，单独打开的预览页面使用已保存草稿。"
+              : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
+          </p>
+        </section>
+        {view === "visual" ? (
+          <HomepageVisualWorkspace
+            content={content}
+            validation={validation}
+            dirty={dirty}
+            locale={previewLocale}
+            device={previewDevice}
+            selectedPath={selectedPath}
+            previewStatus={previewStatus}
+            previewKey={previewKey}
+            iframeRef={visualPreviewRef}
+            onLocaleChange={changePreviewLocale}
+            onDeviceChange={setPreviewDevice}
+            onSelectedPathChange={setSelectedPath}
+            onContentChange={setContent}
+            onFocusSection={(section) => visualPreviewRef.current?.contentWindow?.postMessage({ type: "homepage-editor:focus", section }, window.location.origin)}
+            onRequestAsset={requestAsset}
+            onPreviewLoad={handlePreviewLoad}
+            onRetryPreview={retryPreview}
+            onOpenFields={() => setView("fields")}
+          />
+        ) : view === "fields" ? (
           <>
-            <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
-              <div>
-                <span className={styles.kicker}>READINESS</span>
-                <h2 id="publish-readiness-title">发布就绪</h2>
-              </div>
-              <dl>
-                <div><dt>中文</dt><dd>{zhIssues ? `${zhIssues} 个问题` : "完整"}</dd></div>
-                <div><dt>English</dt><dd>{enIssues ? `${enIssues} 个问题` : "完整"}</dd></div>
-                <div><dt>总计</dt><dd>{validation.errorCount ? `${validation.errorCount} 个问题` : "无问题"}</dd></div>
-                <div><dt>状态</dt><dd>{dirty ? "有未保存修改" : "已保存"}</dd></div>
-              </dl>
-              <p>
-                {validation.valid
-                  ? dirty
-                    ? "可保存；预览仍使用当前已保存草稿，不包含未保存修改。"
-                    : "当前已保存草稿可预览并发布。"
-                  : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
-              </p>
-            </section>
-            <section className={styles.panel} aria-label="主页实时预览">
-              <div className={styles.actions}>
-                <span>预览语言</span>
-                <button type="button" aria-pressed={previewLocale === "zh"} onClick={() => changePreviewLocale("zh")}>中文</button>
-                <button type="button" aria-pressed={previewLocale === "en"} onClick={() => changePreviewLocale("en")}>English</button>
-                <span role="status">{previewStatus === "error" ? "预览加载失败，请刷新页面重试。" : previewStatus === "loading" ? "预览加载中" : "预览已同步"}</span>
-              </div>
-              <iframe ref={visualPreviewRef} onLoad={handlePreviewLoad} title="主页实时预览" src="/admin/home/visual-preview" className="min-h-[720px] w-full border-0 bg-ink" />
-            </section>
             <HomepageEditor
               projects={projects}
               content={content}

@@ -1,3 +1,5 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
@@ -15,8 +17,37 @@ import {
   safeEditorLinkTarget,
   selectableFieldProps,
 } from "../src/components/public/visual-editing";
+import { HomepageVisualWorkspace } from "../src/components/admin/home/HomepageVisualWorkspace";
+import { validateSiteContent } from "../src/components/admin/home/content-editor";
 
 describe("homepage visual-editor protocol", () => {
+  it("keeps editor controls available when the preview fails", () => {
+    const markup = renderToStaticMarkup(createElement(HomepageVisualWorkspace, {
+      content: bootstrapSiteContent,
+      validation: validateSiteContent(bootstrapSiteContent),
+      dirty: true,
+      locale: "zh",
+      device: "desktop",
+      selectedPath: "settings.email",
+      previewStatus: "error",
+      previewKey: 0,
+      iframeRef: { current: null },
+      onLocaleChange() {},
+      onDeviceChange() {},
+      onSelectedPathChange() {},
+      onContentChange() {},
+      onFocusSection() {},
+      onRequestAsset() {},
+      onPreviewLoad() {},
+      onRetryPreview() {},
+      onOpenFields() {},
+    }));
+
+    expect(markup).toContain("重试预览");
+    expect(markup).toContain("转到字段编辑");
+    expect(markup).toContain('value="' + bootstrapSiteContent.settings.email + '"');
+  });
+
   it("builds editor-only attributes and safe text commits", () => {
     expect(editableTextProps(false, "en.hero.lineOne")).toEqual({});
     expect(selectableFieldProps(false, "settings.portraitImage")).toEqual({});
