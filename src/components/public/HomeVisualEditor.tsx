@@ -10,7 +10,7 @@ import { HomeExperience } from "./HomeExperience";
 export function HomeVisualEditor({ initialData }: { initialData: PublicResumeData }) {
   const [content, setContent] = useState(initialData.content);
   const [locale, setLocale] = useState<SiteLocale>("en");
-  const [selectedPath, setSelectedPath] = useState<string | null>(null);
+  const [, setSelectedPath] = useState<string | null>(null);
 
   useEffect(() => {
     function receiveParentMessage(event: MessageEvent) {

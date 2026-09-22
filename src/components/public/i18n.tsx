@@ -48,8 +48,8 @@ export function I18nProvider({
 
   useEffect(() => {
     // Locale is browser-owned state; hydrate from the persisted preference after mount.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (controlledLocale === undefined) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocale(resolveInitialLocale(window.localStorage.getItem(STORAGE_KEY), window.navigator.language));
     }
   }, [controlledLocale]);

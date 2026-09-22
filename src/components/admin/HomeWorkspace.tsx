@@ -51,9 +51,11 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects }
   const validation = useMemo(() => validateSiteContent(content), [content]);
   const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
 
-  contentRef.current = content;
-  localeRef.current = previewLocale;
-  selectedPathRef.current = selectedPath;
+  useEffect(() => {
+    contentRef.current = content;
+    localeRef.current = previewLocale;
+    selectedPathRef.current = selectedPath;
+  }, [content, previewLocale, selectedPath]);
 
   const clearPreviewTimeout = useCallback(() => {
     if (previewTimeoutRef.current !== null) {
