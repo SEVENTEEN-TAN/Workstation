@@ -917,6 +917,10 @@ describe("OKR execution workspace contracts", () => {
     expect(workspaceSource).toContain("onContentChange={applyFieldChange}");
     expect(workspaceSource).toContain("onContentChange={commitContent}");
     expect(workspaceSource).not.toContain("onContentChange={setContent}");
+    expect(workspaceSource).toContain('adminRequest<PortfolioProjectData[]>("/api/admin/projects")');
+    expect(workspaceSource).toContain("setProjects(latest);");
+    expect(workspaceSource).toContain("commitContent(materializeHomepageProjects(contentRef.current, projects));");
+    expect(workspaceSource).toContain('projectCheckFailed || checkBusy || syncBusy || workingSync.status !== "pending"');
     expect(workspaceSource).toContain("<AssetPicker");
     expect(workspaceSource).toContain("onRequestAsset={requestAsset}");
     expect(editorSource).toContain("selectedProjectIds");

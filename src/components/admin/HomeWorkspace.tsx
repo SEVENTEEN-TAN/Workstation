@@ -4,6 +4,7 @@ import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lu
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { inspectHomepageProjectSync, materializeHomepageProjects, type HomepageProjectField } from "../../lib/content/homepage-projects";
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { AssetPicker } from "./home/AssetPicker";
 import { HomepageEditor } from "./home/HomepageEditor";
@@ -31,9 +32,26 @@ function formatVersionDate(version: SiteVersionData) {
   return value ? new Date(value).toLocaleString("zh-CN") : "未知时间";
 }
 
+const PROJECT_FIELD_LABELS: Record<HomepageProjectField, string> = {
+  slug: "链接",
+  image: "封面",
+  category: "分类",
+  title: "标题",
+  description: "描述",
+  tags: "技术标签",
+  alt: "图片替代文本",
+};
+
+const UNAVAILABLE_REASONS = {
+  missing: "已不存在",
+  private: "未公开",
+  incomplete: "资料不完整",
+} as const;
+
 export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, assets }: HomeWorkspaceProps) {
   const [draft, setDraft] = useState(initialDraft);
-  const projects = initialProjects;
+  const [projects, setProjects] = useState(initialProjects);
+  const [projectCheckFailed, setProjectCheckFailed] = useState(false);
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
   const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
@@ -56,6 +74,8 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const validation = useMemo(() => validateSiteContent(content), [content]);
   const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
+  const savedSync = useMemo(() => inspectHomepageProjectSync(savedContent, projects), [savedContent, projects]);
+  const workingSync = useMemo(() => inspectHomepageProjectSync(content, projects), [content, projects]);
   const previewContent = content;
   const previewContentRef = useRef(previewContent);
   const commitContent = useCallback((next: SiteContent) => {
@@ -206,6 +226,21 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     }, "主页已发布");
   }
 
+  async function checkProjectUpdates() {
+    const checked = await runAction("home:check-projects", async () => {
+      const latest = await adminRequest<PortfolioProjectData[]>("/api/admin/projects");
+      setProjects(latest);
+      return true;
+    }, "项目资料已检查");
+    setProjectCheckFailed(checked !== true);
+  }
+
+  async function syncProjectUpdates() {
+    await runAction("home:sync-projects", async () => {
+      commitContent(materializeHomepageProjects(contentRef.current, projects));
+    }, "项目更新已同步到工作副本");
+  }
+
   function requestAsset(path: HomepageImagePath, trigger: HTMLButtonElement) {
     assetPickerTriggerRef.current = trigger;
     setAssetTarget(path);
@@ -235,6 +270,10 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const refreshBusy = isBusy("home:refresh");
   const saveBusy = isBusy("home:save");
   const publishBusy = isBusy("home:publish");
+  const checkBusy = isBusy("home:check-projects");
+  const syncBusy = isBusy("home:sync-projects");
+  const showProjectSync = savedSync.status === "pending" || savedSync.status === "blocked" ||
+    workingSync.status === "pending" || workingSync.status === "blocked";
   const zhIssues = Object.keys(validation.fieldErrors).filter((path) => path.startsWith("zh.")).length;
   const enIssues = Object.keys(validation.fieldErrors).filter((path) => path.startsWith("en.")).length;
 
@@ -276,6 +315,47 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             <button type="button" role="tab" aria-selected={view === "history"} onClick={() => setView("history")}>发布记录</button>
           </div>
         </div>
+        <section className={styles.readinessSummary} aria-label="首页项目同步">
+          <div>
+            <span className={styles.kicker}>PROJECT SYNC</span>
+            <h2>首页项目卡片</h2>
+          </div>
+          <div className={styles.actions}>
+            <button type="button" onClick={checkProjectUpdates} disabled={checkBusy}>
+              {checkBusy ? "检查中" : "检查项目更新"}
+            </button>
+            {showProjectSync && (
+              <button type="button" onClick={syncProjectUpdates}
+                disabled={projectCheckFailed || checkBusy || syncBusy || workingSync.status !== "pending"}>
+                {syncBusy ? "同步中" : "同步项目更新到工作副本"}
+              </button>
+            )}
+          </div>
+          <div>
+            {workingSync.status === "legacy" && <p>旧版首页卡片不自动关联项目；选择项目后才能启用同步。</p>}
+            {workingSync.status === "synced" && savedSync.status !== "pending" && <p>当前工作副本与已检查的项目资料一致。</p>}
+            {workingSync.status === "pending" && (
+              <>
+                <p>项目卡片待同步。同步仅修改工作副本，不会自动保存或发布。</p>
+                {workingSync.changes.map((change) => (
+                  <p key={change.id}>{change.name}：{change.fields.map(({ locale, field }) =>
+                    (locale === "zh" ? "中文" : "English") + PROJECT_FIELD_LABELS[field]).join("、")}</p>
+                ))}
+                {workingSync.extraCards && <p>存在多余的旧卡片，点击同步后会移除。</p>}
+              </>
+            )}
+            {workingSync.status === "blocked" && (
+              <>
+                <p>源项目不可用，请先到 <a href="/admin/projects">项目管理</a> 修复，然后重新检查。</p>
+                {workingSync.unavailable.map((item) => (
+                  <p key={item.id}>{item.name}：{UNAVAILABLE_REASONS[item.reason]}</p>
+                ))}
+              </>
+            )}
+            {savedSync.status === "pending" && workingSync.status === "synced" && <p>项目更新已在工作副本中，请保存草稿后发布。</p>}
+            {projectCheckFailed && <p>上次检查失败，请重试；在检查成功前不能同步。</p>}
+          </div>
+        </section>
         <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
           <div>
             <span className={styles.kicker}>READINESS</span>
