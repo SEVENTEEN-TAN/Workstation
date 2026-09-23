@@ -12,8 +12,85 @@ export type HomepageProjectCandidate = Omit<
   completedAt: Date | string | null;
 };
 
+const HOMEPAGE_PROJECT_FIELDS = ["slug", "image", "category", "title", "description", "tags", "alt"] as const;
+export type HomepageProjectField = (typeof HOMEPAGE_PROJECT_FIELDS)[number];
+type HomepageProjectCard = SiteContent["zh"]["projects"][number];
+
+export type HomepageProjectSync = {
+  status: "legacy" | "synced" | "pending" | "blocked";
+  changes: Array<{
+    id: string;
+    name: string;
+    fields: Array<{ locale: "zh" | "en"; field: HomepageProjectField }>;
+  }>;
+  unavailable: Array<{
+    id: string;
+    name: string;
+    reason: "missing" | "private" | "incomplete";
+  }>;
+  extraCards: boolean;
+};
+
 function isSelectableProject(project: HomepageProjectCandidate) {
   return project.visibility === "PUBLIC" && portfolioProjectInputSchema.safeParse(project).success;
+}
+
+function sameCardField(actual: HomepageProjectCard | undefined, expected: HomepageProjectCard | undefined, field: HomepageProjectField) {
+  if (!actual || !expected) return false;
+  if (field === "tags") {
+    return actual.tags.length === expected.tags.length &&
+      actual.tags.every((tag, index) => tag === expected.tags[index]);
+  }
+  return actual[field] === expected[field];
+}
+
+export function homepageProjectCardsMatch(actual: SiteContent, expected: SiteContent): boolean {
+  return (["zh", "en"] as const).every((locale) => {
+    const actualCards = actual[locale].projects;
+    const expectedCards = expected[locale].projects;
+    return actualCards.length === expectedCards.length &&
+      actualCards.every((card, index) =>
+        HOMEPAGE_PROJECT_FIELDS.every((field) => sameCardField(card, expectedCards[index], field)));
+  });
+}
+
+export function inspectHomepageProjectSync(
+  saved: SiteContent,
+  projects: HomepageProjectCandidate[],
+): HomepageProjectSync {
+  const empty: HomepageProjectSync = { status: "legacy", changes: [], unavailable: [], extraCards: false };
+  const ids = saved.selectedProjectIds;
+  if (ids === undefined) return empty;
+
+  const byId = new Map(projects.map((project) => [project.id, project]));
+  const name = (id: string, index: number) =>
+    byId.get(id)?.titleZh?.trim() || saved.zh.projects[index]?.title || id;
+  const unavailable = ids.flatMap((id, index) => {
+    const project = byId.get(id);
+    const reason: HomepageProjectSync["unavailable"][number]["reason"] | null = !project ? "missing"
+      : project.visibility !== "PUBLIC" ? "private"
+      : !portfolioProjectInputSchema.safeParse(project).success ? "incomplete"
+      : null;
+    return reason ? [{ id, name: name(id, index), reason }] : [];
+  });
+  const extraCards = (["zh", "en"] as const)
+    .some((locale) => saved[locale].projects.length > ids.length);
+  if (unavailable.length) return { ...empty, status: "blocked", unavailable, extraCards };
+
+  const expected = materializeHomepageProjects(saved, projects);
+  const changes = ids.flatMap((id, index) => {
+    const fields = (["zh", "en"] as const).flatMap((locale) =>
+      HOMEPAGE_PROJECT_FIELDS
+        .filter((field) => !sameCardField(saved[locale].projects[index], expected[locale].projects[index], field))
+        .map((field) => ({ locale, field })));
+    return fields.length ? [{ id, name: name(id, index), fields }] : [];
+  });
+  return {
+    status: changes.length || !homepageProjectCardsMatch(saved, expected) ? "pending" : "synced",
+    changes,
+    unavailable: [],
+    extraCards,
+  };
 }
 
 function toLocalizedProject(project: HomepageProjectCandidate, locale: "en" | "zh") {

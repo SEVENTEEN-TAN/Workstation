@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import {
   findHomepageProjectReferences,
+  homepageProjectCardsMatch,
+  inspectHomepageProjectSync,
   materializeHomepageProjects,
   materializeHomepageProjectsForPreview,
 } from "../src/lib/content/homepage-projects";
@@ -114,6 +116,87 @@ describe("homepage project materialization", () => {
       { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["incomplete"] },
       [project("incomplete", { titleEn: null })],
     )).toThrow("主页引用的项目不存在或不可公开");
+  });
+
+  it("reports only changed bilingual card fields for each selected project", () => {
+    const first = project("first", { slug: "first", titleZh: "第一项", titleEn: "First" });
+    const second = project("second", { slug: "second", titleZh: "第二项", titleEn: "Second" });
+    const saved = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["first", "second"] },
+      [first, second],
+    );
+
+    expect(homepageProjectCardsMatch(saved, saved)).toBe(true);
+    expect(inspectHomepageProjectSync(saved, [{ ...first, updatedAt: new Date("2026-09-23") }, second]))
+      .toMatchObject({ status: "synced", changes: [] });
+    expect(inspectHomepageProjectSync(saved, [first, { ...second, titleEn: "Revised" }]))
+      .toMatchObject({ status: "pending", changes: [
+        { id: "second", name: "第二项", fields: [{ locale: "en", field: "title" }] },
+      ] });
+    expect(inspectHomepageProjectSync(saved, [
+      { ...first, titleZh: "更新第一项" },
+      { ...second, summaryEn: "Updated second summary" },
+    ])).toMatchObject({ status: "pending", changes: [
+      { id: "first", fields: [{ locale: "zh", field: "title" }] },
+      { id: "second", fields: [{ locale: "en", field: "description" }] },
+    ] });
+    expect(homepageProjectCardsMatch(saved, { ...saved, en: {
+      ...saved.en, projects: [{ ...saved.en.projects[0], title: "Changed" }, saved.en.projects[1]],
+    } })).toBe(false);
+    expect(homepageProjectCardsMatch(saved, { ...saved, en: {
+      ...saved.en, projects: [saved.en.projects[0]],
+    } })).toBe(false);
+  });
+
+  it("detects description, image, alt fallback, and technology order changes", () => {
+    const first = project("first", { slug: "first", titleEn: "First" });
+    const saved = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["first"] }, [first],
+    );
+    const fields = (source: PortfolioProjectRecord) =>
+      inspectHomepageProjectSync(saved, [source]).changes[0]?.fields;
+
+    expect(fields({ ...first, summaryZh: "新描述" }))
+      .toEqual([{ locale: "zh", field: "description" }]);
+    expect(fields({ ...first, coverAltEn: "New English alt" }))
+      .toEqual([{ locale: "en", field: "alt" }]);
+    expect(fields({ ...first, coverImage: "/images/projects/new.webp" }))
+      .toEqual([{ locale: "zh", field: "image" }, { locale: "en", field: "image" }]);
+    expect(fields({ ...first, technologies: ["TypeScript", "Next.js"] }))
+      .toEqual([
+        { locale: "zh", field: "category" }, { locale: "zh", field: "tags" },
+        { locale: "en", field: "category" }, { locale: "en", field: "tags" },
+      ]);
+
+    const fallback = project("fallback", { titleEn: "First", coverImage: null, coverAltEn: null });
+    const fallbackSaved = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["fallback"] }, [fallback],
+    );
+    expect(inspectHomepageProjectSync(fallbackSaved, [{ ...fallback, titleEn: "Revised" }]).changes[0].fields)
+      .toEqual([{ locale: "en", field: "title" }, { locale: "en", field: "alt" }]);
+  });
+
+  it("distinguishes unavailable sources, legacy cards, and explicit empty selection", () => {
+    const privateProject = project("private", { visibility: "PRIVATE" });
+    const incomplete = project("incomplete", { titleEn: null });
+    const blocked = inspectHomepageProjectSync(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["missing", "private", "incomplete"] },
+      [privateProject, incomplete],
+    );
+    expect(blocked.status).toBe("blocked");
+    expect(blocked.unavailable).toMatchObject([
+      { id: "missing", reason: "missing" },
+      { id: "private", reason: "private" },
+      { id: "incomplete", reason: "incomplete" },
+    ]);
+    expect(inspectHomepageProjectSync(structuredClone(bootstrapSiteContent), []).status).toBe("legacy");
+
+    const leftover = { ...structuredClone(bootstrapSiteContent), selectedProjectIds: [] };
+    expect(inspectHomepageProjectSync(leftover, []))
+      .toMatchObject({ status: "pending", extraCards: true });
+    const empty = { ...leftover, zh: { ...leftover.zh, projects: [] }, en: { ...leftover.en, projects: [] } };
+    expect(inspectHomepageProjectSync(empty, []))
+      .toMatchObject({ status: "synced", extraCards: false });
   });
 
   it("reports versions that explicitly reference a project", () => {
