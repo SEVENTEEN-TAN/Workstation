@@ -106,7 +106,7 @@ export function ResumeFilesWorkspace({ initialFiles }: { initialFiles: ResumeFil
                   <div><strong>尚未上传</strong><small>上传后默认保持私密，确认内容后再公开。</small></div>
                 </div>
               )}
-              <PublicReadiness issues={getResumeFilePublicIssues(file)} />
+              <PublicReadiness issues={getResumeFilePublicIssues(file)} destination="在线简历 /resume；公开 PDF 可下载" nextStep="在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。" />
 
               <form className={styles.resumeUploadForm} onSubmit={(event) => upload(slot.locale, event)}>
                 <input name="locale" type="hidden" value={slot.locale} />

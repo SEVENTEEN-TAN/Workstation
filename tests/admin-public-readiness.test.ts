@@ -1,5 +1,8 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
+import { PublicReadiness } from "../src/components/admin/okr/PublicReadiness";
 import {
   getCareerActivityPublicIssues,
   getExperiencePublicIssues,
@@ -27,6 +30,19 @@ const project = {
 };
 
 describe("admin public readiness", () => {
+  it("shows project destination and publication steps without hiding blockers", () => {
+    const markup = renderToStaticMarkup(createElement(PublicReadiness, {
+      issues: getPortfolioProjectPublicIssues({ ...project, visibility: "PRIVATE" }),
+      destination: "项目页 /projects",
+      nextStep: "首页卡片另需同步、保存草稿并发布",
+    }));
+
+    expect(markup).toContain("暂不在前台展示");
+    expect(markup).toContain("当前设为私密");
+    expect(markup).toContain("展示去向：项目页 /projects");
+    expect(markup).toContain("生效步骤：首页卡片另需同步、保存草稿并发布");
+  });
+
   it("reports every project field that prevents public display", () => {
     expect(getPortfolioProjectPublicIssues({
       ...project,

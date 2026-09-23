@@ -284,6 +284,8 @@ export function SkillAreasWorkspace({
                 <PublicReadiness
                   issues={getSkillAreaPublicIssues(area, projects)}
                   notes={getSkillAreaPublicNotes(area, projects)}
+                  destination="能力页 /skills；首页能力区块"
+                  nextStep="满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。"
                 />
               </div>
               <div className={styles.rowActions}>

@@ -172,7 +172,7 @@ export function ExperienceRecordsWorkspace({ initialRecords }: { initialRecords:
                 <h3>{record.organizationZh} · {record.titleZh}</h3>
                 <p>{record.descriptionZh}</p>
                 <small>{record.organizationEn ? `${record.organizationEn} · ${record.titleEn ?? ""}` : "英文内容未完整"}</small>
-                <PublicReadiness issues={getExperiencePublicIssues(record)} />
+                <PublicReadiness issues={getExperiencePublicIssues(record)} destination="经历页 /experience；近期经历可进入首页职业路径" nextStep="满足上述公开条件后由前台读取；无需发布首页。" />
               </div>
               <div className={styles.rowActions}>
                 {record.linkUrl ? <a className={styles.iconTextButton} href={record.linkUrl} target="_blank" rel="noreferrer"><ArrowUpRight size={15} />打开链接</a> : null}

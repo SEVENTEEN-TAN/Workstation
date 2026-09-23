@@ -103,7 +103,7 @@ export function OkrCycleListWorkspace({ initialCycles }: { initialCycles: OkrCyc
             </div>
             <div className={styles.cycleProgress}><div><i style={{ width: `${summary.progress}%` }} /></div><strong>{summary.progress}%</strong></div>
             <div className={styles.cycleStats}><span>{summary.counts.objectives} 个目标</span><span>{summary.counts.keyResults} 个 KR</span><span>{summary.counts.atRisk} 个风险项</span></div>
-            <PublicReadiness issues={getCyclePublicIssues(cycle)} />
+            <PublicReadiness issues={getCyclePublicIssues(cycle)} destination="OKR 页 /okr" nextStep="满足上述公开条件后由前台读取；无需发布首页。" />
             <div className={styles.cardActions}>
               <Link className={styles.primaryButton} href={`/admin/okr/cycles/${cycle.id}`}>进入周期</Link>
               <button type="button" className={styles.iconButton} title="编辑周期" aria-label={`编辑周期 ${cycle.nameZh}`} onClick={() => setEditor({ mode: "edit", cycle })}><Pencil size={17} /></button>

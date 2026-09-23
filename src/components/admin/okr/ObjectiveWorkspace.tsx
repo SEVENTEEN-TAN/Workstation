@@ -101,7 +101,7 @@ export function ObjectiveWorkspace({ initialObjective }: { initialObjective: Obj
     <section>
       <Link className={styles.backLink} href={`/admin/okr/cycles/${objective.cycle.id}`}><ArrowLeft size={16} />返回 {objective.cycle.nameZh}</Link>
       <PageHeader title={objective.titleZh} description={objective.descriptionZh || "围绕这个 Objective 管理关键结果、执行动作与进度历史。"} action={<div className={styles.actions}><button type="button" onClick={() => setEditor({ kind: "objective" })}><Pencil size={17} />编辑目标</button><button type="button" className={styles.primaryButton} onClick={() => setEditor({ kind: "kr" })}><Plus size={18} />添加 KR</button></div>} />
-      <PublicReadiness issues={getObjectivePublicIssues(objective, objective.cycle)} />
+      <PublicReadiness issues={getObjectivePublicIssues(objective, objective.cycle)} destination="OKR 页 /okr" nextStep="满足上述公开条件后由前台读取；无需发布首页。" />
 
       <div className={styles.metrics}><article><span>目标进度</span><strong>{summary.progress}%</strong></article><article><span>关键结果</span><strong>{summary.counts.total}</strong></article><article><span>已完成</span><strong>{summary.counts.completed}</strong></article><article><span>风险项</span><strong>{summary.counts.atRisk}</strong></article></div>
 

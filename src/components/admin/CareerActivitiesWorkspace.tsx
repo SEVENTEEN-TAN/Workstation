@@ -121,7 +121,7 @@ export function CareerActivitiesWorkspace({ initialActivities, targetActivityId 
                 <span className={activity.visibility === "PUBLIC" ? `${styles.statusBadge} ${styles.statusActive}` : styles.statusBadge}>{activity.visibility === "PUBLIC" ? "公开" : "私密"}</span>
                 {activity.featured ? <span className={styles.warningBadge}><Star size={12} />精选</span> : null}
               </div>
-              <div className={styles.activityCopy}><h3>{activity.titleZh}</h3><p>{activity.summaryZh}</p>{activity.titleEn ? <small>{activity.titleEn}</small> : null}<PublicReadiness issues={getCareerActivityPublicIssues(activity)} /></div>
+              <div className={styles.activityCopy}><h3>{activity.titleZh}</h3><p>{activity.summaryZh}</p>{activity.titleEn ? <small>{activity.titleEn}</small> : null}<PublicReadiness issues={getCareerActivityPublicIssues(activity)} destination="动态页 /activities；近期动态可进入首页" nextStep="满足上述公开条件后由前台读取；无需发布首页。" /></div>
               <div className={styles.rowActions}>
                 {activity.linkUrl ? <a className={styles.iconTextButton} href={activity.linkUrl} target="_blank" rel="noreferrer"><ExternalLink size={15} />打开链接</a> : null}
                 <button type="button" aria-label={`编辑动态 ${activity.titleZh}`} onClick={() => setEditor(activity)}><Pencil size={15} />编辑</button>

@@ -298,7 +298,7 @@ export function PortfolioProjectsWorkspace({
                 <p>{project.summaryZh}</p>
                 {project.titleEn ? <small>{project.titleEn}</small> : null}
                 <div className={styles.projectTechnologies}>{project.technologies.slice(0, 6).map((technology) => <span key={technology}>{technology}</span>)}</div>
-                <PublicReadiness issues={getPortfolioProjectPublicIssues(project)} />
+                <PublicReadiness issues={getPortfolioProjectPublicIssues(project)} destination="项目页 /projects；被首页选中时可进入首页卡片" nextStep="满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。" />
               </div>
               <div className={styles.rowActions}>
                 {project.links[0] ? <a className={styles.iconTextButton} href={project.links[0].url} target="_blank" rel="noreferrer"><ExternalLink size={15} />打开链接</a> : null}

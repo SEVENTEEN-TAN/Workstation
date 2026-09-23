@@ -59,17 +59,30 @@ describe("shared OKR public readiness", () => {
   });
 
   it("renders actionable explanations rather than claiming configured public content is live", () => {
-    const blocked = renderToStaticMarkup(createElement(PublicReadiness, { issues: ["缺少周期英文名称"] }));
+    const blocked = renderToStaticMarkup(createElement(PublicReadiness, {
+      issues: ["缺少周期英文名称"], destination: "OKR 页 /okr",
+      nextStep: "补齐公开条件后由前台读取，无需发布首页",
+    }));
     expect(blocked).toContain("暂不在前台展示");
     expect(blocked).toContain("缺少周期英文名称");
-    const ready = renderToStaticMarkup(createElement(PublicReadiness, { issues: [] }));
+    expect(blocked).toContain("展示去向：OKR 页 /okr");
+    expect(blocked).toContain("生效步骤：补齐公开条件后由前台读取，无需发布首页");
+    const ready = renderToStaticMarkup(createElement(PublicReadiness, {
+      issues: [], destination: "OKR 页 /okr", nextStep: "满足公开条件后由前台读取，无需发布首页",
+    }));
     expect(ready).toContain("满足前台展示条件");
+    expect(ready).toContain("展示去向：OKR 页 /okr");
+    expect(ready).toContain("生效步骤：满足公开条件后由前台读取，无需发布首页");
     expect(ready).not.toContain("已发布");
     const partial = renderToStaticMarkup(createElement(PublicReadiness, {
       issues: [],
       notes: ["技能「Java」的私密项目证据不会展示"],
+      destination: "能力页 /skills",
+      nextStep: "满足公开条件后由前台读取，部分证据可能省略",
     }));
     expect(partial).toContain("满足前台展示条件");
     expect(partial).toContain("部分内容未展示：技能「Java」的私密项目证据不会展示");
+    expect(partial).toContain("展示去向：能力页 /skills");
+    expect(partial).toContain("生效步骤：满足公开条件后由前台读取，部分证据可能省略");
   });
 });
