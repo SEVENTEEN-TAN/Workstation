@@ -844,6 +844,17 @@ describe("OKR execution workspace contracts", () => {
     expect(globalStyles).toMatch(/dialog\s*\{\s*margin:\s*auto;\s*\}/);
   });
 
+  it("keeps a margin around the OKR dialog on short mobile viewports", () => {
+    const styles = readProjectFile("src/app/admin/admin.module.css");
+    const mobile = styles.slice(styles.indexOf("@media (max-width: 639px)"));
+    expect(mobile).toMatch(/\.entityDialog\s*\{[^}]*width:\s*calc\(100vw - 24px\);[^}]*max-height:\s*calc\(100svh - 32px\);/);
+  });
+
+  it("restores page scrolling after the OKR dialog closes", () => {
+    expect(dialogSource).toContain('document.documentElement.style.overflow = "hidden"');
+    expect(dialogSource).toContain("document.documentElement.style.overflow = previousOverflow");
+  });
+
   it("replaces JSON prompt editing with structured dialogs", () => {
     expect(allSources).toContain("OkrEntityDialog");
     expect(allSources).not.toContain("window.prompt");

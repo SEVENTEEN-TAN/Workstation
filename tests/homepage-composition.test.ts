@@ -37,15 +37,24 @@ function sectionPositions(markup: string) {
 }
 
 describe("public homepage composition", () => {
-  it("places all six mobile navigation entries in a visible two-row grid", () => {
+  it("keeps desktop links while offering a compact mobile menu", () => {
     const markup = renderToStaticMarkup(createElement(I18nProvider, {
       content: bootstrapSiteContent, locale: "en",
     }, createElement(Navbar)));
 
-    expect(markup).toMatch(/aria-label="Section navigation" class="[^"]*grid grid-cols-3/);
+    expect(markup).toContain('aria-label="Open menu"');
+    expect(markup).toContain('aria-haspopup="dialog"');
+    expect(markup).toMatch(/class="[^"]*h-16[^"]*sm:h-24/);
+    expect(markup).toMatch(/aria-label="Section navigation" class="[^"]*hidden[^"]*sm:flex/);
+    expect(markup).not.toContain("grid-cols-3");
     expect(markup).toContain('href="/knowledge"');
     expect(markup).toContain('href="/experience"');
     expect(markup).toContain('href="/okr"');
+
+    const chineseMarkup = renderToStaticMarkup(createElement(I18nProvider, {
+      content: bootstrapSiteContent, locale: "zh",
+    }, createElement(Navbar)));
+    expect(chineseMarkup).toContain('aria-label="打开菜单"');
   });
 
   it("keeps knowledge and online resume reachable without a public PDF", () => {

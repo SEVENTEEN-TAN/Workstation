@@ -2994,7 +2994,7 @@
   .cycleGrid { grid-template-columns: 1fr; }
   .reviewPrompt { align-items: flex-start; flex-direction: column; }
   .reviewPrompt button { width: 100%; }
-  .entityDialog { width: 100%; max-height: 100svh; border-radius: 0; }
+  .entityDialog { width: calc(100vw - 24px); max-height: calc(100svh - 32px); border-radius: 8px; }
   .entityDialogHeader,
   .entityDialogBody { padding: 16px; }
   .fullField,
