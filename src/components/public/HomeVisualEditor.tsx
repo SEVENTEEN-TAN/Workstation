@@ -6,7 +6,7 @@ import type { SiteLocale } from "../admin/home/content-editor";
 import type { PublicResumeData } from "../../lib/services/public-resume";
 import { getVisualEditField, isTrustedEditorMessage, parseParentMessage } from "../admin/home/visual-editor-protocol";
 import { HomeExperience } from "./HomeExperience";
-import { createTextCommit } from "./visual-editing";
+import { createTextCommit, startPreviewReadyRetry } from "./visual-editing";
 
 export function HomeVisualEditor({ initialData }: { initialData: PublicResumeData }) {
   const [content, setContent] = useState(initialData.content);
@@ -20,11 +20,19 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
   }, [content]);
 
   useEffect(() => {
+    let stopReadyRetry: (() => void) | null = null;
+
+    function stopPreviewReadyRetry() {
+      stopReadyRetry?.();
+      stopReadyRetry = null;
+    }
+
     function receiveParentMessage(event: MessageEvent) {
       if (!isTrustedEditorMessage(event, window.location.origin, window.parent)) return;
       const message = parseParentMessage(event.data);
       if (!message) return;
       if (message.type === "homepage-editor:content") {
+        stopPreviewReadyRetry();
         setContent(message.content);
         setLocale(message.locale);
         setSelectedPath(message.selectedPath);
@@ -35,8 +43,13 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
     }
 
     window.addEventListener("message", receiveParentMessage);
-    window.parent.postMessage({ type: "homepage-editor:ready" }, window.location.origin);
-    return () => window.removeEventListener("message", receiveParentMessage);
+    stopReadyRetry = startPreviewReadyRetry(() => {
+      window.parent.postMessage({ type: "homepage-editor:ready" }, window.location.origin);
+    });
+    return () => {
+      stopPreviewReadyRetry();
+      window.removeEventListener("message", receiveParentMessage);
+    };
   }, []);
 
   useEffect(() => {

@@ -67,6 +67,19 @@ describe("public homepage composition", () => {
     expect(editorMarkup).not.toContain('data-cms-path="experiences.');
   });
 
+  it("keeps the portrait selectable through the card overlay", () => {
+    const editorMarkup = renderToStaticMarkup(createElement(HomeExperience, {
+      content: bootstrapSiteContent,
+      editor: true,
+      locale: "zh",
+      onLocaleChange: () => undefined,
+    }));
+
+    expect(editorMarkup).toMatch(
+      /<div class="id-card" data-cms-path="settings\.portraitImage">.*?<div class="absolute inset-x-0 bottom-0/s,
+    );
+  });
+
   it("renders the complete homepage from public resume data", () => {
     const markup = renderToStaticMarkup(createElement(HomeVisualEditor, { initialData: previewData }));
 

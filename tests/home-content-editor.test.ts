@@ -9,6 +9,8 @@ import {
   updateVisualContent,
   validateSiteContent,
 } from "../src/components/admin/home/content-editor";
+import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
+import { materializeHomepageProjectsForPreview } from "../src/lib/content/homepage-projects";
 import { siteContentSchema, type SiteContent } from "../src/lib/content/schema";
 import { HOME_VISUAL_STRUCTURE } from "../src/components/admin/home/HomepageVisualWorkspace";
 
@@ -182,6 +184,16 @@ describe("homepage content editor contracts", () => {
     expect(updated.zh.projects).toBe(content.zh.projects);
     expect(updated.en.projects).toBe(content.en.projects);
     expect(isSiteContentDirty(updated, content)).toBe(true);
+  });
+
+  it("keeps saved project cards when a selected source is unavailable", () => {
+    const content = {
+      ...structuredClone(bootstrapSiteContent),
+      selectedProjectIds: ["missing"],
+    };
+
+    expect(materializeHomepageProjectsForPreview(content, []).en.projects)
+      .toEqual(bootstrapSiteContent.en.projects);
   });
 
   it("moves a selected homepage project one position at a time", () => {

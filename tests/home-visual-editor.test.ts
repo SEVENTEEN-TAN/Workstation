@@ -3,6 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
+import { siteContentSchema } from "../src/lib/content/schema";
 import {
   getVisualEditField,
   isTrustedEditorMessage,
@@ -16,11 +17,62 @@ import {
   editableTextProps,
   safeEditorLinkTarget,
   selectableFieldProps,
+  startPreviewReadyRetry,
 } from "../src/components/public/visual-editing";
 import { HomepageVisualWorkspace } from "../src/components/admin/home/HomepageVisualWorkspace";
 import { validateSiteContent } from "../src/components/admin/home/content-editor";
 
 describe("homepage visual-editor protocol", () => {
+  it("retries preview readiness until the parent sends content", () => {
+    vi.useFakeTimers();
+    const postReady = vi.fn();
+
+    try {
+      const stop = startPreviewReadyRetry(postReady);
+
+      expect(postReady).toHaveBeenCalledTimes(1);
+      vi.advanceTimersByTime(250);
+      expect(postReady).toHaveBeenCalledTimes(2);
+
+      stop();
+      vi.advanceTimersByTime(500);
+      expect(postReady).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("serializes the latest unsaved state for every preview replay", () => {
+    const postMessage = vi.fn();
+    const latest = structuredClone(bootstrapSiteContent);
+    latest.zh.hero.intro = "尚未保存的最新内容";
+
+    sendEditorPreviewState({ postMessage }, "https://sqtan.test", {
+      content: latest,
+      locale: "zh",
+      selectedPath: "zh.hero.intro",
+    });
+
+    expect(postMessage).toHaveBeenCalledWith(
+      expect.objectContaining({ content: latest }),
+      "https://sqtan.test",
+    );
+  });
+
+  it("commits complete Chinese text only after composition", () => {
+    expect(createTextCommit(bootstrapSiteContent, "zh.hero.intro", "输入中", true)).toBeNull();
+    expect(createTextCommit(bootstrapSiteContent, "zh.hero.intro", "输入完成", false))
+      .toMatchObject({ value: "输入完成" });
+  });
+
+  it("keeps invalid editor destinations inert while strict save is blocked", () => {
+    const invalid = structuredClone(bootstrapSiteContent);
+    invalid.settings.githubUrl = "javascript:alert(1)";
+
+    expect(safeEditorLinkTarget("github", invalid.settings.githubUrl)).toBeUndefined();
+    expect(siteContentSchema.safeParse(invalid).success).toBe(false);
+  });
+
   it("keeps editor controls available when the preview fails", () => {
     const markup = renderToStaticMarkup(createElement(HomepageVisualWorkspace, {
       content: bootstrapSiteContent,

@@ -71,7 +71,7 @@ export function Hero() {
           <motion.div animate={dragEnabled ? { y: [0, -15, 0], rotateZ: [-1, 1, -1] } : undefined} transition={dragEnabled ? { duration: 5.5, repeat: Infinity, ease: "easeInOut" } : undefined} className={isCompact ? "relative w-full" : "relative"}>
             <motion.div drag={dragEnabled} dragElastic={0.2} dragConstraints={dragArea} dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }} whileDrag={{ scale: 1.025, cursor: "grabbing" }} className={`relative ${editor ? "pointer-events-auto" : "pointer-events-none lg:pointer-events-auto lg:cursor-grab lg:touch-none"}`} role="group" aria-label={copy.hero.badgeLabel} data-drag-enabled={dragEnabled}>
               <div className="lanyard" aria-hidden="true"><div className="lanyard-copy">SEVENTEEN — JAVA + AI — SEVENTEEN —</div></div>
-              <div className="id-card">
+              <div className="id-card" data-cms-path={editor ? "settings.portraitImage" : undefined}>
                 <div className="absolute left-1/2 top-2 z-20 h-2 w-10 -translate-x-1/2 rounded-full border border-white/10 bg-black/60 md:top-4 md:h-3 md:w-16" />
                 {/* The native image preserves the legacy browser sizing and loading behavior. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}

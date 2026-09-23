@@ -12,6 +12,7 @@ import {
 } from "../src/components/admin/navigation";
 import { AdminRequestError, adminRequest } from "../src/components/admin/request";
 import { createFeedback } from "../src/components/admin/useAdminAction";
+import { shouldFallbackBrandImage } from "../src/components/admin/AdminShell";
 import { EmptyState } from "../src/components/admin/EmptyState";
 import { ObsidianMarkdownPreview } from "../src/components/admin/ObsidianMarkdownPreview";
 import { OverviewWorkspace } from "../src/components/admin/OverviewWorkspace";
@@ -792,6 +793,13 @@ describe("homepage version safety contracts", () => {
     expect(shellSource).toContain('"17"');
   });
 
+  it("detects a brand image that failed before hydration", () => {
+    expect(shouldFallbackBrandImage(null)).toBe(false);
+    expect(shouldFallbackBrandImage({ complete: false, naturalWidth: 0 })).toBe(false);
+    expect(shouldFallbackBrandImage({ complete: true, naturalWidth: 0 })).toBe(true);
+    expect(shouldFallbackBrandImage({ complete: true, naturalWidth: 48 })).toBe(false);
+  });
+
   it("places the authenticated homepage preview outside the admin shell route group", () => {
     expect(existsSync(resolve(projectRoot, "src/app/admin/(workspace)/home/visual-preview/page.tsx"))).toBe(false);
     expect(existsSync(resolve(projectRoot, "src/app/admin/(preview)/home/visual-preview/page.tsx"))).toBe(true);
@@ -809,6 +817,16 @@ describe("homepage version safety contracts", () => {
     expect(protocolSource).toContain("siteContentEditingSchema");
     expect(previewSource).toContain("window.parent");
     expect(previewSource).toContain("homepage-editor:locale");
+  });
+
+  it("keeps field editing wired when preview loading fails", () => {
+    const visualSource = readProjectFile("src/components/admin/home/HomepageVisualWorkspace.tsx");
+
+    expect(visualSource).toContain('previewStatus === "error"');
+    expect(visualSource).toContain("重试预览");
+    expect(visualSource).toContain("转到字段编辑");
+    expect(visualSource).toContain("onOpenFields");
+    expect(workspaceSource).toContain('setView("fields")');
   });
 });
 

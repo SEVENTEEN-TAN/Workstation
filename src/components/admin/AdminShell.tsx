@@ -17,6 +17,10 @@ interface AdminShellProps {
   children: ReactNode;
 }
 
+export function shouldFallbackBrandImage(image: Pick<HTMLImageElement, "complete" | "naturalWidth"> | null) {
+  return Boolean(image?.complete && image.naturalWidth === 0);
+}
+
 function BrandImage({ src }: { src: string }) {
   const [imageFailed, setImageFailed] = useState(false);
 
@@ -25,6 +29,9 @@ function BrandImage({ src }: { src: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      ref={(image) => {
+        if (shouldFallbackBrandImage(image)) setImageFailed(true);
+      }}
       src={src}
       alt=""
       className="h-full w-full rounded-[5px] object-cover"

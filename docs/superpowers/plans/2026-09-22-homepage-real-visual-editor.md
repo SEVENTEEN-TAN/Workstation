@@ -1327,7 +1327,7 @@ git commit -m "fix: fall back when admin brand image fails"
 - No new production interface.
 - Produces: recorded automated and browser evidence for B1–B9, with local/branch/merge/deployment status kept separate.
 
-- [ ] **Step 1: Add final regression cases for all five Review Focus items**
+- [x] **Step 1: Add final regression cases for all five Review Focus items**
 
 Add concrete integration assertions using the pure helpers created by the owning tasks:
 
@@ -1376,7 +1376,7 @@ it("keeps field editing wired when preview loading fails", () => {
 
 Place the source-wiring failure test in `tests/admin-ui-contracts.test.ts`, where `readProjectFile` already exists; place the pure helper tests in the test files that import those helpers. Do not copy the file reader into another suite.
 
-- [ ] **Step 2: Run the focused homepage suite**
+- [x] **Step 2: Run the focused homepage suite**
 
 Run:
 
@@ -1386,7 +1386,7 @@ npm test -- tests/site-content-schema.test.ts tests/public-resume.test.ts tests/
 
 Expected: all named files PASS with zero skipped or failing tests.
 
-- [ ] **Step 3: Run the repository-wide non-browser verification**
+- [x] **Step 3: Run the repository-wide non-browser verification**
 
 Run each command separately and record its exit code:
 
@@ -1400,7 +1400,7 @@ git diff --check
 
 Expected: every command exits 0.
 
-- [ ] **Step 4: Run a production build against an isolated migrated SQLite database**
+- [x] **Step 4: Run a production build against an isolated migrated SQLite database**
 
 In the same PowerShell session:
 
@@ -1416,7 +1416,7 @@ npm run build
 
 Expected: migration, seed, and production build exit 0. After confirming `$stage2BuildDb` resolves to a single file under `[System.IO.Path]::GetTempPath()`, remove only that file with `Remove-Item -LiteralPath $stage2BuildDb`. If `$stage2BuildHadDatabaseUrl` is true, restore `$env:DATABASE_URL = $stage2BuildPreviousDatabaseUrl`; otherwise remove only the process-scoped variable with `Remove-Item Env:DATABASE_URL`.
 
-- [ ] **Step 5: Start an isolated browser-acceptance environment**
+- [x] **Step 5: Start an isolated browser-acceptance environment**
 
 First confirm port 3017 is unused; stop if another process owns it:
 
@@ -1438,7 +1438,7 @@ npm run dev -- --port 3017
 
 Create a temporary administrator through `http://localhost:3017/admin/setup`; do not record the password in the plan, terminal output, screenshots, commits, or memory.
 
-- [ ] **Step 6: Execute and record the B1–B9 browser matrix**
+- [x] **Step 6: Execute and record the B1–B9 browser matrix**
 
 Verify each item with the rendered UI:
 
@@ -1455,11 +1455,11 @@ Verify each item with the rendered UI:
 
 Capture concise textual evidence and screenshots for desktop visual editor, mobile visual editor, link/image inspector, preview failure fallback, and post-publish public page. Screenshots must not contain credentials or private records.
 
-- [ ] **Step 7: Stop the temporary server and clean only task-created artifacts**
+- [x] **Step 7: Stop the temporary server and clean only task-created artifacts**
 
 Stop the development process through its own terminal session. Resolve `$stage2BrowserDb`, verify it is a single file under `[System.IO.Path]::GetTempPath()`, then run `Remove-Item -LiteralPath $stage2BrowserDb`. If `$stage2BrowserHadDatabaseUrl` is true, restore `$env:DATABASE_URL = $stage2BrowserPreviousDatabaseUrl`; otherwise remove only the process-scoped variable. Do not stop unrelated Node processes or delete broad directories.
 
-- [ ] **Step 8: Update delivery documents from evidence, not intent**
+- [x] **Step 8: Update delivery documents from evidence, not intent**
 
 In the TODO file:
 
@@ -1467,9 +1467,17 @@ In the TODO file:
 - leave F2 unchecked if any matrix item remains unverified and list the exact remaining cases;
 - state “功能分支完成” separately from merge, deployment, and live verification.
 
+2026-09-23 evidence recorded:
+
+- Automated gate: `npm test` passed 72 files / 482 tests; `npx tsc --noEmit`, `npm run lint`, and temporary-database `npm run db:validate` exited 0.
+- Production gate: a fresh temporary SQLite database applied all 31 migrations, seeded successfully, and completed `npm run build`; the exact task-created database was removed afterward.
+- Browser matrix: desktop/mobile real preview, text/link/image inspectors, invalid-link safety, media selection, unsaved-state switching, project materialization and unavailable-source fallback, save/publish/restore boundaries, brand fallback, preview failure recovery, and post-publish public output were exercised.
+- Screenshot evidence: `docs/evidence/2026-09-22-homepage-visual-editor/01-desktop-visual-editor.png` through `06-post-publish-public-homepage.png`.
+- Remaining manual case: real Chinese IME entry was not exercised with an operating-system IME. Composition handling has automated coverage, but F2 stays unchecked until the real-input case is observed.
+
 In the plan and review summary, record exact test counts, command exit status, browser cases, commit hashes, remote SHA after push, and any remaining manual acceptance. Do not claim merged, deployed, or online.
 
-- [ ] **Step 9: Review the complete diff and commit delivery evidence**
+- [x] **Step 9: Review the complete diff and commit delivery evidence**
 
 Run:
 
@@ -1481,6 +1489,8 @@ git diff -- src tests docs
 ```
 
 Confirm every changed line traces to B1–B9 or their tests/docs and no secrets, generated database, `.env`, screenshot containing private data, or unrelated formatting is present.
+
+Independent review result: no Critical or Important functionality finding. The final staging scope includes the iframe ready retry, admin brand-image hydration fallback, full portrait-card image selection marker, their regression tests, delivery documents, and all six browser evidence images. The visible email and portrait are existing public homepage content; no password, token, key, or private admin record appears in the screenshots.
 
 Commit:
 

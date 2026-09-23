@@ -5,6 +5,12 @@ import {
   type SiteContent,
 } from "../../lib/content/schema";
 
+export function startPreviewReadyRetry(postReady: () => void) {
+  postReady();
+  const interval = setInterval(postReady, 250);
+  return () => clearInterval(interval);
+}
+
 export function editableTextProps(enabled: boolean, path: string) {
   return enabled ? {
     "data-cms-path": path,
