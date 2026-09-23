@@ -109,7 +109,8 @@ const recurrenceDaysSchema = z.union([
   z.string(),
   z.array(z.coerce.number().int().min(1).max(7)),
 ]).nullable().optional().transform((value) => {
-  if (value == null || value === "") return null;
+  if (value === undefined) return undefined;
+  if (value === null || value === "") return null;
   const days = Array.isArray(value)
     ? value
     : value.split(",").map((entry) => Number(entry.trim()));

@@ -1,6 +1,7 @@
 import { Prisma, type ActionItem, type KeyResult, type Objective, type PrismaClient } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { nextActionDueDate } from "../okr/recurrence";
 import { calculateKeyResultProgress, calculateObjectiveProgress } from "../okr/progress";
 import { actionItemInputSchema, actionItemPatchSchema, cycleInputSchema, cyclePatchSchema, keyResultInputSchema, keyResultPatchSchema, objectiveInputSchema, objectivePatchSchema, progressInputSchema, reviewInputSchema, reviewPatchSchema } from "../validators/okr";
 import {
@@ -20,6 +21,14 @@ type ProgressTransaction = {
   updateKeyResultProgress(id: string, values: { currentValue: number | null; manualProgress: number | null }): Promise<ProgressKeyResult>;
   createProgressUpdate(values: ProgressUpdateValues): Promise<unknown>;
   createMilestoneDraft(values: OkrMilestoneDraftWrite): Promise<unknown>;
+};
+
+type ActionTransaction = {
+  findActionItem(id: string): Promise<ActionItem | null>;
+  findKeyResultForAction(id: string): Promise<{ id: string } | null>;
+  updateActionItem(id: string, values: Prisma.ActionItemUncheckedUpdateInput): Promise<ActionItem>;
+  claimActionItem(id: string, values: Prisma.ActionItemUncheckedUpdateInput): Promise<boolean>;
+  createActionItem(values: Prisma.ActionItemUncheckedCreateInput): Promise<ActionItem>;
 };
 
 type ProgressUpdateValues = {
@@ -210,10 +219,9 @@ type EntityTransaction = {
 type OkrRepositoryOverrides = {
   transaction?<T>(run: (transaction: ProgressTransaction) => Promise<T>): Promise<T>;
   entityTransaction?<T>(run: (transaction: EntityTransaction) => Promise<T>): Promise<T>;
+  actionTransaction?<T>(run: (transaction: ActionTransaction) => Promise<T>): Promise<T>;
   findKeyResultForAction?(id: string): Promise<{ id: string } | null>;
   createActionItem?(values: Prisma.ActionItemUncheckedCreateInput): Promise<unknown>;
-  findActionItem?(id: string): Promise<ActionItem | null>;
-  updateActionItem?(id: string, values: Prisma.ActionItemUncheckedUpdateInput): Promise<unknown>;
   deleteActionItem?(id: string): Promise<unknown>;
   listCycles?(): Promise<OkrCycleRecord[]>;
   findCycle?(id: string): Promise<OkrCycleRecord | null>;
@@ -235,6 +243,21 @@ function progressRepository(database: PrismaClient): OkrRepositoryOverrides {
         create: { ...values, sourceSnapshot: parseJsonSnapshot(values.sourceSnapshot) },
         update: {},
       }),
+    })),
+  };
+}
+
+function actionRepository(database: PrismaClient): OkrRepositoryOverrides {
+  return {
+    actionTransaction: (run) => database.$transaction((transaction) => run({
+      findActionItem: (id) => transaction.actionItem.findUnique({ where: { id } }),
+      findKeyResultForAction: (id) => transaction.keyResult.findUnique({ where: { id }, select: { id: true } }),
+      updateActionItem: (id, values) => transaction.actionItem.update({ where: { id }, data: values }),
+      claimActionItem: async (id, values) => (await transaction.actionItem.updateMany({
+        where: { id, status: { not: "DONE" }, hasGeneratedNext: false },
+        data: values as Prisma.ActionItemUncheckedUpdateManyInput,
+      })).count === 1,
+      createActionItem: (values) => transaction.actionItem.create({ data: values }),
     })),
   };
 }
@@ -584,35 +607,66 @@ export function createOkrService(repositoryOverride?: OkrRepositoryOverrides) {
     },
     async updateActionItem(id: string, input: unknown) {
       const patch = actionItemPatchSchema.parse(input);
-      const db = repositoryOverride?.findActionItem && repositoryOverride.updateActionItem
-        ? null
-        : await database();
-      const existing = repositoryOverride?.findActionItem
-        ? await repositoryOverride.findActionItem(id)
-        : await db!.actionItem.findUnique({ where: { id } });
-      if (!existing) throw new Error("Action Item 不存在");
-      const normalized = actionItemInputSchema.parse({ ...existing, ...patch });
-      if (patch.keyResultId && patch.keyResultId !== existing.keyResultId) {
-        const keyResult = repositoryOverride?.findKeyResultForAction
-          ? await repositoryOverride.findKeyResultForAction(patch.keyResultId)
-          : await db!.keyResult.findUnique({ where: { id: patch.keyResultId }, select: { id: true } });
-        if (!keyResult) throw new Error("Key Result 不存在");
+      const db = repositoryOverride?.actionTransaction ? null : await database();
+      const repo = repositoryOverride?.actionTransaction ? repositoryOverride : actionRepository(db!);
+      try {
+        return await repo.actionTransaction!(async (transaction) => {
+          const existing = await transaction.findActionItem(id);
+          if (!existing) throw new Error("Action Item 不存在");
+          const normalized = actionItemInputSchema.parse({ ...existing, ...patch });
+          if (patch.keyResultId && patch.keyResultId !== existing.keyResultId) {
+            const keyResult = await transaction.findKeyResultForAction(patch.keyResultId);
+            if (!keyResult) throw new Error("Key Result 不存在");
+          }
+          const values: Prisma.ActionItemUncheckedUpdateInput = {};
+          if (patch.keyResultId !== undefined) values.keyResultId = normalized.keyResultId;
+          if (patch.titleZh !== undefined) values.titleZh = normalized.titleZh;
+          if (patch.titleEn !== undefined) values.titleEn = normalized.titleEn;
+          if (patch.status !== undefined) values.status = normalized.status;
+          if (patch.dueDate !== undefined) values.dueDate = normalized.dueDate ?? null;
+          if (patch.sortOrder !== undefined) values.sortOrder = normalized.sortOrder;
+          if (patch.recurrenceType !== undefined) values.recurrenceType = normalized.recurrenceType;
+          if (patch.recurrenceInterval !== undefined) values.recurrenceInterval = normalized.recurrenceInterval;
+          if (patch.recurrenceDays !== undefined) values.recurrenceDays = normalized.recurrenceDays;
+          const completionTime = patch.status === "DONE" ? existing.completedAt ?? new Date() : null;
+          if (completionTime) values.completedAt = completionTime;
+          if (patch.status && patch.status !== "DONE") values.completedAt = null;
+
+          const generate = existing.status !== "DONE" && normalized.status === "DONE"
+            && !existing.hasGeneratedNext && normalized.recurrenceType !== "NONE";
+          if (!generate) return transaction.updateActionItem(id, values);
+
+          const claimed = await transaction.claimActionItem(id, { ...values, hasGeneratedNext: true });
+          if (!claimed) return (await transaction.findActionItem(id))!;
+          await transaction.createActionItem({
+            keyResultId: normalized.keyResultId,
+            titleZh: normalized.titleZh,
+            titleEn: normalized.titleEn ?? null,
+            status: "TODO",
+            dueDate: nextActionDueDate({
+              dueDate: normalized.dueDate ?? null,
+              completedAt: completionTime!,
+              recurrenceType: normalized.recurrenceType as "DAILY" | "WEEKLY",
+              recurrenceInterval: normalized.recurrenceInterval,
+              recurrenceDays: normalized.recurrenceDays ?? null,
+            }),
+            sortOrder: normalized.sortOrder,
+            recurrenceType: normalized.recurrenceType,
+            recurrenceInterval: normalized.recurrenceInterval,
+            recurrenceDays: normalized.recurrenceDays ?? null,
+            completedAt: null,
+            generatedFromActionItemId: id,
+          });
+          return (await transaction.findActionItem(id))!;
+        });
+      } catch (error) {
+        if (db && patch.status === "DONE" && error instanceof Prisma.PrismaClientKnownRequestError
+          && (error.code === "P2002" || error.code === "P2034")) {
+          const latest = await db.actionItem.findUnique({ where: { id } });
+          if (latest?.status === "DONE" && latest.hasGeneratedNext) return latest;
+        }
+        throw error;
       }
-      const values: Prisma.ActionItemUncheckedUpdateInput = {};
-      if (patch.keyResultId !== undefined) values.keyResultId = normalized.keyResultId;
-      if (patch.titleZh !== undefined) values.titleZh = normalized.titleZh;
-      if (patch.titleEn !== undefined) values.titleEn = normalized.titleEn;
-      if (patch.status !== undefined) values.status = normalized.status;
-      if (patch.dueDate !== undefined) values.dueDate = normalized.dueDate ?? null;
-      if (patch.sortOrder !== undefined) values.sortOrder = normalized.sortOrder;
-      if (patch.recurrenceType !== undefined) values.recurrenceType = normalized.recurrenceType;
-      if (patch.recurrenceInterval !== undefined) values.recurrenceInterval = normalized.recurrenceInterval;
-      if (patch.recurrenceDays !== undefined) values.recurrenceDays = normalized.recurrenceDays;
-      if (patch.status === "DONE") values.completedAt = existing.completedAt ?? new Date();
-      if (patch.status && patch.status !== "DONE") values.completedAt = null;
-      return repositoryOverride?.updateActionItem
-        ? repositoryOverride.updateActionItem(id, values)
-        : db!.actionItem.update({ where: { id }, data: values });
     },
     async deleteActionItem(id: string) {
       if (repositoryOverride?.deleteActionItem) return repositoryOverride.deleteActionItem(id);
