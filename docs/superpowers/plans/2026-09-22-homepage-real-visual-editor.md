@@ -1499,7 +1499,7 @@ git add -- tests/home-visual-editor.test.ts tests/home-content-editor.test.ts te
 git commit -m "test: verify real homepage visual editor"
 ```
 
-- [ ] **Step 10: Push the feature branch and verify the remote commit**
+- [x] **Step 10: Push the feature branch and verify the remote commit**
 
 ```powershell
 git push origin feat/homepage-visual-editor
@@ -1509,6 +1509,8 @@ git status --short --branch
 ```
 
 Expected: local and remote SHA match and the worktree is clean. Stop here: do not merge or deploy.
+
+2026-09-23 delivery checkpoint: commit `89dda017b17b3b5e426ee203c736bd71f590386c` was pushed to `origin/feat/homepage-visual-editor`; immediate local and remote SHA checks matched. This documentation close-out is the only follow-up commit; merge, deployment, and live verification remain unperformed.
 
 ## Plan Self-Review
 
