@@ -4,12 +4,11 @@ import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lu
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
-import { materializeHomepageProjectsForPreview } from "../../lib/content/homepage-projects";
 import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { AssetPicker } from "./home/AssetPicker";
 import { HomepageEditor } from "./home/HomepageEditor";
 import { HomepageVisualWorkspace } from "./home/HomepageVisualWorkspace";
-import { isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
+import { applyHomepageEditorChange, isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
 import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState, type HomepageImagePath } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -57,21 +56,26 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const validation = useMemo(() => validateSiteContent(content), [content]);
   const dirty = useMemo(() => isSiteContentDirty(content, savedContent), [content, savedContent]);
-  const previewContent = useMemo(
-    () => materializeHomepageProjectsForPreview(content, projects),
-    [content, projects],
-  );
+  const previewContent = content;
   const previewContentRef = useRef(previewContent);
+  const commitContent = useCallback((next: SiteContent) => {
+    contentRef.current = next;
+    previewContentRef.current = next;
+    setContent(next);
+  }, []);
 
   useEffect(() => {
-    contentRef.current = content;
     localeRef.current = previewLocale;
     selectedPathRef.current = selectedPath;
-  }, [content, previewLocale, selectedPath]);
+  }, [previewLocale, selectedPath]);
 
-  useEffect(() => {
-    previewContentRef.current = previewContent;
-  }, [previewContent]);
+  function applyFieldChange(next: SiteContent) {
+    try {
+      commitContent(applyHomepageEditorChange(contentRef.current, next, projects));
+    } catch (cause) {
+      void runAction("home:project-selection", async () => { throw cause; });
+    }
+  }
 
   const clearPreviewTimeout = useCallback(() => {
     if (previewTimeoutRef.current !== null) {
@@ -123,7 +127,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
         sendPreviewState();
       }
       if (message?.type === "homepage-editor:commit") {
-        try { setContent((current) => updateVisualContent(current, message.path, message.value)); } catch { /* Ignore rejected iframe messages. */ }
+        try { commitContent(updateVisualContent(contentRef.current, message.path, message.value)); } catch { /* Ignore rejected iframe messages. */ }
       }
       if (message?.type === "homepage-editor:locale") changePreviewLocale(message.locale);
       if (message?.type === "homepage-editor:select") setSelectedPath(message.path);
@@ -134,7 +138,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       window.removeEventListener("message", receivePreviewMessage);
       clearPreviewTimeout();
     };
-  }, [changePreviewLocale, clearPreviewTimeout, sendPreviewState]);
+  }, [changePreviewLocale, clearPreviewTimeout, commitContent, sendPreviewState]);
 
   useEffect(() => {
     if (previewStatus === "ready") sendPreviewState();
@@ -178,7 +182,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     ]);
     const nextContent = siteContentSchema.parse(nextDraft.content);
     setDraft(nextDraft);
-    setContent(nextContent);
+    commitContent(nextContent);
     setSavedContent(nextContent);
     setVersions(nextVersions);
   }
@@ -190,7 +194,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
 
   async function saveDraft() {
     await runAction("home:save", async () => {
-      await adminRequest("/api/admin/site/draft", jsonRequest("PUT", { id: draft.id, content }));
+      await adminRequest("/api/admin/site/draft", jsonRequest("PUT", { id: draft.id, content: contentRef.current }));
       await fetchHomeData();
     }, "草稿已保存");
   }
@@ -220,7 +224,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       const nextVersions = await adminRequest<SiteVersionData[]>("/api/admin/site/versions");
       const nextContent = siteContentSchema.parse(nextDraft.content);
       setDraft(nextDraft);
-      setContent(nextContent);
+      commitContent(nextContent);
       setSavedContent(nextContent);
       setVersions(nextVersions);
       return true;
@@ -303,7 +307,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             onLocaleChange={changePreviewLocale}
             onDeviceChange={setPreviewDevice}
             onSelectedPathChange={setSelectedPath}
-            onContentChange={setContent}
+            onContentChange={commitContent}
             onFocusSection={(section) => visualPreviewRef.current?.contentWindow?.postMessage({ type: "homepage-editor:focus", section }, window.location.origin)}
             onRequestAsset={requestAsset}
             onPreviewLoad={handlePreviewLoad}
@@ -316,7 +320,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
               projects={projects}
               content={content}
               validation={validation}
-              onContentChange={setContent}
+              onContentChange={applyFieldChange}
               onRequestAsset={requestAsset}
             />
           </>
@@ -363,7 +367,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
         triggerRef={assetPickerTriggerRef}
         onSelect={(asset) => {
           if (!assetTarget) return;
-          setContent(updateVisualContent(contentRef.current, assetTarget, `/api/assets/${asset.id}`));
+          commitContent(updateVisualContent(contentRef.current, assetTarget, `/api/assets/${asset.id}`));
           setAssetTarget(null);
         }}
         onClose={() => setAssetTarget(null)}

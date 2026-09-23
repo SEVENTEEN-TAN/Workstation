@@ -3,6 +3,7 @@ import {
   type LocalizedSiteContent,
   type SiteContent,
 } from "../../../lib/content/schema";
+import { materializeHomepageProjects, type HomepageProjectCandidate } from "../../../lib/content/homepage-projects";
 import { getVisualEditField } from "./visual-editor-protocol";
 
 export type SiteLocale = "zh" | "en";
@@ -69,6 +70,21 @@ export function updateHomepageProjectSelection(
   selectedProjectIds: string[],
 ): SiteContent {
   return { ...content, selectedProjectIds };
+}
+
+export function applyHomepageEditorChange(
+  current: SiteContent,
+  next: SiteContent,
+  projects: HomepageProjectCandidate[],
+): SiteContent {
+  const currentIds = current.selectedProjectIds;
+  const nextIds = next.selectedProjectIds;
+  const sameSelection = currentIds === nextIds || (
+    currentIds !== undefined && nextIds !== undefined &&
+    currentIds.length === nextIds.length &&
+    currentIds.every((id, index) => id === nextIds[index])
+  );
+  return sameSelection ? next : materializeHomepageProjects(next, projects);
 }
 
 export function moveHomepageProjectSelection(

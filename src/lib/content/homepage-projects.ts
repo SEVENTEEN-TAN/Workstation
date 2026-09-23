@@ -129,17 +129,6 @@ export function materializeHomepageProjects(
   };
 }
 
-export function materializeHomepageProjectsForPreview(
-  content: SiteContent,
-  projects: HomepageProjectCandidate[],
-): SiteContent {
-  try {
-    return materializeHomepageProjects(content, projects);
-  } catch {
-    return content;
-  }
-}
-
 export function findHomepageProjectReferences(
   projectId: string,
   versions: SiteVersionRecord[],

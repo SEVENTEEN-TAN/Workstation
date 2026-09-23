@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   SITE_SECTION_IDS,
+  applyHomepageEditorChange,
   isSiteContentDirty,
   moveHomepageProjectSelection,
   updateHomepageProjectSelection,
@@ -10,9 +11,10 @@ import {
   validateSiteContent,
 } from "../src/components/admin/home/content-editor";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
-import { materializeHomepageProjectsForPreview } from "../src/lib/content/homepage-projects";
+import { materializeHomepageProjects } from "../src/lib/content/homepage-projects";
 import { siteContentSchema, type SiteContent } from "../src/lib/content/schema";
 import { HOME_VISUAL_STRUCTURE } from "../src/components/admin/home/HomepageVisualWorkspace";
+import { portfolioProjectInputSchema } from "../src/lib/validators/portfolio-projects";
 
 const locale: SiteContent["en"] = {
   meta: { title: "Title", description: "Description" },
@@ -102,6 +104,24 @@ const createContent = (): SiteContent => ({
   zh: structuredClone(locale),
 });
 
+function project(id: string) {
+  return {
+    id,
+    ...portfolioProjectInputSchema.parse({
+      slug: id, titleZh: id === "first" ? "第一项" : "第二项", titleEn: id === "first" ? "First" : "Second",
+      summaryZh: "中文摘要", summaryEn: "English summary",
+      contextZh: "背景", contextEn: "Context",
+      responsibilityZh: "职责", responsibilityEn: "Responsibility",
+      challengeZh: "挑战", challengeEn: "Challenge",
+      approachZh: "方案", approachEn: "Approach",
+      resultZh: "结果", resultEn: "Result",
+      coverImage: null, coverAltZh: null, coverAltEn: null,
+      technologies: ["Next.js"], links: [], visibility: "PUBLIC",
+      featured: false, sortOrder: 0, startedAt: null, completedAt: null,
+    }),
+  };
+}
+
 describe("homepage content editor contracts", () => {
   it("keeps fixed homepage structure connected to the appropriate content sources", () => {
     expect(HOME_VISUAL_STRUCTURE).toEqual([
@@ -186,14 +206,44 @@ describe("homepage content editor contracts", () => {
     expect(isSiteContentDirty(updated, content)).toBe(true);
   });
 
-  it("keeps saved project cards when a selected source is unavailable", () => {
-    const content = {
-      ...structuredClone(bootstrapSiteContent),
-      selectedProjectIds: ["missing"],
+  it("keeps saved cards during text edits and materializes only explicit selection changes", () => {
+    const first = project("first");
+    const second = project("second");
+    const saved = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["first"] }, [first],
+    );
+    const textEdit = {
+      ...saved,
+      zh: { ...saved.zh, hero: { ...saved.zh.hero, intro: "未保存的新介绍" } },
     };
+    const unchangedSelection = applyHomepageEditorChange(saved, textEdit, [
+      { ...first, titleEn: "Revised source" }, second,
+    ]);
+    expect(unchangedSelection).toBe(textEdit);
+    expect(unchangedSelection.zh.projects).toBe(saved.zh.projects);
+    expect(unchangedSelection.en.projects).toBe(saved.en.projects);
+    expect(unchangedSelection.zh.hero.intro).toBe("未保存的新介绍");
 
-    expect(materializeHomepageProjectsForPreview(content, []).en.projects)
-      .toEqual(bootstrapSiteContent.en.projects);
+    const selected = { ...textEdit, selectedProjectIds: ["second", "first"] };
+    const reordered = applyHomepageEditorChange(textEdit, selected, [first, second]);
+    expect(reordered.zh.projects.map((card) => card.slug)).toEqual(["second", "first"]);
+    expect(reordered.en.projects.map((card) => card.slug)).toEqual(["second", "first"]);
+    expect(reordered.zh.hero.intro).toBe("未保存的新介绍");
+  });
+
+  it("clears explicit empty selections and leaves failed selection changes untouched", () => {
+    const legacy = structuredClone(bootstrapSiteContent);
+    const empty = applyHomepageEditorChange(legacy, { ...legacy, selectedProjectIds: [] }, []);
+    expect(empty.zh.projects).toEqual([]);
+    expect(empty.en.projects).toEqual([]);
+
+    const selected = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["first"] }, [project("first")],
+    );
+    expect(() => applyHomepageEditorChange(selected, { ...selected, selectedProjectIds: ["missing"] }, []))
+      .toThrow("主页引用的项目不存在或不可公开");
+    expect(selected.selectedProjectIds).toEqual(["first"]);
+    expect(selected.zh.projects[0].slug).toBe("first");
   });
 
   it("moves a selected homepage project one position at a time", () => {
