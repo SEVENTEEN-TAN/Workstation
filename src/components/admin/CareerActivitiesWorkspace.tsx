@@ -42,9 +42,10 @@ function formPayload(form: HTMLFormElement) {
   };
 }
 
-export function CareerActivitiesWorkspace({ initialActivities }: { initialActivities: CareerActivityData[] }) {
+export function CareerActivitiesWorkspace({ initialActivities, targetActivityId = null }: { initialActivities: CareerActivityData[]; targetActivityId?: string | null }) {
+  const initialTarget = initialActivities.find((item) => item.id === targetActivityId);
   const [activities, setActivities] = useState(() => sortActivities(initialActivities));
-  const [editor, setEditor] = useState<Editor>(null);
+  const [editor, setEditor] = useState<Editor>(initialTarget ?? null);
   const [deleteRequest, setDeleteRequest] = useState<CareerActivityData | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const saveBusy = isBusy("activities:save");
@@ -84,6 +85,8 @@ export function CareerActivitiesWorkspace({ initialActivities }: { initialActivi
         description="维护对外展示的近期进展、发布记录与职业里程碑。"
         action={<button type="button" className={styles.primaryButton} onClick={() => setEditor("new")} disabled={saveBusy}><Plus size={17} />新建动态</button>}
       />
+
+      {targetActivityId && !initialTarget ? <p role="status">未找到目标动态，请从下方列表选择。</p> : null}
 
       {editor ? (
         <section className={styles.panel} aria-labelledby="activity-editor-title">
