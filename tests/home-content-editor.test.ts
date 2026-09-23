@@ -215,6 +215,11 @@ describe("homepage content editor contracts", () => {
     const textEdit = {
       ...saved,
       zh: { ...saved.zh, hero: { ...saved.zh.hero, intro: "未保存的新介绍" } },
+      settings: {
+        ...saved.settings,
+        githubUrl: "https://github.com/local-qa",
+        portraitImage: "/images/wechat-qr.png",
+      },
     };
     const unchangedSelection = applyHomepageEditorChange(saved, textEdit, [
       { ...first, titleEn: "Revised source" }, second,
@@ -229,6 +234,7 @@ describe("homepage content editor contracts", () => {
     expect(reordered.zh.projects.map((card) => card.slug)).toEqual(["second", "first"]);
     expect(reordered.en.projects.map((card) => card.slug)).toEqual(["second", "first"]);
     expect(reordered.zh.hero.intro).toBe("未保存的新介绍");
+    expect(reordered.settings).toBe(textEdit.settings);
   });
 
   it("clears explicit empty selections and leaves failed selection changes untouched", () => {
