@@ -57,4 +57,4 @@
 - [x] Validate the migration against a newly created temporary SQLite database, apply all migrations, and verify `PRAGMA foreign_key_list(action_items)` and `PRAGMA index_list(action_items)` include the new relationship and unique index. Use the temporary database for a real create/complete/reopen/delete/concurrent case; remove only its verified exact file and any SQLite sidecars.
 - [x] Run `npm test`, `npx tsc --noEmit`, `npm run lint`, `npm run db:validate`, `npm run build`, and `git diff --check`. Record counts and failures accurately; fix Stage 3A regressions before declaring completion.
 - [x] Obtain an independent whole-stage code review. Fix Critical/Important findings, rerun affected checks and the stage suite, then update D1 and the execution record with exact evidence.
-- [ ] Commit Stage 3A code, tests, migration and docs; push `feat/homepage-visual-editor` to GitHub; verify local and remote commit IDs match. Do not merge or deploy.
+- [x] Commit Stage 3A code, tests, migration and docs; push `feat/homepage-visual-editor` to GitHub; verify local and remote commit IDs match. Do not merge or deploy.
