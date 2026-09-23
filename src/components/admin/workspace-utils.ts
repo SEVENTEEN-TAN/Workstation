@@ -6,9 +6,10 @@ export function jsonRequest(method: string, body: unknown): RequestInit {
   };
 }
 
-export function convertedActivityHref(draft: { status: string; convertedActivityId: string | null }): string | null {
-  const id = draft.convertedActivityId?.trim();
-  return draft.status === "CONVERTED" && id ? `/admin/activities?activity=${encodeURIComponent(id)}` : null;
+export function convertedActivityHref(draft: { status: string; convertedActivityId: unknown }): string | null {
+  if (draft.status !== "CONVERTED" || typeof draft.convertedActivityId !== "string") return null;
+  const id = draft.convertedActivityId.trim();
+  return id && id.length <= 128 ? `/admin/activities?activity=${encodeURIComponent(id)}` : null;
 }
 
 export function dateValue(value: FormDataEntryValue | null): string | null {

@@ -31,6 +31,7 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
   const [conversionNotice, setConversionNotice] = useState<string | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const saving = isBusy("milestones:save");
+  const converting = drafts.some((draft) => isBusy(`milestones:convert:${draft.id}`));
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,7 +50,7 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
   }
 
   async function convert(draft: OkrMilestoneDraftData) {
-    if (editing) {
+    if (editing || converting) {
       setConversionNotice("请先保存或取消当前编辑，再转换为职业动态。");
       return;
     }
@@ -101,8 +102,8 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
             </div>
             <div className={styles.activityCopy}><h3>{draft.titleZh}</h3><p>{draft.summaryZh}</p>{draft.titleEn ? <small>{draft.titleEn}</small> : null}</div>
             <div className={styles.rowActions}>
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)}><FilePenLine size={15} />编辑</button> : null}
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`milestones:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)} disabled={converting}><FilePenLine size={15} />编辑</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={converting}><Send size={15} />转为私有职业动态</button> : null}
               {target ? <Link href={target} onClick={(event) => {
                 if (!editing) return;
                 event.preventDefault();

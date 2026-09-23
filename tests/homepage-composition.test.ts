@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { HomeExperience } from "../src/components/public/HomeExperience";
 import { HomeVisualEditor } from "../src/components/public/HomeVisualEditor";
 import { I18nProvider } from "../src/components/public/i18n";
+import { Navbar } from "../src/components/public/Navbar";
 import { ResumeToolbar } from "../src/components/public/ResumeToolbar";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import type { PublicResumeData } from "../src/lib/services/public-resume";
@@ -36,6 +37,17 @@ function sectionPositions(markup: string) {
 }
 
 describe("public homepage composition", () => {
+  it("places all six mobile navigation entries in a visible two-row grid", () => {
+    const markup = renderToStaticMarkup(createElement(I18nProvider, {
+      content: bootstrapSiteContent, locale: "en",
+    }, createElement(Navbar)));
+
+    expect(markup).toMatch(/aria-label="Section navigation" class="[^"]*grid grid-cols-3/);
+    expect(markup).toContain('href="/knowledge"');
+    expect(markup).toContain('href="/experience"');
+    expect(markup).toContain('href="/okr"');
+  });
+
   it("keeps knowledge and online resume reachable without a public PDF", () => {
     for (const locale of ["zh", "en"] as const) {
       const markup = renderToStaticMarkup(createElement(HomeExperience, {

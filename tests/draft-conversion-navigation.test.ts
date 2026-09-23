@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { CareerTimelineDraftWorkspace } from "../src/components/admin/CareerTimelineDraftWorkspace";
 import { OkrMilestoneDraftWorkspace } from "../src/components/admin/OkrMilestoneDraftWorkspace";
-import { WeeklyActivityWorkspace } from "../src/components/admin/WeeklyActivityWorkspace";
+import { WeeklyActivityWorkspace, writeRecovery } from "../src/components/admin/WeeklyActivityWorkspace";
 import * as workspaceUtils from "../src/components/admin/workspace-utils";
 import type { CareerTimelineDraftData } from "../src/lib/services/career-timeline-drafts";
 import type { OkrMilestoneDraftData } from "../src/lib/services/okr-milestone-drafts";
@@ -35,7 +35,7 @@ const timeline: CareerTimelineDraftData = {
 describe("draft conversion navigation", () => {
   it("builds a target only for a converted draft with a usable ID", () => {
     const href = (workspaceUtils as typeof workspaceUtils & {
-      convertedActivityHref: (draft: { status: string; convertedActivityId: string | null }) => string | null;
+      convertedActivityHref: (draft: { status: string; convertedActivityId: unknown }) => string | null;
     }).convertedActivityHref;
 
     expect(href).toBeTypeOf("function");
@@ -43,6 +43,39 @@ describe("draft conversion navigation", () => {
     expect(href({ status: "DRAFT", convertedActivityId: "activity-1" })).toBeNull();
     expect(href({ status: "CONVERTED", convertedActivityId: null })).toBeNull();
     expect(href({ status: "CONVERTED", convertedActivityId: " " })).toBeNull();
+  });
+
+  it("rejects an ID the destination refuses instead of navigating to the list", () => {
+    expect(workspaceUtils.convertedActivityHref({ status: "CONVERTED", convertedActivityId: "x".repeat(129) })).toBeNull();
+  });
+
+  it("treats malformed successful response IDs as missing targets", () => {
+    expect(workspaceUtils.convertedActivityHref({ status: "CONVERTED", convertedActivityId: 123 })).toBeNull();
+    expect(workspaceUtils.convertedActivityHref({ status: "CONVERTED", convertedActivityId: {} })).toBeNull();
+  });
+
+  it("refuses to rely on a recovery copy that browser storage could not save", () => {
+    const values = { titleZh: "未保存", titleEn: "Unsaved", summaryZh: "未保存摘要", summaryEn: "Unsaved summary" };
+    const setItem = vi.fn(() => { throw new Error("storage unavailable"); });
+    vi.stubGlobal("sessionStorage", { setItem });
+    try {
+      expect(writeRecovery("weekly-1", values, timestamp)).toBe(false);
+      expect(setItem).toHaveBeenCalledOnce();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("confirms a recovery copy was stored before cross-draft conversion", () => {
+    const values = { titleZh: "未保存", titleEn: "Unsaved", summaryZh: "未保存摘要", summaryEn: "Unsaved summary" };
+    const setItem = vi.fn();
+    vi.stubGlobal("sessionStorage", { setItem });
+    try {
+      expect(writeRecovery("weekly-1", values, timestamp)).toBe(true);
+      expect(setItem).toHaveBeenCalledWith("weekly-draft-recovery:weekly-1", JSON.stringify({ values, expectedUpdatedAt: timestamp }));
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 
   it.each([
@@ -69,5 +102,26 @@ describe("draft conversion navigation", () => {
         expect(source).toContain("请先保存或取消当前编辑，再转换为职业动态");
       }
     }
+  });
+
+  it("locks editing controls while any conversion request is pending", () => {
+    for (const file of ["WeeklyActivityWorkspace.tsx", "OkrMilestoneDraftWorkspace.tsx", "CareerTimelineDraftWorkspace.tsx"]) {
+      const source = readFileSync(new URL(`../src/components/admin/${file}`, import.meta.url), "utf8");
+      expect(source).toContain("const converting = drafts.some");
+      if (file === "WeeklyActivityWorkspace.tsx") {
+        expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={converting}");
+        expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={converting}");
+      } else {
+        expect(source).toMatch(/onClick=\{\(\) => setEditing\(draft\)\} disabled=\{converting\}/);
+      }
+    }
+  });
+
+  it("blocks a cross-draft conversion before the request when recovery storage fails", () => {
+    const source = readFileSync(new URL("../src/components/admin/WeeklyActivityWorkspace.tsx", import.meta.url), "utf8");
+    const guard = source.indexOf("if (!writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt))");
+    const request = source.indexOf("const converted = await runAction(`weekly:convert:");
+    expect(guard).toBeGreaterThan(0);
+    expect(guard).toBeLessThan(request);
   });
 });

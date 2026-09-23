@@ -32,8 +32,10 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
   const [conversionNotice, setConversionNotice] = useState<string | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const saving = isBusy("timeline:save");
+  const converting = drafts.some((draft) => isBusy(`timeline:convert:${draft.id}`));
 
   async function sync() {
+    if (converting) return;
     const synced = await runAction("timeline:sync", () => adminRequest<CareerTimelineDraftData[]>(
       "/api/admin/timeline", { method: "POST" },
     ), "时间线草稿已同步");
@@ -57,7 +59,7 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
   }
 
   async function convert(draft: CareerTimelineDraftData) {
-    if (editing) {
+    if (editing || converting) {
       setConversionNotice("请先保存或取消当前编辑，再转换为职业动态。");
       return;
     }
@@ -80,7 +82,7 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
       <PageHeader
         title="职业时间线草稿"
         description="从已发布文章、已完成项目、手工职业动态和 OKR 里程碑中整理候选事件。同步只生成私有草稿，不会自动公开。"
-        action={<button className={styles.primaryButton} type="button" onClick={sync} disabled={isBusy("timeline:sync")}>
+        action={<button className={styles.primaryButton} type="button" onClick={sync} disabled={converting || isBusy("timeline:sync")}>
           {isBusy("timeline:sync") ? <LoaderCircle className={styles.spin} size={17} /> : <RefreshCw size={17} />}
           {isBusy("timeline:sync") ? "同步中" : "同步时间线草稿"}
         </button>}
@@ -116,8 +118,8 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
             </div>
             <div className={styles.activityCopy}><h3>{draft.titleZh}</h3><p>{draft.summaryZh}</p>{draft.titleEn ? <small>{draft.titleEn}</small> : null}</div>
             <div className={styles.rowActions}>
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)}><FilePenLine size={15} />编辑</button> : null}
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`timeline:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)} disabled={converting}><FilePenLine size={15} />编辑</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={converting}><Send size={15} />转为私有职业动态</button> : null}
               {target ? <Link href={target} onClick={(event) => {
                 if (!editing) return;
                 event.preventDefault();

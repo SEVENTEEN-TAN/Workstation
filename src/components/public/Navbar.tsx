@@ -28,7 +28,7 @@ export function Navbar() {
         </button>
 
         <div className="ml-auto flex items-center gap-3 sm:gap-6 lg:gap-9">
-          <div role="group" aria-label="Section navigation" className="absolute inset-x-5 bottom-2 flex items-center justify-between sm:static sm:justify-start sm:gap-6 lg:gap-9">
+          <div role="group" aria-label="Section navigation" className="absolute inset-x-5 bottom-2 grid grid-cols-3 items-center justify-items-center gap-y-1 sm:static sm:flex sm:justify-start sm:gap-6 lg:gap-9">
             {navItems.map((item) => (
               <button key={item.target} type="button" onClick={(event) => {
                 if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
