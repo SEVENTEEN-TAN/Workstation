@@ -74,15 +74,16 @@
 
 ### 数据模型与幂等
 
-在 `ActionItem` 增加可空自关联来源，并明确使用 `SetNull` 保留派生历史：
+在 `ActionItem` 增加可空自关联来源及来源记录上的派生标记，并明确使用 `SetNull` 保留派生历史：
 
 ```text
 generatedFromActionItemId String? @unique
 generatedFromActionItem   ActionItem? @relation("ActionItemRecurrence", fields: [generatedFromActionItemId], references: [id], onDelete: SetNull)
 generatedActionItem       ActionItem? @relation("ActionItemRecurrence")
+hasGeneratedNext          Boolean @default(false)
 ```
 
-派生行动记录来源行动 ID。数据库唯一约束是最终幂等边界；服务层仍先查询已有派生，便于返回清晰结果。删除 KR 时沿用现有级联删除；删除单个来源行动时，派生行动作为普通历史记录保留，因此自关联的删除行为必须清除来源引用而不是删除派生记录。
+派生行动记录来源行动 ID。数据库唯一约束阻止并发创建多份，来源记录上的 `hasGeneratedNext` 则在派生行动被删除后保留“已经派生过”的事实。删除 KR 时沿用现有级联删除；删除单个来源行动时，派生行动作为普通历史记录保留，因此自关联的删除行为必须清除来源引用而不是删除派生记录。
 
 状态更新与派生创建放在同一数据库事务。任一步失败时两者一起回滚，不能出现“已经显示完成但下一行动丢失”的半完成状态。
 
@@ -131,9 +132,9 @@ generatedActionItem       ActionItem? @relation("ActionItemRecurrence")
 
 - `DONE → TODO/IN_PROGRESS` 只清空旧行动的 `completedAt`。
 - 已经派生的下一行动保持不变。
-- 再次完成旧行动时通过来源唯一约束复用已有派生，不新建。
+- 再次完成旧行动时通过 `hasGeneratedNext` 跳过派生，不新建。
 - 编辑旧行动的标题或重复规则不追溯修改已派生行动。
-- 删除已派生的下一行动后，来源引用随记录一起消失；再次完成旧行动不会触发状态跃迁，因此不会静默重建。若未来需要“补生成”，应另设明确操作，不纳入本阶段。
+- 删除已派生的下一行动后，来源行动的 `hasGeneratedNext` 仍为真；即使重开旧行动再完成也不会静默重建。若未来需要“补生成”，应另设明确操作，不纳入本阶段。
 
 ## 3B：入口与后台操作闭环
 
@@ -207,12 +208,13 @@ generatedActionItem       ActionItem? @relation("ActionItemRecurrence")
 
 ### 判定来源
 
-`HomeWorkspace` 已同时持有已保存内容 `savedContent` 和当前工作副本 `content`，首页项目工具已提供 `materializeHomepageProjects()` 与预览版本。阶段 3 复用这些对象，不保存新的同步状态表。
+`HomeWorkspace` 已同时持有已保存内容 `savedContent` 和当前工作副本 `content`，首页项目工具已提供 `materializeHomepageProjects()` 与预览版本。阶段 3 复用这些对象，不保存新的同步状态表。当前预览和保存流程会自动物化最新项目，必须一并改为明确同步，否则确认按钮无法约束实际生效。
 
 判定分两层：
 
 1. 用 `savedContent.selectedProjectIds` 和最新项目记录生成权威候选快照；
-2. 按项目 ID 对比 `savedContent.zh/en.projects` 中对应卡片与候选卡片的实际展示字段。
+2. 按项目 ID 对比 `savedContent.zh/en.projects` 中对应卡片与候选卡片的实际展示字段；
+3. 同步按钮按当前工作副本的 `selectedProjectIds` 再计算一次，避免覆盖用户刚改的选择或顺序。
 
 比较字段只包含当前物化函数产生的字段：`slug`、`image`、`category`、`title`、`description`、`tags`、`alt`。排序由 `selectedProjectIds` 决定，不用 JSON 全对象字符串比较，也不比较无关元数据。
 
@@ -233,7 +235,11 @@ generatedActionItem       ActionItem? @relation("ActionItemRecurrence")
 - `selectedProjectIds` 及顺序；
 - 当前编辑视图、语言和设备预览状态。
 
-同步后页面进入未保存状态，预览立即显示新卡片。它不会调用保存 API，也不会发布。管理员仍需依次执行“保存草稿”和“发布”。
+同步前，内嵌预览显示当前工作副本中的项目卡片，不自动物化最新源记录。同步后页面进入未保存状态，预览立即显示新卡片。项目选择或排序操作则在同一次用户操作中物化工作副本卡片，以保留现有即时预览体验。同步不会调用保存 API，也不会发布。管理员仍需依次执行“保存草稿”和“发布”。
+
+保存草稿时，服务端使用最新源项目重新物化作校验：若提交卡片与最新结果不同，拒绝保存并提示重新检查／同步，不静默替换提交内容。这样源项目在管理员同步后再次变化时也不会被无意带入草稿。正式发布仍只使用已保存快照。
+
+项目列表由现有 `/api/admin/projects` 刷新；后台“检查项目更新”明确获取最新列表，并保留其他未保存首页内容。只依靠页面初始加载的数据无法发现另一个标签页刚修改的项目。
 
 若项目不可同步，按钮禁用并提供项目模块入口；修复源项目后重新加载或刷新后台数据再判断。
 
@@ -279,6 +285,8 @@ generatedActionItem       ActionItem? @relation("ActionItemRecurrence")
 - 不可公开或缺失项目禁止同步。
 - 同步只替换项目卡片，不覆盖其他未保存首页内容。
 - 同步后预览更新、脏状态成立；保存前正式首页不变。
+- 未同步前预览保持工作副本卡片；保存其他首页字段不会顺带同步项目。
+- 同步后源项目再次变化时，保存拒绝过期卡片并要求重新同步。
 - 保存草稿后仍不影响正式首页；明确发布后正式首页更新。
 
 ### 阶段集中验证
