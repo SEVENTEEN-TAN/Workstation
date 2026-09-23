@@ -1,7 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 
 import { siteContentSchema, type SiteContent } from "../content/schema";
-import { materializeHomepageProjects } from "../content/homepage-projects";
+import { homepageProjectCardsMatch, materializeHomepageProjects } from "../content/homepage-projects";
 import { getDatabase } from "../db";
 import { parsePortfolioProjectRecord, type PortfolioProjectRecord } from "./portfolio-projects";
 
@@ -28,6 +28,7 @@ export type SiteVersionData = {
 type TransactionRepository = {
   findVersion(id: string): Promise<SiteVersionRecord | null>;
   findDraft(): Promise<SiteVersionRecord | null>;
+  findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
   updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
   archivePublished(): Promise<unknown>;
   publishVersion(id: string, publishedAt: Date): Promise<SiteVersionRecord>;
@@ -40,8 +41,6 @@ export type SiteContentRepository = {
   listVersions(): Promise<SiteVersionRecord[]>;
   findPublished(): Promise<SiteVersionRecord | null>;
   findDraft(): Promise<SiteVersionRecord | null>;
-  updateDraft(id: string, content: SiteContent): Promise<SiteVersionRecord>;
-  findProjectsByIds(ids: string[]): Promise<PortfolioProjectRecord[]>;
   findAssetsByIds?(ids: string[]): Promise<Array<{ id: string; mimeType: string }>>;
 };
 
@@ -73,7 +72,12 @@ function prismaTransactionRepository(transaction: Prisma.TransactionClient): Tra
   return {
     findVersion: (id) => transaction.siteVersion.findUnique({ where: { id } }),
     findDraft: () => transaction.siteVersion.findFirst({ where: { status: "DRAFT" }, orderBy: { version: "desc" } }),
-    updateDraft: (id, content) => transaction.siteVersion.update({ where: { id }, data: { content } }),
+    async findProjectsByIds(ids) {
+      if (!ids.length) return [];
+      return (await transaction.portfolioProject.findMany({ where: { id: { in: ids } } }))
+        .map(parsePortfolioProjectRecord);
+    },
+    updateDraft: (id, content) => transaction.siteVersion.update({ where: { id, status: "DRAFT" }, data: { content } }),
     archivePublished: () => transaction.siteVersion.updateMany({ where: { status: "PUBLISHED" }, data: { status: "ARCHIVED" } }),
     publishVersion: (id, publishedAt) => transaction.siteVersion.update({ where: { id }, data: { status: "PUBLISHED", publishedAt } }),
     async latestVersionNumber() {
@@ -89,12 +93,6 @@ function createPrismaRepository(database: PrismaClient): SiteContentRepository {
     listVersions: () => database.siteVersion.findMany({ orderBy: { version: "desc" } }),
     findPublished: () => database.siteVersion.findFirst({ where: { status: "PUBLISHED" }, orderBy: { publishedAt: "desc" } }),
     findDraft: () => database.siteVersion.findFirst({ where: { status: "DRAFT" }, orderBy: { version: "desc" } }),
-    updateDraft: (id, content) => database.siteVersion.update({ where: { id }, data: { content } }),
-    async findProjectsByIds(ids: string[]) {
-      if (!ids.length) return [];
-      const records = await database.portfolioProject.findMany({ where: { id: { in: ids } } });
-      return records.map(parsePortfolioProjectRecord);
-    },
     findAssetsByIds: (ids) => database.asset.findMany({
       where: { id: { in: ids } },
       select: { id: true, mimeType: true },
@@ -143,11 +141,18 @@ export function createSiteContentService(repository: SiteContentRepository) {
         if (!repository.findAssetsByIds) throw new Error("主页图片资源不存在或不是图片");
         validateHomepageSettingAssets(content, await repository.findAssetsByIds(assetIds));
       }
-      const selectedProjectIds = content.selectedProjectIds;
-      const materializedContent = selectedProjectIds
-        ? materializeHomepageProjects(content, await repository.findProjectsByIds(selectedProjectIds))
-        : content;
-      return repository.updateDraft(id, materializedContent).then(toSiteVersionData);
+      return repository.transaction(async (transaction) => {
+        const current = await transaction.findVersion(id);
+        if (!current || current.status !== "DRAFT") throw new Error("仅草稿版本可以保存");
+        if (content.selectedProjectIds !== undefined) {
+          const projects = await transaction.findProjectsByIds(content.selectedProjectIds);
+          const expected = materializeHomepageProjects(content, projects);
+          if (!homepageProjectCardsMatch(content, expected)) {
+            throw new Error("项目资料已变化，请检查项目更新并同步到工作副本后再保存");
+          }
+        }
+        return toSiteVersionData(await transaction.updateDraft(id, content));
+      });
     },
     async publish(id: string) {
       return repository.transaction(async (transaction) => {

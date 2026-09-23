@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { siteContentSchema } from "../src/lib/content/schema";
+import { siteContentSchema, type SiteContent } from "../src/lib/content/schema";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
+import { materializeHomepageProjects } from "../src/lib/content/homepage-projects";
 import { createSiteContentService } from "../src/lib/services/site-content";
 import { createOkrService } from "../src/lib/services/okr";
 import { createPublicDataService } from "../src/lib/services/public-data";
@@ -12,7 +13,7 @@ import {
   normalizeAssetAltText,
   validateImageUpload,
 } from "../src/lib/services/assets";
-import { parsePortfolioProjectRecord } from "../src/lib/services/portfolio-projects";
+import { parsePortfolioProjectRecord, type PortfolioProjectRecord } from "../src/lib/services/portfolio-projects";
 import { portfolioProjectInputSchema } from "../src/lib/validators/portfolio-projects";
 
 const structuredProject = parsePortfolioProjectRecord({
@@ -58,8 +59,6 @@ describe("site publishing", () => {
       async listVersions() { return versions; },
       async findPublished() { return null; },
       async findDraft() { return versions[0]; },
-      async updateDraft() { throw new Error("a missing image must not be saved"); },
-      async findProjectsByIds() { return []; },
       async findAssetsByIds() { return []; },
     });
 
@@ -75,8 +74,6 @@ describe("site publishing", () => {
       async listVersions() { return versions; },
       async findPublished() { return null; },
       async findDraft() { return versions[0]; },
-      async updateDraft() { throw new Error("a non-image asset must not be saved"); },
-      async findProjectsByIds() { return []; },
       async findAssetsByIds() { return [{ id: "not-an-image", mimeType: "application/pdf" }]; },
     });
 
@@ -96,8 +93,6 @@ describe("site publishing", () => {
       listVersions: async () => versions,
       findPublished: async () => versions[0],
       findDraft: async () => versions[1],
-      updateDraft: async () => { throw new Error("not used"); },
-      findProjectsByIds: async () => { throw new Error("not used"); },
     });
 
     await expect(service.getOrCreateDraft()).resolves.toEqual({
@@ -143,6 +138,7 @@ describe("site publishing", () => {
         return run({
           async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
           async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
+          async findProjectsByIds() { throw new Error("publish must not load projects"); },
           async updateDraft() { throw new Error("not used"); },
           async archivePublished() { versions.filter((item) => item.status === "PUBLISHED").forEach((item) => { item.status = "ARCHIVED"; }); },
           async publishVersion(id, publishedAt) { const item = versions.find((entry) => entry.id === id)!; item.status = "PUBLISHED"; item.publishedAt = publishedAt; return item; },
@@ -153,8 +149,6 @@ describe("site publishing", () => {
       async listVersions() { return versions; },
       async findPublished() { return versions.find((item) => item.status === "PUBLISHED") ?? null; },
       async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
-      async updateDraft() { throw new Error("not used"); },
-      async findProjectsByIds() { throw new Error("not used"); },
     });
 
     await service.publish("draft");
@@ -182,6 +176,7 @@ describe("site rollback", () => {
         return run({
           async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
           async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
+          async findProjectsByIds() { throw new Error("rollback must not load projects"); },
           async updateDraft(id, content) { const item = versions.find((entry) => entry.id === id)!; item.content = content; return item; },
           async archivePublished() { throw new Error("rollback must not archive published versions"); },
           async publishVersion() { throw new Error("rollback must not publish versions"); },
@@ -192,8 +187,6 @@ describe("site rollback", () => {
       async listVersions() { return versions; },
       async findPublished() { return versions.find((item) => item.status === "PUBLISHED") ?? null; },
       async findDraft() { return versions.find((item) => item.status === "DRAFT") ?? null; },
-      async updateDraft() { throw new Error("not used"); },
-      async findProjectsByIds() { throw new Error("not used"); },
     });
 
     const restored = await service.rollback("source", "author-1");
@@ -216,6 +209,7 @@ describe("site rollback", () => {
         return run({
           async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
           async findDraft() { return null; },
+          async findProjectsByIds() { throw new Error("rollback must not load projects"); },
           async updateDraft() { throw new Error("not used"); },
           async archivePublished() { throw new Error("rollback must not archive published versions"); },
           async publishVersion() { throw new Error("rollback must not publish versions"); },
@@ -229,8 +223,6 @@ describe("site rollback", () => {
       async listVersions() { return versions; },
       async findPublished() { return versions.find((item) => item.status === "PUBLISHED") ?? null; },
       async findDraft() { return null; },
-      async updateDraft() { throw new Error("not used"); },
-      async findProjectsByIds() { throw new Error("not used"); },
     });
 
     const restored = await service.rollback("source", "author-2");
@@ -242,46 +234,94 @@ describe("site rollback", () => {
 });
 
 describe("homepage project source snapshots", () => {
-  it("materializes selected projects when saving a draft but preserves legacy snapshots", async () => {
-    const selectedDraft = {
-      id: "selected-draft",
-      version: 2,
-      status: "DRAFT",
-      content: { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["project-1"] },
-      publishedAt: null,
-    };
-    const legacyDraft = {
-      id: "legacy-draft",
-      version: 3,
-      status: "DRAFT",
-      content: structuredClone(bootstrapSiteContent),
-      publishedAt: null,
-    };
-    const versions = [selectedDraft, legacyDraft];
+  function draftHarness(content: SiteContent, projects: PortfolioProjectRecord[], transactionStatus = "DRAFT") {
+    const draft = { id: "draft", version: 2, status: "DRAFT", content, publishedAt: null };
     const loadedIds: string[][] = [];
-    const savedContent: unknown[] = [];
+    const savedContent: SiteContent[] = [];
     const service = createSiteContentService({
-      transaction: async () => { throw new Error("not used"); },
-      async listVersions() { return versions; },
-      async findPublished() { return null; },
-      async findDraft() { return selectedDraft; },
-      async updateDraft(_id, content) { savedContent.push(content); return { ...selectedDraft, content }; },
-      async findProjectsByIds(ids) {
-        loadedIds.push(ids);
-        return ids.map(() => structuredProject);
+      async transaction(run) {
+        return run({
+          async findVersion() { return { ...draft, status: transactionStatus }; },
+          async findDraft() { return draft; },
+          async findProjectsByIds(ids) { loadedIds.push(ids); return projects; },
+          async updateDraft(_id, submitted) {
+            savedContent.push(submitted);
+            return { ...draft, content: submitted };
+          },
+          async archivePublished() { throw new Error("not used"); },
+          async publishVersion() { throw new Error("not used"); },
+          async latestVersionNumber() { return 2; },
+          async createVersion() { throw new Error("not used"); },
+        });
       },
+      async listVersions() { return [draft]; },
+      async findPublished() { return null; },
+      async findDraft() { return draft; },
     } as never);
+    return { service, loadedIds, savedContent };
+  }
 
-    await service.saveDraft("selected-draft", selectedDraft.content);
-    await service.saveDraft("legacy-draft", legacyDraft.content);
+  it("saves submitted bilingual cards without changing them and preserves legacy snapshots", async () => {
+    const selected = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["project-1"] },
+      [structuredProject],
+    );
+    const current = draftHarness(selected, [structuredProject]);
+    await current.service.saveDraft("draft", selected);
+    expect(current.loadedIds).toEqual([["project-1"]]);
+    expect(current.savedContent).toEqual([selected]);
 
-    expect(loadedIds).toEqual([["project-1"]]);
-    expect(savedContent[0]).toMatchObject({
-      selectedProjectIds: ["project-1"],
-      en: { projects: [{ slug: "personal-workstation", title: "Personal Workstation" }] },
-      zh: { projects: [{ slug: "personal-workstation", title: "个人工作站" }] },
-    });
-    expect(savedContent[1]).toEqual(bootstrapSiteContent);
+    const legacy = structuredClone(bootstrapSiteContent);
+    const old = draftHarness(legacy, []);
+    await old.service.saveDraft("draft", legacy);
+    expect(old.loadedIds).toEqual([]);
+    expect(old.savedContent).toEqual([legacy]);
+
+    const leftover = { ...structuredClone(bootstrapSiteContent), selectedProjectIds: [] };
+    const emptySelection = draftHarness(leftover, []);
+    await expect(emptySelection.service.saveDraft("draft", leftover))
+      .rejects.toThrow("项目资料已变化");
+    expect(emptySelection.savedContent).toEqual([]);
+    const empty = { ...leftover, zh: { ...leftover.zh, projects: [] }, en: { ...leftover.en, projects: [] } };
+    const cleared = draftHarness(empty, []);
+    await cleared.service.saveDraft("draft", empty);
+    expect(cleared.savedContent).toEqual([empty]);
+  });
+
+  it("rejects changed and unavailable project sources without saving old cards", async () => {
+    const selected = materializeHomepageProjects(
+      { ...structuredClone(bootstrapSiteContent), selectedProjectIds: ["project-1"] },
+      [structuredProject],
+    );
+    for (const changed of [
+      { ...structuredProject, titleEn: "Revised title" },
+      { ...structuredProject, coverAltZh: "新的中文替代文本" },
+      { ...structuredProject, technologies: ["TypeScript", "Next.js"] },
+    ]) {
+      const current = draftHarness(selected, [changed]);
+      await expect(current.service.saveDraft("draft", selected))
+        .rejects.toThrow("项目资料已变化");
+      expect(current.savedContent).toEqual([]);
+      expect(selected.en.projects[0].title).toBe("Personal Workstation");
+    }
+    for (const unavailable of [
+      [],
+      [{ ...structuredProject, visibility: "PRIVATE" as const }],
+      [{ ...structuredProject, titleEn: null }],
+    ]) {
+      const current = draftHarness(selected, unavailable);
+      await expect(current.service.saveDraft("draft", selected))
+        .rejects.toThrow("主页引用的项目不存在或不可公开");
+      expect(current.savedContent).toEqual([]);
+    }
+  });
+
+  it("rechecks DRAFT status in the save transaction", async () => {
+    const legacy = structuredClone(bootstrapSiteContent);
+    const current = draftHarness(legacy, [], "PUBLISHED");
+    await expect(current.service.saveDraft("draft", legacy))
+      .rejects.toThrow("仅草稿版本可以保存");
+    expect(current.savedContent).toEqual([]);
   });
 
   it("publishes the saved snapshot without re-reading structured projects", async () => {
@@ -298,6 +338,7 @@ describe("homepage project source snapshots", () => {
         return run({
           async findVersion(id) { return versions.find((item) => item.id === id) ?? null; },
           async findDraft() { return versions[0]; },
+          async findProjectsByIds() { projectLoads += 1; return [structuredProject]; },
           async updateDraft() { throw new Error("not used"); },
           async archivePublished() {},
           async publishVersion(id) { const item = versions.find((entry) => entry.id === id)!; item.status = "PUBLISHED"; item.publishedAt = new Date(); return item; },
@@ -308,8 +349,6 @@ describe("homepage project source snapshots", () => {
       async listVersions() { return versions; },
       async findPublished() { return versions[0]; },
       async findDraft() { return versions[0]; },
-      async updateDraft() { throw new Error("not used"); },
-      async findProjectsByIds() { projectLoads += 1; return [structuredProject]; },
     } as never);
 
     await service.publish("draft");
@@ -580,8 +619,6 @@ describe("public data service", () => {
       listVersions: async () => [],
       findPublished: async () => null,
       findDraft: async () => null,
-      updateDraft: async () => { throw new Error("not used"); },
-      findProjectsByIds: async () => { throw new Error("not used"); },
     });
 
     await expect(service.getPublished()).resolves.toBeNull();
