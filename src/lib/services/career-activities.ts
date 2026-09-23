@@ -1,6 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { getCareerActivityPublicIssues } from "../public-readiness";
 import { careerActivityInputSchema, careerActivityPatchSchema } from "../validators/career-activities";
 
 export type CareerActivityRecord = {
@@ -107,7 +108,7 @@ export function createCareerActivityService(repository?: CareerActivityRepositor
     delete: (id: string) => source.deleteActivity(id),
     async listPublic() {
       return (await source.listPublicActivities())
-        .filter((item) => item.visibility === "PUBLIC" && item.titleEn && item.summaryEn)
+        .filter((item) => getCareerActivityPublicIssues(item).length === 0)
         .sort((left, right) => Number(right.featured) - Number(left.featured)
           || right.occurredAt.getTime() - left.occurredAt.getTime());
     },

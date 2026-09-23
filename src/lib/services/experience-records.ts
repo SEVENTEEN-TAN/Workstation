@@ -1,4 +1,5 @@
 import { getDatabase } from "../db";
+import { getExperiencePublicIssues } from "../public-readiness";
 import {
   experienceRecordInputSchema,
   experienceRecordPatchSchema,
@@ -95,10 +96,6 @@ function defaultRepository(): ExperienceRecordRepository {
   };
 }
 
-function isPublicReady(record: ExperienceRecord) {
-  return record.visibility === "PUBLIC" && experienceRecordInputSchema.safeParse(record).success;
-}
-
 export function createExperienceRecordService(repository?: ExperienceRecordRepository) {
   const source = repository ?? defaultRepository();
   const toAdminRecord = (record: ExperienceRecord): ExperienceRecordData => ({
@@ -125,7 +122,7 @@ export function createExperienceRecordService(repository?: ExperienceRecordRepos
     delete: (id: string) => source.deleteRecord(id),
     async listPublic() {
       return (await source.listPublicRecords())
-        .filter(isPublicReady)
+        .filter((record) => getExperiencePublicIssues(record).length === 0)
         .sort(compareExperienceRecords);
     },
   };

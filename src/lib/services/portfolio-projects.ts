@@ -1,5 +1,6 @@
 import { getDatabase } from "../db";
 import { findHomepageProjectReferences } from "../content/homepage-projects";
+import { getPortfolioProjectPublicIssues } from "../public-readiness";
 import type { SiteVersionRecord } from "./site-content";
 import { portfolioProjectInputSchema, portfolioProjectPatchSchema, type PortfolioProjectInput } from "../validators/portfolio-projects";
 
@@ -84,10 +85,6 @@ function defaultRepository(): PortfolioProjectRepository {
   };
 }
 
-function isPublicReady(record: PortfolioProjectRecord) {
-  return record.visibility === "PUBLIC" && portfolioProjectInputSchema.safeParse(record).success;
-}
-
 function toAdminProject(record: PortfolioProjectRecord): PortfolioProjectData {
   return {
     ...record,
@@ -126,7 +123,7 @@ export function createPortfolioProjectService(repository?: PortfolioProjectRepos
       return source.deleteProject(id);
     },
     async listPublic() {
-      return (await source.listPublicProjects()).filter(isPublicReady).sort((left, right) => (
+      return (await source.listPublicProjects()).filter((record) => getPortfolioProjectPublicIssues(record).length === 0).sort((left, right) => (
         Number(right.featured) - Number(left.featured)
         || left.sortOrder - right.sortOrder
         || right.updatedAt.getTime() - left.updatedAt.getTime()
@@ -134,7 +131,7 @@ export function createPortfolioProjectService(repository?: PortfolioProjectRepos
     },
     async getPublicBySlug(slug: string) {
       const record = await source.findPublicProjectBySlug(slug);
-      return record && isPublicReady(record) ? record : null;
+      return record && getPortfolioProjectPublicIssues(record).length === 0 ? record : null;
     },
   };
 }

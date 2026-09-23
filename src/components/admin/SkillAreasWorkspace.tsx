@@ -13,10 +13,12 @@ import {
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { getSkillAreaPublicIssues, getSkillAreaPublicNotes } from "../../lib/public-readiness";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
+import { PublicReadiness } from "./okr/PublicReadiness";
 import type { PortfolioProjectData, SkillAreaData, SkillData, SkillEvidenceData } from "./types";
 import { adminRequest } from "./request";
 import { useAdminAction } from "./useAdminAction";
@@ -279,6 +281,10 @@ export function SkillAreasWorkspace({
                 <h3>{area.nameZh}</h3>
                 <p>{area.descriptionZh}</p>
                 <small>{area.skills.map((skill) => skill.nameZh).join(" / ") || "尚未添加技能"}</small>
+                <PublicReadiness
+                  issues={getSkillAreaPublicIssues(area, projects)}
+                  notes={getSkillAreaPublicNotes(area, projects)}
+                />
               </div>
               <div className={styles.rowActions}>
                 <a className={styles.iconTextButton} href="/skills" target="_blank" rel="noreferrer"><ArrowUpRight size={15} />公开页</a>

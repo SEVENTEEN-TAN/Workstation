@@ -4,6 +4,7 @@ import { extname, resolve, sep } from "node:path";
 import type { ResumeFile as PrismaResumeFile } from "@prisma/client";
 
 import { getDatabase } from "../db";
+import { getResumeFilePublicIssues } from "../public-readiness";
 
 const MAX_RESUME_BYTES = 10 * 1024 * 1024;
 const PDF_MIME = "application/pdf";
@@ -181,7 +182,7 @@ export function createResumeFileService(
     async findPublic(localeInput: unknown) {
       const locale = parseResumeLocale(localeInput);
       const record = await repository.findByLocale(locale);
-      return record?.visibility === "PUBLIC" ? record : null;
+      return getResumeFilePublicIssues(record).length === 0 ? record : null;
     },
   };
 }

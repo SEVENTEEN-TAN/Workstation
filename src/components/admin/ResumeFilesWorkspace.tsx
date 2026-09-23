@@ -4,9 +4,11 @@ import { Download, EyeOff, Eye, FileText, LoaderCircle, RefreshCw, Trash2, Uploa
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { getResumeFilePublicIssues } from "../../lib/public-readiness";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
+import { PublicReadiness } from "./okr/PublicReadiness";
 import { adminRequest } from "./request";
 import type { ResumeFileData } from "./types";
 import { useAdminAction } from "./useAdminAction";
@@ -104,6 +106,7 @@ export function ResumeFilesWorkspace({ initialFiles }: { initialFiles: ResumeFil
                   <div><strong>尚未上传</strong><small>上传后默认保持私密，确认内容后再公开。</small></div>
                 </div>
               )}
+              <PublicReadiness issues={getResumeFilePublicIssues(file)} />
 
               <form className={styles.resumeUploadForm} onSubmit={(event) => upload(slot.locale, event)}>
                 <input name="locale" type="hidden" value={slot.locale} />

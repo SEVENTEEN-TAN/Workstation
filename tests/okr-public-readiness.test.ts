@@ -65,5 +65,11 @@ describe("shared OKR public readiness", () => {
     const ready = renderToStaticMarkup(createElement(PublicReadiness, { issues: [] }));
     expect(ready).toContain("满足前台展示条件");
     expect(ready).not.toContain("已发布");
+    const partial = renderToStaticMarkup(createElement(PublicReadiness, {
+      issues: [],
+      notes: ["技能「Java」的私密项目证据不会展示"],
+    }));
+    expect(partial).toContain("满足前台展示条件");
+    expect(partial).toContain("部分内容未展示：技能「Java」的私密项目证据不会展示");
   });
 });

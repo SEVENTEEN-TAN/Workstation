@@ -1,4 +1,8 @@
 import { getDatabase } from "../db";
+import {
+  getSkillAreaPublicIssues,
+  getSkillPublicIssues,
+} from "../public-readiness";
 import { portfolioProjectService } from "./portfolio-projects";
 import {
   skillAreaInputSchema,
@@ -259,8 +263,9 @@ export function createSkillCapabilityService(
   const source = repository ?? defaultRepository();
 
   function toPublicArea(area: SkillAreaRecord, projects: PublicProjectTarget[]) {
+    const readinessProjects = projects.map((project) => ({ ...project, publicReady: project.visibility === "PUBLIC" }));
     const projectById = new Map(projects.filter((project) => project.visibility === "PUBLIC").map((project) => [project.id, project]));
-    const skills = area.skills.filter((skill) => skill.visibility === "PUBLIC").map((skill) => ({
+    const skills = area.skills.filter((skill) => getSkillPublicIssues(skill, readinessProjects).length === 0).map((skill) => ({
       id: skill.id,
       nameZh: skill.nameZh,
       nameEn: skill.nameEn!,
@@ -309,8 +314,10 @@ export function createSkillCapabilityService(
     delete: (id: string) => source.deleteArea(id),
     async listPublic(): Promise<PublicSkillArea[]> {
       const [areas, projects] = await Promise.all([source.listAreas(), listProjects()]);
-      const publicAreas = areas.filter((area) => skillAreaInputSchema.safeParse(area).success && area.visibility === "PUBLIC");
-      return publicAreas.map((area) => toPublicArea(area, projects)).filter((area) => area.skills.length > 0);
+      const readinessProjects = projects.map((project) => ({ ...project, publicReady: project.visibility === "PUBLIC" }));
+      return areas
+        .filter((area) => getSkillAreaPublicIssues(area, readinessProjects).length === 0)
+        .map((area) => toPublicArea(area, projects));
     },
   };
 }

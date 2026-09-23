@@ -4,10 +4,12 @@ import { ExternalLink, LoaderCircle, Pencil, Plus, Save, Star, Trash2, X } from 
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { getCareerActivityPublicIssues } from "../../lib/public-readiness";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
+import { PublicReadiness } from "./okr/PublicReadiness";
 import { adminRequest } from "./request";
 import type { CareerActivityData } from "./types";
 import { useAdminAction } from "./useAdminAction";
@@ -116,7 +118,7 @@ export function CareerActivitiesWorkspace({ initialActivities }: { initialActivi
                 <span className={activity.visibility === "PUBLIC" ? `${styles.statusBadge} ${styles.statusActive}` : styles.statusBadge}>{activity.visibility === "PUBLIC" ? "公开" : "私密"}</span>
                 {activity.featured ? <span className={styles.warningBadge}><Star size={12} />精选</span> : null}
               </div>
-              <div className={styles.activityCopy}><h3>{activity.titleZh}</h3><p>{activity.summaryZh}</p>{activity.titleEn ? <small>{activity.titleEn}</small> : null}</div>
+              <div className={styles.activityCopy}><h3>{activity.titleZh}</h3><p>{activity.summaryZh}</p>{activity.titleEn ? <small>{activity.titleEn}</small> : null}<PublicReadiness issues={getCareerActivityPublicIssues(activity)} /></div>
               <div className={styles.rowActions}>
                 {activity.linkUrl ? <a className={styles.iconTextButton} href={activity.linkUrl} target="_blank" rel="noreferrer"><ExternalLink size={15} />打开链接</a> : null}
                 <button type="button" aria-label={`编辑动态 ${activity.titleZh}`} onClick={() => setEditor(activity)}><Pencil size={15} />编辑</button>

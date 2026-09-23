@@ -4,10 +4,12 @@ import { Check, ExternalLink, ImageIcon, LoaderCircle, Pencil, Plus, Save, Spark
 import { useRef, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { getPortfolioProjectPublicIssues } from "../../lib/public-readiness";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
+import { PublicReadiness } from "./okr/PublicReadiness";
 import { AssetPicker } from "./home/AssetPicker";
 import { adminRequest } from "./request";
 import type { AssetData, PortfolioProjectData, ProjectAiContentDraftData } from "./types";
@@ -296,6 +298,7 @@ export function PortfolioProjectsWorkspace({
                 <p>{project.summaryZh}</p>
                 {project.titleEn ? <small>{project.titleEn}</small> : null}
                 <div className={styles.projectTechnologies}>{project.technologies.slice(0, 6).map((technology) => <span key={technology}>{technology}</span>)}</div>
+                <PublicReadiness issues={getPortfolioProjectPublicIssues(project)} />
               </div>
               <div className={styles.rowActions}>
                 {project.links[0] ? <a className={styles.iconTextButton} href={project.links[0].url} target="_blank" rel="noreferrer"><ExternalLink size={15} />打开链接</a> : null}

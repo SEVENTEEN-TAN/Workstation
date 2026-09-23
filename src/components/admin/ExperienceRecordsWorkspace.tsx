@@ -13,10 +13,12 @@ import {
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import { getExperiencePublicIssues } from "../../lib/public-readiness";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
+import { PublicReadiness } from "./okr/PublicReadiness";
 import { adminRequest } from "./request";
 import type { ExperienceRecordData } from "./types";
 import { useAdminAction } from "./useAdminAction";
@@ -170,6 +172,7 @@ export function ExperienceRecordsWorkspace({ initialRecords }: { initialRecords:
                 <h3>{record.organizationZh} · {record.titleZh}</h3>
                 <p>{record.descriptionZh}</p>
                 <small>{record.organizationEn ? `${record.organizationEn} · ${record.titleEn ?? ""}` : "英文内容未完整"}</small>
+                <PublicReadiness issues={getExperiencePublicIssues(record)} />
               </div>
               <div className={styles.rowActions}>
                 {record.linkUrl ? <a className={styles.iconTextButton} href={record.linkUrl} target="_blank" rel="noreferrer"><ArrowUpRight size={15} />打开链接</a> : null}
