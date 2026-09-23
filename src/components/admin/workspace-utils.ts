@@ -6,6 +6,11 @@ export function jsonRequest(method: string, body: unknown): RequestInit {
   };
 }
 
+export function convertedActivityHref(draft: { status: string; convertedActivityId: string | null }): string | null {
+  const id = draft.convertedActivityId?.trim();
+  return draft.status === "CONVERTED" && id ? `/admin/activities?activity=${encodeURIComponent(id)}` : null;
+}
+
 export function dateValue(value: FormDataEntryValue | null): string | null {
   return value ? new Date(String(value)).toISOString() : null;
 }

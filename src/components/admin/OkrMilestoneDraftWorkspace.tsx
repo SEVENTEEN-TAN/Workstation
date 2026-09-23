@@ -1,6 +1,8 @@
 "use client";
 
 import { FilePenLine, Flag, LoaderCircle, Save, Send } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -10,7 +12,7 @@ import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
 import type { OkrMilestoneDraftData } from "./types";
 import { useAdminAction } from "./useAdminAction";
-import { jsonRequest } from "./workspace-utils";
+import { convertedActivityHref, jsonRequest } from "./workspace-utils";
 
 const KIND_LABELS: Record<OkrMilestoneDraftData["kind"], string> = {
   KR_PROGRESS: "进度里程碑",
@@ -23,8 +25,10 @@ function sortDrafts(drafts: OkrMilestoneDraftData[]) {
 }
 
 export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: OkrMilestoneDraftData[] }) {
+  const router = useRouter();
   const [drafts, setDrafts] = useState(() => sortDrafts(initialDrafts));
   const [editing, setEditing] = useState<OkrMilestoneDraftData | null>(null);
+  const [conversionNotice, setConversionNotice] = useState<string | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const saving = isBusy("milestones:save");
 
@@ -45,12 +49,22 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
   }
 
   async function convert(draft: OkrMilestoneDraftData) {
+    if (editing) {
+      setConversionNotice("请先保存或取消当前编辑，再转换为职业动态。");
+      return;
+    }
+    setConversionNotice(null);
     const converted = await runAction(`milestones:convert:${draft.id}`, () => adminRequest<OkrMilestoneDraftData>(
       `/api/admin/milestones/${draft.id}/convert`, { method: "POST" },
-    ), "已转为私有职业动态");
+    ));
     if (!converted) return;
+    const target = convertedActivityHref(converted);
+    if (!target) {
+      setConversionNotice("转换响应缺少可打开的动态，请检查草稿状态后重试。");
+      return;
+    }
     setDrafts((current) => current.map((item) => item.id === converted.id ? converted : item));
-    if (editing?.id === converted.id) setEditing(null);
+    router.push(target);
   }
 
   return (
@@ -75,7 +89,10 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
 
       <section className={styles.panel}>
         <div className={styles.sectionHeading}><div><span className={styles.kicker}>OKR MILESTONES</span><h2>自动生成记录</h2></div><span>{drafts.length} 条</span></div>
-        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => (
+        {conversionNotice ? <p className={styles.weeklyEditorNotice} role="status">{conversionNotice}</p> : null}
+        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => {
+          const target = convertedActivityHref(draft);
+          return (
           <article key={draft.id} className={styles.activityCard}>
             <div className={styles.activityMeta}>
               <time dateTime={draft.occurredAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(draft.occurredAt))}</time>
@@ -86,9 +103,15 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
             <div className={styles.rowActions}>
               {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)}><FilePenLine size={15} />编辑</button> : null}
               {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`milestones:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
+              {target ? <Link href={target} onClick={(event) => {
+                if (!editing) return;
+                event.preventDefault();
+                setConversionNotice("请先保存或取消当前编辑，再打开职业动态。");
+              }}>打开动态 {draft.convertedActivityId}</Link> : null}
             </div>
           </article>
-        ))}</div> : <EmptyState title="还没有里程碑草稿" description="KR 进度跨越 25%、50%、75%，或 KR / Objective 首次完成时会自动生成。" action={null} />}
+          );
+        })}</div> : <EmptyState title="还没有里程碑草稿" description="KR 进度跨越 25%、50%、75%，或 KR / Objective 首次完成时会自动生成。" action={null} />}
       </section>
 
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />

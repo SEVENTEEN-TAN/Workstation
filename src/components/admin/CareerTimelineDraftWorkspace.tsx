@@ -1,6 +1,8 @@
 "use client";
 
 import { FilePenLine, History, LoaderCircle, RefreshCw, Save, Send } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -10,7 +12,7 @@ import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
 import type { CareerTimelineDraftData } from "./types";
 import { useAdminAction } from "./useAdminAction";
-import { jsonRequest } from "./workspace-utils";
+import { convertedActivityHref, jsonRequest } from "./workspace-utils";
 
 const KIND_LABELS: Record<CareerTimelineDraftData["kind"], string> = {
   ARTICLE: "文章",
@@ -24,8 +26,10 @@ function sortDrafts(drafts: CareerTimelineDraftData[]) {
 }
 
 export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts: CareerTimelineDraftData[] }) {
+  const router = useRouter();
   const [drafts, setDrafts] = useState(() => sortDrafts(initialDrafts));
   const [editing, setEditing] = useState<CareerTimelineDraftData | null>(null);
+  const [conversionNotice, setConversionNotice] = useState<string | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const saving = isBusy("timeline:save");
 
@@ -53,12 +57,22 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
   }
 
   async function convert(draft: CareerTimelineDraftData) {
+    if (editing) {
+      setConversionNotice("请先保存或取消当前编辑，再转换为职业动态。");
+      return;
+    }
+    setConversionNotice(null);
     const converted = await runAction(`timeline:convert:${draft.id}`, () => adminRequest<CareerTimelineDraftData>(
       `/api/admin/timeline/${draft.id}/convert`, { method: "POST" },
-    ), "已转为私有职业动态");
+    ));
     if (!converted) return;
+    const target = convertedActivityHref(converted);
+    if (!target) {
+      setConversionNotice("转换响应缺少可打开的动态，请检查草稿状态后重试。");
+      return;
+    }
     setDrafts((current) => current.map((item) => item.id === converted.id ? converted : item));
-    if (editing?.id === converted.id) setEditing(null);
+    router.push(target);
   }
 
   return (
@@ -90,7 +104,10 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
 
       <section className={styles.panel}>
         <div className={styles.sectionHeading}><div><span className={styles.kicker}>CAREER TIMELINE</span><h2>候选事件</h2></div><span>{drafts.length} 条</span></div>
-        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => (
+        {conversionNotice ? <p className={styles.weeklyEditorNotice} role="status">{conversionNotice}</p> : null}
+        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => {
+          const target = convertedActivityHref(draft);
+          return (
           <article key={draft.id} className={styles.activityCard}>
             <div className={styles.activityMeta}>
               <time dateTime={draft.occurredAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(draft.occurredAt))}</time>
@@ -101,9 +118,15 @@ export function CareerTimelineDraftWorkspace({ initialDrafts }: { initialDrafts:
             <div className={styles.rowActions}>
               {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)}><FilePenLine size={15} />编辑</button> : null}
               {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`timeline:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
+              {target ? <Link href={target} onClick={(event) => {
+                if (!editing) return;
+                event.preventDefault();
+                setConversionNotice("请先保存或取消当前编辑，再打开职业动态。");
+              }}>打开动态 {draft.convertedActivityId}</Link> : null}
             </div>
           </article>
-        ))}</div> : <EmptyState title="还没有时间线草稿" description="同步后会从文章、已完成项目、手工职业动态和 OKR 里程碑中生成候选事件。" action={null} />}
+          );
+        })}</div> : <EmptyState title="还没有时间线草稿" description="同步后会从文章、已完成项目、手工职业动态和 OKR 里程碑中生成候选事件。" action={null} />}
       </section>
 
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />

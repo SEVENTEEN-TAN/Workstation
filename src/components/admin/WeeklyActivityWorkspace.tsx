@@ -1,6 +1,8 @@
 "use client";
 
 import { CalendarRange, Check, FilePenLine, LoaderCircle, RefreshCw, Save, Send, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -21,7 +23,7 @@ import {
   sameWeeklyDraftCopy,
   weeklyDraftRecoveryKey,
 } from "./weekly-editor-state";
-import { jsonRequest } from "./workspace-utils";
+import { convertedActivityHref, jsonRequest } from "./workspace-utils";
 
 type EditingState = {
   draft: WeeklyActivityDraftData;
@@ -110,11 +112,13 @@ function recoveredNotice(editing: EditingState) {
 }
 
 export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: WeeklyActivityDraftData[] }) {
+  const router = useRouter();
   const week = currentWeek();
   const [drafts, setDrafts] = useState(() => sortDrafts(initialDrafts));
   const [editing, setEditing] = useState<EditingState | null>(null);
   const [generationNotice, setGenerationNotice] = useState<string | null>(null);
   const [editorNotice, setEditorNotice] = useState<string | null>(null);
+  const [conversionNotice, setConversionNotice] = useState<string | null>(null);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const generating = isBusy("weekly:generate");
   const saving = isBusy("weekly:save");
@@ -207,13 +211,24 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
       window.alert("请先保存或明确放弃当前修改，再转换为职业动态。");
       return;
     }
+    if (editing && dirty && editing.draft.id !== draft.id) {
+      if (!window.confirm("当前周报有未保存修改，离开后可在本浏览器恢复。仍要转换其他周报吗？")) return;
+      writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt);
+    }
+    setConversionNotice(null);
     const converted = await runAction(`weekly:convert:${draft.id}`, () => adminRequest<WeeklyActivityDraftData>(
       `/api/admin/weekly/${draft.id}/convert`, { method: "POST" },
-    ), "已转为私有职业动态");
+    ));
     if (!converted) return;
+    const target = convertedActivityHref(converted);
+    if (!target) {
+      setConversionNotice("转换响应缺少可打开的动态，请检查草稿状态后重试。");
+      return;
+    }
     clearRecovery(converted.id);
     setDrafts((current) => current.map((item) => item.id === converted.id ? converted : item));
     if (editing?.draft.id === converted.id) setEditing(null);
+    router.push(target);
   }
 
   async function rewriteWithAi(draft: WeeklyActivityDraftData) {
@@ -281,7 +296,10 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
 
       <section className={styles.panel}>
         <div className={styles.sectionHeading}><div><span className={styles.kicker}>DRAFT HISTORY</span><h2>周报草稿</h2></div><span>{drafts.length} 条</span></div>
-        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => (
+        {conversionNotice ? <p className={styles.weeklyEditorNotice} role="status">{conversionNotice}</p> : null}
+        {drafts.length ? <div className={styles.activityList}>{drafts.map((draft) => {
+          const target = convertedActivityHref(draft);
+          return (
           <article key={draft.id} className={styles.activityCard}>
             <div className={styles.activityMeta}>
               <time dateTime={draft.weekStart}>{dateOnly(draft.weekStart)} — {dateOnly(draft.weekEnd)}</time>
@@ -293,9 +311,11 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
               {draft.status === "DRAFT" ? <button type="button" onClick={() => openEditor(draft)}><FilePenLine size={15} />编辑</button> : null}
               {draft.status === "DRAFT" ? <button type="button" onClick={() => rewriteWithAi(draft)} disabled={isBusy(`weekly:ai:${draft.id}`)}>{isBusy(`weekly:ai:${draft.id}`) ? <LoaderCircle className={styles.spin} size={15} /> : <Sparkles size={15} />}AI 候选</button> : null}
               {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={isBusy(`weekly:convert:${draft.id}`)}><Send size={15} />转为私有职业动态</button> : null}
+              {target ? <Link href={target}>打开动态 {draft.convertedActivityId}</Link> : null}
             </div>
           </article>
-        ))}</div> : <EmptyState title="还没有周报草稿" description="选择一周后生成，系统会汇总 GitHub、OKR、项目、文章和手工动态。" action={null} />}
+          );
+        })}</div> : <EmptyState title="还没有周报草稿" description="选择一周后生成，系统会汇总 GitHub、OKR、项目、文章和手工动态。" action={null} />}
       </section>
 
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
