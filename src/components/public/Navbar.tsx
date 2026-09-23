@@ -43,6 +43,9 @@ export function Navbar() {
             <Link href="/experience" className="focus-ring text-xs font-semibold tracking-[0.14em] text-accent transition-colors duration-300 hover:text-white sm:text-sm sm:tracking-widest">
               {locale === "zh" ? "经历" : "Journey"}
             </Link>
+            <Link href="/knowledge" className="focus-ring text-xs font-semibold tracking-[0.14em] text-accent transition-colors duration-300 hover:text-white sm:text-sm sm:tracking-widest">
+              {locale === "zh" ? "知识库" : "Knowledge"}
+            </Link>
           </div>
           <button type="button" onClick={() => setLocale(locale === "en" ? "zh" : "en")} className="focus-ring flex h-9 min-w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.035] px-3 text-[11px] font-black tracking-wider text-white transition-all hover:border-accent hover:text-accent sm:h-11" aria-label={copy.nav.switchLanguage}>
             {copy.nav.switchLabel}

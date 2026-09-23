@@ -21,7 +21,7 @@ function year(value: string) {
   return new Date(value).getUTCFullYear();
 }
 
-export function HomeJourney({ experiences, resumeDownloads }: { experiences: PublicResumeData["experiences"]; resumeDownloads: PublicResumeData["downloads"] }) {
+export function HomeJourney({ experiences }: { experiences: PublicResumeData["experiences"]; resumeDownloads: PublicResumeData["downloads"] }) {
   const { locale } = useI18n();
   const copy = labels[locale];
   const recent = experiences.slice(0, 3);
@@ -37,7 +37,7 @@ export function HomeJourney({ experiences, resumeDownloads }: { experiences: Pub
           </div>
           <div className="flex flex-wrap gap-4">
             <Link href="/experience" className="text-link focus-ring group">{copy.viewAll}<ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
-            {(resumeDownloads.zh || resumeDownloads.en) ? <Link href="/resume" className="text-link focus-ring group">{copy.resume}<ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link> : null}
+            <Link href="/resume" className="text-link focus-ring group">{copy.resume}<ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>
           </div>
         </motion.div>
 

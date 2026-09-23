@@ -4,6 +4,8 @@ import { describe, expect, it } from "vitest";
 
 import { HomeExperience } from "../src/components/public/HomeExperience";
 import { HomeVisualEditor } from "../src/components/public/HomeVisualEditor";
+import { I18nProvider } from "../src/components/public/i18n";
+import { ResumeToolbar } from "../src/components/public/ResumeToolbar";
 import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import type { PublicResumeData } from "../src/lib/services/public-resume";
 
@@ -34,6 +36,28 @@ function sectionPositions(markup: string) {
 }
 
 describe("public homepage composition", () => {
+  it("keeps knowledge and online resume reachable without a public PDF", () => {
+    for (const locale of ["zh", "en"] as const) {
+      const markup = renderToStaticMarkup(createElement(HomeExperience, {
+        content: bootstrapSiteContent,
+        experiences: [],
+        resumeDownloads: { zh: false, en: false },
+        locale,
+      }));
+
+      expect(markup.match(/href="\/knowledge"/g)).toHaveLength(1);
+      expect(markup.match(/href="\/resume"/g)).toHaveLength(1);
+    }
+
+    const toolbar = (downloads: { zh: boolean; en: boolean }) => renderToStaticMarkup(
+      createElement(I18nProvider, { content: bootstrapSiteContent, locale: "zh" },
+        createElement(ResumeToolbar, { downloads })),
+    );
+    expect(toolbar({ zh: false, en: false })).not.toContain('href="/api/resume/zh"');
+    expect(toolbar({ zh: false, en: false })).not.toContain('href="/api/resume/en"');
+    expect(toolbar({ zh: true, en: false })).toContain('href="/api/resume/zh"');
+  });
+
   it("marks every CMS-owned public section only in editor mode", () => {
     const editorMarkup = renderToStaticMarkup(createElement(HomeExperience, {
       content: bootstrapSiteContent,
