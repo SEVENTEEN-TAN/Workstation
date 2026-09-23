@@ -717,6 +717,11 @@ describe("homepage version safety contracts", () => {
     expect(adminStyles).toMatch(/@media \(max-width: 899px\)[\s\S]*\.homeVisualPaneTabs/);
   });
 
+  it("keeps setup credentials out of the URL before client-side handling is ready", () => {
+    const source = readProjectFile("src/app/admin/setup/SetupForm.tsx");
+    expect(source).toMatch(/<form[^>]*method="post"/);
+  });
+
   it("organizes homepage editing around four resume tasks with paired bilingual fields", () => {
     for (const section of ["meta", "nav", "hero", "about", "works", "services", "footer", "projects"]) {
       expect(homepageCmsSource).toContain(`id: "${section}"`);

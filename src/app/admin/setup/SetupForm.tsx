@@ -90,7 +90,7 @@ export function SetupForm() {
   }
 
   return (
-    <form className={styles.form} onSubmit={submit} aria-busy={busy}>
+    <form className={styles.form} method="post" onSubmit={submit} aria-busy={busy}>
       <label>
         <span>管理员用户名</span>
         <input
