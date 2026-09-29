@@ -104,13 +104,13 @@ describe("draft conversion navigation", () => {
     }
   });
 
-  it("locks editing controls while any conversion request is pending", () => {
+  it("locks editing controls while save or conversion is pending", () => {
     for (const file of ["WeeklyActivityWorkspace.tsx", "OkrMilestoneDraftWorkspace.tsx", "CareerTimelineDraftWorkspace.tsx"]) {
       const source = readFileSync(new URL(`../src/components/admin/${file}`, import.meta.url), "utf8");
       expect(source).toContain("const converting = drafts.some");
       if (file === "WeeklyActivityWorkspace.tsx") {
-        expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={converting}");
-        expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={converting}");
+        expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={saving || converting}");
+        expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={saving || converting}");
       } else {
         expect(source).toMatch(/onClick=\{\(\) => setEditing\(draft\)\} disabled=\{converting\}/);
       }
