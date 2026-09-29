@@ -10,7 +10,7 @@ import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { AssetPicker } from "./home/AssetPicker";
 import { HomepageEditor } from "./home/HomepageEditor";
 import { HomepageVisualWorkspace } from "./home/HomepageVisualWorkspace";
-import { applyHomepageEditorChange, isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
+import { applyHomepageEditorChange, isSiteContentDirty, reconcileFetchedHomeContent, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
 import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState, type HomepageImagePath } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -209,14 +209,14 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     };
   }, [dirty]);
 
-  async function fetchHomeData(): Promise<void> {
+  async function fetchHomeData(contentAtRequest: SiteContent): Promise<void> {
     const [nextDraft, nextVersions] = await Promise.all([
       adminRequest<SiteVersionData>("/api/admin/site/draft"),
       adminRequest<SiteVersionData[]>("/api/admin/site/versions"),
     ]);
     const nextContent = siteContentSchema.parse(nextDraft.content);
     setDraft(nextDraft);
-    commitContent(nextContent);
+    commitContent(reconcileFetchedHomeContent(contentRef.current, contentAtRequest, nextContent));
     setSavedContent(nextContent);
     setVersions(nextVersions);
   }
@@ -231,7 +231,8 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     const flushed = await runAction("home:flush", async () => { await flushPreviewEdits(); return true; });
     if (!flushed) return;
     if (isSiteContentDirty(contentRef.current, savedContent) && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
-    await runAction("home:refresh", fetchHomeData, "主页内容已更新");
+    const contentAtRequest = contentRef.current;
+    await runAction("home:refresh", () => fetchHomeData(contentAtRequest), "主页内容已更新");
   }
 
   function flushPreviewEdits() {
@@ -253,8 +254,9 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     await runAction("home:save", async () => {
       await flushPreviewEdits();
       if (!validateSiteContent(contentRef.current).valid) throw new Error("请先修正主页内容问题，再保存草稿。");
-      await adminRequest("/api/admin/site/draft", jsonRequest("PUT", { id: draft.id, content: contentRef.current }));
-      await fetchHomeData();
+      const submittedContent = contentRef.current;
+      await adminRequest("/api/admin/site/draft", jsonRequest("PUT", { id: draft.id, content: submittedContent }));
+      await fetchHomeData(submittedContent);
     }, "草稿已保存");
   }
 
@@ -263,8 +265,9 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       await flushPreviewEdits();
       if (isSiteContentDirty(contentRef.current, savedContent)) throw new Error("首页还有未保存修改，请先保存草稿。");
       if (!validateSiteContent(contentRef.current).valid) throw new Error("请先修正主页内容问题，再发布。");
+      const contentAtRequest = contentRef.current;
       await adminRequest("/api/admin/site/publish", jsonRequest("POST", { id: draft.id }));
-      await fetchHomeData();
+      await fetchHomeData(contentAtRequest);
       router.refresh();
     }, "主页已发布");
   }
@@ -297,12 +300,13 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   async function confirmRollback() {
     if (!rollbackRequest) return;
     const versionId = rollbackRequest.id;
+    const contentAtRequest = contentRef.current;
     const result = await runAction(`home:rollback:${versionId}`, async () => {
       const nextDraft = await adminRequest<SiteVersionData>("/api/admin/site/rollback", jsonRequest("POST", { id: versionId }));
       const nextVersions = await adminRequest<SiteVersionData[]>("/api/admin/site/versions");
       const nextContent = siteContentSchema.parse(nextDraft.content);
       setDraft(nextDraft);
-      commitContent(nextContent);
+      commitContent(reconcileFetchedHomeContent(contentRef.current, contentAtRequest, nextContent));
       setSavedContent(nextContent);
       setVersions(nextVersions);
       return true;

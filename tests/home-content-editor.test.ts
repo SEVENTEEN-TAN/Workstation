@@ -5,6 +5,7 @@ import {
   applyHomepageEditorChange,
   isSiteContentDirty,
   moveHomepageProjectSelection,
+  reconcileFetchedHomeContent,
   updateHomepageProjectSelection,
   updateContentAtPath,
   updateVisualContent,
@@ -157,6 +158,15 @@ describe("homepage content editor contracts", () => {
     expect(content.en.hero.lineOne).toBe("Line one");
     expect(updated).not.toBe(content);
     expect(updated.en.hero).not.toBe(content.en.hero);
+  });
+
+  it("keeps edits made while a home save request is in flight", () => {
+    const submitted = createContent();
+    const editedDuringSave = updateContentAtPath(submitted, ["zh", "hero", "lineOne"], "New local line");
+    const fetched = updateContentAtPath(submitted, ["en", "hero", "lineOne"], "Saved server line");
+
+    expect(reconcileFetchedHomeContent(editedDuringSave, submitted, fetched)).toBe(editedDuringSave);
+    expect(reconcileFetchedHomeContent(submitted, submitted, fetched)).toBe(fetched);
   });
 
   it("updates an array item without mutating the original array", () => {

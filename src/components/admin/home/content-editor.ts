@@ -144,3 +144,11 @@ export function isSiteContentDirty(
 ): boolean {
   return JSON.stringify(content) !== JSON.stringify(savedContent);
 }
+
+export function reconcileFetchedHomeContent(
+  current: SiteContent,
+  contentAtRequest: SiteContent,
+  fetched: SiteContent,
+): SiteContent {
+  return isSiteContentDirty(current, contentAtRequest) ? current : fetched;
+}
