@@ -282,6 +282,97 @@
   line-height: 1;
 }
 
+.queueGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.queueCard {
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  background: #14181f;
+}
+
+.queueCard header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+.queueCard h2 {
+  margin: 0;
+  color: #f4f6f5;
+  font-size: 15px;
+}
+
+.queueCard header span {
+  color: #00df8f;
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.queueList {
+  display: grid;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.queueList a {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  color: inherit;
+  text-decoration: none;
+}
+
+.queueList a:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.queueList a:hover strong {
+  color: #00df8f;
+}
+
+.queueList a:focus-visible {
+  outline: 2px solid #00df8f;
+  outline-offset: 2px;
+}
+
+.queueList strong,
+.queueList small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.queueList strong {
+  color: #e6e9eb;
+  font-size: 12px;
+}
+
+.queueList small {
+  color: #747f8b;
+  font-size: 10px;
+}
+
+.queueEmpty {
+  margin: 0;
+  padding-top: 14px;
+  color: #747f8b;
+  font-size: 12px;
+}
+
 .panel {
   min-width: 0;
   margin-bottom: 14px;
@@ -2836,6 +2927,10 @@
   .panel { padding: 22px; }
 }
 
+@media (min-width: 1180px) {
+  .queueGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 @media (min-width: 900px) {
   .loginPage { padding: 28px; }
   .authFrame {
@@ -2919,6 +3014,7 @@
   .pageHeaderAction { justify-self: start; }
   .panel { padding: 15px; }
   .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .queueGrid { grid-template-columns: 1fr; }
   .metrics article { padding: 14px; }
   .sectionHeading,
   .editorToolbar,

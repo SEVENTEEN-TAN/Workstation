@@ -111,7 +111,7 @@ export function ObjectiveWorkspace({ initialObjective }: { initialObjective: Obj
           {objective.keyResults.length ? <div className={styles.krExecutionList}>{objective.keyResults.map((keyResult, index) => {
             const state = summary.keyResults[index];
             return (
-              <article className={`${styles.krExecutionCard} ${selectedKr?.id === keyResult.id ? styles.krSelected : ""}`} key={keyResult.id}>
+              <article className={`${styles.krExecutionCard} ${selectedKr?.id === keyResult.id ? styles.krSelected : ""}`} id={`key-result-${keyResult.id}`} key={keyResult.id}>
                 <button type="button" className={styles.krSelectButton} onClick={() => setSelectedKrId(keyResult.id)}>
                   <span><strong>{keyResult.titleZh}</strong><small>{keyResult.progressMode === "MANUAL" ? `${keyResult.manualProgress ?? 0}%` : `${keyResult.currentValue ?? 0} / ${keyResult.targetValue ?? 0}`} · 权重 {keyResult.weight}</small></span>
                   <b>{state.progress}%</b>

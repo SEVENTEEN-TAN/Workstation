@@ -5,6 +5,7 @@ import { LoaderCircle, RefreshCw, ScrollText } from "lucide-react";
 import { useState } from "react";
 
 import styles from "../../app/admin/admin.module.css";
+import type { OverviewQueueData } from "../../lib/services/overview-queue";
 import { adminRequest } from "./request";
 import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
@@ -12,26 +13,38 @@ import { PageHeader } from "./PageHeader";
 import type { AuditLogData, DashboardData } from "./types";
 import { useAdminAction } from "./useAdminAction";
 
+const EMPTY_QUEUE: OverviewQueueData = {
+  todayActions: [],
+  overdueKeyResults: [],
+  pendingReviews: [],
+  pendingPublications: [],
+};
+
 export function OverviewWorkspace({
   initialDashboard,
   initialAuditLogs,
+  initialQueue = EMPTY_QUEUE,
 }: {
   initialDashboard: DashboardData;
   initialAuditLogs: AuditLogData[];
+  initialQueue?: OverviewQueueData;
 }) {
   const [dashboard, setDashboard] = useState(initialDashboard);
   const [auditLogs, setAuditLogs] = useState(initialAuditLogs);
+  const [queue, setQueue] = useState(initialQueue);
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const refreshBusy = isBusy("overview:refresh");
 
   async function refreshDashboard() {
     await runAction("overview:refresh", async () => {
-      const [nextDashboard, nextAuditLogs] = await Promise.all([
+      const [nextDashboard, nextAuditLogs, nextQueue] = await Promise.all([
         adminRequest<DashboardData>("/api/admin/dashboard"),
         adminRequest<AuditLogData[]>("/api/admin/audit"),
+        adminRequest<OverviewQueueData>("/api/admin/overview-queue"),
       ]);
       setDashboard(nextDashboard);
       setAuditLogs(nextAuditLogs);
+      setQueue(nextQueue);
     }, "仪表盘已更新");
   }
 
@@ -40,6 +53,12 @@ export function OverviewWorkspace({
     ["目标", dashboard.objectiveCount],
     ["平均进度", `${dashboard.averageProgress}%`],
     ["风险目标", dashboard.atRiskObjectives],
+  ];
+  const queueSections = [
+    { title: "今日行动", empty: "今天没有到期行动", items: queue.todayActions },
+    { title: "逾期 KR", empty: "没有逾期关键结果", items: queue.overdueKeyResults },
+    { title: "待审查", empty: "没有待审查变更", items: queue.pendingReviews },
+    { title: "待发布", empty: "没有待发布内容", items: queue.pendingPublications },
   ];
 
   return (
@@ -63,6 +82,27 @@ export function OverviewWorkspace({
           </article>
         ))}
       </div>
+
+      <section className={styles.queueGrid} aria-label="待办队列">
+        {queueSections.map(({ title, empty, items }) => (
+          <article className={styles.queueCard} key={title}>
+            <header>
+              <h2>{title}</h2>
+              <span>{items.length} 项</span>
+            </header>
+            {items.length ? (
+              <div className={styles.queueList}>
+                {items.map((item) => (
+                  <Link href={item.href} key={item.id}>
+                    <strong>{item.label}</strong>
+                    <small>{item.detail}</small>
+                  </Link>
+                ))}
+              </div>
+            ) : <p className={styles.queueEmpty}>{empty}</p>}
+          </article>
+        ))}
+      </section>
 
       <section className={styles.panel}>
         <div className={styles.sectionHeading}>

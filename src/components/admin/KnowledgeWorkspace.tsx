@@ -2,7 +2,7 @@
 
 import { BookOpen, Database, FileText, FolderSearch, LoaderCircle, Plus, Search, Trash2, X } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -91,15 +91,18 @@ function KnowledgeTree({ items, onOpenNote }: { items: KnowledgeTreeItem[]; onOp
   ) : <li key={item.note.id}><button type="button" onClick={() => onOpenNote(item.note)}><FileText size={13} />{noteTitle(item.note)}</button></li>)}</ul>;
 }
 
-export function KnowledgeWorkspace({ initialVaults }: { initialVaults: KnowledgeVaultData[] }) {
+export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevisionId }: { initialVaults: KnowledgeVaultData[]; initialVaultId?: string; initialRevisionId?: string }) {
+  const initialVault = initialVaults.find((vault) => vault.id === initialVaultId) ?? initialVaults[0] ?? null;
+  const initialRevision = initialVault?.sourceRevisions.find((revision) => revision.id === initialRevisionId);
+  const initialNote = initialVault?.notes.find((note) => note.relativePath === initialRevision?.relativePath) ?? null;
   const [vaults, setVaults] = useState(initialVaults);
-  const [selectedId, setSelectedId] = useState(initialVaults[0]?.id ?? "");
+  const [selectedId, setSelectedId] = useState(initialVault?.id ?? "");
   const [query, setQuery] = useState("");
   const [deleteRequest, setDeleteRequest] = useState<KnowledgeVaultData | null>(null);
-  const [viewingNote, setViewingNote] = useState<KnowledgeNoteData | null>(null);
+  const [viewingNote, setViewingNote] = useState<KnowledgeNoteData | null>(initialNote);
   const [noteContent, setNoteContent] = useState("");
   const [noteError, setNoteError] = useState("");
-  const [isNoteLoading, setIsNoteLoading] = useState(false);
+  const [isNoteLoading, setIsNoteLoading] = useState(Boolean(initialNote));
   const [draftSlugs, setDraftSlugs] = useState<Record<string, string>>({});
   const [unpublishRequest, setUnpublishRequest] = useState<{ article: KnowledgeArticleData; draft: KnowledgePublicationDraftData } | null>(null);
   const [unpublishWarning, setUnpublishWarning] = useState<string | null>(null);
@@ -107,6 +110,15 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
   const [okrCycles, setOkrCycles] = useState<OkrCycleData[] | null>(null);
   const [taskKeyResultId, setTaskKeyResultId] = useState("");
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
+  useEffect(() => {
+    if (!initialVault || !initialNote || selectedId !== initialVault.id) return;
+    let active = true;
+    adminRequest<NoteContent>(`/api/admin/knowledge/vaults/${initialVault.id}/notes?path=${encodeURIComponent(initialNote.relativePath)}`)
+      .then((result) => { if (active) setNoteContent(result.content); })
+      .catch((error: unknown) => { if (active) setNoteError(error instanceof Error ? error.message : "笔记正文不可用"); })
+      .finally(() => { if (active) setIsNoteLoading(false); });
+    return () => { active = false; };
+  }, [initialVault, initialNote, selectedId]);
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
   const syncReport = selected?.syncReports[0] ?? null;
   const pendingSyncChanges = syncReport?.changes.filter(needsSyncReview) ?? [];
@@ -341,7 +353,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
              {syncReport ? <section className={styles.syncReport} aria-label="最新同步报告">
               <div className={styles.syncReportHeading}><strong>最新同步报告</strong><time dateTime={syncReport.scannedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(syncReport.scannedAt))}</time></div>
              <div className={styles.syncCounts}><span>新增 {syncReport.addedCount}</span><span>修改 {syncReport.modifiedCount}</span><span>移动 {syncReport.movedCount}</span><span>疑似缺失 {syncReport.missingCount}</span><span>未变 {syncReport.unchangedCount}</span></div>
-              {pendingSyncChanges.length ? <div className={styles.syncReviewQueue}><p><strong>待审查 {pendingSyncChanges.length} 项</strong>。审查只记录同步决定，不会修改任何公开文章。</p>{pendingSyncChanges.map((change) => <div key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small><div className={styles.syncReviewActions}><button type="button" onClick={() => void reviewSyncChange(change, "ACKNOWLEDGED")} disabled={isBusy(`knowledge:sync-review:${change.id}`)}>{isBusy(`knowledge:sync-review:${change.id}`) ? "处理中" : "确认变更"}</button><button type="button" onClick={() => void reviewSyncChange(change, "IGNORED")} disabled={isBusy(`knowledge:sync-review:${change.id}`)}>忽略本次</button></div></div>)}</div> : null}
+              {pendingSyncChanges.length ? <div className={styles.syncReviewQueue}><p><strong>待审查 {pendingSyncChanges.length} 项</strong>。审查只记录同步决定，不会修改任何公开文章。</p>{pendingSyncChanges.map((change) => <div id={`sync-change-${change.id}`} key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small><div className={styles.syncReviewActions}><button type="button" onClick={() => void reviewSyncChange(change, "ACKNOWLEDGED")} disabled={isBusy(`knowledge:sync-review:${change.id}`)}>{isBusy(`knowledge:sync-review:${change.id}`) ? "处理中" : "确认变更"}</button><button type="button" onClick={() => void reviewSyncChange(change, "IGNORED")} disabled={isBusy(`knowledge:sync-review:${change.id}`)}>忽略本次</button></div></div>)}</div> : null}
               {syncReport.changes.length ? <div className={styles.syncChanges}>{syncReport.changes.slice(0, 8).map((change) => <div key={change.id}><span>{changeLabel(change)}</span><small>{changePath(change)}</small></div>)}{syncReport.changes.length > 8 ? <p>另有 {syncReport.changes.length - 8} 项变更未展开。</p> : null}</div> : <p className={styles.syncEmpty}>内容未变化，未生成待处理项。</p>}
              </section> : null}
              {selectedLinks.length ? <section className={styles.syncReport} aria-label="链接报告">
@@ -359,7 +371,7 @@ export function KnowledgeWorkspace({ initialVaults }: { initialVaults: Knowledge
                  <section><h3>反向链接</h3>{incomingLinks.length ? <ul>{incomingLinks.map((link) => <li key={link.id}><button type="button" onClick={() => viewLinkedNote(link.sourceRelativePath)}>{link.displayLabel ?? link.sourceRelativePath}</button></li>)}</ul> : <p>没有反向链接。</p>}</section>
                   <section><h3>发布检查</h3><ul className={styles.publicationChecks}>{publicationChecks.map((check) => <li key={check.id} className={check.status === "READY" ? styles.publicationReady : check.status === "BLOCKED" ? styles.publicationBlocked : styles.publicationNotice}>{check.label}</li>)}</ul></section>
                   <section><h3>笔记任务</h3>{noteTasks.length ? <div className={styles.noteTaskPromotion}>{okrCycles ? <select value={taskKeyResultId} onChange={(event) => setTaskKeyResultId(event.target.value)} aria-label="目标 KR"><option value="">选择目标 KR</option>{keyResults.map((item) => <option value={item.id} key={item.id}>{item.label}</option>)}</select> : <button type="button" onClick={loadTaskTargets} disabled={isBusy("knowledge:task-targets")}>{isBusy("knowledge:task-targets") ? "加载 KR 中" : "选择目标 KR"}</button>}{noteTasks.map((task, index) => <div key={`${task.title}-${index}`}><span>{task.completed ? "已完成：" : "待处理："}{task.title}</span><button type="button" onClick={() => promoteTask(task.title)} disabled={!taskKeyResultId || isBusy(`knowledge:task:${task.title}`)}>{isBusy(`knowledge:task:${task.title}`) ? "创建中" : "提升为行动项"}</button></div>)}</div> : <p>没有标准 Markdown 任务。</p>}</section>
-                  <section><h3>源修订</h3>{publicationUpdate?.updateAvailable ? <p className={styles.publicationNotice}>源文件已有新版本，公开文章 /{publicationUpdate.articleSlug} 保持不变；可从最新修订创建新的发布草稿。</p> : null}{viewingRevisions.length ? <ul className={styles.sourceRevisionList}>{viewingRevisions.map((revision) => <li key={revision.id}><div><strong>{revision.contentHash.slice(0, 10)}</strong><time dateTime={revision.capturedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(revision.capturedAt))}</time></div>{revision.draft?.article ? <div className={styles.articlePublishForm}><span>已发布：/{revision.draft.article.slug}</span><button type="button" className={styles.dangerButton} onClick={() => requestUnpublish(revision)}>下架文章</button></div> : revision.draft ? <div className={styles.articlePublishForm}><span>草稿：{revision.draft.title}</span>{publicationEmbeds.length ? <div className={styles.attachmentSelection}>{attachmentAssets ? publicationEmbeds.map((target) => <label key={target}><span>{target}</span><select value={revision.draft!.attachments.find((item) => item.target === target)?.assetId ?? ""} onChange={(event) => { if (event.target.value) void selectAttachment(revision.draft!, target, event.target.value); }}><option value="">选择图片</option>{attachmentAssets.map((asset) => <option key={asset.id} value={asset.id}>{asset.originalFilename}</option>)}</select></label>) : <button type="button" onClick={loadAttachmentAssets} disabled={isBusy("knowledge:attachment-assets")}>{isBusy("knowledge:attachment-assets") ? "加载图片中" : "选择文章附件"}</button>}</div> : null}<label><span className="srOnly">文章路径</span><input value={draftSlugs[revision.draft.id] ?? ""} onChange={(event) => setDraftSlugs((current) => ({ ...current, [revision.draft!.id]: event.target.value }))} placeholder="article-slug" aria-label="文章路径" maxLength={96} /></label><button type="button" onClick={() => publishArticle(revision.draft!)} disabled={isBusy(`knowledge:article:${revision.draft.id}`)}>{isBusy(`knowledge:article:${revision.draft.id}`) ? "发布中" : "发布文章"}</button></div> : <button type="button" onClick={() => createPublicationDraft(revision)} disabled={isBusy(`knowledge:draft:${revision.id}`)}>{isBusy(`knowledge:draft:${revision.id}`) ? "创建中" : "创建发布草稿"}</button>}</li>)}</ul> : <p>尚未捕获源修订，请重新扫描知识库。</p>}</section>
+                  <section><h3>源修订</h3>{publicationUpdate?.updateAvailable ? <p className={styles.publicationNotice}>源文件已有新版本，公开文章 /{publicationUpdate.articleSlug} 保持不变；可从最新修订创建新的发布草稿。</p> : null}{viewingRevisions.length ? <ul className={styles.sourceRevisionList}>{viewingRevisions.map((revision) => <li id={`revision-${revision.id}`} key={revision.id}><div><strong>{revision.contentHash.slice(0, 10)}</strong><time dateTime={revision.capturedAt}>{new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(revision.capturedAt))}</time></div>{revision.draft?.article ? <div className={styles.articlePublishForm}><span>已发布：/{revision.draft.article.slug}</span><button type="button" className={styles.dangerButton} onClick={() => requestUnpublish(revision)}>下架文章</button></div> : revision.draft ? <div className={styles.articlePublishForm}><span>草稿：{revision.draft.title}</span>{publicationEmbeds.length ? <div className={styles.attachmentSelection}>{attachmentAssets ? publicationEmbeds.map((target) => <label key={target}><span>{target}</span><select value={revision.draft!.attachments.find((item) => item.target === target)?.assetId ?? ""} onChange={(event) => { if (event.target.value) void selectAttachment(revision.draft!, target, event.target.value); }}><option value="">选择图片</option>{attachmentAssets.map((asset) => <option key={asset.id} value={asset.id}>{asset.originalFilename}</option>)}</select></label>) : <button type="button" onClick={loadAttachmentAssets} disabled={isBusy("knowledge:attachment-assets")}>{isBusy("knowledge:attachment-assets") ? "加载图片中" : "选择文章附件"}</button>}</div> : null}<label><span className="srOnly">文章路径</span><input value={draftSlugs[revision.draft.id] ?? ""} onChange={(event) => setDraftSlugs((current) => ({ ...current, [revision.draft!.id]: event.target.value }))} placeholder="article-slug" aria-label="文章路径" maxLength={96} /></label><button type="button" onClick={() => publishArticle(revision.draft!)} disabled={isBusy(`knowledge:article:${revision.draft.id}`)}>{isBusy(`knowledge:article:${revision.draft.id}`) ? "发布中" : "发布文章"}</button></div> : <button type="button" onClick={() => createPublicationDraft(revision)} disabled={isBusy(`knowledge:draft:${revision.id}`)}>{isBusy(`knowledge:draft:${revision.id}`) ? "创建中" : "创建发布草稿"}</button>}</li>)}</ul> : <p>尚未捕获源修订，请重新扫描知识库。</p>}</section>
                </div>
              </section> : null}
             {selected?.lastScanStatus !== "NEVER" ? (
