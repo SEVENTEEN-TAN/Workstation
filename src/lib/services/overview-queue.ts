@@ -76,9 +76,12 @@ export async function getOverviewQueue(now = new Date()): Promise<OverviewQueueD
   const overdueKeyResults: OverviewQueueItem[] = [];
 
   for (const cycle of cycles) {
+    if (cycle.status === "COMPLETED" || cycle.status === "ARCHIVED") continue;
     for (const objective of cycle.objectives) {
+      if (objective.status === "COMPLETED" || objective.status === "CANCELLED") continue;
       const objectiveHref = `/admin/okr/cycles/${encodeURIComponent(cycle.id)}/objectives/${encodeURIComponent(objective.id)}`;
       for (const keyResult of objective.keyResults) {
+        if (keyResult.status === "DONE" || keyResult.status === "COMPLETED" || keyResult.status === "CANCELLED") continue;
         for (const action of keyResult.actionItems) {
           if (action.dueDate && action.status !== "DONE" && action.status !== "CANCELLED" && shanghaiDate(action.dueDate) === today) {
             todayActions.push({
@@ -94,7 +97,7 @@ export async function getOverviewQueue(now = new Date()): Promise<OverviewQueueD
         const deadline = [objective.endDate, cycle.endDate]
           .filter((date): date is Date => date instanceof Date && shanghaiDate(date) < today)
           .sort((left, right) => left.getTime() - right.getTime())[0];
-        if (deadline && progress < 100 && keyResult.status !== "DONE" && keyResult.status !== "COMPLETED" && keyResult.status !== "CANCELLED") {
+        if (deadline && progress < 100) {
           overdueKeyResults.push({
             id: keyResult.id,
             label: keyResult.titleZh,

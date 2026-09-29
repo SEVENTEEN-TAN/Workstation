@@ -32,10 +32,12 @@ describe("overview queue", () => {
     services.listOkr.mockResolvedValue([{
       id: "cycle-1",
       nameZh: "2026 Q3",
+      status: "ACTIVE",
       endDate: new Date("2026-09-28T00:00:00.000Z"),
       objectives: [{
         id: "objective-1",
         titleZh: "交付新版工作站",
+        status: "IN_PROGRESS",
         endDate: null,
         keyResults: [{
           id: "kr-overdue",
@@ -72,6 +74,7 @@ describe("overview queue", () => {
       }, {
         id: "objective-2",
         titleZh: "目标日期优先",
+        status: "IN_PROGRESS",
         endDate: new Date("2026-09-30T00:00:00.000Z"),
         keyResults: [{
           id: "kr-cycle-overdue",
@@ -105,6 +108,30 @@ describe("overview queue", () => {
       detail: "2026 Q3 / 目标日期优先 · 截止 2026-09-28 · 50%",
       href: "/admin/okr/cycles/cycle-1/objectives/objective-2#key-result-kr-cycle-overdue",
     }]);
+  });
+
+  it.each([
+    ["cancelled objective", "ACTIVE", "CANCELLED", "IN_PROGRESS"],
+    ["completed objective", "ACTIVE", "COMPLETED", "IN_PROGRESS"],
+    ["completed cycle", "COMPLETED", "IN_PROGRESS", "IN_PROGRESS"],
+    ["archived cycle", "ARCHIVED", "IN_PROGRESS", "IN_PROGRESS"],
+    ["completed KR", "ACTIVE", "IN_PROGRESS", "COMPLETED"],
+    ["cancelled KR", "ACTIVE", "IN_PROGRESS", "CANCELLED"],
+  ])("does not present work under a %s as actionable", async (_case, cycleStatus, objectiveStatus, keyResultStatus) => {
+    services.listOkr.mockResolvedValue([{
+      id: "cycle-1", nameZh: "2026 Q3", status: cycleStatus, endDate: new Date("2026-09-28T00:00:00.000Z"),
+      objectives: [{
+        id: "objective-1", titleZh: "目标", status: objectiveStatus, endDate: null,
+        keyResults: [{
+          id: "kr-1", titleZh: "未完成结果", status: keyResultStatus, progressMode: "MANUAL", manualProgress: 50,
+          actionItems: [{ id: "action-1", titleZh: "旧行动", status: "TODO", dueDate: new Date("2026-09-29T00:00:00.000Z") }],
+        }],
+      }],
+    }]);
+
+    await expect(getOverviewQueue(new Date("2026-09-28T16:30:00.000Z"))).resolves.toMatchObject({
+      todayActions: [], overdueKeyResults: [],
+    });
   });
 
   it("reports only undecided modified or missing changes from each latest sync report", async () => {
