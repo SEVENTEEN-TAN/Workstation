@@ -95,12 +95,18 @@ export type IframeCommitMessage = { type: "homepage-editor:commit"; path: string
 export type IframeReadyMessage = { type: "homepage-editor:ready" };
 export type IframeSelectMessage = { type: "homepage-editor:select"; path: string };
 export type IframeLocaleMessage = { type: "homepage-editor:locale"; locale: "zh" | "en" };
-export type IframeMessage = IframeCommitMessage | IframeReadyMessage | IframeSelectMessage | IframeLocaleMessage;
+export type IframeFlushedMessage = { type: "homepage-editor:flushed"; requestId: number };
+export type IframeMessage = IframeCommitMessage | IframeReadyMessage | IframeSelectMessage | IframeLocaleMessage | IframeFlushedMessage;
+
+function validRequestId(value: unknown): value is number {
+  return Number.isSafeInteger(value) && typeof value === "number" && value >= 0;
+}
 
 export function parseIframeMessage(value: unknown, content: SiteContent): IframeMessage | null {
   if (!value || typeof value !== "object") return null;
-  const message = value as { type?: unknown; path?: unknown; value?: unknown; locale?: unknown };
+  const message = value as { type?: unknown; path?: unknown; value?: unknown; locale?: unknown; requestId?: unknown };
   if (message.type === "homepage-editor:ready") return { type: message.type };
+  if (message.type === "homepage-editor:flushed" && validRequestId(message.requestId)) return { type: message.type, requestId: message.requestId };
   if (message.type === "homepage-editor:locale" && (message.locale === "zh" || message.locale === "en")) return { type: message.type, locale: message.locale };
   const field = getVisualEditField(content, message.path);
   if (message.type === "homepage-editor:select" && field) return { type: message.type, path: field.path };
@@ -110,7 +116,8 @@ export function parseIframeMessage(value: unknown, content: SiteContent): Iframe
 
 export type ParentContentMessage = { type: "homepage-editor:content" } & EditorPreviewState;
 export type ParentFocusMessage = { type: "homepage-editor:focus"; section: HomePreviewSection };
-export type ParentMessage = ParentContentMessage | ParentFocusMessage;
+export type ParentFlushMessage = { type: "homepage-editor:flush"; requestId: number };
+export type ParentMessage = ParentContentMessage | ParentFocusMessage | ParentFlushMessage;
 
 export function isTrustedEditorMessage(
   event: Pick<MessageEvent, "origin" | "source">,
@@ -136,7 +143,8 @@ export function sendEditorPreviewState(
 
 export function parseParentMessage(value: unknown): ParentMessage | null {
   if (!value || typeof value !== "object") return null;
-  const message = value as { type?: unknown; content?: unknown; locale?: unknown; selectedPath?: unknown; section?: unknown };
+  const message = value as { type?: unknown; content?: unknown; locale?: unknown; selectedPath?: unknown; section?: unknown; requestId?: unknown };
+  if (message.type === "homepage-editor:flush" && validRequestId(message.requestId)) return { type: message.type, requestId: message.requestId };
   if (message.type === "homepage-editor:focus") {
     return typeof message.section === "string" && HOME_PREVIEW_SECTIONS.includes(message.section as HomePreviewSection)
       ? { type: message.type, section: message.section as HomePreviewSection }

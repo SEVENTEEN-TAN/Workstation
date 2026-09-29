@@ -53,6 +53,8 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
   }, []);
 
   useEffect(() => {
+    let pendingFlushId: number | null = null;
+
     function fieldTarget(target: EventTarget | null) {
       if (!(target instanceof Element)) return null;
       const element = target.closest<HTMLElement>("[data-cms-path]");
@@ -67,6 +69,23 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
     function commitTarget(target: HTMLElement) {
       const message = createTextCommit(contentRef.current, target.dataset.cmsPath, target.textContent ?? "", composing.current);
       if (message) window.parent.postMessage(message, window.location.origin);
+    }
+
+    function acknowledgeFlush(requestId: number) {
+      window.parent.postMessage({ type: "homepage-editor:flushed", requestId }, window.location.origin);
+    }
+
+    function flushOnRequest(event: MessageEvent) {
+      if (!isTrustedEditorMessage(event, window.location.origin, window.parent)) return;
+      const message = parseParentMessage(event.data);
+      if (message?.type !== "homepage-editor:flush") return;
+      if (composing.current) {
+        pendingFlushId = message.requestId;
+        return;
+      }
+      const target = fieldTarget(document.activeElement);
+      if (target) commitTarget(target);
+      acknowledgeFlush(message.requestId);
     }
 
     function insertPlainText(text: string) {
@@ -101,7 +120,16 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
 
     function onComposition(event: CompositionEvent) {
       const target = fieldTarget(event.target);
-      if (target && getVisualEditField(contentRef.current, target.dataset.cmsPath)?.kind === "text") composing.current = event.type === "compositionstart";
+      if (!target || getVisualEditField(contentRef.current, target.dataset.cmsPath)?.kind !== "text") return;
+      composing.current = event.type === "compositionstart";
+      if (!composing.current && pendingFlushId !== null) {
+        const requestId = pendingFlushId;
+        pendingFlushId = null;
+        queueMicrotask(() => {
+          commitTarget(target);
+          acknowledgeFlush(requestId);
+        });
+      }
     }
 
     function preventSubmit(event: SubmitEvent) {
@@ -115,6 +143,7 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
     document.addEventListener("paste", onPaste);
     document.addEventListener("compositionstart", onComposition);
     document.addEventListener("compositionend", onComposition);
+    window.addEventListener("message", flushOnRequest);
     return () => {
       document.removeEventListener("click", onClick, true);
       document.removeEventListener("submit", preventSubmit, true);
@@ -123,6 +152,7 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
       document.removeEventListener("paste", onPaste);
       document.removeEventListener("compositionstart", onComposition);
       document.removeEventListener("compositionend", onComposition);
+      window.removeEventListener("message", flushOnRequest);
     };
   }, []);
 

@@ -55,6 +55,13 @@ describe("overview queue", () => {
           manualProgress: 80,
           actionItems: [],
         }, {
+          id: "kr-cancelled",
+          titleZh: "已取消结果",
+          status: "CANCELLED",
+          progressMode: "MANUAL",
+          manualProgress: 40,
+          actionItems: [],
+        }, {
           id: "kr-at-100",
           titleZh: "进度已满",
           status: "IN_PROGRESS",
@@ -67,8 +74,8 @@ describe("overview queue", () => {
         titleZh: "目标日期优先",
         endDate: new Date("2026-09-30T00:00:00.000Z"),
         keyResults: [{
-          id: "kr-not-overdue",
-          titleZh: "尚未到期",
+          id: "kr-cycle-overdue",
+          titleZh: "周期已到期结果",
           status: "IN_PROGRESS",
           progressMode: "METRIC",
           startValue: 0,
@@ -92,6 +99,11 @@ describe("overview queue", () => {
       label: "完成仪表盘",
       detail: "2026 Q3 / 交付新版工作站 · 截止 2026-09-28 · 80%",
       href: "/admin/okr/cycles/cycle-1/objectives/objective-1#key-result-kr-overdue",
+    }, {
+      id: "kr-cycle-overdue",
+      label: "周期已到期结果",
+      detail: "2026 Q3 / 目标日期优先 · 截止 2026-09-28 · 50%",
+      href: "/admin/okr/cycles/cycle-1/objectives/objective-2#key-result-kr-cycle-overdue",
     }]);
   });
 

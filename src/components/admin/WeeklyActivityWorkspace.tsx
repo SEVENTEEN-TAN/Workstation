@@ -40,6 +40,8 @@ const copyFields = [
   ["英文摘要", "summaryEn"],
 ] as const;
 
+const recoveryUnavailableNotice = "浏览器未能保留当前周报的修改。请先保存或取消编辑，再切换内容。";
+
 function dateOnly(value: string | Date) {
   const date = new Date(value);
   const local = new Date(date.getTime() + 8 * 60 * 60_000);
@@ -129,9 +131,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   const candidateStale = Boolean(editing?.candidate && !sameWeeklyDraftCopy(editing.values, editing.candidate.source));
 
   useEffect(() => {
-    if (!editing) return;
-    if (dirty) writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt);
-    else clearRecovery(editing.draft.id);
+    if (editing && !dirty) clearRecovery(editing.draft.id);
   }, [dirty, editing]);
 
   useEffect(() => {
@@ -149,18 +149,33 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     const guardLinks = (event: MouseEvent) => {
       const target = event.target instanceof Element ? event.target.closest("a[href]") : null;
       if (!target || target.getAttribute("target") === "_blank") return;
-      if (window.confirm("当前周报有未保存修改，离开后可在本浏览器恢复。仍要离开吗？")) return;
-      event.preventDefault();
-      event.stopPropagation();
+      if (!window.confirm("当前周报有未保存修改，仍要离开吗？")) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+      if (editing && !writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt)) {
+        setEditorNotice(recoveryUnavailableNotice);
+        event.preventDefault();
+        event.stopPropagation();
+      }
     };
     document.addEventListener("click", guardLinks, true);
     return () => document.removeEventListener("click", guardLinks, true);
-  }, [dirty]);
+  }, [dirty, editing]);
+
+  function preserveCurrentEdits() {
+    if (!dirty || !editing) return true;
+    if (writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt)) return true;
+    setEditorNotice(recoveryUnavailableNotice);
+    return false;
+  }
 
   function openEditor(draft: WeeklyActivityDraftData) {
     if (converting) return false;
     if (editing?.draft.id === draft.id) return true;
-    if (dirty && !window.confirm("当前周报有未保存修改，切换后会保留在本浏览器。仍要切换吗？")) return false;
+    if (dirty && !window.confirm("当前周报有未保存修改，仍要切换吗？")) return false;
+    if (!preserveCurrentEdits()) return false;
     const next = editorForDraft(draft);
     setEditing(next);
     setEditorNotice(next.recovered ? recoveredNotice(next) : null);
@@ -176,15 +191,17 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   function updateValue(key: keyof WeeklyDraftCopy, value: string) {
-    if (converting) return;
-    setEditing((current) => current ? { ...current, values: { ...current.values, [key]: value } } : current);
-    setEditorNotice(null);
+    if (converting || !editing) return;
+    const values = { ...editing.values, [key]: value };
+    setEditing({ ...editing, values });
+    setEditorNotice(writeRecovery(editing.draft.id, values, editing.baseUpdatedAt) ? null : recoveryUnavailableNotice);
   }
 
   async function generate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (converting) return;
-    if (dirty && !window.confirm("当前修改会保留在本浏览器。仍要生成或打开其他周报吗？")) return;
+    if (dirty && !window.confirm("当前周报有未保存修改，仍要生成或打开其他周报吗？")) return;
+    if (!preserveCurrentEdits()) return;
     const data = new FormData(event.currentTarget);
     const result = await runAction("weekly:generate", () => adminRequest<WeeklyGenerationResult>(
       "/api/admin/weekly",
@@ -255,8 +272,10 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
 
   function adoptCandidate() {
     if (!editing?.candidate || candidateStale || converting) return;
-    setEditing({ ...editing, values: editing.candidate.candidate, candidate: null, recovered: false });
-    setEditorNotice("AI 候选已放入编辑区，尚未保存。");
+    const values = editing.candidate.candidate;
+    setEditing({ ...editing, values, candidate: null, recovered: false });
+    setEditorNotice(writeRecovery(editing.draft.id, values, editing.baseUpdatedAt)
+      ? "AI 候选已放入编辑区，尚未保存。" : recoveryUnavailableNotice);
   }
 
   return (

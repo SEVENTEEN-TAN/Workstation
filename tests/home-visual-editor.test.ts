@@ -202,6 +202,15 @@ describe("homepage visual-editor protocol", () => {
     }, "https://sqtan.test");
   });
 
+  it("accepts a matched flush handshake and rejects malformed request ids", () => {
+    expect(parseParentMessage({ type: "homepage-editor:flush", requestId: 7 }))
+      .toEqual({ type: "homepage-editor:flush", requestId: 7 });
+    expect(parseIframeMessage({ type: "homepage-editor:flushed", requestId: 7 }, bootstrapSiteContent))
+      .toEqual({ type: "homepage-editor:flushed", requestId: 7 });
+    expect(parseParentMessage({ type: "homepage-editor:flush", requestId: -1 })).toBeNull();
+    expect(parseIframeMessage({ type: "homepage-editor:flushed", requestId: "7" }, bootstrapSiteContent)).toBeNull();
+  });
+
   it("finds only concrete editable content paths", () => {
     const editing = structuredClone(bootstrapSiteContent);
     const paragraphPath = `en.about.paragraphs.${editing.en.about.paragraphs.length - 1}`;

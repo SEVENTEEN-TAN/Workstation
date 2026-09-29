@@ -17,6 +17,7 @@ import { EmptyState } from "../src/components/admin/EmptyState";
 import { ObsidianMarkdownPreview } from "../src/components/admin/ObsidianMarkdownPreview";
 import { OverviewWorkspace } from "../src/components/admin/OverviewWorkspace";
 import { PageHeader } from "../src/components/admin/PageHeader";
+import { writeRecovery } from "../src/components/admin/WeeklyActivityWorkspace";
 import { OkrEntityDialog } from "../src/components/admin/okr/OkrEntityDialog";
 import type { AssetData, AuditLogData, DashboardData } from "../src/components/admin/types";
 
@@ -371,6 +372,19 @@ describe("admin route contracts", () => {
     expect(workspace).toContain("候选不会自动覆盖当前草稿");
     expect(workspace).toContain("转为私有职业动态");
     expect(workspace).toContain("FeedbackCenter");
+  });
+
+  it("keeps the current weekly editor when recovery storage rejects a switch", () => {
+    vi.stubGlobal("sessionStorage", { setItem() { throw new Error("storage unavailable"); } });
+    expect(writeRecovery("draft-1", {
+      titleZh: "未保存", titleEn: "Unsaved", summaryZh: "内容", summaryEn: "Content",
+    }, "2026-09-18T03:00:00.000Z")).toBe(false);
+
+    const workspace = readProjectFile("src/components/admin/WeeklyActivityWorkspace.tsx");
+    const openEditor = workspace.split("function openEditor(")[1]?.split("function closeEditor(")[0];
+    const generate = workspace.split("async function generate(")[1]?.split("async function save(")[0];
+    expect(openEditor).toContain("if (!preserveCurrentEdits()) return false;");
+    expect(generate).toContain("if (!preserveCurrentEdits()) return;");
   });
 
   it("protects AI content draft APIs and exposes explicit review actions", () => {
@@ -824,6 +838,29 @@ describe("homepage version safety contracts", () => {
     expect(previewSource).toContain("homepage-editor:locale");
   });
 
+  it("flushes iframe text before saving or publishing the homepage", () => {
+    const previewSource = readProjectFile("src/components/public/HomeVisualEditor.tsx");
+    const save = workspaceSource.split("async function saveDraft()")[1]?.split("async function publishDraft()")[0];
+    const publish = workspaceSource.split("async function publishDraft()")[1]?.split("async function checkProjectUpdates()")[0];
+    expect(previewSource).toContain('message?.type !== "homepage-editor:flush"');
+    expect(previewSource).toContain('type: "homepage-editor:flushed"');
+    expect(save).toMatch(/await flushPreviewEdits\(\)[\s\S]*?adminRequest\("\/api\/admin\/site\/draft"/);
+    expect(publish).toMatch(/await flushPreviewEdits\(\)[\s\S]*?adminRequest\("\/api\/admin\/site\/publish"/);
+  });
+
+  it("refreshes the published brand image after homepage publication", () => {
+    const publish = workspaceSource.split("async function publishDraft()")[1]?.split("async function checkProjectUpdates()")[0];
+    expect(publish).toContain("router.refresh()");
+  });
+
+  it("flushes active preview text before replacing the visual editor", () => {
+    const changeView = workspaceSource.split("async function changeView(")[1]?.split("async function refreshHome()")[0];
+    const refresh = workspaceSource.split("async function refreshHome()")[1]?.split("function flushPreviewEdits()")[0];
+    expect(changeView).toContain("await flushPreviewEdits()");
+    expect(refresh).toContain("await flushPreviewEdits()");
+    expect(workspaceSource).not.toContain('onClick={() => setView("fields")}');
+  });
+
   it("keeps field editing wired when preview loading fails", () => {
     const visualSource = readProjectFile("src/components/admin/home/HomepageVisualWorkspace.tsx");
 
@@ -831,7 +868,7 @@ describe("homepage version safety contracts", () => {
     expect(visualSource).toContain("重试预览");
     expect(visualSource).toContain("转到字段编辑");
     expect(visualSource).toContain("onOpenFields");
-    expect(workspaceSource).toContain('setView("fields")');
+    expect(workspaceSource).toContain('onOpenFields={() => changeView("fields")}');
   });
 });
 

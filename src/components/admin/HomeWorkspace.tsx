@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
@@ -49,6 +50,7 @@ const UNAVAILABLE_REASONS = {
 } as const;
 
 export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, assets }: HomeWorkspaceProps) {
+  const router = useRouter();
   const [draft, setDraft] = useState(initialDraft);
   const [projects, setProjects] = useState(initialProjects);
   const [projectCheckFailed, setProjectCheckFailed] = useState(false);
@@ -63,6 +65,8 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const localeRef = useRef<SiteLocale>("zh");
   const selectedPathRef = useRef<string | null>(null);
   const previewTimeoutRef = useRef<number | null>(null);
+  const flushRequestIdRef = useRef(0);
+  const pendingFlushRef = useRef<{ id: number; resolve: () => void; reject: (error: Error) => void; timeout: number } | null>(null);
   const [assetTarget, setAssetTarget] = useState<HomepageImagePath | null>(null);
   const assetPickerTriggerRef = useRef<HTMLButtonElement | null>(null);
   const [previewLocale, setPreviewLocale] = useState<SiteLocale>("zh");
@@ -124,6 +128,11 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   }, []);
 
   const handlePreviewLoad = useCallback(() => {
+    if (pendingFlushRef.current) {
+      window.clearTimeout(pendingFlushRef.current.timeout);
+      pendingFlushRef.current.reject(new Error("首页预览已重新加载，请确认文字后重试。"));
+      pendingFlushRef.current = null;
+    }
     clearPreviewTimeout();
     setPreviewStatus("loading");
     previewTimeoutRef.current = window.setTimeout(() => {
@@ -148,6 +157,11 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       }
       if (message?.type === "homepage-editor:commit") {
         try { commitContent(updateVisualContent(contentRef.current, message.path, message.value)); } catch { /* Ignore rejected iframe messages. */ }
+      }
+      if (message?.type === "homepage-editor:flushed" && pendingFlushRef.current?.id === message.requestId) {
+        window.clearTimeout(pendingFlushRef.current.timeout);
+        pendingFlushRef.current.resolve();
+        pendingFlushRef.current = null;
       }
       if (message?.type === "homepage-editor:locale") changePreviewLocale(message.locale);
       if (message?.type === "homepage-editor:select") setSelectedPath(message.path);
@@ -207,13 +221,38 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     setVersions(nextVersions);
   }
 
+  async function changeView(next: typeof view) {
+    if (next === view) return;
+    const flushed = await runAction("home:flush", async () => { await flushPreviewEdits(); return true; });
+    if (flushed) setView(next);
+  }
+
   async function refreshHome() {
-    if (dirty && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
+    const flushed = await runAction("home:flush", async () => { await flushPreviewEdits(); return true; });
+    if (!flushed) return;
+    if (isSiteContentDirty(contentRef.current, savedContent) && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
     await runAction("home:refresh", fetchHomeData, "主页内容已更新");
+  }
+
+  function flushPreviewEdits() {
+    const target = view === "visual" && previewStatus === "ready" ? visualPreviewRef.current?.contentWindow : null;
+    if (!target) return Promise.resolve();
+    if (pendingFlushRef.current) return Promise.reject(new Error("首页预览正在同步，请稍后重试。"));
+    return new Promise<void>((resolve, reject) => {
+      const id = ++flushRequestIdRef.current;
+      const timeout = window.setTimeout(() => {
+        pendingFlushRef.current = null;
+        reject(new Error("未能同步首页预览中的文字，请重试保存。"));
+      }, 3_000);
+      pendingFlushRef.current = { id, resolve, reject, timeout };
+      target.postMessage({ type: "homepage-editor:flush", requestId: id }, window.location.origin);
+    });
   }
 
   async function saveDraft() {
     await runAction("home:save", async () => {
+      await flushPreviewEdits();
+      if (!validateSiteContent(contentRef.current).valid) throw new Error("请先修正主页内容问题，再保存草稿。");
       await adminRequest("/api/admin/site/draft", jsonRequest("PUT", { id: draft.id, content: contentRef.current }));
       await fetchHomeData();
     }, "草稿已保存");
@@ -221,8 +260,12 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
 
   async function publishDraft() {
     await runAction("home:publish", async () => {
+      await flushPreviewEdits();
+      if (isSiteContentDirty(contentRef.current, savedContent)) throw new Error("首页还有未保存修改，请先保存草稿。");
+      if (!validateSiteContent(contentRef.current).valid) throw new Error("请先修正主页内容问题，再发布。");
       await adminRequest("/api/admin/site/publish", jsonRequest("POST", { id: draft.id }));
       await fetchHomeData();
+      router.refresh();
     }, "主页已发布");
   }
 
@@ -297,7 +340,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             <h2>结构化内容</h2>
           </div>
           <div className={styles.actions}>
-            <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={!dirty || !validation.valid || saveBusy}>
+            <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={(view !== "visual" && (!dirty || !validation.valid)) || saveBusy}>
               {saveBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}
               {saveBusy ? "保存中" : "保存草稿"}
             </button>
@@ -310,9 +353,9 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             </button>
           </div>
           <div className={styles.workspaceTabs} role="tablist" aria-label="主页管理视图">
-            <button type="button" role="tab" aria-selected={view === "visual"} onClick={() => setView("visual")}>可视化编辑</button>
-            <button type="button" role="tab" aria-selected={view === "fields"} onClick={() => setView("fields")}>字段编辑</button>
-            <button type="button" role="tab" aria-selected={view === "history"} onClick={() => setView("history")}>发布记录</button>
+            <button type="button" role="tab" aria-selected={view === "visual"} onClick={() => changeView("visual")}>可视化编辑</button>
+            <button type="button" role="tab" aria-selected={view === "fields"} onClick={() => changeView("fields")}>字段编辑</button>
+            <button type="button" role="tab" aria-selected={view === "history"} onClick={() => changeView("history")}>发布记录</button>
           </div>
         </div>
         <section className={styles.readinessSummary} aria-label="首页项目同步">
@@ -392,7 +435,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             onRequestAsset={requestAsset}
             onPreviewLoad={handlePreviewLoad}
             onRetryPreview={retryPreview}
-            onOpenFields={() => setView("fields")}
+            onOpenFields={() => changeView("fields")}
           />
         ) : view === "fields" ? (
           <>

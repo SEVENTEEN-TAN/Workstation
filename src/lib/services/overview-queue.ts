@@ -91,8 +91,10 @@ export async function getOverviewQueue(now = new Date()): Promise<OverviewQueueD
         }
 
         const progress = progressFor(keyResult);
-        const deadline = objective.endDate ?? cycle.endDate;
-        if (deadline && progress < 100 && keyResult.status !== "DONE" && keyResult.status !== "COMPLETED" && shanghaiDate(deadline) < today) {
+        const deadline = [objective.endDate, cycle.endDate]
+          .filter((date): date is Date => date instanceof Date && shanghaiDate(date) < today)
+          .sort((left, right) => left.getTime() - right.getTime())[0];
+        if (deadline && progress < 100 && keyResult.status !== "DONE" && keyResult.status !== "COMPLETED" && keyResult.status !== "CANCELLED") {
           overdueKeyResults.push({
             id: keyResult.id,
             label: keyResult.titleZh,
