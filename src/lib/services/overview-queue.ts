@@ -118,7 +118,7 @@ export async function getOverviewQueue(now = new Date()): Promise<OverviewQueueD
   const pendingPublications: OverviewQueueItem[] = [];
   const latestDraft = siteVersions.filter((version) => version.status === "DRAFT").sort((left, right) => right.version - left.version)[0];
   const latestPublished = siteVersions.filter((version) => version.status === "PUBLISHED").sort((left, right) => right.version - left.version)[0];
-  if (latestDraft && latestPublished && !isDeepStrictEqual(latestDraft.content, latestPublished.content)) {
+  if (latestDraft && (!latestPublished || !isDeepStrictEqual(latestDraft.content, latestPublished.content))) {
     pendingPublications.push({
       id: latestDraft.id,
       label: "首页草稿待发布",

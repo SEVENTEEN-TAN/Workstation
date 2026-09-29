@@ -185,6 +185,21 @@ describe("overview queue", () => {
     await expect(getOverviewQueue()).resolves.toMatchObject({ pendingPublications: [] });
   });
 
+  it("lists a homepage draft when no homepage version has been published", async () => {
+    services.listSiteVersions.mockResolvedValue([
+      { id: "site-draft", version: 1, status: "DRAFT", content: { hero: { title: "first draft" } } },
+    ]);
+
+    await expect(getOverviewQueue()).resolves.toMatchObject({
+      pendingPublications: [{
+        id: "site-draft",
+        label: "首页草稿待发布",
+        detail: "版本 1 有未发布修改",
+        href: "/admin/home",
+      }],
+    });
+  });
+
   it("ignores object key order when comparing homepage draft content", async () => {
     services.listSiteVersions.mockResolvedValue([
       { id: "site-draft", version: 2, status: "DRAFT", content: { hero: { title: "same", subtitle: "same" } } },
