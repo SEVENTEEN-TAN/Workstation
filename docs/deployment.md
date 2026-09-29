@@ -46,7 +46,7 @@ printf '%s' "$token" | sha256sum | awk '{print "KNOWLEDGE_SYNC_TOKEN_HASH=" $1}'
 
 ### 1. Preflight
 
-1. 在本地待发布提交上运行 `npm test`、`npm run lint`、`npm run db:validate` 和 `npm run build`。
+1. 在本地待发布提交上运行 `npm test`、`npm run lint`、`npm run db:validate` 和 `npm run build`；数据库校验与构建使用独立、已迁移的临时 SQLite。
 2. 在服务器确认 Node.js 满足项目要求、磁盘空间充足、`personal-workstation.service` 和 Nginx 当前状态可回溯。
 3. 记录当前发布目录实际指向的 commit、数据库迁移记录和最近一次备份目录。
 4. 确认 `/etc/personal-workstation.env` 只包含运行所需变量，不输出或复制其中的敏感值。
@@ -91,13 +91,19 @@ release_source=/opt/personal-workstation-releases/<commit>/source
 git clone https://github.com/SEVENTEEN-TAN/Workstation.git "$release_source"
 git -C "$release_source" checkout <commit>
 cd "$release_source"
-npm ci
+npm ci --include=dev
 npx prisma generate
+build_db="$(mktemp -p /tmp workstation-build-XXXXXX)"
+export DATABASE_URL="file:$build_db"
+npx prisma migrate deploy
+npm run db:seed
 npm test
 npm run lint
 npm run db:validate
 npm run build
 ```
+
+这里的 `DATABASE_URL` 仅指向本次构建专用的临时 SQLite；生产数据库只在第 5 步迁移。构建后核对并清理 `build_db` 指向的文件及其 SQLite sidecar，不清理其他数据库。
 
 在源码目录构建 Linux 原生 standalone 输出，随后组装运行目录：
 
