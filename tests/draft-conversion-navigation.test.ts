@@ -112,7 +112,9 @@ describe("draft conversion navigation", () => {
         expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={saving || converting}");
         expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={saving || converting}");
       } else {
-        expect(source).toMatch(/onClick=\{\(\) => setEditing\(draft\)\} disabled=\{converting\}/);
+        expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={saving}");
+        expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={saving}");
+        expect(source).toMatch(/onClick=\{\(\) => setEditing\(draft\)\} disabled=\{saving \|\| converting\}/);
       }
     }
   });

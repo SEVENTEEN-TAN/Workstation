@@ -76,10 +76,10 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
         <section className={styles.panel} aria-labelledby="milestone-editor-title">
           <div className={styles.sectionHeading}><div><span className={styles.kicker}>EDIT</span><h2 id="milestone-editor-title">编辑里程碑草稿</h2></div><FilePenLine size={18} /></div>
           <form key={editing.id} className={styles.entityForm} onSubmit={save}>
-            <label><span>中文标题</span><input name="titleZh" required maxLength={120} defaultValue={editing.titleZh} /></label>
-            <label><span>英文标题</span><input name="titleEn" maxLength={120} defaultValue={editing.titleEn} /></label>
-            <label><span>中文摘要</span><textarea name="summaryZh" required maxLength={4000} defaultValue={editing.summaryZh} /></label>
-            <label><span>英文摘要</span><textarea name="summaryEn" maxLength={4000} defaultValue={editing.summaryEn} /></label>
+            <label><span>中文标题</span><input name="titleZh" required maxLength={120} defaultValue={editing.titleZh} disabled={saving} /></label>
+            <label><span>英文标题</span><input name="titleEn" maxLength={120} defaultValue={editing.titleEn} disabled={saving} /></label>
+            <label><span>中文摘要</span><textarea name="summaryZh" required maxLength={4000} defaultValue={editing.summaryZh} disabled={saving} /></label>
+            <label><span>英文摘要</span><textarea name="summaryEn" maxLength={4000} defaultValue={editing.summaryEn} disabled={saving} /></label>
             <div className={styles.entityFormActions}>
               <button type="button" onClick={() => setEditing(null)} disabled={saving}>取消</button>
               <button className={styles.primaryButton} disabled={saving}>{saving ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{saving ? "保存中" : "保存草稿"}</button>
@@ -102,8 +102,8 @@ export function OkrMilestoneDraftWorkspace({ initialDrafts }: { initialDrafts: O
             </div>
             <div className={styles.activityCopy}><h3>{draft.titleZh}</h3><p>{draft.summaryZh}</p>{draft.titleEn ? <small>{draft.titleEn}</small> : null}</div>
             <div className={styles.rowActions}>
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)} disabled={converting}><FilePenLine size={15} />编辑</button> : null}
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={converting}><Send size={15} />转为私有职业动态</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => setEditing(draft)} disabled={saving || converting}><FilePenLine size={15} />编辑</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={saving || converting}><Send size={15} />转为私有职业动态</button> : null}
               {target ? <Link href={target} onClick={(event) => {
                 if (!editing) return;
                 event.preventDefault();
