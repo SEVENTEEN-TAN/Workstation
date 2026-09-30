@@ -12,9 +12,10 @@ const baseURL = 'http://127.0.0.1:3012';
 const repo = path.resolve(__dirname, '../../..');
 const runId = crypto.randomUUID();
 const green = process.argv.includes('--green');
+const scan = process.argv.includes('--scan');
 const assertViewerCleared = green || process.argv.includes('--assert');
 const results = { startedAt: new Date().toISOString(), runId, mode: assertViewerCleared ? 'assert-viewer-cleared' : 'observe', scenarios: [], network: [], pageErrors: [] };
-const output = path.join(__dirname, (green ? 'green-' : assertViewerCleared ? 'red-' : 'observe-') + runId);
+const output = path.join(__dirname, (scan ? 'scan-' : '') + (green ? 'green-' : assertViewerCleared ? 'red-' : 'observe-') + runId);
 const ownedTemp = path.join(os.tmpdir(), 'workstation-vault-selection-' + runId);
 const databasePath = path.join(ownedTemp, 'test.db');
 const names = { a: 'A Selection Vault', b: 'B Selection Vault', empty: 'C Empty Vault' };
@@ -122,6 +123,81 @@ async function run() {
       await loaded;
       await page.getByRole('region', { name: '笔记正文', exact: true }).getByText('A_BODY_ONLY', { exact: true }).waitFor();
     };
+    if (scan) {
+      await openA();
+      await snapshot(page, '01-scan-baseline');
+      const viewer = page.getByRole('region', { name: '笔记正文', exact: true });
+      const card = page.getByRole('complementary', { name: '已登记知识库' }).locator('article').filter({ has: page.getByRole('button', { name: names.a }) });
+      const scanA = async (expectNoteRead = true) => {
+        const read = expectNoteRead ? page.waitForResponse((response) => response.request().method() === 'GET' && new URL(response.url()).pathname === '/api/admin/knowledge/vaults/' + vaults.a.id + '/notes') : null;
+        const scanned = page.waitForResponse((response) => response.request().method() === 'POST' && new URL(response.url()).pathname === '/api/admin/knowledge/vaults/' + vaults.a.id + '/scan');
+        await card.getByRole('button', { name: '扫描知识库', exact: true }).click();
+        const response = await scanned;
+        assert.equal(response.status(), 200);
+        if (read) {
+          await (await read).finished();
+          await viewer.getByText('正在读取笔记...', { exact: true }).waitFor({ state: 'hidden' });
+        }
+        await page.waitForLoadState('networkidle');
+        return response.json();
+      };
+      const check = async (name, label, verify) => {
+        const observed = await snapshot(page, label);
+        const scenario = { name, observed };
+        try { verify(observed); scenario.assertion = { pass: true }; }
+        catch (error) { scenario.assertion = { pass: false, code: error.code, actual: error.actual, expected: error.expected, error: error.message }; }
+        results.scenarios.push(scenario);
+      };
+      const updated = '---\ntitle: A UPDATED TITLE\nmarker: A_UPDATED_PROPERTY\n---\n\n# A UPDATED BODY\n\nA_UPDATED_BODY_ONLY\n';
+      await fs.writeFile(path.join(ownedTemp, 'a', 'same.md'), updated);
+      const scanned = await scanA();
+      assert.equal(JSON.parse(scanned.notes[0].frontmatterJson).title, 'A UPDATED TITLE');
+      assert.equal((await db.knowledgeSourceRevision.findFirstOrThrow({ where: { vaultId: vaults.a.id }, orderBy: { capturedAt: 'desc' } })).markdown, updated);
+      await viewer.getByText('A_UPDATED_BODY_ONLY', { exact: true }).waitFor();
+      await check('scan-refreshes-open-note-metadata', '02-scan-updated', (state) => {
+        assert.equal(state.viewerTitle, 'A UPDATED TITLE');
+        assert.ok(state.viewerText.includes('A_UPDATED_PROPERTY'));
+        assert.ok(!state.viewerText.includes('A_METADATA_ONLY'));
+      });
+      const notesEndpoint = '**/api/admin/knowledge/vaults/' + vaults.a.id + '/notes?*';
+      await page.route(notesEndpoint, (route) => route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ error: 'controlled note read failure' }) }), { times: 1 });
+      await page.getByRole('button', { name: '查看笔记', exact: true }).click();
+      await viewer.getByRole('alert').waitFor();
+      await scanA();
+      await check('scan-retries-note-read-without-stale-error', '03-scan-retry', (state) => {
+        assert.deepEqual(state.errors, []);
+        assert.ok(state.viewerText.includes('A_UPDATED_BODY_ONLY'));
+      });
+      await fs.unlink(path.join(ownedTemp, 'a', 'same.md'));
+      const missing = await scanA(false);
+      assert.equal(missing.notes.length, 0);
+      await check('scan-closes-removed-note', '04-scan-missing', (state) => assert.equal(state.viewerPresent, false));
+      // A delayed real scan response must not change a newly selected B note.
+      await fs.writeFile(path.join(ownedTemp, 'a', 'same.md'), updated);
+      let release; let captured;
+      const held = new Promise((resolve) => { release = resolve; });
+      const ready = new Promise((resolve) => { captured = resolve; });
+      const scanEndpoint = '**/api/admin/knowledge/vaults/' + vaults.a.id + '/scan';
+      await page.route(scanEndpoint, async (route) => { const response = await route.fetch(); captured(); await held; await route.fulfill({ response }); }, { times: 1 });
+      await card.getByRole('button', { name: '扫描知识库', exact: true }).click();
+      await ready;
+      await page.getByRole('button', { name: names.b }).click();
+      await page.getByRole('button', { name: '查看笔记', exact: true }).click();
+      await viewer.getByText('B_BODY_ONLY', { exact: true }).waitFor();
+      release();
+      await page.waitForLoadState('networkidle');
+      await check('late-scan-keeps-another-vault-viewer', '05-scan-switch-b', (state) => {
+        assert.equal(state.indexTitle, names.b);
+        assert.equal(state.viewerTitle, 'B META TITLE');
+        assert.ok(state.viewerText.includes('B_BODY_ONLY'));
+        assert.ok(!state.viewerText.includes('A_UPDATED_BODY_ONLY'));
+      });
+      await Promise.all([...responseTasks]);
+      results.captureCompleted = true;
+      results.assertionsPassed = results.scenarios.every((scenario) => scenario.assertion.pass);
+      if (!results.assertionsPassed) process.exitCode = 1;
+      return;
+    }
     if (green) {
       await fs.mkdir(path.join(ownedTemp, 'fallback'));
       vaults.fallback = await api('POST', '/api/admin/knowledge/vaults', { name: 'D Empty Fallback', rootPath: path.join(ownedTemp, 'fallback'), ignorePatterns: [], enabled: true });

@@ -1,0 +1,511 @@
+{
+  "startedAt": "2026-09-30T04:35:16.002Z",
+  "runId": "9d3340c9-fdf9-4674-931f-52030efdc54b",
+  "mode": "assert-viewer-cleared",
+  "scenarios": [
+    {
+      "name": "scan-refreshes-open-note-metadata",
+      "observed": {
+        "indexTitle": "A Selection Vault",
+        "viewerPresent": true,
+        "viewerTitle": "A UPDATED TITLE",
+        "viewerText": "A UPDATED TITLE\nsame.md\ntitle: A UPDATED TITLE marker: A_UPDATED_PROPERTY\nA UPDATED BODY\n\nA_UPDATED_BODY_ONLY\n\n笔记属性\ntitle\nA UPDATED TITLE\nmarker\nA_UPDATED_PROPERTY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n9aae2f3e60\n2026年9月30日 12:35\n创建发布草稿\n8e2583b8f0\n2026年9月30日 12:35\n创建发布草稿",
+        "errors": [],
+        "sourceRevisionIds": [
+          "revision-cmunm3ine000gppg0h4yaqs86",
+          "revision-cmunm3i3m0002ppg0eysrhdjx"
+        ],
+        "registeredVaults": [
+          "A Selection Vault",
+          "B Selection Vault"
+        ]
+      },
+      "assertion": {
+        "pass": true
+      }
+    },
+    {
+      "name": "scan-retries-note-read-without-stale-error",
+      "observed": {
+        "indexTitle": "A Selection Vault",
+        "viewerPresent": true,
+        "viewerTitle": "A UPDATED TITLE",
+        "viewerText": "A UPDATED TITLE\nsame.md\n\n正在读取笔记...\n\n笔记属性\ntitle\nA UPDATED TITLE\nmarker\nA_UPDATED_PROPERTY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n9aae2f3e60\n2026年9月30日 12:35\n创建发布草稿\n8e2583b8f0\n2026年9月30日 12:35\n创建发布草稿",
+        "errors": [],
+        "sourceRevisionIds": [
+          "revision-cmunm3ine000gppg0h4yaqs86",
+          "revision-cmunm3i3m0002ppg0eysrhdjx"
+        ],
+        "registeredVaults": [
+          "A Selection Vault",
+          "B Selection Vault"
+        ]
+      },
+      "assertion": {
+        "pass": false,
+        "code": "ERR_ASSERTION",
+        "actual": false,
+        "expected": true,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(state.viewerText.includes('A_UPDATED_BODY_ONLY'))\n"
+      }
+    },
+    {
+      "name": "scan-closes-removed-note",
+      "observed": {
+        "indexTitle": "A Selection Vault",
+        "viewerPresent": false,
+        "viewerTitle": null,
+        "viewerText": null,
+        "errors": [],
+        "sourceRevisionIds": [],
+        "registeredVaults": [
+          "A Selection Vault",
+          "B Selection Vault"
+        ]
+      },
+      "assertion": {
+        "pass": true
+      }
+    },
+    {
+      "name": "late-scan-keeps-another-vault-viewer",
+      "observed": {
+        "indexTitle": "B Selection Vault",
+        "viewerPresent": true,
+        "viewerTitle": "B META TITLE",
+        "viewerText": "B META TITLE\nsame.md\ntitle: B META TITLE marker: B_METADATA_ONLY\nB SOURCE BODY\n\nB_BODY_ONLY\n\n笔记属性\ntitle\nB META TITLE\nmarker\nB_METADATA_ONLY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\nfb0a4c9a03\n2026年9月30日 12:35\n创建发布草稿",
+        "errors": [],
+        "sourceRevisionIds": [
+          "revision-cmunm3i4e000appg05lbjraib"
+        ],
+        "registeredVaults": [
+          "A Selection Vault",
+          "B Selection Vault"
+        ]
+      },
+      "assertion": {
+        "pass": true
+      }
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/scan",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunm3i2u0000ppg0epyk21mq",
+        "name": "A Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-9d3340c9-fdf9-4674-931f-52030efdc54b\\a",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:35:17.927Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:35:17.190Z",
+        "updatedAt": "2026-09-30T04:35:17.932Z",
+        "notes": [
+          {
+            "id": "cmunm3ine000hppg0n6zbjr9y",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "fileName": "same.md",
+            "directoryPath": "",
+            "sizeBytes": 97,
+            "modifiedAt": "2026-09-30T04:35:17.907Z",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": false,
+            "hasEmbeds": false,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"A UPDATED TITLE\",\"marker\":\"A_UPDATED_PROPERTY\"}",
+            "indexedAt": "2026-09-30T04:35:17.927Z"
+          }
+        ],
+        "noteLinks": [],
+        "sourceRevisions": [
+          {
+            "id": "cmunm3ine000gppg0h4yaqs86",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.927Z",
+            "draft": null
+          },
+          {
+            "id": "cmunm3i3m0002ppg0eysrhdjx",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "8e2583b8f01bb08e1e7b7b4ebe012c62485e78032fdd8fc86629821a2f67b0fc",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.213Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunm3inf000jppg04bejcosr",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "scannedAt": "2026-09-30T04:35:17.927Z",
+            "addedCount": 0,
+            "modifiedCount": 1,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 0,
+            "createdAt": "2026-09-30T04:35:17.931Z",
+            "changes": [
+              {
+                "id": "cmunm3inf000kppg06ccchqw8",
+                "reportId": "cmunm3inf000jppg04bejcosr",
+                "type": "MODIFIED",
+                "previousRelativePath": "same.md",
+                "currentRelativePath": "same.md",
+                "previousContentHash": "8e2583b8f01bb08e1e7b7b4ebe012c62485e78032fdd8fc86629821a2f67b0fc",
+                "currentContentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+                "previousModifiedAt": "2026-09-30T04:35:16.030Z",
+                "currentModifiedAt": "2026-09-30T04:35:17.907Z",
+                "reviewDecision": null,
+                "reviewedAt": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A UPDATED TITLE\nmarker: A_UPDATED_PROPERTY\n---\n\n# A UPDATED BODY\n\nA_UPDATED_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/notes",
+      "query": "?path=same.md",
+      "status": 500,
+      "data": {
+        "error": "controlled note read failure"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/scan",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunm3i2u0000ppg0epyk21mq",
+        "name": "A Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-9d3340c9-fdf9-4674-931f-52030efdc54b\\a",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:35:18.655Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:35:17.190Z",
+        "updatedAt": "2026-09-30T04:35:18.659Z",
+        "notes": [
+          {
+            "id": "cmunm3j7m000mppg03uquf1mo",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "fileName": "same.md",
+            "directoryPath": "",
+            "sizeBytes": 97,
+            "modifiedAt": "2026-09-30T04:35:17.907Z",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": false,
+            "hasEmbeds": false,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"A UPDATED TITLE\",\"marker\":\"A_UPDATED_PROPERTY\"}",
+            "indexedAt": "2026-09-30T04:35:18.655Z"
+          }
+        ],
+        "noteLinks": [],
+        "sourceRevisions": [
+          {
+            "id": "cmunm3ine000gppg0h4yaqs86",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.927Z",
+            "draft": null
+          },
+          {
+            "id": "cmunm3i3m0002ppg0eysrhdjx",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "8e2583b8f01bb08e1e7b7b4ebe012c62485e78032fdd8fc86629821a2f67b0fc",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.213Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunm3j7m000oppg0j21nisjm",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "scannedAt": "2026-09-30T04:35:18.655Z",
+            "addedCount": 0,
+            "modifiedCount": 0,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 1,
+            "createdAt": "2026-09-30T04:35:18.658Z",
+            "changes": []
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A UPDATED TITLE\nmarker: A_UPDATED_PROPERTY\n---\n\n# A UPDATED BODY\n\nA_UPDATED_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/scan",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunm3i2u0000ppg0epyk21mq",
+        "name": "A Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-9d3340c9-fdf9-4674-931f-52030efdc54b\\a",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:35:18.846Z",
+        "lastScanFileCount": 0,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:35:17.190Z",
+        "updatedAt": "2026-09-30T04:35:18.850Z",
+        "notes": [],
+        "noteLinks": [],
+        "sourceRevisions": [
+          {
+            "id": "cmunm3ine000gppg0h4yaqs86",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.927Z",
+            "draft": null
+          },
+          {
+            "id": "cmunm3i3m0002ppg0eysrhdjx",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "8e2583b8f01bb08e1e7b7b4ebe012c62485e78032fdd8fc86629821a2f67b0fc",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.213Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunm3jcx000rppg0jm3ug0se",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "scannedAt": "2026-09-30T04:35:18.846Z",
+            "addedCount": 0,
+            "modifiedCount": 0,
+            "movedCount": 0,
+            "missingCount": 1,
+            "unchangedCount": 0,
+            "createdAt": "2026-09-30T04:35:18.849Z",
+            "changes": [
+              {
+                "id": "cmunm3jcx000sppg0i1ed8tzt",
+                "reportId": "cmunm3jcx000rppg0jm3ug0se",
+                "type": "MISSING",
+                "previousRelativePath": "same.md",
+                "currentRelativePath": null,
+                "previousContentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+                "currentContentHash": null,
+                "previousModifiedAt": "2026-09-30T04:35:17.907Z",
+                "currentModifiedAt": null,
+                "reviewDecision": null,
+                "reviewedAt": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i430008ppg087yxd5cs/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/admin/knowledge/vaults/cmunm3i2u0000ppg0epyk21mq/scan",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunm3i2u0000ppg0epyk21mq",
+        "name": "A Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-9d3340c9-fdf9-4674-931f-52030efdc54b\\a",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:35:18.947Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:35:17.190Z",
+        "updatedAt": "2026-09-30T04:35:18.951Z",
+        "notes": [
+          {
+            "id": "cmunm3jfq000uppg012dn0q5w",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "fileName": "same.md",
+            "directoryPath": "",
+            "sizeBytes": 97,
+            "modifiedAt": "2026-09-30T04:35:18.932Z",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": false,
+            "hasEmbeds": false,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"A UPDATED TITLE\",\"marker\":\"A_UPDATED_PROPERTY\"}",
+            "indexedAt": "2026-09-30T04:35:18.947Z"
+          }
+        ],
+        "noteLinks": [],
+        "sourceRevisions": [
+          {
+            "id": "cmunm3ine000gppg0h4yaqs86",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.927Z",
+            "draft": null
+          },
+          {
+            "id": "cmunm3i3m0002ppg0eysrhdjx",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "relativePath": "same.md",
+            "contentHash": "8e2583b8f01bb08e1e7b7b4ebe012c62485e78032fdd8fc86629821a2f67b0fc",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T04:35:17.213Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunm3jfq000wppg01emsxqn3",
+            "vaultId": "cmunm3i2u0000ppg0epyk21mq",
+            "scannedAt": "2026-09-30T04:35:18.947Z",
+            "addedCount": 1,
+            "modifiedCount": 0,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 0,
+            "createdAt": "2026-09-30T04:35:18.950Z",
+            "changes": [
+              {
+                "id": "cmunm3jfq000xppg0msu8pvz2",
+                "reportId": "cmunm3jfq000wppg01emsxqn3",
+                "type": "ADDED",
+                "previousRelativePath": null,
+                "currentRelativePath": "same.md",
+                "previousContentHash": null,
+                "currentContentHash": "9aae2f3e608e7f41f791214920e301160b02efa074191ad95c21f3c5c9e14ece",
+                "previousModifiedAt": null,
+                "currentModifiedAt": "2026-09-30T04:35:18.932Z",
+                "reviewDecision": null,
+                "reviewedAt": null
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "pageErrors": [],
+  "head": "5c981091f0eccada1399836356fb8a7aab6e70c5",
+  "knowledgeSourceHash": "b8bc97594931764e49f55287fde9349650082e0f7446d7aea112e305e50c8fbb",
+  "browser": "154.0.4258.37",
+  "aIndex": {
+    "id": "cmunm3i2u0000ppg0epyk21mq",
+    "name": "A Selection Vault",
+    "note": {
+      "id": "cmunm3i3n0003ppg0hy5xi2vk",
+      "relativePath": "same.md",
+      "frontmatterJson": "{\"title\":\"A META TITLE\",\"marker\":\"A_METADATA_ONLY\"}"
+    },
+    "revision": {
+      "id": "cmunm3i3m0002ppg0eysrhdjx",
+      "origin": "LOCAL_SCAN",
+      "relativePath": "same.md",
+      "markdown": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+    }
+  },
+  "bIndex": {
+    "id": "cmunm3i430008ppg087yxd5cs",
+    "name": "B Selection Vault",
+    "note": {
+      "id": "cmunm3i4f000bppg0latvv0o2",
+      "relativePath": "same.md",
+      "frontmatterJson": "{\"title\":\"B META TITLE\",\"marker\":\"B_METADATA_ONLY\"}"
+    },
+    "revision": {
+      "id": "cmunm3i4e000appg05lbjraib",
+      "origin": "LOCAL_SCAN",
+      "relativePath": "same.md",
+      "markdown": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n"
+    }
+  },
+  "captureCompleted": true,
+  "assertionsPassed": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3012Closed": true,
+    "verifiedOwnedTempDeleted": true
+  },
+  "completedAt": "2026-09-30T04:35:19.404Z"
+}

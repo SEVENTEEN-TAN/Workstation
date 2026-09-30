@@ -100,9 +100,7 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
   const [query, setQuery] = useState("");
   const [deleteRequest, setDeleteRequest] = useState<KnowledgeVaultData | null>(null);
   const [viewingNote, setViewingNote] = useState<KnowledgeNoteData | null>(initialNote);
-  const [noteContent, setNoteContent] = useState("");
-  const [noteError, setNoteError] = useState("");
-  const [isNoteLoading, setIsNoteLoading] = useState(Boolean(initialNote));
+  const [noteRead, setNoteRead] = useState<{ vault: KnowledgeVaultData; note: KnowledgeNoteData; content: string; error: string } | null>(null);
   const [draftSlugs, setDraftSlugs] = useState<Record<string, string>>({});
   const [unpublishRequest, setUnpublishRequest] = useState<{ article: KnowledgeArticleData; draft: KnowledgePublicationDraftData } | null>(null);
   const [unpublishWarning, setUnpublishWarning] = useState<string | null>(null);
@@ -111,13 +109,16 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
   const [taskKeyResultId, setTaskKeyResultId] = useState("");
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
   const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
+  const currentRead = noteRead?.vault === selected && noteRead?.note === viewingNote ? noteRead : null;
+  const noteContent = currentRead?.content ?? "";
+  const noteError = currentRead?.error ?? "";
+  const isNoteLoading = Boolean(viewingNote && !currentRead);
   useEffect(() => {
     if (!selected || !viewingNote) return;
     let active = true;
     adminRequest<NoteContent>(`/api/admin/knowledge/vaults/${selected.id}/notes?path=${encodeURIComponent(viewingNote.relativePath)}`)
-      .then((result) => { if (active) setNoteContent(result.content); })
-      .catch((error: unknown) => { if (active) setNoteError(error instanceof Error ? error.message : "笔记正文不可用"); })
-      .finally(() => { if (active) setIsNoteLoading(false); });
+      .then((result) => { if (active) setNoteRead({ vault: selected, note: viewingNote, content: result.content, error: "" }); })
+      .catch((error: unknown) => { if (active) setNoteRead({ vault: selected, note: viewingNote, content: "", error: error instanceof Error ? error.message : "笔记正文不可用" }); });
     return () => { active = false; };
   }, [selected, viewingNote]);
   const syncReport = selected?.syncReports[0] ?? null;
@@ -176,6 +177,9 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
     ), `扫描完成，共索引 ${vault.name} 的 Markdown 文件`);
     if (!scanned) return;
     setVaults((current) => current.map((item) => item.id === scanned.id ? scanned : item));
+    setViewingNote((current) => current?.vaultId === scanned.id
+      ? scanned.notes.find((note) => note.relativePath === current.relativePath) ?? null
+      : current);
   }
 
   async function removeVault() {
@@ -193,9 +197,6 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
   function viewNote(note: KnowledgeNoteData) {
     if (!selected) return;
     setViewingNote({ ...note });
-    setNoteContent("");
-    setNoteError("");
-    setIsNoteLoading(true);
   }
 
   function viewLinkedNote(relativePath: string | null) {

@@ -1,6 +1,6 @@
 # Knowledge vault selection lifecycle evidence
 
-Current result: **4 / 4 repaired-build browser checks passed**. The root independently ran `repro-edge.cjs --green` against its fresh production build; results and screenshots are in [green-ea9fcb0a-652a-45c5-819e-e18d4e50dd98](green-ea9fcb0a-652a-45c5-819e-e18d4e50dd98/results.json). Original RED evidence below is preserved.
+Current result: **4 / 4 selection checks and 4 / 4 scan checks passed**. The root ran both modes against the repaired production build; latest selection results are in [green-ea984410-2691-4b4a-aeba-c186d19eb7bd](green-ea984410-2691-4b4a-aeba-c186d19eb7bd/results.json), and scan results are documented below. Original RED evidence is preserved.
 
 ## Original pre-repair reproduction phase
 
@@ -40,7 +40,24 @@ For the repaired build, use `node docs/evidence/2026-09-30-knowledge-vault-selec
 
 `KnowledgeWorkspace.tsx` now routes manual selection, successful registration, and removal of the current Vault through the same `selectVault` helper. It clears the old viewer and search query. Removal compares the actual selected Vault ID, so an automatically selected fallback is also handled; removing an unrelated Vault leaves its current note intact. The existing note effect cleanup ignores any obsolete response after the viewer is cleared. Failure paths return before changing selection.
 
-The two original assertions and both additional fallback/unselected checks pass (exit 0); page errors are empty, and all owned-resource cleanup checks are true. Fresh API and database reads validate fixtures and registration removal; original local Markdown files remain unchanged. Results record the uncommitted source digest, which the root checked against the actual component before commit. Full regression: 83 files / 557 tests, TypeScript, ESLint and production build passed (56 pages), using the independent migrated SQLite build database. This closes selection lifecycle only, not publication/attachment/sync interleaving or same-note metadata refresh.
+The two original assertions and both additional fallback/unselected checks pass (exit 0); page errors are empty, and all owned-resource cleanup checks are true. Fresh API and database reads validate fixtures and registration removal; original local Markdown files remain unchanged. Latest results record the source digest for comparison with the component. Full regression: 83 files / 557 tests, TypeScript, ESLint and production build passed (56 pages), using the independent migrated SQLite build database. Publication/attachment/sync interleaving remains outside this verification.
+
+## Same-note scan refresh and read retry
+
+Run `node docs/evidence/2026-09-30-knowledge-vault-selection/repro-edge.cjs --scan --green` after rebuilding. The scan mode reuses disposable fixtures and records four checks:
+
+1. Change the open note's title, properties and body, then scan through the UI: the viewer must show the new metadata and body together. Fresh scan API and source-revision DB reads verify the updated fixture.
+2. Inject one controlled HTTP 500 for the note read, then scan again: the successful read must clear the previous error and show the body. Only this failure response is synthetic.
+3. Remove the fixture Markdown and scan: the note disappears from the index and the viewer closes.
+4. Hold the response of an actual A scan after its server work, select and open B, then release A: B's title/body remain selected. The delayed response content is unchanged.
+
+On `5c98109`, [scan RED](scan-red-f5443ce8-2dad-4cf3-acff-d81197fda06e/results.json) captured three independent assertion failures (old title, stale read error, removed viewer retained); the fourth check passed. Exit 1 was not an infrastructure timeout. The scanner replaces note rows, so reconciliation uses Vault ID and relative path rather than the previous note ID.
+
+The repair rebinds the open note to the scan result or closes it when missing. Note content/error now belongs to the exact Vault index and viewed note object; an obsolete response cannot appear under a new index or viewer, and pending reads display loading state. Existing effect cancellation remains in place. [Final scan GREEN](scan-green-da1fbacb-4e9a-4396-a1b6-6ef438b74c63/results.json) passes all four checks, exit 0, no page errors, all owned-resource cleanup checks true. The updated viewer screenshot was visually inspected. The original selection mode was then rerun on the same build and passed all four checks.
+
+The intermediate `scan-green-9d3340c9-fdf9-4674-931f-52030efdc54b` is a failed verification attempt, not a completion result: the retry snapshot was taken while the new note request was still loading. The runner now waits for that actual response and for loading to end before asserting. That correction changed test synchronization only; no additional business change was made between that attempt and final GREEN.
+
+After the repair: full 83-file / 557-test suite, TypeScript, full ESLint, and the isolated migrated SQLite production build (56 pages) passed. This does not cover concurrent publication/attachment/review writes or production behavior.
 
 ## Original reproduction validation and cleanup
 

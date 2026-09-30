@@ -1,0 +1,17 @@
+{
+  "indexTitle": "A Selection Vault",
+  "viewerPresent": true,
+  "viewerTitle": "A UPDATED TITLE",
+  "viewerText": "A UPDATED TITLE\nsame.md\n\ncontrolled note read failure\n\n笔记属性\ntitle\nA UPDATED TITLE\nmarker\nA_UPDATED_PROPERTY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n9aae2f3e60\n2026年9月30日 12:33\n创建发布草稿\n8e2583b8f0\n2026年9月30日 12:33\n创建发布草稿",
+  "errors": [
+    "controlled note read failure"
+  ],
+  "sourceRevisionIds": [
+    "revision-cmunm1tvx000gppugwryxc7hu",
+    "revision-cmunm1t7w0002ppugwilkih5g"
+  ],
+  "registeredVaults": [
+    "A Selection Vault",
+    "B Selection Vault"
+  ]
+}
