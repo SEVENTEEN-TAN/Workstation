@@ -886,7 +886,7 @@ describe("focused OKR queries", () => {
   });
 
   it("returns dashboard values as JSON-safe views", async () => {
-    const endDate = new Date("2026-09-30T00:00:00.000Z");
+    const endDate = new Date(Date.now() + 86_400_000);
     const service = createOkrService();
     vi.spyOn(service, "listAll").mockResolvedValue([{
       objectives: [{
@@ -916,7 +916,7 @@ describe("focused OKR queries", () => {
         titleZh: "发布个人工作站 V1",
         status: "IN_PROGRESS",
         progress: 50,
-        endDate: "2026-09-30T00:00:00.000Z",
+        endDate: endDate.toISOString(),
       }],
     });
   });

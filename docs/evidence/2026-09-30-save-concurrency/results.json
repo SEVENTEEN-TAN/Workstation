@@ -1,0 +1,90 @@
+{
+  "date": "2026-09-30",
+  "baseHead": "3156ce5700e0926c93f33bfa61ba9bc781d8a087",
+  "environment": "headless local Edge with isolated SQLite; real API writes and held network responses",
+  "results": [
+    {
+      "case": "home-save",
+      "passed": true
+    },
+    {
+      "case": "home-publish",
+      "passed": true
+    },
+    {
+      "case": "home-refresh",
+      "passed": true
+    },
+    {
+      "case": "home-rollback",
+      "passed": true,
+      "scope": "normal restore only; busy modal prevents new edit via UI"
+    },
+    {
+      "case": "周报-save",
+      "passed": true,
+      "allFieldsLocked": true,
+      "switchesLocked": true,
+      "convertLocked": true,
+      "cancelLocked": true,
+      "extraLocked": true,
+      "savedCorrect": true
+    },
+    {
+      "case": "里程碑-save",
+      "passed": true,
+      "allFieldsLocked": true,
+      "switchesLocked": true,
+      "convertLocked": true,
+      "cancelLocked": true,
+      "extraLocked": true,
+      "savedCorrect": true
+    },
+    {
+      "case": "时间线-save",
+      "passed": true,
+      "allFieldsLocked": true,
+      "switchesLocked": true,
+      "convertLocked": true,
+      "cancelLocked": true,
+      "extraLocked": true,
+      "savedCorrect": true
+    },
+    {
+      "case": "周报-save-error-retry",
+      "passed": true,
+      "retained": true,
+      "savedCorrect": true
+    },
+    {
+      "case": "里程碑-save-error-retry",
+      "passed": true,
+      "retained": true,
+      "savedCorrect": true
+    },
+    {
+      "case": "时间线-save-error-retry",
+      "passed": true,
+      "retained": true,
+      "savedCorrect": true
+    },
+    {
+      "case": "weekly-generation-storage-disabled",
+      "passed": true
+    },
+    {
+      "case": "weekly-generation-mobile-375",
+      "passed": true
+    },
+    {
+      "case": "knowledge-deeplink-stale-response",
+      "passed": true
+    },
+    {
+      "case": "knowledge-manual-selection-stale-response",
+      "passed": true
+    }
+  ],
+  "browserErrors": [],
+  "systemImeVerified": false
+}

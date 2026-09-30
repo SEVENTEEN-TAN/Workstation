@@ -172,7 +172,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   function openEditor(draft: WeeklyActivityDraftData) {
-    if (saving || converting) return false;
+    if (saving || generating || converting) return false;
     if (editing?.draft.id === draft.id) return true;
     if (dirty && !window.confirm("当前周报有未保存修改，仍要切换吗？")) return false;
     if (!preserveCurrentEdits()) return false;
@@ -183,7 +183,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   function closeEditor() {
-    if (!editing || saving || converting) return;
+    if (!editing || saving || generating || converting) return;
     if (dirty && !window.confirm("确定放弃这次未保存的修改吗？")) return;
     clearRecovery(editing.draft.id);
     setEditing(null);
@@ -191,7 +191,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   function updateValue(key: keyof WeeklyDraftCopy, value: string) {
-    if (saving || converting || !editing) return;
+    if (saving || generating || converting || !editing) return;
     const values = { ...editing.values, [key]: value };
     setEditing({ ...editing, values });
     setEditorNotice(writeRecovery(editing.draft.id, values, editing.baseUpdatedAt) ? null : recoveryUnavailableNotice);
@@ -199,7 +199,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
 
   async function generate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (saving || converting) return;
+    if (saving || generating || converting) return;
     if (dirty && !window.confirm("当前周报有未保存修改，仍要生成或打开其他周报吗？")) return;
     if (!preserveCurrentEdits()) return;
     const data = new FormData(event.currentTarget);
@@ -217,7 +217,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!editing || converting) return;
+    if (!editing || generating || converting) return;
     const saved = await runAction("weekly:save", () => adminRequest<WeeklyActivityDraftData>(
       `/api/admin/weekly/${editing.draft.id}`,
       jsonRequest("PATCH", { ...editing.values, expectedUpdatedAt: editing.baseUpdatedAt }),
@@ -230,7 +230,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   async function convert(draft: WeeklyActivityDraftData) {
-    if (saving || converting) return;
+    if (saving || generating || converting) return;
     if (editing?.draft.id === draft.id && dirty) {
       window.alert("请先保存或明确放弃当前修改，再转换为职业动态。");
       return;
@@ -259,7 +259,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   async function rewriteWithAi(draft: WeeklyActivityDraftData) {
-    if (saving || converting) return;
+    if (saving || generating || converting) return;
     if (editing?.draft.id !== draft.id && !openEditor(draft)) return;
     const sourceState = editing?.draft.id === draft.id ? editing : editorForDraft(draft);
     const candidate = await runAction(`weekly:ai:${draft.id}`, () => adminRequest<WeeklyAiRewriteCandidate>(
@@ -271,7 +271,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   }
 
   function adoptCandidate() {
-    if (!editing?.candidate || candidateStale || saving || converting) return;
+    if (!editing?.candidate || candidateStale || saving || generating || converting) return;
     const values = editing.candidate.candidate;
     setEditing({ ...editing, values, candidate: null, recovered: false });
     setEditorNotice(writeRecovery(editing.draft.id, values, editing.baseUpdatedAt)
@@ -299,21 +299,21 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
           <div className={styles.sectionHeading}><div><span className={styles.kicker}>EDIT</span><h2 id="weekly-editor-title">编辑周报草稿</h2></div><FilePenLine size={18} /></div>
           {editing.recovered || editorNotice ? <p className={styles.weeklyEditorNotice} role="status">{editorNotice ?? "已恢复尚未保存的修改。"}</p> : null}
           <form className={styles.entityForm} onSubmit={save}>
-            <label><span>中文标题</span><input name="titleZh" required maxLength={120} value={editing.values.titleZh} onChange={(event) => updateValue("titleZh", event.currentTarget.value)} disabled={saving || converting} /></label>
-            <label><span>英文标题</span><input name="titleEn" maxLength={120} value={editing.values.titleEn} onChange={(event) => updateValue("titleEn", event.currentTarget.value)} disabled={saving || converting} /></label>
-            <label><span>中文摘要</span><textarea name="summaryZh" required maxLength={4000} value={editing.values.summaryZh} onChange={(event) => updateValue("summaryZh", event.currentTarget.value)} disabled={saving || converting} /></label>
-            <label><span>英文摘要</span><textarea name="summaryEn" maxLength={4000} value={editing.values.summaryEn} onChange={(event) => updateValue("summaryEn", event.currentTarget.value)} disabled={saving || converting} /></label>
+            <label><span>中文标题</span><input name="titleZh" required maxLength={120} value={editing.values.titleZh} onChange={(event) => updateValue("titleZh", event.currentTarget.value)} disabled={saving || generating || converting} /></label>
+            <label><span>英文标题</span><input name="titleEn" maxLength={120} value={editing.values.titleEn} onChange={(event) => updateValue("titleEn", event.currentTarget.value)} disabled={saving || generating || converting} /></label>
+            <label><span>中文摘要</span><textarea name="summaryZh" required maxLength={4000} value={editing.values.summaryZh} onChange={(event) => updateValue("summaryZh", event.currentTarget.value)} disabled={saving || generating || converting} /></label>
+            <label><span>英文摘要</span><textarea name="summaryEn" maxLength={4000} value={editing.values.summaryEn} onChange={(event) => updateValue("summaryEn", event.currentTarget.value)} disabled={saving || generating || converting} /></label>
             <div className={styles.entityFormActions}>
-              <button type="button" onClick={closeEditor} disabled={saving || converting}>取消</button>
-              <button type="button" onClick={() => rewriteWithAi(editing.draft)} disabled={saving || converting || isBusy(`weekly:ai:${editing.draft.id}`)}>{isBusy(`weekly:ai:${editing.draft.id}`) ? <LoaderCircle className={styles.spin} size={17} /> : <Sparkles size={17} />}生成 AI 候选</button>
-              <button className={styles.primaryButton} disabled={saving || converting || !dirty}>{saving ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{saving ? "保存中" : "保存草稿"}</button>
+              <button type="button" onClick={closeEditor} disabled={saving || generating || converting}>取消</button>
+              <button type="button" onClick={() => rewriteWithAi(editing.draft)} disabled={saving || generating || converting || isBusy(`weekly:ai:${editing.draft.id}`)}>{isBusy(`weekly:ai:${editing.draft.id}`) ? <LoaderCircle className={styles.spin} size={17} /> : <Sparkles size={17} />}生成 AI 候选</button>
+              <button className={styles.primaryButton} disabled={saving || generating || converting || !dirty}>{saving ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}{saving ? "保存中" : "保存草稿"}</button>
             </div>
           </form>
 
           {editing.candidate ? <article className={styles.aiDraftCard}>
             <div className={styles.aiDraftHeader}>
               <div><span className={styles.statusBadge}>尚未保存</span><h3>AI 润色候选</h3><small>候选不会自动覆盖当前草稿</small></div>
-              <button type="button" className={styles.primaryButton} disabled={candidateStale || saving || converting} onClick={adoptCandidate}><Check size={15} />采用此候选</button>
+              <button type="button" className={styles.primaryButton} disabled={candidateStale || saving || generating || converting} onClick={adoptCandidate}><Check size={15} />采用此候选</button>
             </div>
             {candidateStale ? <p className={styles.weeklyEditorNotice} role="alert">候选生成后当前内容又发生了变化。为避免覆盖，请重新生成候选。</p> : null}
             <div className={styles.aiCompareGrid}>
@@ -338,9 +338,9 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
             </div>
             <div className={styles.activityCopy}><h3>{draft.titleZh}</h3><p>{draft.summaryZh}</p><small>{draft.titleEn}</small></div>
             <div className={styles.rowActions}>
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => openEditor(draft)} disabled={saving || converting}><FilePenLine size={15} />编辑</button> : null}
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => rewriteWithAi(draft)} disabled={saving || converting || isBusy(`weekly:ai:${draft.id}`)}>{isBusy(`weekly:ai:${draft.id}`) ? <LoaderCircle className={styles.spin} size={15} /> : <Sparkles size={15} />}AI 候选</button> : null}
-              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={saving || converting}><Send size={15} />转为私有职业动态</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => openEditor(draft)} disabled={saving || generating || converting}><FilePenLine size={15} />编辑</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => rewriteWithAi(draft)} disabled={saving || generating || converting || isBusy(`weekly:ai:${draft.id}`)}>{isBusy(`weekly:ai:${draft.id}`) ? <LoaderCircle className={styles.spin} size={15} /> : <Sparkles size={15} />}AI 候选</button> : null}
+              {draft.status === "DRAFT" ? <button type="button" onClick={() => convert(draft)} disabled={saving || generating || converting}><Send size={15} />转为私有职业动态</button> : null}
               {target ? <Link href={target}>打开动态 {draft.convertedActivityId}</Link> : null}
             </div>
           </article>

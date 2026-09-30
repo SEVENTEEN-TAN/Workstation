@@ -109,8 +109,8 @@ describe("draft conversion navigation", () => {
       const source = readFileSync(new URL(`../src/components/admin/${file}`, import.meta.url), "utf8");
       expect(source).toContain("const converting = drafts.some");
       if (file === "WeeklyActivityWorkspace.tsx") {
-        expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={saving || converting}");
-        expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={saving || converting}");
+        expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={saving || generating || converting}");
+        expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={saving || generating || converting}");
       } else {
         expect(source.split("\n").find((line) => line.includes('name="titleZh"'))).toContain("disabled={saving}");
         expect(source.split("\n").find((line) => line.includes('name="summaryZh"'))).toContain("disabled={saving}");

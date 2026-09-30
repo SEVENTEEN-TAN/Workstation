@@ -110,16 +110,16 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
   const [okrCycles, setOkrCycles] = useState<OkrCycleData[] | null>(null);
   const [taskKeyResultId, setTaskKeyResultId] = useState("");
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
+  const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
   useEffect(() => {
-    if (!initialVault || !initialNote || selectedId !== initialVault.id) return;
+    if (!selected || !viewingNote) return;
     let active = true;
-    adminRequest<NoteContent>(`/api/admin/knowledge/vaults/${initialVault.id}/notes?path=${encodeURIComponent(initialNote.relativePath)}`)
+    adminRequest<NoteContent>(`/api/admin/knowledge/vaults/${selected.id}/notes?path=${encodeURIComponent(viewingNote.relativePath)}`)
       .then((result) => { if (active) setNoteContent(result.content); })
       .catch((error: unknown) => { if (active) setNoteError(error instanceof Error ? error.message : "笔记正文不可用"); })
       .finally(() => { if (active) setIsNoteLoading(false); });
     return () => { active = false; };
-  }, [initialVault, initialNote, selectedId]);
-  const selected = vaults.find((vault) => vault.id === selectedId) ?? vaults[0] ?? null;
+  }, [selected, viewingNote]);
   const syncReport = selected?.syncReports[0] ?? null;
   const pendingSyncChanges = syncReport?.changes.filter(needsSyncReview) ?? [];
   const selectedLinks = selected?.noteLinks ?? [];
@@ -184,20 +184,12 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
     setDeleteRequest(null);
   }
 
-  async function viewNote(note: KnowledgeNoteData) {
+  function viewNote(note: KnowledgeNoteData) {
     if (!selected) return;
-    setViewingNote(note);
+    setViewingNote({ ...note });
     setNoteContent("");
     setNoteError("");
     setIsNoteLoading(true);
-    try {
-      const result = await adminRequest<NoteContent>(`/api/admin/knowledge/vaults/${selected.id}/notes?path=${encodeURIComponent(note.relativePath)}`);
-      setNoteContent(result.content);
-    } catch (error) {
-      setNoteError(error instanceof Error ? error.message : "笔记正文不可用");
-    } finally {
-      setIsNoteLoading(false);
-    }
   }
 
   function viewLinkedNote(relativePath: string | null) {
