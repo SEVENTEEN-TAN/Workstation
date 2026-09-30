@@ -1,0 +1,315 @@
+{
+  "runId": "6d41b04d-8578-42f5-8d6a-a6a4c18c2f94",
+  "startedAt": "2026-09-30T06:38:53.603Z",
+  "assertions": [
+    {
+      "name": "newer-publication-error-survives-older-scan-success",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 1\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "older-success-timer-does-not-clear-newer-error",
+      "pass": false,
+      "error": "locator.waitFor: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: 'EVIDENCE_PUBLICATION_FAILED' }) to be visible\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    }
+  ],
+  "events": [
+    {
+      "routeError": "route.fulfill: Route is already handled!"
+    },
+    {
+      "routeError": "route.fulfill: Route is already handled!",
+      "stage": "held-publication"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "endpoint": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "screenshots": [
+    "01-error-before-scan.png",
+    "02-after-old-scan.png"
+  ],
+  "head": "0edc05959907c91768a770a22c8408e837d9487d",
+  "buildId": "keK4etzVpBGfqpfHsycqN",
+  "sourceHashes": {
+    "src/components/admin/useAdminAction.ts": "07f804c01a7a947d376a97ae0cc220cd64fc4d0e86647179ec3bb6904698c446",
+    "src/components/admin/KnowledgeWorkspace.tsx": "3f1a510d8f1625349a1e6a6b35930adaf42b4cafabc3c5e0d8bdad1795355e3a",
+    "src/components/admin/knowledge-scan-update.ts": "ee47513132cf657e5e427cde8e39282457184e53945e73bdcd69b78dbd5b9627",
+    "src/lib/services/knowledge-vaults.ts": "ac6b7650c38de949796b4f6fbcc5b6083f21871ff2ba672673d4a62d9451e02f",
+    "src/lib/services/knowledge-articles.ts": "8cc55f189cea67544de9811cd7bfb21ec8d476500e8c5dfb0698d2ce0548bb85",
+    "src/lib/services/knowledge-sync-reviews.ts": "aee68494c1266ed88f2946d17b1824fdb08246afa3809872e400af2d0565417f"
+  },
+  "browser": "154.0.4258.37",
+  "infrastructureError": {
+    "message": "locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#revision-cmunqii7e0002pp1kcwmsljpi').getByRole('textbox', { name: '文章路径', exact: true })\u001b[22m\n",
+    "stack": "locator.fill: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#revision-cmunqii7e0002pp1kcwmsljpi').getByRole('textbox', { name: '文章路径', exact: true })\u001b[22m\n\n    at main (C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\docs\\evidence\\2026-09-30-feedback-order\\feedback-edge.cjs:84:81)"
+  },
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3018Free": true,
+    "ownedTempDeleted": true
+  },
+  "failureClassification": {
+    "net::ERR_ABORTED": 64
+  }
+}

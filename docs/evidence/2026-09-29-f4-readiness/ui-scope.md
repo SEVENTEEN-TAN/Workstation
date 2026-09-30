@@ -11,7 +11,7 @@
 | 公开条件提示（6） | CareerActivities、ExperienceRecords、PortfolioProjects、ResumeFiles、SkillAreas 工作区及 `okr/PublicReadiness.tsx` | [阻断状态](../2026-09-30-readiness-ui/README.md)、[满足条件样例](../2026-09-30-readiness-positive/README.md)、[项目同步](../2026-09-23-stage-3c/README.md)、[前台入口](../2026-09-23-stage-3b/README.md) | 主代理阅读六文件差异；阻断/未上传 12 页、42 入口已有证据，满足条件另 12 页/14 组提示/60 入口和双语 PDF 字节下载已由主代理独立重跑通过。项目及文章两类技能证据为 DB/API 样例；未覆盖所有证据组合、上传、CRUD 或公开页渲染。 |
 | OKR 工作区与弹窗（5） | ActionItemList、ObjectiveWorkspace、OkrCycleListWorkspace、OkrCycleWorkspace、OkrEntityDialog | [创建/编辑/短屏/焦点](../2026-09-23-stage-3b/README.md)、[列表阻断提示](../2026-09-30-readiness-ui/README.md)、[重复行动工作区](../2026-09-30-recurrence-workspace/README.md) | 桌面每日、375px 每周样例通过实际表单和完成/删除操作，12 组断言含字段继承、重复完成/重开/删除不再生成、KR 进度不变及仪表盘定位；主代理独立重跑通过。桌面“进入周期”外观较紧但可达。另[数据库边界](../2026-09-30-recurrence-boundaries/README.md)7组证明三代双周日期、8请求并发仅一后继、插入失败回滚/重试与KR历史不变。父子工作区完整差异审查、持续压力/多实例、浏览器多代操作和实际午夜/其他日期矩阵仍需核对。 |
 | 仪表盘（2） | overview page、OverviewWorkspace | [四类队列和直达](../2026-09-29-stage-4-e1/README.md) | 装配与父级结束过滤已局部审查；不把当时未保存的截图当成当前截图文件。 |
-| 知识库（2） | knowledge page、KnowledgeWorkspace | [笔记切换](../2026-09-30-save-concurrency/README.md)、[选库及扫描刷新](../2026-09-30-knowledge-vault-selection/README.md)、[发布闭环](../2026-09-30-knowledge-publication/README.md) | 选库/扫描各四项 GREEN；图片草稿、独立快照、匿名正文/图片、源修改与审查、手机下架/重发、扫描与草稿交错、附件改选/发布互斥及布局共12组已补验。扫描与附件/发布/下架/审查的其余组合只有合并回归用例；完整浏览器并发/失败矩阵仍开放。 |
+| 知识库（2） | knowledge page、KnowledgeWorkspace | [笔记切换](../2026-09-30-save-concurrency/README.md)、[选库及扫描刷新](../2026-09-30-knowledge-vault-selection/README.md)、[发布闭环](../2026-09-30-knowledge-publication/README.md) | 选库/扫描各四项 GREEN；图片草稿、独立快照、匿名正文/图片、源修改与审查、手机下架/重发、扫描与草稿交错、附件改选/发布互斥及布局共12组已补验。[提示时序](../2026-09-30-feedback-order/README.md)再补5组：发布失败与旧扫描两种顺序、发布/下架/审核成功后释放旧扫描；共享反馈修复先失败后通过。不同草稿/附件及其余错误组合仍开放；真实审核只核对旧记录DB决定与新提示，不证明相同change id合并分支。 |
 | 转换目标路由（1） | activities page | [目标切换与异常](../2026-09-23-stage-3b/README.md) | 已有同页面目标变化、目标缺失与异常转换证据。 |
 | 后台外壳（2） | workspace layout、AdminShell | [手机导航](../2026-09-29-f2-mobile-partial/README.md)、[六页头像](../2026-09-30-readiness-ui/README.md) | 主代理核对 AdminShell 差异中的来源 key、错误回退及初始失败检查；12 个可见头像实际加载。本轮没有重验失败回退或完整键盘路径。 |
 | 初始化（1） | SetupForm | [原生 POST](../2026-09-23-stage-3c/README.md) | 主代理核对当前分支仅增加 `method="post"`，不把此项扩大为完整初始化流程重验。 |
@@ -19,7 +19,7 @@
 
 ## 下一批可继续的本地核查
 
-1. 知识库剩余扫描与附件/发布/下架/审查交错及失败矩阵；图片发布闭环、扫描与创建草稿交错、附件保存互斥已通过专项真实验收。
+1. 知识库剩余不同草稿、附件及其他失败组合；图片发布闭环、扫描与创建草稿交错、附件保存互斥已验。[并发提示与旧扫描](../2026-09-30-feedback-order/README.md)另5组覆盖较新发布失败的提示寿命，以及发布/下架/审核成功后释放旧扫描的数据与提示；真实审核未覆盖同change id的合成合并分支，仍不能称完整并发矩阵。
 2. 公开编辑器及其余组件/全局 CSS 的组合交互，公开路由实际点击与目标页呈现；重复行动父子工作区完整差异、持续压力/多实例、浏览器多代操作及实际午夜/其他日期边界。导航中英文中间宽度、键盘/触屏、跨断点、语言和QR已补24组；重复行动三代双周、8请求并发与数据库插入失败回滚/重试已补7组，不能继续笼统列为未做。
 3. 公开条件的其他证据组合、上传及 CRUD/公开页实际渲染；六类满足条件样例和已有双语 PDF 下载已补验，不继续将这两个具体场景列为未做。
 

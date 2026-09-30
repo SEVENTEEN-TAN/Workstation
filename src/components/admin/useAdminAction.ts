@@ -25,6 +25,7 @@ function errorMessage(cause: unknown): string {
 export function useAdminAction() {
   const activeKeys = useRef(new Set<string>());
   const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const feedbackSequence = useRef(0);
   const [busyKeys, setBusyKeys] = useState<ReadonlySet<string>>(() => new Set());
   const [feedback, setFeedback] = useState<AdminFeedback | null>(null);
 
@@ -51,21 +52,25 @@ export function useAdminAction() {
 
     activeKeys.current.add(key);
     setBusyKeys(new Set(activeKeys.current));
+    const sequence = ++feedbackSequence.current;
     clearSuccessTimer();
     setFeedback(null);
 
     try {
       const result = await work();
-      if (successMessage) {
+      if (successMessage && sequence === feedbackSequence.current) {
         setFeedback(createFeedback("success", successMessage));
         successTimer.current = setTimeout(() => {
+          if (sequence !== feedbackSequence.current) return;
           setFeedback(null);
           successTimer.current = null;
         }, 4_000);
       }
       return result;
     } catch (cause) {
-      setFeedback(createFeedback("error", errorMessage(cause)));
+      if (sequence === feedbackSequence.current) {
+        setFeedback(createFeedback("error", errorMessage(cause)));
+      }
       return undefined;
     } finally {
       activeKeys.current.delete(key);
