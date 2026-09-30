@@ -1,0 +1,175 @@
+{
+  "id": "cmunoeuw10004pp60k791pxbd",
+  "name": "Normal Publication Vault",
+  "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Normal Publication Vault",
+  "enabled": true,
+  "ignorePatterns": [],
+  "lastScanStatus": "SUCCESS",
+  "lastScannedAt": "2026-09-30T05:40:08.481Z",
+  "lastScanFileCount": 1,
+  "lastScanError": null,
+  "createdAt": "2026-09-30T05:40:06.242Z",
+  "updatedAt": "2026-09-30T05:40:08.490Z",
+  "notes": [
+    {
+      "id": "cmunoewme000npp60ljrr70j8",
+      "vaultId": "cmunoeuw10004pp60k791pxbd",
+      "relativePath": "note.md",
+      "fileName": "note.md",
+      "directoryPath": "",
+      "sizeBytes": 155,
+      "modifiedAt": "2026-09-30T05:40:08.447Z",
+      "contentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+      "visibility": "PRIVATE",
+      "hasFrontmatter": true,
+      "hasWikilinks": true,
+      "hasEmbeds": true,
+      "hasCallouts": false,
+      "hasDataview": false,
+      "hasTasks": false,
+      "isMoc": false,
+      "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+      "indexedAt": "2026-09-30T05:40:08.481Z"
+    }
+  ],
+  "noteLinks": [
+    {
+      "id": "cmunoewme000opp60m8zqnp71",
+      "vaultId": "cmunoeuw10004pp60k791pxbd",
+      "kind": "EMBED",
+      "sourceRelativePath": "note.md",
+      "targetRaw": "picture.png",
+      "targetRelativePath": "picture.png",
+      "targetHeading": null,
+      "displayLabel": null,
+      "isResolved": true,
+      "indexedAt": "2026-09-30T05:40:08.481Z"
+    }
+  ],
+  "sourceRevisions": [
+    {
+      "id": "cmunoevk50006pp60tdu1g2uk",
+      "vaultId": "cmunoeuw10004pp60k791pxbd",
+      "relativePath": "note.md",
+      "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+      "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n",
+      "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+      "origin": "LOCAL_SCAN",
+      "capturedAt": "2026-09-30T05:40:07.104Z",
+      "draft": {
+        "id": "cmunoevxg000epp600poxasm2",
+        "sourceRevisionId": "cmunoevk50006pp60tdu1g2uk",
+        "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "status": "DRAFT",
+        "createdAt": "2026-09-30T05:40:07.589Z",
+        "updatedAt": "2026-09-30T05:40:07.589Z",
+        "attachments": [
+          {
+            "id": "cmunoevzb000jpp6032m6dmoj",
+            "draftId": "cmunoevxg000epp600poxasm2",
+            "target": "picture.png",
+            "assetId": "cmunoeuto0000pp60p0mi6y4a",
+            "createdAt": "2026-09-30T05:40:07.656Z"
+          }
+        ],
+        "article": {
+          "id": "f27e64cf-5435-415a-b3c6-cbaf74d91c77",
+          "draftId": "cmunoevxg000epp600poxasm2",
+          "sourceRevisionId": "cmunoevk50006pp60tdu1g2uk",
+          "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+          "slug": "publication-normal",
+          "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![](/api/knowledge/assets/c8752e1f-4a48-4195-8b4a-320bed3e5f7a)\n",
+          "title": "Publication Evidence",
+          "summary": "Isolated snapshot verification",
+          "tags": [
+            "evidence"
+          ],
+          "publishedAt": "2026-09-30T05:40:09.445Z",
+          "attachments": [
+            {
+              "id": "c8752e1f-4a48-4195-8b4a-320bed3e5f7a",
+              "articleId": "f27e64cf-5435-415a-b3c6-cbaf74d91c77",
+              "target": "picture.png",
+              "storagePath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\article-attachments\\f27e64cf-5435-415a-b3c6-cbaf74d91c77\\c8752e1f-4a48-4195-8b4a-320bed3e5f7a",
+              "mimeType": "image/png",
+              "sizeBytes": 313,
+              "sha256": "9c4498c411201aecedea2d5a763e2f1d29710191ca3f96f903aa61a9dba58542",
+              "createdAt": "2026-09-30T05:40:09.445Z"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cmunoewmc000mpp60zv3x8zuc",
+      "vaultId": "cmunoeuw10004pp60k791pxbd",
+      "relativePath": "note.md",
+      "contentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+      "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION TWO\n\nPUBLICATION_BODY_TWO\n\n![[picture.png]]\n",
+      "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+      "origin": "LOCAL_SCAN",
+      "capturedAt": "2026-09-30T05:40:08.481Z",
+      "draft": null
+    }
+  ],
+  "syncReports": [
+    {
+      "id": "cmunoevkc000app60gd9ylhi4",
+      "vaultId": "cmunoeuw10004pp60k791pxbd",
+      "scannedAt": "2026-09-30T05:40:07.104Z",
+      "addedCount": 1,
+      "modifiedCount": 0,
+      "movedCount": 0,
+      "missingCount": 0,
+      "unchangedCount": 0,
+      "createdAt": "2026-09-30T05:40:07.116Z",
+      "changes": [
+        {
+          "id": "cmunoevkc000bpp60tbhvrzr4",
+          "reportId": "cmunoevkc000app60gd9ylhi4",
+          "type": "ADDED",
+          "previousRelativePath": null,
+          "currentRelativePath": "note.md",
+          "previousContentHash": null,
+          "currentContentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+          "previousModifiedAt": null,
+          "currentModifiedAt": "2026-09-30T05:40:06.203Z",
+          "reviewDecision": null,
+          "reviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "cmunoewmf000qpp60nra7b7ik",
+      "vaultId": "cmunoeuw10004pp60k791pxbd",
+      "scannedAt": "2026-09-30T05:40:08.481Z",
+      "addedCount": 0,
+      "modifiedCount": 1,
+      "movedCount": 0,
+      "missingCount": 0,
+      "unchangedCount": 0,
+      "createdAt": "2026-09-30T05:40:08.487Z",
+      "changes": [
+        {
+          "id": "cmunoewmf000rpp60d42ne31s",
+          "reportId": "cmunoewmf000qpp60nra7b7ik",
+          "type": "MODIFIED",
+          "previousRelativePath": "note.md",
+          "currentRelativePath": "note.md",
+          "previousContentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+          "currentContentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+          "previousModifiedAt": "2026-09-30T05:40:06.203Z",
+          "currentModifiedAt": "2026-09-30T05:40:08.447Z",
+          "reviewDecision": "ACKNOWLEDGED",
+          "reviewedAt": "2026-09-30T05:40:08.657Z"
+        }
+      ]
+    }
+  ]
+}

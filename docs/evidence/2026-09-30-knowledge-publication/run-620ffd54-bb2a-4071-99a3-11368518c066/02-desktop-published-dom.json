@@ -1,0 +1,114 @@
+{
+  "title": "Personal Workstation",
+  "text": "SEVENTEEN\nWORKSTATION\n仪表盘\n主页 CMS\nOKR 管理\n职业动态\n每周动态\n里程碑草稿\n时间线草稿\n项目案例\n经历时间线\n能力矩阵\n简历管理\n知识库\nGitHub 同步\nAI 配置\n媒体资源\n当前管理员\npublication-620ffd54-bb2a-4071-99a3-11368518c066\nPERSONAL WORKSTATION\n个人知识库\n\n登记本地 Obsidian Vault，执行只读扫描并检查 Markdown 结构。笔记正文与附件不会上传。\n\n知识合集\n已登记 Vault\n1\n已索引 Markdown\n1\n已解析链接\n1\nLOCAL SOURCE\n登记知识库\n仅保存路径与索引元数据\n名称\n本机绝对路径\n额外忽略规则\n登记知识库\nNormal Publication Vault\nC:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-620ffd54-bb2a-4071-99a3-11368518c066\\Normal Publication Vault\n1 篇\n已启用\n\n+1 新增 / 0 修改 / 0 移动 / 0 缺失\n\n扫描知识库\n移除\nINDEX\nNormal Publication Vault\n1 / 1\n最新同步报告\n2026年9月30日 13:33\n新增 1\n修改 0\n移动 0\n疑似缺失 0\n未变 0\n新增\nnote.md\n链接报告\n仅索引，不修改笔记\n正向链接 0\n已解析嵌入 1\n未解析链接 0\n\n所有内部链接都已解析。\n\nPublication Evidence\nnote.md\n\n正在读取笔记...\n\n笔记属性\ntitle\nPublication Evidence\nsummary\nIsolated snapshot verification\ntags\nevidence\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n附件需单独选择后才能发布\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n0abdfab908\n2026年9月30日 13:33\n已发布：/publication-normal\n下架文章\n知识库目录\nPublication Evidence\nPublication Evidence\nnote.md\n查看笔记\n155 B\n2026年9月30日\n私有\nYAML\nLink\nEmbed\n嵌入 1\n文章已发布，公开内容已固定为当前草稿快照",
+  "viewer": "Publication Evidencenote.md正在读取笔记...笔记属性titlePublication EvidencesummaryIsolated snapshot verificationtagsevidence正向链接没有正向链接。反向链接没有反向链接。发布检查源笔记保持私有已提供标题链接均可解析附件需单独选择后才能发布不含 Dataview 查询笔记任务没有标准 Markdown 任务。源修订0abdfab9082026年9月30日 13:33已发布：/publication-normal下架文章",
+  "revisionIds": [
+    "revision-cmuno5y8j0006ppswd0q299uo"
+  ],
+  "inputs": [
+    {
+      "tag": "INPUT",
+      "name": "name",
+      "aria": null,
+      "value": "",
+      "disabled": false
+    },
+    {
+      "tag": "INPUT",
+      "name": "rootPath",
+      "aria": null,
+      "value": "",
+      "disabled": false
+    },
+    {
+      "tag": "INPUT",
+      "name": "",
+      "aria": "搜索相对路径",
+      "value": "",
+      "disabled": false
+    }
+  ],
+  "buttons": [
+    {
+      "text": "",
+      "disabled": false
+    },
+    {
+      "text": "",
+      "disabled": false
+    },
+    {
+      "text": "退出登录",
+      "disabled": false
+    },
+    {
+      "text": "登记知识库",
+      "disabled": false
+    },
+    {
+      "text": "Normal Publication VaultC:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-620ffd54-bb2a-4071-99a3-11368518c066\\Normal Publication Vault",
+      "disabled": false
+    },
+    {
+      "text": "扫描知识库",
+      "disabled": false
+    },
+    {
+      "text": "移除",
+      "disabled": false
+    },
+    {
+      "text": "",
+      "disabled": false
+    },
+    {
+      "text": "下架文章",
+      "disabled": false
+    },
+    {
+      "text": "Publication Evidence",
+      "disabled": false
+    },
+    {
+      "text": "查看笔记",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "确认移除",
+      "disabled": false
+    },
+    {
+      "text": "取消",
+      "disabled": false
+    },
+    {
+      "text": "确认下架",
+      "disabled": false
+    },
+    {
+      "text": "",
+      "disabled": false
+    }
+  ],
+  "images": [
+    {
+      "src": "/images/zedian-portrait-v3.png",
+      "complete": true,
+      "naturalWidth": 1122
+    },
+    {
+      "src": "/images/zedian-portrait-v3.png",
+      "complete": true,
+      "naturalWidth": 1122
+    }
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 1000,
+    "scrollWidth": 1440
+  }
+}

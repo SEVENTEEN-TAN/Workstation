@@ -73,7 +73,7 @@ function defaultRepository(): KnowledgePublicationRepository {
       await database.$transaction(input.targets.map((target) => database.knowledgeAttachmentTransferRequest.upsert({
         where: { draftId_target: { draftId: input.draftId, target } },
         update: {},
-        create: { ...input, target },
+        create: { draftId: input.draftId, sourceRevisionId: input.sourceRevisionId, vaultId: input.vaultId, target },
       })));
     },
   };

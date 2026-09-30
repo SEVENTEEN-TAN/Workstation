@@ -11,7 +11,7 @@
 | 公开条件提示（6） | CareerActivities、ExperienceRecords、PortfolioProjects、ResumeFiles、SkillAreas 工作区及 `okr/PublicReadiness.tsx` | [阻断状态](../2026-09-30-readiness-ui/README.md)、[满足条件样例](../2026-09-30-readiness-positive/README.md)、[项目同步](../2026-09-23-stage-3c/README.md)、[前台入口](../2026-09-23-stage-3b/README.md) | 主代理阅读六文件差异；阻断/未上传 12 页、42 入口已有证据，满足条件另 12 页/14 组提示/60 入口和双语 PDF 字节下载已由主代理独立重跑通过。项目及文章两类技能证据为 DB/API 样例；未覆盖所有证据组合、上传、CRUD 或公开页渲染。 |
 | OKR 工作区与弹窗（5） | ActionItemList、ObjectiveWorkspace、OkrCycleListWorkspace、OkrCycleWorkspace、OkrEntityDialog | [创建/编辑/短屏/焦点](../2026-09-23-stage-3b/README.md)、[列表阻断提示](../2026-09-30-readiness-ui/README.md)、[重复行动工作区](../2026-09-30-recurrence-workspace/README.md) | 桌面每日、375px 每周样例通过实际表单和完成/删除操作，12 组断言含字段继承、重复完成/重开/删除不再生成、KR 进度不变及仪表盘定位；主代理独立重跑通过。桌面“进入周期”外观较紧但可达。父子工作区完整差异审查、并发压力、多代完成和日期边界矩阵仍需核对。 |
 | 仪表盘（2） | overview page、OverviewWorkspace | [四类队列和直达](../2026-09-29-stage-4-e1/README.md) | 装配与父级结束过滤已局部审查；不把当时未保存的截图当成当前截图文件。 |
-| 知识库（2） | knowledge page、KnowledgeWorkspace | [笔记切换](../2026-09-30-save-concurrency/README.md)、[选库及扫描刷新](../2026-09-30-knowledge-vault-selection/README.md) | 选库四项 GREEN；扫描元数据、读取失败重试、笔记移除及迟到扫描四项已补验。发布/下架、附件选择、扫描与同步审查写入交错仍缺专项证据。 |
+| 知识库（2） | knowledge page、KnowledgeWorkspace | [笔记切换](../2026-09-30-save-concurrency/README.md)、[选库及扫描刷新](../2026-09-30-knowledge-vault-selection/README.md)、[发布闭环](../2026-09-30-knowledge-publication/README.md) | 选库/扫描各四项 GREEN；图片草稿、独立快照、匿名正文/图片、源修改与审查、手机下架/重发、扫描与草稿交错、附件改选/发布互斥及布局共12组已补验。扫描与附件/发布/下架/审查的其余组合只有合并回归用例；完整浏览器并发/失败矩阵仍开放。 |
 | 转换目标路由（1） | activities page | [目标切换与异常](../2026-09-23-stage-3b/README.md) | 已有同页面目标变化、目标缺失与异常转换证据。 |
 | 后台外壳（2） | workspace layout、AdminShell | [手机导航](../2026-09-29-f2-mobile-partial/README.md)、[六页头像](../2026-09-30-readiness-ui/README.md) | 主代理核对 AdminShell 差异中的来源 key、错误回退及初始失败检查；12 个可见头像实际加载。本轮没有重验失败回退或完整键盘路径。 |
 | 初始化（1） | SetupForm | [原生 POST](../2026-09-23-stage-3c/README.md) | 主代理核对当前分支仅增加 `method="post"`，不把此项扩大为完整初始化流程重验。 |
@@ -19,7 +19,7 @@
 
 ## 下一批可继续的本地核查
 
-1. 知识库扫描、创建发布草稿、附件选择、发布/下架与同步审查的并发和失败状态；当前选择生命周期测试不覆盖这些操作。
+1. 知识库剩余扫描与附件/发布/下架/审查交错及失败矩阵；图片发布闭环、扫描与创建草稿交错、附件保存互斥已通过专项真实验收。
 2. 公开组件与全局 CSS 的组合交互浏览器矩阵，以及重复行动的父子工作区完整差异审查和剩余边界；公开组件静态差异已核查，重复行动桌面/手机固定实际场景已补验。
 3. 公开条件的其他证据组合、上传及 CRUD/公开页实际渲染；六类满足条件样例和已有双语 PDF 下载已补验，不继续将这两个具体场景列为未做。
 

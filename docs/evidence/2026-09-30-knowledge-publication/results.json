@@ -1,0 +1,1356 @@
+{
+  "runId": "2beb8d5b-6c39-43b3-8100-17bcc99f7b90",
+  "startedAt": "2026-09-30T05:40:04.208Z",
+  "assertions": [
+    {
+      "name": "image-draft-queues-one-valid-transfer",
+      "pass": true
+    },
+    {
+      "name": "desktop-publication-controls-use-readable-width",
+      "pass": true
+    },
+    {
+      "name": "normal-draft-and-source-unchanged",
+      "pass": true
+    },
+    {
+      "name": "normal-public-image-and-independent-snapshot",
+      "pass": true,
+      "actualImageURL": "/api/knowledge/assets/ab2e824b-38c0-4945-ac29-b90c1c3484f8",
+      "guessedAttachmentURLUnused": "/api/knowledge/article-attachments/ab2e824b-38c0-4945-ac29-b90c1c3484f8"
+    },
+    {
+      "name": "rescan-keeps-published-snapshot",
+      "pass": true
+    },
+    {
+      "name": "review-persists-without-changing-public-article",
+      "pass": true
+    },
+    {
+      "name": "mobile-publication-controls-fit-viewport",
+      "pass": true
+    },
+    {
+      "name": "unpublish-removes-public-page-and-image-keeps-draft-selection",
+      "pass": true
+    },
+    {
+      "name": "republish-creates-new-article-with-original-draft",
+      "pass": true
+    },
+    {
+      "name": "old-scan-response-retains-successfully-created-draft",
+      "pass": true,
+      "injection": "route.fetch completed real server scan before holding unmodified response; UI mutation succeeds before release",
+      "databaseDraftId": "cmunoexw0001bpp60dm5jtvyl"
+    },
+    {
+      "name": "pending-attachment-blocks-conflicting-selection-and-publication",
+      "pass": true,
+      "allowed": {
+        "selectEnabled": false,
+        "publishEnabled": false
+      }
+    },
+    {
+      "name": "attachment-pending-control-retains-latest-user-selection",
+      "pass": true,
+      "allowed": {
+        "selectEnabled": false,
+        "publishEnabled": false
+      },
+      "injection": "real first attachment response held; conflicting controls disabled; after release blue saves before publication",
+      "firstAssetId": "cmunoeuto0000pp60p0mi6y4a",
+      "lastUserChoiceAssetId": "cmunoeuui0002pp60lgq8pkkk",
+      "publishedSnapshotDigest": "48ddb7b2f2924b24186e423b47ccd80c850ebb4b23b8c68b8dff966afb546866"
+    }
+  ],
+  "events": [
+    {
+      "source": "fixture-api",
+      "endpoint": "/api/admin/knowledge/vaults",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "cmunoeuw10004pp60k791pxbd",
+        "name": "Normal Publication Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Normal Publication Vault",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "NEVER",
+        "lastScannedAt": null,
+        "lastScanFileCount": 0,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T05:40:06.242Z",
+        "updatedAt": "2026-09-30T05:40:06.242Z",
+        "notes": [],
+        "noteLinks": [],
+        "sourceRevisions": [],
+        "syncReports": []
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/scan",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoeuw10004pp60k791pxbd",
+        "name": "Normal Publication Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Normal Publication Vault",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T05:40:07.104Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T05:40:06.242Z",
+        "updatedAt": "2026-09-30T05:40:07.119Z",
+        "notes": [
+          {
+            "id": "cmunoevk60007pp603sxqf2ed",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "relativePath": "note.md",
+            "fileName": "note.md",
+            "directoryPath": "",
+            "sizeBytes": 155,
+            "modifiedAt": "2026-09-30T05:40:06.203Z",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": true,
+            "hasEmbeds": true,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+            "indexedAt": "2026-09-30T05:40:07.104Z"
+          }
+        ],
+        "noteLinks": [
+          {
+            "id": "cmunoevkb0008pp60po7fywzc",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "kind": "EMBED",
+            "sourceRelativePath": "note.md",
+            "targetRaw": "picture.png",
+            "targetRelativePath": "picture.png",
+            "targetHeading": null,
+            "displayLabel": null,
+            "isResolved": true,
+            "indexedAt": "2026-09-30T05:40:07.104Z"
+          }
+        ],
+        "sourceRevisions": [
+          {
+            "id": "cmunoevk50006pp60tdu1g2uk",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "relativePath": "note.md",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T05:40:07.104Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunoevkc000app60gd9ylhi4",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "scannedAt": "2026-09-30T05:40:07.104Z",
+            "addedCount": 1,
+            "modifiedCount": 0,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 0,
+            "createdAt": "2026-09-30T05:40:07.116Z",
+            "changes": [
+              {
+                "id": "cmunoevkc000bpp60tbhvrzr4",
+                "reportId": "cmunoevkc000app60gd9ylhi4",
+                "type": "ADDED",
+                "previousRelativePath": null,
+                "currentRelativePath": "note.md",
+                "previousContentHash": null,
+                "currentContentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+                "previousModifiedAt": null,
+                "currentModifiedAt": "2026-09-30T05:40:06.203Z",
+                "reviewDecision": null,
+                "reviewedAt": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/publications/drafts",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "cmunoevxg000epp600poxasm2",
+        "sourceRevisionId": "cmunoevk50006pp60tdu1g2uk",
+        "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "status": "DRAFT",
+        "createdAt": "2026-09-30T05:40:07.589Z",
+        "updatedAt": "2026-09-30T05:40:07.589Z",
+        "attachments": [],
+        "article": null
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/publications/attachments",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoevzb000jpp6032m6dmoj",
+        "draftId": "cmunoevxg000epp600poxasm2",
+        "target": "picture.png",
+        "assetId": "cmunoeuto0000pp60p0mi6y4a",
+        "createdAt": "2026-09-30T05:40:07.656Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/articles",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "c4c9e541-0e89-491a-8173-faa669cad2ef",
+        "draftId": "cmunoevxg000epp600poxasm2",
+        "sourceRevisionId": "cmunoevk50006pp60tdu1g2uk",
+        "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "slug": "publication-normal",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![](/api/knowledge/assets/ab2e824b-38c0-4945-ac29-b90c1c3484f8)\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "publishedAt": "2026-09-30T05:40:07.747Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/scan",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoeuw10004pp60k791pxbd",
+        "name": "Normal Publication Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Normal Publication Vault",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T05:40:08.481Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T05:40:06.242Z",
+        "updatedAt": "2026-09-30T05:40:08.490Z",
+        "notes": [
+          {
+            "id": "cmunoewme000npp60ljrr70j8",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "relativePath": "note.md",
+            "fileName": "note.md",
+            "directoryPath": "",
+            "sizeBytes": 155,
+            "modifiedAt": "2026-09-30T05:40:08.447Z",
+            "contentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": true,
+            "hasEmbeds": true,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+            "indexedAt": "2026-09-30T05:40:08.481Z"
+          }
+        ],
+        "noteLinks": [
+          {
+            "id": "cmunoewme000opp60m8zqnp71",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "kind": "EMBED",
+            "sourceRelativePath": "note.md",
+            "targetRaw": "picture.png",
+            "targetRelativePath": "picture.png",
+            "targetHeading": null,
+            "displayLabel": null,
+            "isResolved": true,
+            "indexedAt": "2026-09-30T05:40:08.481Z"
+          }
+        ],
+        "sourceRevisions": [
+          {
+            "id": "cmunoewmc000mpp60zv3x8zuc",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "relativePath": "note.md",
+            "contentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T05:40:08.481Z",
+            "draft": null
+          },
+          {
+            "id": "cmunoevk50006pp60tdu1g2uk",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "relativePath": "note.md",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T05:40:07.104Z",
+            "draft": {
+              "id": "cmunoevxg000epp600poxasm2",
+              "sourceRevisionId": "cmunoevk50006pp60tdu1g2uk",
+              "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+              "title": "Publication Evidence",
+              "summary": "Isolated snapshot verification",
+              "tags": [
+                "evidence"
+              ],
+              "status": "DRAFT",
+              "createdAt": "2026-09-30T05:40:07.589Z",
+              "updatedAt": "2026-09-30T05:40:07.589Z",
+              "attachments": [
+                {
+                  "id": "cmunoevzb000jpp6032m6dmoj",
+                  "target": "picture.png",
+                  "assetId": "cmunoeuto0000pp60p0mi6y4a"
+                }
+              ],
+              "article": {
+                "id": "c4c9e541-0e89-491a-8173-faa669cad2ef",
+                "draftId": "cmunoevxg000epp600poxasm2",
+                "slug": "publication-normal",
+                "publishedAt": "2026-09-30T05:40:07.747Z"
+              }
+            }
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunoewmf000qpp60nra7b7ik",
+            "vaultId": "cmunoeuw10004pp60k791pxbd",
+            "scannedAt": "2026-09-30T05:40:08.481Z",
+            "addedCount": 0,
+            "modifiedCount": 1,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 0,
+            "createdAt": "2026-09-30T05:40:08.487Z",
+            "changes": [
+              {
+                "id": "cmunoewmf000rpp60d42ne31s",
+                "reportId": "cmunoewmf000qpp60nra7b7ik",
+                "type": "MODIFIED",
+                "previousRelativePath": "note.md",
+                "currentRelativePath": "note.md",
+                "previousContentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+                "currentContentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+                "previousModifiedAt": "2026-09-30T05:40:06.203Z",
+                "currentModifiedAt": "2026-09-30T05:40:08.447Z",
+                "reviewDecision": null,
+                "reviewedAt": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION TWO\n\nPUBLICATION_BODY_TWO\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/sync-changes/cmunoewmf000rpp60d42ne31s/review",
+      "method": "PATCH",
+      "status": 200,
+      "data": {
+        "id": "cmunoewmf000rpp60d42ne31s",
+        "reportId": "cmunoewmf000qpp60nra7b7ik",
+        "type": "MODIFIED",
+        "previousRelativePath": "note.md",
+        "currentRelativePath": "note.md",
+        "previousContentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "currentContentHash": "a4e503fba2103e77b39a941da4ae511704ac8446d907fb04f594a2c5e810d55d",
+        "previousModifiedAt": "2026-09-30T05:40:06.203Z",
+        "currentModifiedAt": "2026-09-30T05:40:08.447Z",
+        "reviewDecision": "ACKNOWLEDGED",
+        "reviewedAt": "2026-09-30T05:40:08.657Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION TWO\n\nPUBLICATION_BODY_TWO\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/articles/c4c9e541-0e89-491a-8173-faa669cad2ef",
+      "method": "DELETE",
+      "status": 200,
+      "data": {
+        "id": "c4c9e541-0e89-491a-8173-faa669cad2ef",
+        "slug": "publication-normal",
+        "attachmentsRemoved": 1,
+        "cleanupWarning": null
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION TWO\n\nPUBLICATION_BODY_TWO\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/articles",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "f27e64cf-5435-415a-b3c6-cbaf74d91c77",
+        "draftId": "cmunoevxg000epp600poxasm2",
+        "sourceRevisionId": "cmunoevk50006pp60tdu1g2uk",
+        "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "slug": "publication-normal",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![](/api/knowledge/assets/c8752e1f-4a48-4195-8b4a-320bed3e5f7a)\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "publishedAt": "2026-09-30T05:40:09.445Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoeuw10004pp60k791pxbd/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION TWO\n\nPUBLICATION_BODY_TWO\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "source": "fixture-api",
+      "endpoint": "/api/admin/knowledge/vaults",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "cmunoexlq000wpp60ih5r9m56",
+        "name": "Race Publication Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Race Publication Vault",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "NEVER",
+        "lastScannedAt": null,
+        "lastScanFileCount": 0,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T05:40:09.758Z",
+        "updatedAt": "2026-09-30T05:40:09.758Z",
+        "notes": [],
+        "noteLinks": [],
+        "sourceRevisions": [],
+        "syncReports": []
+      }
+    },
+    {
+      "source": "fixture-api",
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/scan",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoexlq000wpp60ih5r9m56",
+        "name": "Race Publication Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Race Publication Vault",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T05:40:09.767Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T05:40:09.758Z",
+        "updatedAt": "2026-09-30T05:40:09.773Z",
+        "notes": [
+          {
+            "id": "cmunoexm2000zpp60cg2zkvj1",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "relativePath": "note.md",
+            "fileName": "note.md",
+            "directoryPath": "",
+            "sizeBytes": 155,
+            "modifiedAt": "2026-09-30T05:40:09.753Z",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": true,
+            "hasEmbeds": true,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+            "indexedAt": "2026-09-30T05:40:09.767Z"
+          }
+        ],
+        "noteLinks": [
+          {
+            "id": "cmunoexm30010pp603b8sudie",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "kind": "EMBED",
+            "sourceRelativePath": "note.md",
+            "targetRaw": "picture.png",
+            "targetRelativePath": "picture.png",
+            "targetHeading": null,
+            "displayLabel": null,
+            "isResolved": true,
+            "indexedAt": "2026-09-30T05:40:09.767Z"
+          }
+        ],
+        "sourceRevisions": [
+          {
+            "id": "cmunoexm2000ypp60o3z68lm1",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "relativePath": "note.md",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T05:40:09.767Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunoexm40012pp60acqu2v76",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "scannedAt": "2026-09-30T05:40:09.767Z",
+            "addedCount": 1,
+            "modifiedCount": 0,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 0,
+            "createdAt": "2026-09-30T05:40:09.772Z",
+            "changes": [
+              {
+                "id": "cmunoexm40013pp60tc7fspc8",
+                "reportId": "cmunoexm40012pp60acqu2v76",
+                "type": "ADDED",
+                "previousRelativePath": null,
+                "currentRelativePath": "note.md",
+                "previousContentHash": null,
+                "currentContentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+                "previousModifiedAt": null,
+                "currentModifiedAt": "2026-09-30T05:40:09.753Z",
+                "reviewDecision": null,
+                "reviewedAt": null
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/publications/drafts",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "cmunoexw0001bpp60dm5jtvyl",
+        "sourceRevisionId": "cmunoexm2000ypp60o3z68lm1",
+        "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "status": "DRAFT",
+        "createdAt": "2026-09-30T05:40:10.128Z",
+        "updatedAt": "2026-09-30T05:40:10.128Z",
+        "attachments": [],
+        "article": null
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/scan",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoexlq000wpp60ih5r9m56",
+        "name": "Race Publication Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Race Publication Vault",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T05:40:10.087Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T05:40:09.758Z",
+        "updatedAt": "2026-09-30T05:40:10.097Z",
+        "notes": [
+          {
+            "id": "cmunoexv30015pp60su27baig",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "relativePath": "note.md",
+            "fileName": "note.md",
+            "directoryPath": "",
+            "sizeBytes": 155,
+            "modifiedAt": "2026-09-30T05:40:09.753Z",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "visibility": "PRIVATE",
+            "hasFrontmatter": true,
+            "hasWikilinks": true,
+            "hasEmbeds": true,
+            "hasCallouts": false,
+            "hasDataview": false,
+            "hasTasks": false,
+            "isMoc": false,
+            "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+            "indexedAt": "2026-09-30T05:40:10.087Z"
+          }
+        ],
+        "noteLinks": [
+          {
+            "id": "cmunoexv30016pp60qzygg39y",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "kind": "EMBED",
+            "sourceRelativePath": "note.md",
+            "targetRaw": "picture.png",
+            "targetRelativePath": "picture.png",
+            "targetHeading": null,
+            "displayLabel": null,
+            "isResolved": true,
+            "indexedAt": "2026-09-30T05:40:10.087Z"
+          }
+        ],
+        "sourceRevisions": [
+          {
+            "id": "cmunoexm2000ypp60o3z68lm1",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "relativePath": "note.md",
+            "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+            "origin": "LOCAL_SCAN",
+            "capturedAt": "2026-09-30T05:40:09.767Z",
+            "draft": null
+          }
+        ],
+        "syncReports": [
+          {
+            "id": "cmunoexv40018pp60fzgeiv62",
+            "vaultId": "cmunoexlq000wpp60ih5r9m56",
+            "scannedAt": "2026-09-30T05:40:10.087Z",
+            "addedCount": 0,
+            "modifiedCount": 0,
+            "movedCount": 0,
+            "missingCount": 0,
+            "unchangedCount": 1,
+            "createdAt": "2026-09-30T05:40:10.096Z",
+            "changes": []
+          }
+        ]
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/publications/attachments",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoeyyh001gpp60a252jum7",
+        "draftId": "cmunoexw0001bpp60dm5jtvyl",
+        "target": "picture.png",
+        "assetId": "cmunoeuto0000pp60p0mi6y4a",
+        "createdAt": "2026-09-30T05:40:11.514Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/publications/attachments",
+      "method": "POST",
+      "status": 200,
+      "data": {
+        "id": "cmunoeyyh001gpp60a252jum7",
+        "draftId": "cmunoexw0001bpp60dm5jtvyl",
+        "target": "picture.png",
+        "assetId": "cmunoeuui0002pp60lgq8pkkk",
+        "createdAt": "2026-09-30T05:40:11.514Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/articles",
+      "method": "POST",
+      "status": 201,
+      "data": {
+        "id": "30dbd4fb-95b6-4b1c-932b-3bc9a35458c1",
+        "draftId": "cmunoexw0001bpp60dm5jtvyl",
+        "sourceRevisionId": "cmunoexm2000ypp60o3z68lm1",
+        "sourceHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "slug": "publication-race",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![](/api/knowledge/assets/1b4ad452-25d2-4911-a684-b5a22ee42154)\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "publishedAt": "2026-09-30T05:40:11.814Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/knowledge/vaults/cmunoexlq000wpp60ih5r9m56/notes",
+      "method": "GET",
+      "status": 200,
+      "data": {
+        "relativePath": "note.md",
+        "content": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n![[picture.png]]\n"
+      }
+    }
+  ],
+  "requestFailed": [
+    {
+      "endpoint": "/admin/overview",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/knowledge",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/knowledge",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/knowledge",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge/collections",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/overview",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/home",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/okr",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/activities",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/weekly",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/milestones",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/timeline",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/projects",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/skills",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/resume",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/knowledge",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/experience",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/github",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/ai",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "endpoint": "/admin/media",
+      "method": "GET",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "01-desktop-note-before-draft.png",
+    "02-desktop-published.png",
+    "03-desktop-public-snapshot.png",
+    "04-mobile-rescanned-source.png",
+    "05-mobile-unpublish-confirm.png",
+    "06-mobile-draft-preserved.png",
+    "07-mobile-republished.png",
+    "08-mobile-public.png",
+    "09-race-draft-created-before-old-scan.png",
+    "10-race-old-scan-overwrites-draft.png",
+    "11-race-attachment-controls-guarded.png",
+    "11-race-published-with-attachment-save-held.png",
+    "12-race-attachment-save-released.png",
+    "13-race-public-old-attachment.png"
+  ],
+  "head": "5b90b88ac084d49b60e142ff68703a21847c9f07",
+  "buildId": "3cSgVmoC3_35aT2WGajlO",
+  "sourceHashes": {
+    "src/components/admin/knowledge-scan-update.ts": "ee47513132cf657e5e427cde8e39282457184e53945e73bdcd69b78dbd5b9627",
+    "src/app/admin/admin.module.css": "e8d0c5e5ffba9183828be45de75b9498a08cc083d29b2caddd974b9651bc1401",
+    "src/components/admin/KnowledgeWorkspace.tsx": "3f1a510d8f1625349a1e6a6b35930adaf42b4cafabc3c5e0d8bdad1795355e3a",
+    "src/components/admin/useAdminAction.ts": "07f804c01a7a947d376a97ae0cc220cd64fc4d0e86647179ec3bb6904698c446",
+    "src/lib/services/knowledge-vaults.ts": "ac6b7650c38de949796b4f6fbcc5b6083f21871ff2ba672673d4a62d9451e02f",
+    "src/lib/services/knowledge-publications.ts": "2525f8abd1c8c0012e43fea837835306b9a6481dda7cc5f4473853c09fcd4c76",
+    "src/lib/services/knowledge-articles.ts": "8cc55f189cea67544de9811cd7bfb21ec8d476500e8c5dfb0698d2ce0548bb85",
+    "src/lib/services/knowledge-draft-attachments.ts": "1943a423b3226740dc583a0d9f6e38a2f8a9aad150596516efe6286e0b758bd7",
+    "src/lib/services/knowledge-sync-reviews.ts": "aee68494c1266ed88f2946d17b1824fdb08246afa3809872e400af2d0565417f",
+    "src/lib/services/assets.ts": "176406724ed26f901ba5054511eb373d75dad8ec1490a27bdfe3cfc79fc85fe5",
+    "src/lib/backup/paths.ts": "e98165f0ac5404988b98be6f69883376a6364e0305fb18b566e8988e9ae5bd52",
+    "src/lib/knowledge/article-attachment-snapshots.ts": "322f0e32d8aab22aafe716f44fa6c122c7019c939dddfd4f3b6dd3c39f507d78"
+  },
+  "browser": "154.0.4258.37",
+  "heldScanPayload": {
+    "id": "cmunoexlq000wpp60ih5r9m56",
+    "name": "Race Publication Vault",
+    "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-2beb8d5b-6c39-43b3-8100-17bcc99f7b90\\Race Publication Vault",
+    "enabled": true,
+    "ignorePatterns": [],
+    "lastScanStatus": "SUCCESS",
+    "lastScannedAt": "2026-09-30T05:40:10.087Z",
+    "lastScanFileCount": 1,
+    "lastScanError": null,
+    "createdAt": "2026-09-30T05:40:09.758Z",
+    "updatedAt": "2026-09-30T05:40:10.097Z",
+    "notes": [
+      {
+        "id": "cmunoexv30015pp60su27baig",
+        "vaultId": "cmunoexlq000wpp60ih5r9m56",
+        "relativePath": "note.md",
+        "fileName": "note.md",
+        "directoryPath": "",
+        "sizeBytes": 155,
+        "modifiedAt": "2026-09-30T05:40:09.753Z",
+        "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "visibility": "PRIVATE",
+        "hasFrontmatter": true,
+        "hasWikilinks": true,
+        "hasEmbeds": true,
+        "hasCallouts": false,
+        "hasDataview": false,
+        "hasTasks": false,
+        "isMoc": false,
+        "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+        "indexedAt": "2026-09-30T05:40:10.087Z"
+      }
+    ],
+    "noteLinks": [
+      {
+        "id": "cmunoexv30016pp60qzygg39y",
+        "vaultId": "cmunoexlq000wpp60ih5r9m56",
+        "kind": "EMBED",
+        "sourceRelativePath": "note.md",
+        "targetRaw": "picture.png",
+        "targetRelativePath": "picture.png",
+        "targetHeading": null,
+        "displayLabel": null,
+        "isResolved": true,
+        "indexedAt": "2026-09-30T05:40:10.087Z"
+      }
+    ],
+    "sourceRevisions": [
+      {
+        "id": "cmunoexm2000ypp60o3z68lm1",
+        "vaultId": "cmunoexlq000wpp60ih5r9m56",
+        "relativePath": "note.md",
+        "contentHash": "0abdfab908005cca6d3b6d74eac4659c424117522b512d2f936e91874628c585",
+        "origin": "LOCAL_SCAN",
+        "capturedAt": "2026-09-30T05:40:09.767Z",
+        "draft": null
+      }
+    ],
+    "syncReports": [
+      {
+        "id": "cmunoexv40018pp60fzgeiv62",
+        "vaultId": "cmunoexlq000wpp60ih5r9m56",
+        "scannedAt": "2026-09-30T05:40:10.087Z",
+        "addedCount": 0,
+        "modifiedCount": 0,
+        "movedCount": 0,
+        "missingCount": 0,
+        "unchangedCount": 1,
+        "createdAt": "2026-09-30T05:40:10.096Z",
+        "changes": []
+      }
+    ]
+  },
+  "scanDelayInjection": "route.fetch completed real server scan before holding unmodified response; UI mutation succeeds before release",
+  "heldAttachmentPayload": {
+    "id": "cmunoeyyh001gpp60a252jum7",
+    "draftId": "cmunoexw0001bpp60dm5jtvyl",
+    "target": "picture.png",
+    "assetId": "cmunoeuto0000pp60p0mi6y4a",
+    "createdAt": "2026-09-30T05:40:11.514Z"
+  },
+  "captureCompleted": true,
+  "assertionsPassed": true,
+  "requestFailedClassification": {
+    "net::ERR_ABORTED": 83
+  },
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3015Free": true,
+    "verifiedOwnedTempDeleted": true
+  },
+  "completedAt": "2026-09-30T05:40:13.230Z"
+}

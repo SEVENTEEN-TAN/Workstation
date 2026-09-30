@@ -1,0 +1,104 @@
+{
+  "id": "cmunnr6e9000ippk4xd89b2lf",
+  "name": "Race Publication Vault",
+  "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-knowledge-publication-44d2cfd3-e6f6-4b08-b265-54c43798a69d\\Race Publication Vault",
+  "enabled": true,
+  "ignorePatterns": [],
+  "lastScanStatus": "SUCCESS",
+  "lastScannedAt": "2026-09-30T05:21:41.755Z",
+  "lastScanFileCount": 1,
+  "lastScanError": null,
+  "createdAt": "2026-09-30T05:21:41.409Z",
+  "updatedAt": "2026-09-30T05:21:41.767Z",
+  "notes": [
+    {
+      "id": "cmunnr6o0000qppk4iloswg40",
+      "vaultId": "cmunnr6e9000ippk4xd89b2lf",
+      "relativePath": "note.md",
+      "fileName": "note.md",
+      "directoryPath": "",
+      "sizeBytes": 138,
+      "modifiedAt": "2026-09-30T05:21:41.404Z",
+      "contentHash": "9bd41ba14facb7a5ca387e0dac0bb28ed6fcef8e0657be24a7a35054d201e990",
+      "visibility": "PRIVATE",
+      "hasFrontmatter": true,
+      "hasWikilinks": false,
+      "hasEmbeds": false,
+      "hasCallouts": false,
+      "hasDataview": false,
+      "hasTasks": false,
+      "isMoc": false,
+      "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+      "indexedAt": "2026-09-30T05:21:41.755Z"
+    }
+  ],
+  "noteLinks": [],
+  "sourceRevisions": [
+    {
+      "id": "cmunnr6ek000kppk4rlc4md7a",
+      "vaultId": "cmunnr6e9000ippk4xd89b2lf",
+      "relativePath": "note.md",
+      "contentHash": "9bd41ba14facb7a5ca387e0dac0bb28ed6fcef8e0657be24a7a35054d201e990",
+      "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n",
+      "frontmatterJson": "{\"title\":\"Publication Evidence\",\"summary\":\"Isolated snapshot verification\",\"tags\":[\"evidence\"]}",
+      "origin": "LOCAL_SCAN",
+      "capturedAt": "2026-09-30T05:21:41.418Z",
+      "draft": {
+        "id": "cmunnr6pc000vppk4msz387hg",
+        "sourceRevisionId": "cmunnr6ek000kppk4rlc4md7a",
+        "sourceHash": "9bd41ba14facb7a5ca387e0dac0bb28ed6fcef8e0657be24a7a35054d201e990",
+        "markdown": "---\ntitle: Publication Evidence\nsummary: Isolated snapshot verification\ntags: [evidence]\n---\n\n# SOURCE VERSION ONE\n\nPUBLICATION_BODY_ONE\n\n",
+        "title": "Publication Evidence",
+        "summary": "Isolated snapshot verification",
+        "tags": [
+          "evidence"
+        ],
+        "status": "DRAFT",
+        "createdAt": "2026-09-30T05:21:41.809Z",
+        "updatedAt": "2026-09-30T05:21:41.809Z",
+        "attachments": [],
+        "article": null
+      }
+    }
+  ],
+  "syncReports": [
+    {
+      "id": "cmunnr6el000nppk41f9t6n5l",
+      "vaultId": "cmunnr6e9000ippk4xd89b2lf",
+      "scannedAt": "2026-09-30T05:21:41.418Z",
+      "addedCount": 1,
+      "modifiedCount": 0,
+      "movedCount": 0,
+      "missingCount": 0,
+      "unchangedCount": 0,
+      "createdAt": "2026-09-30T05:21:41.421Z",
+      "changes": [
+        {
+          "id": "cmunnr6el000oppk40n84bpg9",
+          "reportId": "cmunnr6el000nppk41f9t6n5l",
+          "type": "ADDED",
+          "previousRelativePath": null,
+          "currentRelativePath": "note.md",
+          "previousContentHash": null,
+          "currentContentHash": "9bd41ba14facb7a5ca387e0dac0bb28ed6fcef8e0657be24a7a35054d201e990",
+          "previousModifiedAt": null,
+          "currentModifiedAt": "2026-09-30T05:21:41.404Z",
+          "reviewDecision": null,
+          "reviewedAt": null
+        }
+      ]
+    },
+    {
+      "id": "cmunnr6o1000sppk4achqhg8c",
+      "vaultId": "cmunnr6e9000ippk4xd89b2lf",
+      "scannedAt": "2026-09-30T05:21:41.755Z",
+      "addedCount": 0,
+      "modifiedCount": 0,
+      "movedCount": 0,
+      "missingCount": 0,
+      "unchangedCount": 1,
+      "createdAt": "2026-09-30T05:21:41.761Z",
+      "changes": []
+    }
+  ]
+}
