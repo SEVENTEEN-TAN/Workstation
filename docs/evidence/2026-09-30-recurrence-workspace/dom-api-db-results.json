@@ -1,0 +1,2440 @@
+{
+  "runAt": "2026-09-30T05:04:24.867Z",
+  "assertions": [
+    "DAILY: exactly one derived action with hand-calculated date",
+    "DAILY: current list retains original and derived rows",
+    "DAILY: KR values, status, timestamp and progress history unchanged",
+    "DAILY: duplicate DONE and reopen/recomplete create no duplicate",
+    "DAILY: deleted derived action is not regenerated on recompletion",
+    "desktop: actual dashboard link locates due-today action in viewport without obstruction",
+    "WEEKLY: exactly one derived action with hand-calculated date",
+    "WEEKLY: current list retains original and derived rows",
+    "WEEKLY: KR values, status, timestamp and progress history unchanged",
+    "WEEKLY: duplicate DONE and reopen/recomplete create no duplicate",
+    "WEEKLY: deleted derived action is not regenerated on recompletion",
+    "mobile: actual dashboard link locates due-today action in viewport without obstruction"
+  ],
+  "api": [
+    {
+      "path": "/api/admin/okr/action-items",
+      "method": "POST",
+      "status": 201,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "TODO",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.154Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn51wi0001pptg7p1bq9jr",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "DONE",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:29.321Z",
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.322Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "id": "cmunn4ypx0000pphcy23lctwr",
+        "nameZh": "重复行动工作区验收周期",
+        "nameEn": "Recurrence workspace acceptance cycle",
+        "type": "CUSTOM",
+        "startDate": "2026-09-01T00:00:00.000Z",
+        "endDate": "2026-12-31T00:00:00.000Z",
+        "status": "ACTIVE",
+        "visibility": "PRIVATE",
+        "createdAt": "2026-09-30T05:04:25.029Z",
+        "updatedAt": "2026-09-30T05:04:25.029Z",
+        "objectives": [
+          {
+            "id": "cmunn4yq30002pphcip7fninm",
+            "cycleId": "cmunn4ypx0000pphcy23lctwr",
+            "titleZh": "重复行动验收目标",
+            "titleEn": "Recurrence acceptance objective",
+            "descriptionZh": null,
+            "descriptionEn": null,
+            "status": "IN_PROGRESS",
+            "visibility": "PRIVATE",
+            "sortOrder": 0,
+            "startDate": null,
+            "endDate": null,
+            "createdAt": "2026-09-30T05:04:25.035Z",
+            "updatedAt": "2026-09-30T05:04:25.035Z",
+            "keyResults": [
+              {
+                "id": "cmunn4yq50004pphcuagmncmr",
+                "objectiveId": "cmunn4yq30002pphcip7fninm",
+                "titleZh": "数值KR保持25%",
+                "titleEn": "Metric KR stays at 25%",
+                "descriptionZh": null,
+                "descriptionEn": null,
+                "progressMode": "METRIC",
+                "startValue": 0,
+                "currentValue": 25,
+                "targetValue": 100,
+                "unit": null,
+                "manualProgress": null,
+                "weight": 1,
+                "status": "IN_PROGRESS",
+                "sortOrder": 0,
+                "createdAt": "2026-09-30T05:04:25.037Z",
+                "updatedAt": "2026-09-30T05:04:25.037Z",
+                "progressUpdates": [
+                  {
+                    "id": "cmunn4yq90008pphci44llu7c",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "currentValue": 25,
+                    "manualProgress": null,
+                    "calculatedProgress": 25,
+                    "noteZh": "完成动作前的真实历史",
+                    "noteEn": null,
+                    "recordedAt": "2026-09-30T05:04:25.041Z"
+                  }
+                ],
+                "actionItems": [
+                  {
+                    "id": "cmunn51wi0001pptg7p1bq9jr",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "titleZh": "每日复盘行动",
+                    "titleEn": "Daily review action",
+                    "status": "DONE",
+                    "dueDate": "2026-09-30T00:00:00.000Z",
+                    "sortOrder": 7,
+                    "recurrenceType": "DAILY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": true,
+                    "completedAt": "2026-09-30T05:04:29.321Z",
+                    "createdAt": "2026-09-30T05:04:29.154Z",
+                    "updatedAt": "2026-09-30T05:04:29.322Z"
+                  },
+                  {
+                    "id": "cmunn52180004pptgi0rnrutp",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "titleZh": "每日复盘行动",
+                    "titleEn": "Daily review action",
+                    "status": "TODO",
+                    "dueDate": "2026-10-02T00:00:00.000Z",
+                    "sortOrder": 7,
+                    "recurrenceType": "DAILY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": "cmunn51wi0001pptg7p1bq9jr",
+                    "hasGeneratedNext": false,
+                    "completedAt": null,
+                    "createdAt": "2026-09-30T05:04:29.324Z",
+                    "updatedAt": "2026-09-30T05:04:29.324Z"
+                  }
+                ]
+              },
+              {
+                "id": "cmunn4yq70006pphcpeyifptz",
+                "objectiveId": "cmunn4yq30002pphcip7fninm",
+                "titleZh": "手动KR保持35%",
+                "titleEn": "Manual KR stays at 35%",
+                "descriptionZh": null,
+                "descriptionEn": null,
+                "progressMode": "MANUAL",
+                "startValue": null,
+                "currentValue": null,
+                "targetValue": null,
+                "unit": null,
+                "manualProgress": 35,
+                "weight": 1,
+                "status": "IN_PROGRESS",
+                "sortOrder": 1,
+                "createdAt": "2026-09-30T05:04:25.039Z",
+                "updatedAt": "2026-09-30T05:04:25.039Z",
+                "progressUpdates": [
+                  {
+                    "id": "cmunn4yqb000apphcmft5zkea",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "currentValue": null,
+                    "manualProgress": 35,
+                    "calculatedProgress": 35,
+                    "noteZh": "完成动作前的真实历史",
+                    "noteEn": null,
+                    "recordedAt": "2026-09-30T05:04:25.043Z"
+                  }
+                ],
+                "actionItems": []
+              }
+            ]
+          }
+        ],
+        "reviews": []
+      }
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn51wi0001pptg7p1bq9jr",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "DONE",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:29.321Z",
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.540Z"
+      }
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn51wi0001pptg7p1bq9jr",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "TODO",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.563Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn51wi0001pptg7p1bq9jr",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "DONE",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:29.653Z",
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.654Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn52180004pptgi0rnrutp",
+      "method": "DELETE",
+      "status": 200,
+      "body": {
+        "id": "cmunn52180004pptgi0rnrutp",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "TODO",
+        "dueDate": "2026-10-02T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": "cmunn51wi0001pptg7p1bq9jr",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:29.324Z",
+        "updatedAt": "2026-09-30T05:04:29.324Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn51wi0001pptg7p1bq9jr",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "TODO",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.912Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn51wi0001pptg7p1bq9jr",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "DONE",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:30.085Z",
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:30.086Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items",
+      "method": "POST",
+      "status": 201,
+      "body": {
+        "id": "cmunn52uf000dpptg6m1a04q6",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "仪表盘直达-desktop",
+        "titleEn": "Dashboard direct desktop",
+        "status": "TODO",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 12,
+        "recurrenceType": "NONE",
+        "recurrenceInterval": 1,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:30.375Z",
+        "updatedAt": "2026-09-30T05:04:30.375Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/overview-queue",
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "todayActions": [
+          {
+            "id": "cmunn52uf000dpptg6m1a04q6",
+            "label": "仪表盘直达-desktop",
+            "detail": "重复行动工作区验收周期 / 重复行动验收目标 / 数值KR保持25%",
+            "href": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm#action-cmunn52uf000dpptg6m1a04q6"
+          }
+        ],
+        "overdueKeyResults": [],
+        "pendingReviews": [],
+        "pendingPublications": []
+      }
+    },
+    {
+      "path": "/api/admin/okr/action-items",
+      "method": "POST",
+      "status": 201,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "TODO",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:34.821Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn569w000gpptgqjwvm91k",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "DONE",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:34.893Z",
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:34.894Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "id": "cmunn4ypx0000pphcy23lctwr",
+        "nameZh": "重复行动工作区验收周期",
+        "nameEn": "Recurrence workspace acceptance cycle",
+        "type": "CUSTOM",
+        "startDate": "2026-09-01T00:00:00.000Z",
+        "endDate": "2026-12-31T00:00:00.000Z",
+        "status": "ACTIVE",
+        "visibility": "PRIVATE",
+        "createdAt": "2026-09-30T05:04:25.029Z",
+        "updatedAt": "2026-09-30T05:04:25.029Z",
+        "objectives": [
+          {
+            "id": "cmunn4yq30002pphcip7fninm",
+            "cycleId": "cmunn4ypx0000pphcy23lctwr",
+            "titleZh": "重复行动验收目标",
+            "titleEn": "Recurrence acceptance objective",
+            "descriptionZh": null,
+            "descriptionEn": null,
+            "status": "IN_PROGRESS",
+            "visibility": "PRIVATE",
+            "sortOrder": 0,
+            "startDate": null,
+            "endDate": null,
+            "createdAt": "2026-09-30T05:04:25.035Z",
+            "updatedAt": "2026-09-30T05:04:25.035Z",
+            "keyResults": [
+              {
+                "id": "cmunn4yq50004pphcuagmncmr",
+                "objectiveId": "cmunn4yq30002pphcip7fninm",
+                "titleZh": "数值KR保持25%",
+                "titleEn": "Metric KR stays at 25%",
+                "descriptionZh": null,
+                "descriptionEn": null,
+                "progressMode": "METRIC",
+                "startValue": 0,
+                "currentValue": 25,
+                "targetValue": 100,
+                "unit": null,
+                "manualProgress": null,
+                "weight": 1,
+                "status": "IN_PROGRESS",
+                "sortOrder": 0,
+                "createdAt": "2026-09-30T05:04:25.037Z",
+                "updatedAt": "2026-09-30T05:04:25.037Z",
+                "progressUpdates": [
+                  {
+                    "id": "cmunn4yq90008pphci44llu7c",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "currentValue": 25,
+                    "manualProgress": null,
+                    "calculatedProgress": 25,
+                    "noteZh": "完成动作前的真实历史",
+                    "noteEn": null,
+                    "recordedAt": "2026-09-30T05:04:25.041Z"
+                  }
+                ],
+                "actionItems": [
+                  {
+                    "id": "cmunn51wi0001pptg7p1bq9jr",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "titleZh": "每日复盘行动",
+                    "titleEn": "Daily review action",
+                    "status": "DONE",
+                    "dueDate": "2026-09-30T00:00:00.000Z",
+                    "sortOrder": 7,
+                    "recurrenceType": "DAILY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": true,
+                    "completedAt": "2026-09-30T05:04:30.085Z",
+                    "createdAt": "2026-09-30T05:04:29.154Z",
+                    "updatedAt": "2026-09-30T05:04:30.086Z"
+                  },
+                  {
+                    "id": "cmunn52uf000dpptg6m1a04q6",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "titleZh": "仪表盘直达-desktop",
+                    "titleEn": "Dashboard direct desktop",
+                    "status": "TODO",
+                    "dueDate": "2026-09-30T00:00:00.000Z",
+                    "sortOrder": 12,
+                    "recurrenceType": "NONE",
+                    "recurrenceInterval": 1,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": false,
+                    "completedAt": null,
+                    "createdAt": "2026-09-30T05:04:30.375Z",
+                    "updatedAt": "2026-09-30T05:04:30.375Z"
+                  }
+                ]
+              },
+              {
+                "id": "cmunn4yq70006pphcpeyifptz",
+                "objectiveId": "cmunn4yq30002pphcip7fninm",
+                "titleZh": "手动KR保持35%",
+                "titleEn": "Manual KR stays at 35%",
+                "descriptionZh": null,
+                "descriptionEn": null,
+                "progressMode": "MANUAL",
+                "startValue": null,
+                "currentValue": null,
+                "targetValue": null,
+                "unit": null,
+                "manualProgress": 35,
+                "weight": 1,
+                "status": "IN_PROGRESS",
+                "sortOrder": 1,
+                "createdAt": "2026-09-30T05:04:25.039Z",
+                "updatedAt": "2026-09-30T05:04:25.039Z",
+                "progressUpdates": [
+                  {
+                    "id": "cmunn4yqb000apphcmft5zkea",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "currentValue": null,
+                    "manualProgress": 35,
+                    "calculatedProgress": 35,
+                    "noteZh": "完成动作前的真实历史",
+                    "noteEn": null,
+                    "recordedAt": "2026-09-30T05:04:25.043Z"
+                  }
+                ],
+                "actionItems": [
+                  {
+                    "id": "cmunn569w000gpptgqjwvm91k",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "titleZh": "双周整理行动",
+                    "titleEn": "Fortnightly organization action",
+                    "status": "DONE",
+                    "dueDate": "2026-10-01T00:00:00.000Z",
+                    "sortOrder": 9,
+                    "recurrenceType": "WEEKLY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": "1,4",
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": true,
+                    "completedAt": "2026-09-30T05:04:34.893Z",
+                    "createdAt": "2026-09-30T05:04:34.821Z",
+                    "updatedAt": "2026-09-30T05:04:34.894Z"
+                  },
+                  {
+                    "id": "cmunn56by000jpptg68t25aqa",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "titleZh": "双周整理行动",
+                    "titleEn": "Fortnightly organization action",
+                    "status": "TODO",
+                    "dueDate": "2026-10-12T00:00:00.000Z",
+                    "sortOrder": 9,
+                    "recurrenceType": "WEEKLY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": "1,4",
+                    "generatedFromActionItemId": "cmunn569w000gpptgqjwvm91k",
+                    "hasGeneratedNext": false,
+                    "completedAt": null,
+                    "createdAt": "2026-09-30T05:04:34.895Z",
+                    "updatedAt": "2026-09-30T05:04:34.895Z"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "reviews": []
+      }
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn569w000gpptgqjwvm91k",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "DONE",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:34.893Z",
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:35.047Z"
+      }
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn569w000gpptgqjwvm91k",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "TODO",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:35.067Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn569w000gpptgqjwvm91k",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "DONE",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:35.114Z",
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:35.115Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn56by000jpptg68t25aqa",
+      "method": "DELETE",
+      "status": 200,
+      "body": {
+        "id": "cmunn56by000jpptg68t25aqa",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "TODO",
+        "dueDate": "2026-10-12T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunn569w000gpptgqjwvm91k",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:34.895Z",
+        "updatedAt": "2026-09-30T05:04:34.895Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn569w000gpptgqjwvm91k",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "TODO",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:35.253Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items/cmunn569w000gpptgqjwvm91k",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "DONE",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:35.296Z",
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:35.297Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/okr/action-items",
+      "method": "POST",
+      "status": 201,
+      "body": {
+        "id": "cmunn57f8000spptg68zfjz3l",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "仪表盘直达-mobile",
+        "titleEn": "Dashboard direct mobile",
+        "status": "TODO",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 12,
+        "recurrenceType": "NONE",
+        "recurrenceInterval": 1,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:36.309Z",
+        "updatedAt": "2026-09-30T05:04:36.309Z"
+      },
+      "source": "Real Edge UI"
+    },
+    {
+      "path": "/api/admin/overview-queue",
+      "method": "GET",
+      "status": 200,
+      "body": {
+        "todayActions": [
+          {
+            "id": "cmunn52uf000dpptg6m1a04q6",
+            "label": "仪表盘直达-desktop",
+            "detail": "重复行动工作区验收周期 / 重复行动验收目标 / 数值KR保持25%",
+            "href": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm#action-cmunn52uf000dpptg6m1a04q6"
+          },
+          {
+            "id": "cmunn57f8000spptg68zfjz3l",
+            "label": "仪表盘直达-mobile",
+            "detail": "重复行动工作区验收周期 / 重复行动验收目标 / 手动KR保持35%",
+            "href": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm#action-cmunn57f8000spptg68zfjz3l"
+          }
+        ],
+        "overdueKeyResults": [],
+        "pendingReviews": [],
+        "pendingPublications": []
+      }
+    }
+  ],
+  "pages": [
+    {
+      "filename": "01-cycle-desktop.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "title": "重复行动工作区验收周期",
+      "actions": [],
+      "metrics": [
+        "周期进度\n30%",
+        "Objectives\n1",
+        "关键结果\n2",
+        "风险 KR\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "filename": "02-form-desktop.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "title": "重复行动验收目标",
+      "actions": [],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": [
+        {
+          "text": "STRUCTURED EDITOR\n添加行动项\n\n行动项帮助推进 KR，但不替代结果进度。\n\n中文标题\n英文标题\n状态\n待处理\n进行中\n已完成\n已取消\n截止日期\n排序\n重复方式\n不重复\n每日\n每周\n重复间隔\n取消\n创建行动项",
+          "scrollHeight": 535,
+          "clientHeight": 535
+        }
+      ]
+    },
+    {
+      "filename": "03-completed-desktop.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn52180004pptgi0rnrutp",
+          "text": "每日复盘行动\n截止 2026/10/2 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "filename": "04-dashboard-action-form-desktop.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": [
+        {
+          "text": "STRUCTURED EDITOR\n添加行动项\n\n行动项帮助推进 KR，但不替代结果进度。\n\n中文标题\n英文标题\n状态\n待处理\n进行中\n已完成\n已取消\n截止日期\n排序\n重复方式\n不重复\n每日\n每周\n重复间隔\n取消\n创建行动项",
+          "scrollHeight": 535,
+          "clientHeight": 535
+        }
+      ]
+    },
+    {
+      "filename": "05-dashboard-desktop.png",
+      "urlPath": "/admin/overview",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "title": "仪表盘",
+      "actions": [],
+      "metrics": [
+        "周期\n1",
+        "目标\n1",
+        "平均进度\n30%",
+        "风险目标\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "label": "desktop",
+      "dashboardTarget": "cmunn52uf000dpptg6m1a04q6",
+      "positioning": {
+        "top": 827.328125,
+        "bottom": 882.328125,
+        "left": 327,
+        "right": 1005.109375,
+        "scrollY": 1,
+        "hash": "#action-cmunn52uf000dpptg6m1a04q6",
+        "withinViewport": true,
+        "unobstructed": true,
+        "autoLocatedWithin5s": true
+      }
+    },
+    {
+      "filename": "06-dashboard-target-desktop.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm#action-cmunn52uf000dpptg6m1a04q6",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn52uf000dpptg6m1a04q6",
+          "text": "仪表盘直达-desktop\n截止 2026/9/30\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "label": "desktop",
+      "errors": [],
+      "failedRequests": [
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "filename": "01-cycle-mobile.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "title": "重复行动工作区验收周期",
+      "actions": [],
+      "metrics": [
+        "周期进度\n30%",
+        "Objectives\n1",
+        "关键结果\n2",
+        "风险 KR\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "filename": "02-form-mobile.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn52uf000dpptg6m1a04q6",
+          "text": "仪表盘直达-desktop\n截止 2026/9/30\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": [
+        {
+          "text": "STRUCTURED EDITOR\n添加行动项\n\n行动项帮助推进 KR，但不替代结果进度。\n\n中文标题\n英文标题\n状态\n待处理\n进行中\n已完成\n已取消\n截止日期\n排序\n重复方式\n不重复\n每日\n每周\n重复间隔\n每周重复日期\n周一\n周二\n周三\n周四\n周五\n周六\n周日\n取消\n创建行动项",
+          "scrollHeight": 881,
+          "clientHeight": 866
+        }
+      ]
+    },
+    {
+      "filename": "03-completed-mobile.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn52uf000dpptg6m1a04q6",
+          "text": "仪表盘直达-desktop\n截止 2026/9/30\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        },
+        {
+          "id": "action-cmunn569w000gpptgqjwvm91k",
+          "text": "双周整理行动\n截止 2026/10/1 · 每周重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn56by000jpptg68t25aqa",
+          "text": "双周整理行动\n截止 2026/10/12 · 每周重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "filename": "04-dashboard-action-form-mobile.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn52uf000dpptg6m1a04q6",
+          "text": "仪表盘直达-desktop\n截止 2026/9/30\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        },
+        {
+          "id": "action-cmunn569w000gpptgqjwvm91k",
+          "text": "双周整理行动\n截止 2026/10/1 · 每周重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": [
+        {
+          "text": "STRUCTURED EDITOR\n添加行动项\n\n行动项帮助推进 KR，但不替代结果进度。\n\n中文标题\n英文标题\n状态\n待处理\n进行中\n已完成\n已取消\n截止日期\n排序\n重复方式\n不重复\n每日\n每周\n重复间隔\n取消\n创建行动项",
+          "scrollHeight": 752,
+          "clientHeight": 752
+        }
+      ]
+    },
+    {
+      "filename": "05-dashboard-mobile.png",
+      "urlPath": "/admin/overview",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "title": "仪表盘",
+      "actions": [],
+      "metrics": [
+        "周期\n1",
+        "目标\n1",
+        "平均进度\n30%",
+        "风险目标\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "label": "mobile",
+      "dashboardTarget": "cmunn57f8000spptg68zfjz3l",
+      "positioning": {
+        "top": 752.21875,
+        "bottom": 894.71875,
+        "left": 42,
+        "right": 333,
+        "scrollY": 878,
+        "hash": "#action-cmunn57f8000spptg68zfjz3l",
+        "withinViewport": true,
+        "unobstructed": true,
+        "autoLocatedWithin5s": true
+      }
+    },
+    {
+      "filename": "06-dashboard-target-mobile.png",
+      "urlPath": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm#action-cmunn57f8000spptg68zfjz3l",
+      "viewport": {
+        "width": 375,
+        "height": 900
+      },
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "title": "重复行动验收目标",
+      "actions": [
+        {
+          "id": "action-cmunn51wi0001pptg7p1bq9jr",
+          "text": "每日复盘行动\n截止 2026/9/30 · 每日重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn52uf000dpptg6m1a04q6",
+          "text": "仪表盘直达-desktop\n截止 2026/9/30\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        },
+        {
+          "id": "action-cmunn569w000gpptgqjwvm91k",
+          "text": "双周整理行动\n截止 2026/10/1 · 每周重复\n待处理\n进行中\n已完成\n已取消",
+          "status": "DONE"
+        },
+        {
+          "id": "action-cmunn57f8000spptg68zfjz3l",
+          "text": "仪表盘直达-mobile\n截止 2026/9/30\n待处理\n进行中\n已完成\n已取消",
+          "status": "TODO"
+        }
+      ],
+      "metrics": [
+        "目标进度\n30%",
+        "关键结果\n2",
+        "已完成\n0",
+        "风险项\n0"
+      ],
+      "dialog": []
+    },
+    {
+      "label": "mobile",
+      "errors": [],
+      "failedRequests": [
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr/objectives/cmunn4yq30002pphcip7fninm",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "path": "/admin/okr/cycles/cmunn4ypx0000pphcy23lctwr",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "titleZh": "每日复盘行动",
+      "titleEn": "Daily review action",
+      "date": "2026-09-30",
+      "recurrenceType": "DAILY",
+      "recurrenceInterval": 2,
+      "sortOrder": 7,
+      "expected": "2026-10-02T00:00:00.000Z",
+      "displayDate": "2026/10/2",
+      "calendarReason": "September 30 plus two calendar days crosses into October 2.",
+      "originalAfterFirstCompletion": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "DONE",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:29.321Z",
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:29.322Z"
+      },
+      "childBeforeDeletion": {
+        "id": "cmunn52180004pptgi0rnrutp",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "TODO",
+        "dueDate": "2026-10-02T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": "cmunn51wi0001pptg7p1bq9jr",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:29.324Z",
+        "updatedAt": "2026-09-30T05:04:29.324Z"
+      },
+      "originalAfterChecks": {
+        "id": "cmunn51wi0001pptg7p1bq9jr",
+        "keyResultId": "cmunn4yq50004pphcuagmncmr",
+        "titleZh": "每日复盘行动",
+        "titleEn": "Daily review action",
+        "status": "DONE",
+        "dueDate": "2026-09-30T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:30.085Z",
+        "createdAt": "2026-09-30T05:04:29.154Z",
+        "updatedAt": "2026-09-30T05:04:30.086Z"
+      },
+      "krBefore": {
+        "currentValue": 25,
+        "manualProgress": null,
+        "status": "IN_PROGRESS",
+        "updatedAt": "2026-09-30T05:04:25.037Z",
+        "progressUpdates": [
+          {
+            "id": "cmunn4yq90008pphci44llu7c",
+            "keyResultId": "cmunn4yq50004pphcuagmncmr",
+            "currentValue": 25,
+            "manualProgress": null,
+            "calculatedProgress": 25,
+            "noteZh": "完成动作前的真实历史",
+            "noteEn": null,
+            "recordedAt": "2026-09-30T05:04:25.041Z"
+          }
+        ]
+      },
+      "krAfter": {
+        "currentValue": 25,
+        "manualProgress": null,
+        "status": "IN_PROGRESS",
+        "updatedAt": "2026-09-30T05:04:25.037Z",
+        "progressUpdates": [
+          {
+            "id": "cmunn4yq90008pphci44llu7c",
+            "keyResultId": "cmunn4yq50004pphcuagmncmr",
+            "currentValue": 25,
+            "manualProgress": null,
+            "calculatedProgress": 25,
+            "noteZh": "完成动作前的真实历史",
+            "noteEn": null,
+            "recordedAt": "2026-09-30T05:04:25.041Z"
+          }
+        ]
+      },
+      "finalChildCount": 0
+    },
+    {
+      "titleZh": "双周整理行动",
+      "titleEn": "Fortnightly organization action",
+      "date": "2026-10-01",
+      "recurrenceType": "WEEKLY",
+      "recurrenceInterval": 2,
+      "days": [
+        1,
+        4
+      ],
+      "sortOrder": 9,
+      "expected": "2026-10-12T00:00:00.000Z",
+      "displayDate": "2026/10/12",
+      "calendarReason": "October 1 is Thursday, the final selected day. The next selected week is two weeks from the September 28 Monday anchor; its Monday is October 12.",
+      "originalAfterFirstCompletion": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "DONE",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:34.893Z",
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:34.894Z"
+      },
+      "childBeforeDeletion": {
+        "id": "cmunn56by000jpptg68t25aqa",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "TODO",
+        "dueDate": "2026-10-12T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunn569w000gpptgqjwvm91k",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T05:04:34.895Z",
+        "updatedAt": "2026-09-30T05:04:34.895Z"
+      },
+      "originalAfterChecks": {
+        "id": "cmunn569w000gpptgqjwvm91k",
+        "keyResultId": "cmunn4yq70006pphcpeyifptz",
+        "titleZh": "双周整理行动",
+        "titleEn": "Fortnightly organization action",
+        "status": "DONE",
+        "dueDate": "2026-10-01T00:00:00.000Z",
+        "sortOrder": 9,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T05:04:35.296Z",
+        "createdAt": "2026-09-30T05:04:34.821Z",
+        "updatedAt": "2026-09-30T05:04:35.297Z"
+      },
+      "krBefore": {
+        "currentValue": null,
+        "manualProgress": 35,
+        "status": "IN_PROGRESS",
+        "updatedAt": "2026-09-30T05:04:25.039Z",
+        "progressUpdates": [
+          {
+            "id": "cmunn4yqb000apphcmft5zkea",
+            "keyResultId": "cmunn4yq70006pphcpeyifptz",
+            "currentValue": null,
+            "manualProgress": 35,
+            "calculatedProgress": 35,
+            "noteZh": "完成动作前的真实历史",
+            "noteEn": null,
+            "recordedAt": "2026-09-30T05:04:25.043Z"
+          }
+        ]
+      },
+      "krAfter": {
+        "currentValue": null,
+        "manualProgress": 35,
+        "status": "IN_PROGRESS",
+        "updatedAt": "2026-09-30T05:04:25.039Z",
+        "progressUpdates": [
+          {
+            "id": "cmunn4yqb000apphcmft5zkea",
+            "keyResultId": "cmunn4yq70006pphcpeyifptz",
+            "currentValue": null,
+            "manualProgress": 35,
+            "calculatedProgress": 35,
+            "noteZh": "完成动作前的真实历史",
+            "noteEn": null,
+            "recordedAt": "2026-09-30T05:04:25.043Z"
+          }
+        ]
+      },
+      "finalChildCount": 0
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverStopped": true,
+    "portFree": true,
+    "ownerAndResolvedPathVerified": true,
+    "temporaryDirectoryRemoved": true
+  },
+  "head": "3d1d7c9f54c94cdbe0fa965c0544ce71406ec4bd",
+  "buildId": "dSWTfnTKi3ugfbSgQSNbZ",
+  "sourceDigests": {
+    "src/components/admin/okr/ActionItemList.tsx": "c36e9d73aa333936b62aeb0affb1ee33e6e9cf049f7e3bdd04994d49b0459646",
+    "src/components/admin/okr/ObjectiveWorkspace.tsx": "dedcbbfa126ab3e79cd4b136ae72781fc623dc20e37a03652ce6f5464b28990e",
+    "src/components/admin/okr/OkrCycleWorkspace.tsx": "b8704ff19d76c2ca2aec80373c1d327a9dca3a641e0513569c26b91f1f60eb53",
+    "src/lib/services/okr.ts": "f9d19eb5474a788231a1cbe0d90f9eced08c020f519a3547844f6dba8af8d033",
+    "src/lib/services/overview-queue.ts": "1049971123ad0cc0081183b8c8a8fa76cfadeeca3f7d681cd215a3ba3482320f",
+    "src/lib/okr/recurrence.ts": "4017003cfc1014a847b3f35bb70d8def0c9695499b420e3faa5ec1a44c293f8d",
+    "src/lib/validators/okr.ts": "a69766f9aa1a0351f7b6a349c44b54aff66e8341d29c681915e3e0fe18d91f09",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02",
+    "src/app/admin/admin.module.css": "30d341422b5526d07db75bca04971de1b825f9454de4d6b94090e79f1edcd6ef"
+  },
+  "finalDatabase": {
+    "cycles": [
+      {
+        "id": "cmunn4ypx0000pphcy23lctwr",
+        "nameZh": "重复行动工作区验收周期",
+        "nameEn": "Recurrence workspace acceptance cycle",
+        "type": "CUSTOM",
+        "startDate": "2026-09-01T00:00:00.000Z",
+        "endDate": "2026-12-31T00:00:00.000Z",
+        "status": "ACTIVE",
+        "visibility": "PRIVATE",
+        "createdAt": "2026-09-30T05:04:25.029Z",
+        "updatedAt": "2026-09-30T05:04:25.029Z",
+        "objectives": [
+          {
+            "id": "cmunn4yq30002pphcip7fninm",
+            "cycleId": "cmunn4ypx0000pphcy23lctwr",
+            "titleZh": "重复行动验收目标",
+            "titleEn": "Recurrence acceptance objective",
+            "descriptionZh": null,
+            "descriptionEn": null,
+            "status": "IN_PROGRESS",
+            "visibility": "PRIVATE",
+            "sortOrder": 0,
+            "startDate": null,
+            "endDate": null,
+            "createdAt": "2026-09-30T05:04:25.035Z",
+            "updatedAt": "2026-09-30T05:04:25.035Z",
+            "keyResults": [
+              {
+                "id": "cmunn4yq50004pphcuagmncmr",
+                "objectiveId": "cmunn4yq30002pphcip7fninm",
+                "titleZh": "数值KR保持25%",
+                "titleEn": "Metric KR stays at 25%",
+                "descriptionZh": null,
+                "descriptionEn": null,
+                "progressMode": "METRIC",
+                "startValue": 0,
+                "currentValue": 25,
+                "targetValue": 100,
+                "unit": null,
+                "manualProgress": null,
+                "weight": 1,
+                "status": "IN_PROGRESS",
+                "sortOrder": 0,
+                "createdAt": "2026-09-30T05:04:25.037Z",
+                "updatedAt": "2026-09-30T05:04:25.037Z",
+                "actionItems": [
+                  {
+                    "id": "cmunn51wi0001pptg7p1bq9jr",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "titleZh": "每日复盘行动",
+                    "titleEn": "Daily review action",
+                    "status": "DONE",
+                    "dueDate": "2026-09-30T00:00:00.000Z",
+                    "sortOrder": 7,
+                    "recurrenceType": "DAILY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": true,
+                    "completedAt": "2026-09-30T05:04:30.085Z",
+                    "createdAt": "2026-09-30T05:04:29.154Z",
+                    "updatedAt": "2026-09-30T05:04:30.086Z"
+                  },
+                  {
+                    "id": "cmunn52uf000dpptg6m1a04q6",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "titleZh": "仪表盘直达-desktop",
+                    "titleEn": "Dashboard direct desktop",
+                    "status": "TODO",
+                    "dueDate": "2026-09-30T00:00:00.000Z",
+                    "sortOrder": 12,
+                    "recurrenceType": "NONE",
+                    "recurrenceInterval": 1,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": false,
+                    "completedAt": null,
+                    "createdAt": "2026-09-30T05:04:30.375Z",
+                    "updatedAt": "2026-09-30T05:04:30.375Z"
+                  }
+                ],
+                "progressUpdates": [
+                  {
+                    "id": "cmunn4yq90008pphci44llu7c",
+                    "keyResultId": "cmunn4yq50004pphcuagmncmr",
+                    "currentValue": 25,
+                    "manualProgress": null,
+                    "calculatedProgress": 25,
+                    "noteZh": "完成动作前的真实历史",
+                    "noteEn": null,
+                    "recordedAt": "2026-09-30T05:04:25.041Z"
+                  }
+                ]
+              },
+              {
+                "id": "cmunn4yq70006pphcpeyifptz",
+                "objectiveId": "cmunn4yq30002pphcip7fninm",
+                "titleZh": "手动KR保持35%",
+                "titleEn": "Manual KR stays at 35%",
+                "descriptionZh": null,
+                "descriptionEn": null,
+                "progressMode": "MANUAL",
+                "startValue": null,
+                "currentValue": null,
+                "targetValue": null,
+                "unit": null,
+                "manualProgress": 35,
+                "weight": 1,
+                "status": "IN_PROGRESS",
+                "sortOrder": 1,
+                "createdAt": "2026-09-30T05:04:25.039Z",
+                "updatedAt": "2026-09-30T05:04:25.039Z",
+                "actionItems": [
+                  {
+                    "id": "cmunn569w000gpptgqjwvm91k",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "titleZh": "双周整理行动",
+                    "titleEn": "Fortnightly organization action",
+                    "status": "DONE",
+                    "dueDate": "2026-10-01T00:00:00.000Z",
+                    "sortOrder": 9,
+                    "recurrenceType": "WEEKLY",
+                    "recurrenceInterval": 2,
+                    "recurrenceDays": "1,4",
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": true,
+                    "completedAt": "2026-09-30T05:04:35.296Z",
+                    "createdAt": "2026-09-30T05:04:34.821Z",
+                    "updatedAt": "2026-09-30T05:04:35.297Z"
+                  },
+                  {
+                    "id": "cmunn57f8000spptg68zfjz3l",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "titleZh": "仪表盘直达-mobile",
+                    "titleEn": "Dashboard direct mobile",
+                    "status": "TODO",
+                    "dueDate": "2026-09-30T00:00:00.000Z",
+                    "sortOrder": 12,
+                    "recurrenceType": "NONE",
+                    "recurrenceInterval": 1,
+                    "recurrenceDays": null,
+                    "generatedFromActionItemId": null,
+                    "hasGeneratedNext": false,
+                    "completedAt": null,
+                    "createdAt": "2026-09-30T05:04:36.309Z",
+                    "updatedAt": "2026-09-30T05:04:36.309Z"
+                  }
+                ],
+                "progressUpdates": [
+                  {
+                    "id": "cmunn4yqb000apphcmft5zkea",
+                    "keyResultId": "cmunn4yq70006pphcpeyifptz",
+                    "currentValue": null,
+                    "manualProgress": 35,
+                    "calculatedProgress": 35,
+                    "noteZh": "完成动作前的真实历史",
+                    "noteEn": null,
+                    "recordedAt": "2026-09-30T05:04:25.043Z"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "actionCount": 4
+  }
+}

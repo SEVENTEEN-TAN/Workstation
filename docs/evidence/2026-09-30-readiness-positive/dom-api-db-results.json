@@ -1,0 +1,2087 @@
+{
+  "runAt": "2026-09-30T05:04:24.884Z",
+  "source": "Copied supplied SQLite; fixtures and PDF files only in owned Temp directory",
+  "pages": [
+    {
+      "slug": "projects",
+      "label": "desktop",
+      "filename": "01-projects-desktop.png",
+      "status": 200,
+      "title": "项目证据",
+      "viewport": 1440,
+      "viewportHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：项目页 /projects；被首页选中时可进入首页卡片\n生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+          "left": 491,
+          "right": 958.984375,
+          "height": 65.5625,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 468,
+              "clientWidth": 468
+            },
+            {
+              "text": "展示去向：项目页 /projects；被首页选中时可进入首页卡片",
+              "scrollWidth": 468,
+              "clientWidth": 468
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+              "scrollWidth": 468,
+              "clientWidth": 468
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪验收项目"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建项目",
+        "打开链接",
+        "AI 整理说明",
+        "编辑项目 公开就绪验收项目",
+        "删除项目 公开就绪验收项目"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "打开链接",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "AI 整理说明",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑项目 公开就绪验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除项目 公开就绪验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "experience",
+      "label": "desktop",
+      "filename": "02-experience-desktop.png",
+      "status": 200,
+      "title": "经历时间线",
+      "viewport": 1440,
+      "viewportHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：经历页 /experience；近期经历可进入首页职业路径\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 555.515625,
+          "right": 1196.984375,
+          "height": 65.5625,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "展示去向：经历页 /experience；近期经历可进入首页职业路径",
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "scrollWidth": 641,
+              "clientWidth": 641
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪验收机构 · 验收工程师"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建经历",
+        "编辑经历 公开就绪验收机构",
+        "删除经历 公开就绪验收机构"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建经历",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑经历 公开就绪验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除经历 公开就绪验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "skills",
+      "label": "desktop",
+      "filename": "03-skills-desktop.png",
+      "status": 200,
+      "title": "能力矩阵",
+      "viewport": 1440,
+      "viewportHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：能力页 /skills；首页能力区块\n生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+          "left": 530.359375,
+          "right": 1100,
+          "height": 65.5625,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "展示去向：能力页 /skills；首页能力区块",
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+              "scrollWidth": 570,
+              "clientWidth": 570
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪能力域"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建能力域",
+        "公开页",
+        "编辑能力域 公开就绪能力域",
+        "删除能力域 公开就绪能力域"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "公开页",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑能力域 公开就绪能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除能力域 公开就绪能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "resume",
+      "label": "desktop",
+      "filename": "04-resume-desktop.png",
+      "status": 200,
+      "title": "简历管理",
+      "viewport": 1440,
+      "viewportHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 313,
+          "right": 814,
+          "height": 65.5625,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "scrollWidth": 501,
+              "clientWidth": 501
+            }
+          ],
+          "clippedByAncestor": false
+        },
+        {
+          "text": "满足前台展示条件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 874,
+          "right": 1375,
+          "height": 65.5625,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "scrollWidth": 501,
+              "clientWidth": 501
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [],
+      "resumeFiles": [
+        "acceptance-resume-zh.pdf",
+        "acceptance-resume-en.pdf"
+      ],
+      "actions": [
+        "预览打印版",
+        "选择替换文件",
+        "替换文件",
+        "设为私密",
+        "下载验证",
+        "删除",
+        "选择替换文件",
+        "替换文件",
+        "设为私密",
+        "下载验证",
+        "删除"
+      ],
+      "scrolledActions": [
+        {
+          "text": "预览打印版",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "选择替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "设为私密",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "下载验证",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "选择替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "设为私密",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "下载验证",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "activities",
+      "label": "desktop",
+      "filename": "05-activities-desktop.png",
+      "status": 200,
+      "title": "职业动态",
+      "viewport": 1440,
+      "viewportHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：动态页 /activities；近期动态可进入首页\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 555.515625,
+          "right": 1196.984375,
+          "height": 65.5625,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "展示去向：动态页 /activities；近期动态可进入首页",
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "scrollWidth": 641,
+              "clientWidth": 641
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪职业动态"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建动态",
+        "编辑动态 公开就绪职业动态",
+        "删除动态 公开就绪职业动态"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑动态 公开就绪职业动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除动态 公开就绪职业动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "okr",
+      "label": "desktop",
+      "filename": "06-okr-desktop.png",
+      "status": 200,
+      "title": "OKR 执行工作台",
+      "viewport": 1440,
+      "viewportHeight": 1000,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：OKR 页 /okr\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 311,
+          "right": 629,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 318,
+              "clientWidth": 318
+            },
+            {
+              "text": "展示去向：OKR 页 /okr",
+              "scrollWidth": 318,
+              "clientWidth": 318
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "scrollWidth": 318,
+              "clientWidth": 318
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪验收周期"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建周期",
+        "进入周期",
+        "编辑周期 公开就绪验收周期",
+        "删除周期 公开就绪验收周期"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "进入周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑周期 公开就绪验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除周期 公开就绪验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr/cycles/cmunn4yrk0008pp44zh2m6ia5",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr/cycles/cmunn4yrk0008pp44zh2m6ia5",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "label": "mobile",
+      "filename": "01-projects-mobile.png",
+      "status": 200,
+      "title": "项目证据",
+      "viewport": 375,
+      "viewportHeight": 900,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：项目页 /projects；被首页选中时可进入首页卡片\n生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+          "left": 28,
+          "right": 347,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：项目页 /projects；被首页选中时可进入首页卡片",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪验收项目"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建项目",
+        "打开链接",
+        "AI 整理说明",
+        "编辑项目 公开就绪验收项目",
+        "删除项目 公开就绪验收项目"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "打开链接",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "AI 整理说明",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑项目 公开就绪验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除项目 公开就绪验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "experience",
+      "label": "mobile",
+      "filename": "02-experience-mobile.png",
+      "status": 200,
+      "title": "经历时间线",
+      "viewport": 375,
+      "viewportHeight": 900,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：经历页 /experience；近期经历可进入首页职业路径\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 28,
+          "right": 347,
+          "height": 103.9375,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：经历页 /experience；近期经历可进入首页职业路径",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪验收机构 · 验收工程师"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建经历",
+        "编辑经历 公开就绪验收机构",
+        "删除经历 公开就绪验收机构"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建经历",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑经历 公开就绪验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除经历 公开就绪验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "skills",
+      "label": "mobile",
+      "filename": "03-skills-mobile.png",
+      "status": 200,
+      "title": "能力矩阵",
+      "viewport": 375,
+      "viewportHeight": 900,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：能力页 /skills；首页能力区块\n生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+          "left": 28,
+          "right": 347,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：能力页 /skills；首页能力区块",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪能力域"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建能力域",
+        "公开页",
+        "编辑能力域 公开就绪能力域",
+        "删除能力域 公开就绪能力域"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "公开页",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑能力域 公开就绪能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除能力域 公开就绪能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "resume",
+      "label": "mobile",
+      "filename": "04-resume-mobile.png",
+      "status": 200,
+      "title": "简历管理",
+      "viewport": 375,
+      "viewportHeight": 900,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 35,
+          "right": 340,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "scrollWidth": 305,
+              "clientWidth": 305
+            }
+          ],
+          "clippedByAncestor": false
+        },
+        {
+          "text": "满足前台展示条件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 35,
+          "right": 340,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "scrollWidth": 305,
+              "clientWidth": 305
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [],
+      "resumeFiles": [
+        "acceptance-resume-zh.pdf",
+        "acceptance-resume-en.pdf"
+      ],
+      "actions": [
+        "预览打印版",
+        "选择替换文件",
+        "替换文件",
+        "设为私密",
+        "下载验证",
+        "删除",
+        "选择替换文件",
+        "替换文件",
+        "设为私密",
+        "下载验证",
+        "删除"
+      ],
+      "scrolledActions": [
+        {
+          "text": "预览打印版",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "选择替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 215
+        },
+        {
+          "text": "替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 300
+        },
+        {
+          "text": "设为私密",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 354
+        },
+        {
+          "text": "下载验证",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 354
+        },
+        {
+          "text": "删除",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 354
+        },
+        {
+          "text": "选择替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 554
+        },
+        {
+          "text": "替换文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 554
+        },
+        {
+          "text": "设为私密",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 554
+        },
+        {
+          "text": "下载验证",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 554
+        },
+        {
+          "text": "删除",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 554
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "activities",
+      "label": "mobile",
+      "filename": "05-activities-mobile.png",
+      "status": 200,
+      "title": "职业动态",
+      "viewport": 375,
+      "viewportHeight": 900,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：动态页 /activities；近期动态可进入首页\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 28,
+          "right": 347,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：动态页 /activities；近期动态可进入首页",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪职业动态"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建动态",
+        "编辑动态 公开就绪职业动态",
+        "删除动态 公开就绪职业动态"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑动态 公开就绪职业动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除动态 公开就绪职业动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "okr",
+      "label": "mobile",
+      "filename": "06-okr-mobile.png",
+      "status": 200,
+      "title": "OKR 执行工作台",
+      "viewport": 375,
+      "viewportHeight": 900,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "满足前台展示条件\n展示去向：OKR 页 /okr\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 33,
+          "right": 342,
+          "height": 84.75,
+          "withinViewport": true,
+          "children": [
+            {
+              "text": "满足前台展示条件",
+              "scrollWidth": 309,
+              "clientWidth": 309
+            },
+            {
+              "text": "展示去向：OKR 页 /okr",
+              "scrollWidth": 309,
+              "clientWidth": 309
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "scrollWidth": 309,
+              "clientWidth": 309
+            }
+          ],
+          "clippedByAncestor": false
+        }
+      ],
+      "recordTitles": [
+        "公开就绪验收周期"
+      ],
+      "resumeFiles": [],
+      "actions": [
+        "新建周期",
+        "进入周期",
+        "编辑周期 公开就绪验收周期",
+        "删除周期 公开就绪验收周期"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "进入周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 297
+        },
+        {
+          "text": "编辑周期 公开就绪验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 297
+        },
+        {
+          "text": "删除周期 公开就绪验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 297
+        }
+      ],
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/okr/cycles/cmunn4yrk0008pp44zh2m6ia5",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr/cycles/cmunn4yrk0008pp44zh2m6ia5",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    }
+  ],
+  "api": [
+    {
+      "path": "/api/admin/projects",
+      "status": 200,
+      "body": [
+        {
+          "slug": "readiness-positive-project",
+          "titleZh": "公开就绪验收项目",
+          "titleEn": "Public-ready acceptance project",
+          "summaryZh": "完整双语公开项目样例",
+          "summaryEn": "Complete bilingual public project fixture",
+          "contextZh": "本地隔离验收背景",
+          "contextEn": "Isolated local acceptance context",
+          "responsibilityZh": "完成证据验收",
+          "responsibilityEn": "Verify acceptance evidence",
+          "challengeZh": "检查公开条件提示",
+          "challengeEn": "Check public readiness hints",
+          "approachZh": "使用独立数据和浏览器",
+          "approachEn": "Use isolated data and browser",
+          "resultZh": "六类公开条件满足",
+          "resultEn": "Six public readiness conditions satisfied",
+          "coverImage": null,
+          "coverAltZh": null,
+          "coverAltEn": null,
+          "technologies": [
+            "Next.js"
+          ],
+          "links": [
+            {
+              "kind": "WEBSITE",
+              "labelZh": "本地项目页",
+              "labelEn": "Local project page",
+              "url": "http://127.0.0.1:3013/projects/readiness-positive-project"
+            }
+          ],
+          "visibility": "PUBLIC",
+          "featured": false,
+          "sortOrder": 0,
+          "startedAt": null,
+          "completedAt": null,
+          "id": "cmunn4yqt0000pp44ucg6j8qd",
+          "createdAt": "2026-09-30T05:04:25.061Z",
+          "updatedAt": "2026-09-30T05:04:25.061Z"
+        }
+      ]
+    },
+    {
+      "path": "/api/admin/experience",
+      "status": 200,
+      "body": [
+        {
+          "kind": "WORK",
+          "organizationZh": "公开就绪验收机构",
+          "organizationEn": "Readiness acceptance organization",
+          "titleZh": "验收工程师",
+          "titleEn": "Acceptance engineer",
+          "descriptionZh": "完整双语经历样例",
+          "descriptionEn": "Complete bilingual experience fixture",
+          "locationZh": "本地",
+          "locationEn": "Local",
+          "linkUrl": null,
+          "startedAt": "2026-01-01T00:00:00.000Z",
+          "endedAt": null,
+          "isCurrent": false,
+          "visibility": "PUBLIC",
+          "featured": false,
+          "sortOrder": 0,
+          "id": "cmunn4yr10001pp44ad2wov5w",
+          "createdAt": "2026-09-30T05:04:25.070Z",
+          "updatedAt": "2026-09-30T05:04:25.070Z"
+        }
+      ]
+    },
+    {
+      "path": "/api/admin/skills",
+      "status": 200,
+      "body": [
+        {
+          "nameZh": "公开就绪能力域",
+          "nameEn": "Public-ready capability area",
+          "descriptionZh": "包含公开项目和双语文章证据",
+          "descriptionEn": "Includes public project and bilingual article evidence",
+          "visibility": "PUBLIC",
+          "sortOrder": 0,
+          "skills": [
+            {
+              "nameZh": "浏览器证据验收",
+              "nameEn": "Browser evidence acceptance",
+              "summaryZh": "通过可核查证据验证界面",
+              "summaryEn": "Verify UI through inspectable evidence",
+              "visibility": "PUBLIC",
+              "sortOrder": 0,
+              "evidence": [
+                {
+                  "id": "cmunn4yr40005pp44izwm51mo",
+                  "sortOrder": 0,
+                  "createdAt": "2026-09-30T05:04:25.073Z",
+                  "updatedAt": "2026-09-30T05:04:25.073Z",
+                  "kind": "PROJECT",
+                  "projectId": "cmunn4yqt0000pp44ucg6j8qd"
+                },
+                {
+                  "id": "cmunn4yr40006pp44w7459chy",
+                  "sortOrder": 1,
+                  "createdAt": "2026-09-30T05:04:25.073Z",
+                  "updatedAt": "2026-09-30T05:04:25.073Z",
+                  "kind": "ARTICLE",
+                  "titleZh": "本地验收方法",
+                  "titleEn": "Local acceptance method",
+                  "url": "http://127.0.0.1:3013/skills"
+                }
+              ],
+              "id": "cmunn4yr40003pp443gnbkdt7",
+              "areaId": "cmunn4yr40002pp44apjjba3i",
+              "createdAt": "2026-09-30T05:04:25.073Z",
+              "updatedAt": "2026-09-30T05:04:25.073Z"
+            }
+          ],
+          "id": "cmunn4yr40002pp44apjjba3i",
+          "createdAt": "2026-09-30T05:04:25.073Z",
+          "updatedAt": "2026-09-30T05:04:25.073Z"
+        }
+      ]
+    },
+    {
+      "path": "/api/admin/resume",
+      "status": 200,
+      "body": [
+        {
+          "id": "cmunn4yrr000app44k2j3efgx",
+          "locale": "EN",
+          "originalFilename": "acceptance-resume-en.pdf",
+          "mimeType": "application/pdf",
+          "sizeBytes": 611,
+          "visibility": "PUBLIC",
+          "createdAt": "2026-09-30T05:04:25.095Z",
+          "updatedAt": "2026-09-30T05:04:25.095Z"
+        },
+        {
+          "id": "cmunn4yro0009pp44meqm45if",
+          "locale": "ZH",
+          "originalFilename": "acceptance-resume-zh.pdf",
+          "mimeType": "application/pdf",
+          "sizeBytes": 611,
+          "visibility": "PUBLIC",
+          "createdAt": "2026-09-30T05:04:25.092Z",
+          "updatedAt": "2026-09-30T05:04:25.092Z"
+        }
+      ]
+    },
+    {
+      "path": "/api/admin/activities",
+      "status": 200,
+      "body": [
+        {
+          "titleZh": "公开就绪职业动态",
+          "titleEn": "Public-ready career activity",
+          "summaryZh": "完整双语动态样例",
+          "summaryEn": "Complete bilingual activity fixture",
+          "occurredAt": "2026-09-30T00:00:00.000Z",
+          "visibility": "PUBLIC",
+          "featured": false,
+          "linkUrl": null,
+          "id": "cmunn4yri0007pp44g5j648r4",
+          "createdAt": "2026-09-30T05:04:25.086Z",
+          "updatedAt": "2026-09-30T05:04:25.086Z"
+        }
+      ]
+    },
+    {
+      "path": "/api/admin/okr",
+      "status": 200,
+      "body": [
+        {
+          "id": "cmunn4yrk0008pp44zh2m6ia5",
+          "nameZh": "公开就绪验收周期",
+          "nameEn": "Public-ready acceptance cycle",
+          "type": "QUARTER",
+          "startDate": "2026-07-01T00:00:00.000Z",
+          "endDate": "2026-09-30T00:00:00.000Z",
+          "status": "ACTIVE",
+          "visibility": "PUBLIC",
+          "createdAt": "2026-09-30T05:04:25.088Z",
+          "updatedAt": "2026-09-30T05:04:25.088Z",
+          "objectives": [],
+          "reviews": []
+        }
+      ]
+    },
+    {
+      "path": "/api/resume/zh",
+      "status": 200,
+      "contentType": "application/pdf",
+      "byteLength": 611,
+      "matchesFixture": true
+    },
+    {
+      "path": "/api/resume/en",
+      "status": 200,
+      "contentType": "application/pdf",
+      "byteLength": 611,
+      "matchesFixture": true
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverStopped": true,
+    "portFree": true,
+    "ownerAndResolvedPathVerified": true,
+    "temporaryDirectoryRemoved": true
+  },
+  "head": "3d1d7c9f54c94cdbe0fa965c0544ce71406ec4bd",
+  "buildId": "dSWTfnTKi3ugfbSgQSNbZ",
+  "sourceDigests": {
+    "src/lib/public-readiness.ts": "47ea346eba930b0f6b5e0c5af970241b4ac88f16ce662bd8fdcfd486c02c95da",
+    "src/lib/okr/public-readiness.ts": "3ecefc71db50fe055961f8467315339c6a59a18911f4a8e6a07f8767120a6a0c",
+    "src/lib/services/resume-files.ts": "a13173e65649e1bb344d0ebaade80b3ce947132262dfe36e048982a8e43d3494",
+    "src/components/admin/okr/PublicReadiness.tsx": "6eabd75cae23354fe4967c0d1123c16e5f425d494a56eed7ad68c464c41ad7a4",
+    "src/components/admin/PortfolioProjectsWorkspace.tsx": "7c44feaa662fc3534d1f7adebcd7caf8630cba8daa04e1548639e9ddaee07e1d",
+    "src/components/admin/ExperienceRecordsWorkspace.tsx": "2b6b03d5d463c3342bcfdbb0a93f6115a83d6197bdc943de64caa57f58affe5c",
+    "src/components/admin/SkillAreasWorkspace.tsx": "25452bcfcaed0410bfc4bd9485bb045adf4d914fec8dd50c130593efab878416",
+    "src/components/admin/ResumeFilesWorkspace.tsx": "02434069d768c67d44c16936e583c79ca12e128e34de54faa03d9eeb7e5dfbc1",
+    "src/components/admin/CareerActivitiesWorkspace.tsx": "68ac2d2feed9c424b5dfa1ae61e98325521276c026d5508bd861f2fb297034c0",
+    "src/components/admin/okr/OkrCycleListWorkspace.tsx": "2f2c7ddc38ffa47e6245400c26b35d4b0dd4e457e98bd74c900aaf31b6cad000",
+    "src/app/admin/admin.module.css": "30d341422b5526d07db75bca04971de1b825f9454de4d6b94090e79f1edcd6ef"
+  },
+  "sourceRecordCounts": {
+    "portfolioProject": 0,
+    "experienceRecord": 0,
+    "skillArea": 0,
+    "resumeFile": 0,
+    "careerActivity": 0,
+    "okrCycle": 0
+  },
+  "fixtures": {
+    "projects": [
+      {
+        "id": "cmunn4yqt0000pp44ucg6j8qd",
+        "slug": "readiness-positive-project",
+        "titleZh": "公开就绪验收项目",
+        "titleEn": "Public-ready acceptance project",
+        "visibility": "PUBLIC"
+      }
+    ],
+    "experience": [
+      {
+        "organizationZh": "公开就绪验收机构",
+        "organizationEn": "Readiness acceptance organization",
+        "visibility": "PUBLIC"
+      }
+    ],
+    "skills": [
+      {
+        "nameZh": "公开就绪能力域",
+        "nameEn": "Public-ready capability area",
+        "visibility": "PUBLIC",
+        "skills": [
+          {
+            "nameZh": "浏览器证据验收",
+            "nameEn": "Browser evidence acceptance",
+            "summaryEn": "Verify UI through inspectable evidence",
+            "visibility": "PUBLIC",
+            "evidence": [
+              {
+                "kind": "PROJECT",
+                "projectId": "cmunn4yqt0000pp44ucg6j8qd",
+                "titleZh": null,
+                "titleEn": null,
+                "url": null
+              },
+              {
+                "kind": "ARTICLE",
+                "projectId": null,
+                "titleZh": "本地验收方法",
+                "titleEn": "Local acceptance method",
+                "url": "http://127.0.0.1:3013/skills"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "resumes": [
+      {
+        "locale": "ZH",
+        "originalFilename": "acceptance-resume-zh.pdf",
+        "mimeType": "application/pdf",
+        "sizeBytes": 611,
+        "visibility": "PUBLIC"
+      },
+      {
+        "locale": "EN",
+        "originalFilename": "acceptance-resume-en.pdf",
+        "mimeType": "application/pdf",
+        "sizeBytes": 611,
+        "visibility": "PUBLIC"
+      }
+    ],
+    "activities": [
+      {
+        "titleZh": "公开就绪职业动态",
+        "titleEn": "Public-ready career activity",
+        "summaryEn": "Complete bilingual activity fixture",
+        "visibility": "PUBLIC"
+      }
+    ],
+    "cycles": [
+      {
+        "nameZh": "公开就绪验收周期",
+        "nameEn": "Public-ready acceptance cycle",
+        "type": "QUARTER",
+        "status": "ACTIVE",
+        "visibility": "PUBLIC"
+      }
+    ]
+  }
+}

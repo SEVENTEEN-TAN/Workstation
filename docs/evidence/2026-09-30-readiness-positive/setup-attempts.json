@@ -1,0 +1,35 @@
+{
+  "description": "Exact stdout objects extracted from the two initial exec_command tool results. The script was corrected locally; final DOM/API/DB results are separate. No original server logs were retained because owned Temp resources were cleaned in finally.",
+  "attempts": [
+    {
+      "toolChunk": "b7d2f6",
+      "exitCode": 1,
+      "stdout": {
+        "head": "3d1d7c9f54c94cdbe0fa965c0544ce71406ec4bd",
+        "pages": 0,
+        "apiChecks": 0,
+        "hints": 0,
+        "actionChecks": 0,
+        "failedRequests": 0,
+        "error": "Admin API projects\n\n500 !== 200\n",
+        "cleanup": { "databaseDisconnected": true, "serverStopped": true, "portFree": true, "ownerAndResolvedPathVerified": true, "temporaryDirectoryRemoved": true }
+      },
+      "classification": "Fixture error: link.kind missing. Confirmed required by src/lib/validators/portfolio-projects.ts:12-17; adding WEBSITE allowed project GET to pass on next attempt."
+    },
+    {
+      "toolChunk": "171510",
+      "exitCode": 1,
+      "stdout": {
+        "head": "3d1d7c9f54c94cdbe0fa965c0544ce71406ec4bd",
+        "pages": 0,
+        "apiChecks": 5,
+        "hints": 0,
+        "actionChecks": 0,
+        "failedRequests": 0,
+        "error": "Admin API okr/cycles\n\n405 !== 200\n",
+        "cleanup": { "databaseDisconnected": true, "serverStopped": true, "portFree": true, "ownerAndResolvedPathVerified": true, "temporaryDirectoryRemoved": true }
+      },
+      "classification": "Script error: GET was sent to POST-only /api/admin/okr/cycles. Inspected route exports; corrected list GET path to /api/admin/okr."
+    }
+  ]
+}
