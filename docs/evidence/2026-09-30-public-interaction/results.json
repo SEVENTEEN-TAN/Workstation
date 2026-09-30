@@ -1,0 +1,1222 @@
+{
+  "runId": "a09c33bd-3ccb-4d8b-b485-72366d8a78c0",
+  "startedAt": "2026-09-30T06:13:14.366Z",
+  "assertions": [
+    {
+      "name": "zh:375:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:639:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:640:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:767:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:768:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:1024:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:1440:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:keyboard-modal-focus-escape-and-restore",
+      "pass": true
+    },
+    {
+      "name": "zh:touch-backdrop-and-section-anchor",
+      "pass": true
+    },
+    {
+      "name": "zh:open-menu-resize-to-desktop-restores-focus",
+      "pass": true
+    },
+    {
+      "name": "zh:language-toggle-and-public-editor-boundary",
+      "pass": true
+    },
+    {
+      "name": "zh:keyboard-footer-qr-and-public-route-links",
+      "pass": true
+    },
+    {
+      "name": "en:375:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:639:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:640:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:767:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:768:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:1024:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:1440:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:keyboard-modal-focus-escape-and-restore",
+      "pass": true
+    },
+    {
+      "name": "en:touch-backdrop-and-section-anchor",
+      "pass": true
+    },
+    {
+      "name": "en:open-menu-resize-to-desktop-restores-focus",
+      "pass": true
+    },
+    {
+      "name": "en:language-toggle-and-public-editor-boundary",
+      "pass": true
+    },
+    {
+      "name": "en:keyboard-footer-qr-and-public-route-links",
+      "pass": true
+    }
+  ],
+  "pages": [
+    {
+      "locale": "zh",
+      "width": 375,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 20,
+            "right": 69.3125,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 253.59375,
+            "right": 303,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 49.40625,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "打开菜单",
+            "x": 315,
+            "right": 355,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 639,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 20,
+            "right": 69.3125,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 517.59375,
+            "right": 567,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 49.40625,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "打开菜单",
+            "x": 579,
+            "right": 619,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 639,
+        "innerWidth": 639,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 640,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 32,
+            "right": 81.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 494.59375,
+            "right": 544,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "打开菜单",
+            "x": 568,
+            "right": 608,
+            "top": 27.5,
+            "bottom": 67.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 640,
+        "innerWidth": 640,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 767,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 32,
+            "right": 81.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 621.59375,
+            "right": 671,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "打开菜单",
+            "x": 695,
+            "right": 735,
+            "top": 27.5,
+            "bottom": 67.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 767,
+        "innerWidth": 767,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 768,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 32,
+            "right": 81.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 256.828125,
+            "right": 292.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 316.03125,
+            "right": 351.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 375.234375,
+            "right": 410.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 434.4375,
+            "right": 469.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 493.578125,
+            "right": 524.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 548.390625,
+            "right": 594.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 618.59375,
+            "right": 668,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 692,
+            "right": 736,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 1024,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 48,
+            "right": 97.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 412.828125,
+            "right": 448.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 484.03125,
+            "right": 519.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 555.234375,
+            "right": 590.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 626.4375,
+            "right": 661.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 697.578125,
+            "right": 728.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 764.390625,
+            "right": 810.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 846.59375,
+            "right": 896,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 932,
+            "right": 976,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 1440,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 64,
+            "right": 113.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 812.828125,
+            "right": 848.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 884.03125,
+            "right": 919.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 955.234375,
+            "right": 990.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 1026.4375,
+            "right": 1061.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 1097.578125,
+            "right": 1128.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 1164.390625,
+            "right": 1210.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 1246.59375,
+            "right": 1296,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 1332,
+            "right": 1376,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "scenario": "keyboard-focus-sequence",
+      "sequence": [
+        {
+          "tag": "BUTTON",
+          "label": "关于",
+          "inside": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "作品",
+          "inside": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "联系",
+          "inside": true
+        },
+        {
+          "tag": "A",
+          "label": "OKR",
+          "inside": true
+        },
+        {
+          "tag": "A",
+          "label": "经历",
+          "inside": true
+        },
+        {
+          "tag": "A",
+          "label": "知识库",
+          "inside": true
+        },
+        {
+          "tag": "BODY",
+          "label": "关于我.关于作品联系OKR经历知识库EN菜单关于作品联系OKR经历知识库JAVA + AI全栈开发工",
+          "inside": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "关闭菜单",
+          "inside": true
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 20,
+            "right": 102.71875,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 260.1875,
+            "right": 303,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 42.8125,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "Open menu",
+            "x": 315,
+            "right": 355,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "en",
+      "width": 639,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 20,
+            "right": 102.71875,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 524.1875,
+            "right": 567,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 42.8125,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "Open menu",
+            "x": 579,
+            "right": 619,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 639,
+        "innerWidth": 639,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "en",
+      "width": 640,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 20,
+            "right": 102.71875,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 525.1875,
+            "right": 568,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 42.8125,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "Open menu",
+            "x": 580,
+            "right": 620,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 640,
+        "innerWidth": 640,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "en",
+      "width": 767,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 32,
+            "right": 114.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 628.1875,
+            "right": 671,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Open menu",
+            "x": 695,
+            "right": 735,
+            "top": 27.5,
+            "bottom": 67.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 767,
+        "innerWidth": 767,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 768,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 32,
+            "right": 84.265625,
+            "top": 23.5,
+            "bottom": 71.5,
+            "width": 52.265625,
+            "height": 48,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 84.265625,
+            "right": 147.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 171.71875,
+            "right": 228.046875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 252.046875,
+            "right": 338.5625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 362.5625,
+            "right": 397.703125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 421.703125,
+            "right": 487.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 511.59375,
+            "right": 603.140625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 627.140625,
+            "right": 669.953125,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Go to contact",
+            "x": 693.953125,
+            "right": 737.953125,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 1024,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 48,
+            "right": 130.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 238.3125,
+            "right": 301.765625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 337.765625,
+            "right": 394.09375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 430.09375,
+            "right": 516.609375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 552.609375,
+            "right": 587.75,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 623.75,
+            "right": 689.640625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 725.640625,
+            "right": 817.1875,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 853.1875,
+            "right": 896,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Go to contact",
+            "x": 932,
+            "right": 976,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 1440,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 64,
+            "right": 146.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 638.3125,
+            "right": 701.765625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 737.765625,
+            "right": 794.09375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 830.09375,
+            "right": 916.609375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 952.609375,
+            "right": 987.75,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 1023.75,
+            "right": 1089.640625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 1125.640625,
+            "right": 1217.1875,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 1253.1875,
+            "right": 1296,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Go to contact",
+            "x": 1332,
+            "right": 1376,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "scenario": "keyboard-focus-sequence",
+      "sequence": [
+        {
+          "tag": "BUTTON",
+          "label": "ABOUT",
+          "inside": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "WORK",
+          "inside": true
+        },
+        {
+          "tag": "BUTTON",
+          "label": "CONTACT",
+          "inside": true
+        },
+        {
+          "tag": "A",
+          "label": "OKR",
+          "inside": true
+        },
+        {
+          "tag": "A",
+          "label": "Journey",
+          "inside": true
+        },
+        {
+          "tag": "A",
+          "label": "Knowledge",
+          "inside": true
+        },
+        {
+          "tag": "BODY",
+          "label": "ABOUT ME.ABOUTWORKCONTACTOKRJourneyKnowledge中MENUA",
+          "inside": false
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Close menu",
+          "inside": true
+        }
+      ]
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "locale": "zh",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/resume",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3016Free": true,
+    "ownedTempDeleted": true
+  },
+  "fixtureVersion": 1,
+  "head": "7221fcbf91031a92f0aafc059acfc5da3eee35fc",
+  "buildId": "keK4etzVpBGfqpfHsycqN",
+  "sourceHashes": {
+    "src/components/public/Navbar.tsx": "372ea69ac4ed8f9c57fa97ab04e8ca8d7871fba722ca1ada109fa64a03e6f021",
+    "src/components/public/Footer.tsx": "5650ae8630cd8f1c2a85bf2a95a7f51ad142e221b0e4edb13bdda5f2671dd940",
+    "src/components/public/HomeExperience.tsx": "cf8a7fa571eb1544794df629da5d77d9ee888f1710d238674cc5569cc40024d5",
+    "src/components/public/i18n.tsx": "b8fc93cec2b07aee7aa7eb39768fcb020dbd3c266e6025c26eb4544547fb1cc8",
+    "src/app/globals.css": "87818f321cf3464037ba9d3bbbcb372fb2ae9f33a02a268f44e6812283893d5f",
+    "src/app/page.tsx": "7705d2461f73525b652864aead3c616bd79e304130874264e0a33c3de80845f9"
+  },
+  "browser": "154.0.4258.37",
+  "completed": true,
+  "passed": true,
+  "failedClassification": {
+    "net::ERR_ABORTED": 13
+  }
+}

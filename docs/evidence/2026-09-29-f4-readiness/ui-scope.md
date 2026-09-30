@@ -6,10 +6,10 @@
 
 | 模块 | 对应差异文件 | 已有实际证据 | 本轮核查及剩余边界 |
 | --- | --- | --- | --- |
-| 首页编辑与公开组件（18） | `HomeWorkspace.tsx`；`home/` 下 Editor、VisualWorkspace、content-editor、visual-editor-protocol；公开 About、Footer、Hero、HomeExperience、HomeJourney、HomeVisualEditor、Navbar、RecentWorks、Services、i18n、visual-editing；preview page、globals.css | [手机原位编辑](../2026-09-29-f2-mobile-partial/README.md)、[项目同步](../2026-09-23-stage-3c/README.md)、[新输入保留](../2026-09-30-save-concurrency/README.md)、[服务操作互斥](../2026-10-01-home-operation-order/README.md)、[公开静态差异审查](public-static-review.md) | 关键编辑/保存链路已有证据；主代理已核对公开组件及全局 CSS 静态差异。真实系统 IME、各组件组合交互、中间宽度和静态图片策略仍开放。恢复模态期间输入未证明。 |
+| 首页编辑与公开组件（18） | `HomeWorkspace.tsx`；`home/` 下 Editor、VisualWorkspace、content-editor、visual-editor-protocol；公开 About、Footer、Hero、HomeExperience、HomeJourney、HomeVisualEditor、Navbar、RecentWorks、Services、i18n、visual-editing；preview page、globals.css | [手机原位编辑](../2026-09-29-f2-mobile-partial/README.md)、[项目同步](../2026-09-23-stage-3c/README.md)、[新输入保留](../2026-09-30-save-concurrency/README.md)、[服务操作互斥](../2026-10-01-home-operation-order/README.md)、[公开静态差异审查](public-static-review.md) | 关键编辑/保存链路已有证据；主代理已核对公开组件及全局 CSS 静态差异。[公开导航专项](../2026-09-30-public-interaction/README.md)补验中英文7宽度及键盘/触屏/语言/QR共24组，修复640px英文越界。真实系统IME、公开编辑器/其他组件组合交互、路由实际点击和静态图片策略仍开放。恢复模态期间输入未证明。 |
 | 三类草稿及辅助状态（5） | WeeklyActivity、OkrMilestoneDraft、CareerTimelineDraft 工作区，weekly-editor-state、workspace-utils | [转换定位](../2026-09-23-stage-3b/README.md)、[保存/失败重试/生成](../2026-09-30-save-concurrency/README.md) | 已验主要并发保护；周报完整导航/刷新矩阵仍归 F2。 |
 | 公开条件提示（6） | CareerActivities、ExperienceRecords、PortfolioProjects、ResumeFiles、SkillAreas 工作区及 `okr/PublicReadiness.tsx` | [阻断状态](../2026-09-30-readiness-ui/README.md)、[满足条件样例](../2026-09-30-readiness-positive/README.md)、[项目同步](../2026-09-23-stage-3c/README.md)、[前台入口](../2026-09-23-stage-3b/README.md) | 主代理阅读六文件差异；阻断/未上传 12 页、42 入口已有证据，满足条件另 12 页/14 组提示/60 入口和双语 PDF 字节下载已由主代理独立重跑通过。项目及文章两类技能证据为 DB/API 样例；未覆盖所有证据组合、上传、CRUD 或公开页渲染。 |
-| OKR 工作区与弹窗（5） | ActionItemList、ObjectiveWorkspace、OkrCycleListWorkspace、OkrCycleWorkspace、OkrEntityDialog | [创建/编辑/短屏/焦点](../2026-09-23-stage-3b/README.md)、[列表阻断提示](../2026-09-30-readiness-ui/README.md)、[重复行动工作区](../2026-09-30-recurrence-workspace/README.md) | 桌面每日、375px 每周样例通过实际表单和完成/删除操作，12 组断言含字段继承、重复完成/重开/删除不再生成、KR 进度不变及仪表盘定位；主代理独立重跑通过。桌面“进入周期”外观较紧但可达。父子工作区完整差异审查、并发压力、多代完成和日期边界矩阵仍需核对。 |
+| OKR 工作区与弹窗（5） | ActionItemList、ObjectiveWorkspace、OkrCycleListWorkspace、OkrCycleWorkspace、OkrEntityDialog | [创建/编辑/短屏/焦点](../2026-09-23-stage-3b/README.md)、[列表阻断提示](../2026-09-30-readiness-ui/README.md)、[重复行动工作区](../2026-09-30-recurrence-workspace/README.md) | 桌面每日、375px 每周样例通过实际表单和完成/删除操作，12 组断言含字段继承、重复完成/重开/删除不再生成、KR 进度不变及仪表盘定位；主代理独立重跑通过。桌面“进入周期”外观较紧但可达。另[数据库边界](../2026-09-30-recurrence-boundaries/README.md)7组证明三代双周日期、8请求并发仅一后继、插入失败回滚/重试与KR历史不变。父子工作区完整差异审查、持续压力/多实例、浏览器多代操作和实际午夜/其他日期矩阵仍需核对。 |
 | 仪表盘（2） | overview page、OverviewWorkspace | [四类队列和直达](../2026-09-29-stage-4-e1/README.md) | 装配与父级结束过滤已局部审查；不把当时未保存的截图当成当前截图文件。 |
 | 知识库（2） | knowledge page、KnowledgeWorkspace | [笔记切换](../2026-09-30-save-concurrency/README.md)、[选库及扫描刷新](../2026-09-30-knowledge-vault-selection/README.md)、[发布闭环](../2026-09-30-knowledge-publication/README.md) | 选库/扫描各四项 GREEN；图片草稿、独立快照、匿名正文/图片、源修改与审查、手机下架/重发、扫描与草稿交错、附件改选/发布互斥及布局共12组已补验。扫描与附件/发布/下架/审查的其余组合只有合并回归用例；完整浏览器并发/失败矩阵仍开放。 |
 | 转换目标路由（1） | activities page | [目标切换与异常](../2026-09-23-stage-3b/README.md) | 已有同页面目标变化、目标缺失与异常转换证据。 |
@@ -20,7 +20,7 @@
 ## 下一批可继续的本地核查
 
 1. 知识库剩余扫描与附件/发布/下架/审查交错及失败矩阵；图片发布闭环、扫描与创建草稿交错、附件保存互斥已通过专项真实验收。
-2. 公开组件与全局 CSS 的组合交互浏览器矩阵，以及重复行动的父子工作区完整差异审查和剩余边界；公开组件静态差异已核查，重复行动桌面/手机固定实际场景已补验。
+2. 公开编辑器及其余组件/全局 CSS 的组合交互，公开路由实际点击与目标页呈现；重复行动父子工作区完整差异、持续压力/多实例、浏览器多代操作及实际午夜/其他日期边界。导航中英文中间宽度、键盘/触屏、跨断点、语言和QR已补24组；重复行动三代双周、8请求并发与数据库插入失败回滚/重试已补7组，不能继续笼统列为未做。
 3. 公开条件的其他证据组合、上传及 CRUD/公开页实际渲染；六类满足条件样例和已有双语 PDF 下载已补验，不继续将这两个具体场景列为未做。
 
 发布范围、服务器预检、生产迁移/旧版本回滚兼容性、备份与 Linux 构建仍需按部署门槛处理；本清单不构成合并或部署授权。C1–C5 待范围确认，F2/F4 保持未勾选。

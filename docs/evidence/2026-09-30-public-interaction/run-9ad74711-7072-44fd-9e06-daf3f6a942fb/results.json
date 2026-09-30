@@ -1,0 +1,1182 @@
+{
+  "runId": "9ad74711-7072-44fd-9e06-daf3f6a942fb",
+  "startedAt": "2026-09-30T06:01:59.821Z",
+  "assertions": [
+    {
+      "name": "zh:375:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:639:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:640:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:768:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:1024:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:1440:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "zh:keyboard-modal-focus-escape-and-restore",
+      "pass": false,
+      "error": "focus escaped native modal\n\nfalse !== true\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "zh:touch-backdrop-and-section-anchor",
+      "pass": false,
+      "error": "locator.tap: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('navigation', { name: 'Primary navigation', exact: true }).getByRole('button', { name: '打开菜单', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"打开菜单\" aria-expanded=\"true\" aria-haspopup=\"dialog\" class=\"focus-ring flex size-10 items-center justify-center rounded-full border border-white/15 text-white sm:hidden\">…</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"导航菜单\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"导航菜单\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    16 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"导航菜单\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying tap action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "zh:open-menu-resize-to-desktop-restores-focus",
+      "pass": false,
+      "error": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('navigation', { name: 'Primary navigation', exact: true }).getByRole('button', { name: '打开菜单', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-label=\"打开菜单\" aria-expanded=\"true\" aria-haspopup=\"dialog\" class=\"focus-ring flex size-10 items-center justify-center rounded-full border border-white/15 text-white sm:hidden\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"导航菜单\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"导航菜单\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    15 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"导航菜单\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "zh:language-toggle-and-public-editor-boundary",
+      "pass": false,
+      "error": "page.waitForFunction: Timeout 8000ms exceeded.",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "zh:keyboard-footer-qr-and-public-route-links",
+      "pass": false,
+      "error": "locator.waitFor: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#wechat-qr') to be visible\u001b[22m\n\u001b[2m    19 × locator resolved to hidden <div id=\"wechat-qr\" class=\"invisible absolute bottom-full right-0 z-20 mb-4 w-44 translate-y-2 rounded-2xl border border-white/10 bg-white p-2 opacity-0 shadow-2xl shadow-black/60 transition-all duration-300 group-hover/wechat:visible group-hover/wechat:translate-y-0 group-hover/wechat:opacity-100 group-focus-within/wechat:visible group-focus-within/wechat:translate-y-0 group-focus-within/wechat:opacity-100\">…</div>\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "en:375:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:639:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:640:navigation-visible-and-unobscured",
+      "pass": false,
+      "error": "control outside viewport: 切换为中文",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "en:768:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:1024:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:1440:navigation-visible-and-unobscured",
+      "pass": true
+    },
+    {
+      "name": "en:keyboard-modal-focus-escape-and-restore",
+      "pass": false,
+      "error": "focus escaped native modal\n\nfalse !== true\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "en:touch-backdrop-and-section-anchor",
+      "pass": false,
+      "error": "locator.tap: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('navigation', { name: 'Primary navigation', exact: true }).getByRole('button', { name: 'Open menu', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-expanded=\"true\" aria-label=\"Open menu\" aria-haspopup=\"dialog\" class=\"focus-ring flex size-10 items-center justify-center rounded-full border border-white/15 text-white sm:hidden\">…</button>\u001b[22m\n\u001b[2m  - attempting tap action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"Navigation menu\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"Navigation menu\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying tap action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    15 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"Navigation menu\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying tap action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "en:open-menu-resize-to-desktop-restores-focus",
+      "pass": false,
+      "error": "locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('navigation', { name: 'Primary navigation', exact: true }).getByRole('button', { name: 'Open menu', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-expanded=\"true\" aria-label=\"Open menu\" aria-haspopup=\"dialog\" class=\"focus-ring flex size-10 items-center justify-center rounded-full border border-white/15 text-white sm:hidden\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"Navigation menu\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"Navigation menu\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    15 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <svg width=\"20\" height=\"20\" fill=\"none\" stroke-width=\"2\" aria-hidden=\"true\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" xmlns=\"http://www.w3.org/2000/svg\">…</svg> from <dialog open=\"\" aria-label=\"Navigation menu\" class=\"fixed inset-y-0 right-0 left-auto m-0 h-dvh max-h-dvh w-[min(20rem,85vw)] max-w-none border-0 border-l border-white/10 bg-[#11161a] p-0 text-white shadow-2xl backdrop:bg-black/70 sm:hidden\">…</dialog> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "en:language-toggle-and-public-editor-boundary",
+      "pass": false,
+      "error": "page.waitForFunction: Timeout 8000ms exceeded.",
+      "classification": "fixture-or-wait"
+    },
+    {
+      "name": "en:keyboard-footer-qr-and-public-route-links",
+      "pass": false,
+      "error": "locator.waitFor: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#wechat-qr') to be visible\u001b[22m\n\u001b[2m    19 × locator resolved to hidden <div id=\"wechat-qr\" class=\"invisible absolute bottom-full right-0 z-20 mb-4 w-44 translate-y-2 rounded-2xl border border-white/10 bg-white p-2 opacity-0 shadow-2xl shadow-black/60 transition-all duration-300 group-hover/wechat:visible group-hover/wechat:translate-y-0 group-hover/wechat:opacity-100 group-focus-within/wechat:visible group-focus-within/wechat:translate-y-0 group-focus-within/wechat:opacity-100\">…</div>\u001b[22m\n",
+      "classification": "fixture-or-wait"
+    }
+  ],
+  "pages": [
+    {
+      "locale": "zh",
+      "width": 375,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 20,
+            "right": 69.3125,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 253.59375,
+            "right": 303,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 49.40625,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "打开菜单",
+            "x": 315,
+            "right": 355,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 639,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 20,
+            "right": 69.3125,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 517.59375,
+            "right": 567,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 49.40625,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "打开菜单",
+            "x": 579,
+            "right": 619,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 639,
+        "innerWidth": 639,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 640,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 32,
+            "right": 81.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 128.828125,
+            "right": 164.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 188.03125,
+            "right": 223.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 247.234375,
+            "right": 282.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 306.4375,
+            "right": 341.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 365.578125,
+            "right": 396.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 420.390625,
+            "right": 466.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 490.59375,
+            "right": 540,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 564,
+            "right": 608,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 640,
+        "innerWidth": 640,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 768,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 32,
+            "right": 81.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 256.828125,
+            "right": 292.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 316.03125,
+            "right": 351.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 375.234375,
+            "right": 410.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 434.4375,
+            "right": 469.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 493.578125,
+            "right": 524.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 548.390625,
+            "right": 594.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 618.59375,
+            "right": 668,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 692,
+            "right": 736,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 1024,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 48,
+            "right": 97.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 412.828125,
+            "right": 448.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 484.03125,
+            "right": 519.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 555.234375,
+            "right": 590.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 626.4375,
+            "right": 661.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 697.578125,
+            "right": 728.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 764.390625,
+            "right": 810.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 846.59375,
+            "right": 896,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 932,
+            "right": 976,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "zh",
+      "width": 1440,
+      "geometry": {
+        "controls": [
+          {
+            "text": "关于我",
+            "x": 64,
+            "right": 113.3125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 49.3125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "关于",
+            "x": 812.828125,
+            "right": 848.03125,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "作品",
+            "x": 884.03125,
+            "right": 919.234375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "联系",
+            "x": 955.234375,
+            "right": 990.4375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 35.203125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 1026.4375,
+            "right": 1061.578125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "经历",
+            "x": 1097.578125,
+            "right": 1128.390625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 30.8125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "知识库",
+            "x": 1164.390625,
+            "right": 1210.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 46.203125,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为英文",
+            "x": 1246.59375,
+            "right": 1296,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 49.40625,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "前往联系区域",
+            "x": 1332,
+            "right": 1376,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 375,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 20,
+            "right": 102.71875,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 260.1875,
+            "right": 303,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 42.8125,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "Open menu",
+            "x": 315,
+            "right": 355,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "en",
+      "width": 639,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 20,
+            "right": 102.71875,
+            "top": 19.5,
+            "bottom": 43.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 524.1875,
+            "right": 567,
+            "top": 13.5,
+            "bottom": 49.5,
+            "width": 42.8125,
+            "height": 36,
+            "hit": true
+          },
+          {
+            "text": "Open menu",
+            "x": 579,
+            "right": 619,
+            "top": 11.5,
+            "bottom": 51.5,
+            "width": 40,
+            "height": 40,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 639,
+        "innerWidth": 639,
+        "headerBottom": 64
+      }
+    },
+    {
+      "locale": "en",
+      "width": 640,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 32,
+            "right": 84.265625,
+            "top": 23.5,
+            "bottom": 71.5,
+            "width": 52.265625,
+            "height": 48,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 84.265625,
+            "right": 147.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 171.71875,
+            "right": 228.046875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 252.046875,
+            "right": 338.5625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 362.5625,
+            "right": 397.703125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 421.703125,
+            "right": 487.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 511.59375,
+            "right": 603.140625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 627.140625,
+            "right": 669.953125,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": false
+          },
+          {
+            "text": "Go to contact",
+            "x": 693.953125,
+            "right": 737.953125,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": false
+          }
+        ],
+        "scrollWidth": 640,
+        "innerWidth": 640,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 768,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 32,
+            "right": 84.265625,
+            "top": 23.5,
+            "bottom": 71.5,
+            "width": 52.265625,
+            "height": 48,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 84.265625,
+            "right": 147.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 171.71875,
+            "right": 228.046875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 252.046875,
+            "right": 338.5625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 362.5625,
+            "right": 397.703125,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 421.703125,
+            "right": 487.59375,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 511.59375,
+            "right": 603.140625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 627.140625,
+            "right": 669.953125,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Go to contact",
+            "x": 693.953125,
+            "right": 737.953125,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 1024,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 48,
+            "right": 130.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 238.3125,
+            "right": 301.765625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 337.765625,
+            "right": 394.09375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 430.09375,
+            "right": 516.609375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 552.609375,
+            "right": 587.75,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 623.75,
+            "right": 689.640625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 725.640625,
+            "right": 817.1875,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 853.1875,
+            "right": 896,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Go to contact",
+            "x": 932,
+            "right": 976,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1024,
+        "innerWidth": 1024,
+        "headerBottom": 96
+      }
+    },
+    {
+      "locale": "en",
+      "width": 1440,
+      "geometry": {
+        "controls": [
+          {
+            "text": "ABOUT ME",
+            "x": 64,
+            "right": 146.71875,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 82.71875,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "ABOUT",
+            "x": 638.3125,
+            "right": 701.765625,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 63.453125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "WORK",
+            "x": 737.765625,
+            "right": 794.09375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 56.328125,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "CONTACT",
+            "x": 830.09375,
+            "right": 916.609375,
+            "top": 35.5,
+            "bottom": 59.5,
+            "width": 86.515625,
+            "height": 24,
+            "hit": true
+          },
+          {
+            "text": "OKR",
+            "x": 952.609375,
+            "right": 987.75,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 35.140625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Journey",
+            "x": 1023.75,
+            "right": 1089.640625,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 65.890625,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "Knowledge",
+            "x": 1125.640625,
+            "right": 1217.1875,
+            "top": 37.5,
+            "bottom": 57.5,
+            "width": 91.546875,
+            "height": 20,
+            "hit": true
+          },
+          {
+            "text": "切换为中文",
+            "x": 1253.1875,
+            "right": 1296,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 42.8125,
+            "height": 44,
+            "hit": true
+          },
+          {
+            "text": "Go to contact",
+            "x": 1332,
+            "right": 1376,
+            "top": 25.5,
+            "bottom": 69.5,
+            "width": 44,
+            "height": 44,
+            "hit": true
+          }
+        ],
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "headerBottom": 96
+      }
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "locale": "zh",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "zh",
+      "endpoint": "/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "locale": "en",
+      "endpoint": "/resume",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3016Free": true,
+    "ownedTempDeleted": true
+  },
+  "fixtureVersion": 1,
+  "head": "7221fcbf91031a92f0aafc059acfc5da3eee35fc",
+  "buildId": "3cSgVmoC3_35aT2WGajlO",
+  "sourceHashes": {
+    "src/components/public/Navbar.tsx": "c1ca4653f13b12424ff9b34615d2a1351a613adb83f437ec185d5eeedcf06f69",
+    "src/components/public/Footer.tsx": "5650ae8630cd8f1c2a85bf2a95a7f51ad142e221b0e4edb13bdda5f2671dd940",
+    "src/components/public/HomeExperience.tsx": "cf8a7fa571eb1544794df629da5d77d9ee888f1710d238674cc5569cc40024d5",
+    "src/components/public/i18n.tsx": "b8fc93cec2b07aee7aa7eb39768fcb020dbd3c266e6025c26eb4544547fb1cc8",
+    "src/app/globals.css": "87818f321cf3464037ba9d3bbbcb372fb2ae9f33a02a268f44e6812283893d5f",
+    "src/app/page.tsx": "7705d2461f73525b652864aead3c616bd79e304130874264e0a33c3de80845f9"
+  },
+  "browser": "154.0.4258.37",
+  "completed": true,
+  "passed": false,
+  "failedClassification": {
+    "net::ERR_ABORTED": 13
+  }
+}

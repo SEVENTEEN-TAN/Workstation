@@ -45,7 +45,7 @@ describe("public homepage composition", () => {
     expect(markup).toContain('aria-label="Open menu"');
     expect(markup).toContain('aria-haspopup="dialog"');
     expect(markup).toMatch(/class="[^"]*h-16[^"]*sm:h-24/);
-    expect(markup).toMatch(/aria-label="Section navigation" class="[^"]*hidden[^"]*sm:flex/);
+    expect(markup).toMatch(/aria-label="Section navigation" class="[^"]*hidden[^"]*md:flex/);
     expect(markup).not.toContain("grid-cols-3");
     expect(markup).toContain('href="/knowledge"');
     expect(markup).toContain('href="/experience"');

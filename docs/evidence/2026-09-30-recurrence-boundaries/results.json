@@ -1,0 +1,633 @@
+{
+  "runId": "15b30bc0-96c5-4f02-9b71-23399c6d6748",
+  "startedAt": "2026-09-30T06:08:38.815Z",
+  "assertions": [
+    {
+      "name": "generation-1:hand-calculated-weekday-and-inheritance",
+      "pass": true
+    },
+    {
+      "name": "generation-2:hand-calculated-weekday-and-inheritance",
+      "pass": true
+    },
+    {
+      "name": "generation-3:hand-calculated-weekday-and-inheritance",
+      "pass": true
+    },
+    {
+      "name": "eight-concurrent-completions-return-success-and-exactly-one-child",
+      "pass": true
+    },
+    {
+      "name": "undated-action-uses-persisted-shanghai-completion-calendar",
+      "pass": true
+    },
+    {
+      "name": "real-database-insert-failure-rolls-back-completion-then-retry-succeeds",
+      "pass": true
+    },
+    {
+      "name": "all-generations-concurrency-and-rollback-preserve-kr-and-progress-history",
+      "pass": true
+    }
+  ],
+  "api": [
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpfkxd000bppbc5d6bfanr",
+      "status": 200,
+      "body": {
+        "id": "cmunpfkxd000bppbc5d6bfanr",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.353Z",
+        "createdAt": "2026-09-30T06:08:39.601Z",
+        "updatedAt": "2026-09-30T06:08:40.354Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflib0001ppkw9tlhe8a3",
+      "status": 200,
+      "body": {
+        "id": "cmunpflib0001ppkw9tlhe8a3",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-24T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpfkxd000bppbc5d6bfanr",
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.384Z",
+        "createdAt": "2026-09-30T06:08:40.355Z",
+        "updatedAt": "2026-09-30T06:08:40.385Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflj60004ppkw2i72rmai",
+      "status": 200,
+      "body": {
+        "id": "cmunpflj60004ppkw2i72rmai",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-10-05T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpflib0001ppkw9tlhe8a3",
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.414Z",
+        "createdAt": "2026-09-30T06:08:40.386Z",
+        "updatedAt": "2026-09-30T06:08:40.416Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.479Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.492Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.523Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.539Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.555Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.591Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.624Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflka000dppbcyll8qh32",
+      "status": 200,
+      "body": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.650Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflqw000fppbcr08yw9ra",
+      "status": 200,
+      "body": {
+        "id": "cmunpflqw000fppbcr08yw9ra",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "无截止日期实际完成",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": null,
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.683Z",
+        "createdAt": "2026-09-30T06:08:40.665Z",
+        "updatedAt": "2026-09-30T06:08:40.684Z"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflsb000hppbcx8yebhrp",
+      "status": 400,
+      "body": {
+        "error": "\nInvalid `prisma.actionItem.create()` invocation:\n\n\nForeign key constraint violated on the foreign key"
+      }
+    },
+    {
+      "endpoint": "/api/admin/okr/action-items/cmunpflsb000hppbcx8yebhrp",
+      "status": 200,
+      "body": {
+        "id": "cmunpflsb000hppbcx8yebhrp",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "派生失败回滚后重试",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.762Z",
+        "createdAt": "2026-09-30T06:08:40.716Z",
+        "updatedAt": "2026-09-30T06:08:40.763Z"
+      }
+    }
+  ],
+  "records": {
+    "generation-1": {
+      "original": {
+        "id": "cmunpfkxd000bppbc5d6bfanr",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.353Z",
+        "createdAt": "2026-09-30T06:08:39.601Z",
+        "updatedAt": "2026-09-30T06:08:40.354Z"
+      },
+      "child": {
+        "id": "cmunpflib0001ppkw9tlhe8a3",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "TODO",
+        "dueDate": "2026-09-24T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpfkxd000bppbc5d6bfanr",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T06:08:40.355Z",
+        "updatedAt": "2026-09-30T06:08:40.355Z"
+      },
+      "expected": "2026-09-24T00:00:00.000Z"
+    },
+    "generation-2": {
+      "original": {
+        "id": "cmunpflib0001ppkw9tlhe8a3",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-24T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpfkxd000bppbc5d6bfanr",
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.384Z",
+        "createdAt": "2026-09-30T06:08:40.355Z",
+        "updatedAt": "2026-09-30T06:08:40.385Z"
+      },
+      "child": {
+        "id": "cmunpflj60004ppkw2i72rmai",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "TODO",
+        "dueDate": "2026-10-05T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpflib0001ppkw9tlhe8a3",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T06:08:40.386Z",
+        "updatedAt": "2026-09-30T06:08:40.386Z"
+      },
+      "expected": "2026-10-05T00:00:00.000Z"
+    },
+    "generation-3": {
+      "original": {
+        "id": "cmunpflj60004ppkw2i72rmai",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-10-05T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpflib0001ppkw9tlhe8a3",
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.414Z",
+        "createdAt": "2026-09-30T06:08:40.386Z",
+        "updatedAt": "2026-09-30T06:08:40.416Z"
+      },
+      "child": {
+        "id": "cmunpflk00007ppkwabhbuk1u",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "三代双周行动",
+        "titleEn": "Boundary action",
+        "status": "TODO",
+        "dueDate": "2026-10-08T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": "cmunpflj60004ppkw2i72rmai",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T06:08:40.416Z",
+        "updatedAt": "2026-09-30T06:08:40.416Z"
+      },
+      "expected": "2026-10-08T00:00:00.000Z"
+    },
+    "concurrent": {
+      "original": {
+        "id": "cmunpflka000dppbcyll8qh32",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "八个并发完成请求",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.477Z",
+        "createdAt": "2026-09-30T06:08:40.426Z",
+        "updatedAt": "2026-09-30T06:08:40.650Z"
+      },
+      "children": [
+        {
+          "id": "cmunpfllr000appkwjhbizumr",
+          "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+          "titleZh": "八个并发完成请求",
+          "titleEn": "Boundary action",
+          "status": "TODO",
+          "dueDate": "2026-09-24T00:00:00.000Z",
+          "sortOrder": 7,
+          "recurrenceType": "WEEKLY",
+          "recurrenceInterval": 2,
+          "recurrenceDays": "1,4",
+          "generatedFromActionItemId": "cmunpflka000dppbcyll8qh32",
+          "hasGeneratedNext": false,
+          "completedAt": null,
+          "createdAt": "2026-09-30T06:08:40.479Z",
+          "updatedAt": "2026-09-30T06:08:40.479Z"
+        }
+      ]
+    },
+    "undated": {
+      "original": {
+        "id": "cmunpflqw000fppbcr08yw9ra",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "无截止日期实际完成",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": null,
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.683Z",
+        "createdAt": "2026-09-30T06:08:40.665Z",
+        "updatedAt": "2026-09-30T06:08:40.684Z"
+      },
+      "child": {
+        "id": "cmunpflrg000kppkw8nk79mn5",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "无截止日期实际完成",
+        "titleEn": "Boundary action",
+        "status": "TODO",
+        "dueDate": "2026-10-02T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "DAILY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": null,
+        "generatedFromActionItemId": "cmunpflqw000fppbcr08yw9ra",
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T06:08:40.685Z",
+        "updatedAt": "2026-09-30T06:08:40.685Z"
+      },
+      "expected": "2026-10-02T00:00:00.000Z",
+      "injectedClock": false
+    },
+    "rollback": {
+      "failedResponseStatus": 400,
+      "afterFailure": {
+        "id": "cmunpflsb000hppbcx8yebhrp",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "派生失败回滚后重试",
+        "titleEn": "Boundary action",
+        "status": "TODO",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": false,
+        "completedAt": null,
+        "createdAt": "2026-09-30T06:08:40.716Z",
+        "updatedAt": "2026-09-30T06:08:40.716Z"
+      },
+      "afterRetry": {
+        "id": "cmunpflsb000hppbcx8yebhrp",
+        "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+        "titleZh": "派生失败回滚后重试",
+        "titleEn": "Boundary action",
+        "status": "DONE",
+        "dueDate": "2026-09-21T00:00:00.000Z",
+        "sortOrder": 7,
+        "recurrenceType": "WEEKLY",
+        "recurrenceInterval": 2,
+        "recurrenceDays": "1,4",
+        "generatedFromActionItemId": null,
+        "hasGeneratedNext": true,
+        "completedAt": "2026-09-30T06:08:40.762Z",
+        "createdAt": "2026-09-30T06:08:40.716Z",
+        "updatedAt": "2026-09-30T06:08:40.763Z"
+      }
+    },
+    "kr": {
+      "before": {
+        "id": "cmunpfkid0007ppbc8c22wcz5",
+        "objectiveId": "cmunpfkib0005ppbcobi7727a",
+        "titleZh": "不随行动自动变更",
+        "titleEn": null,
+        "descriptionZh": null,
+        "descriptionEn": null,
+        "progressMode": "MANUAL",
+        "startValue": null,
+        "currentValue": null,
+        "targetValue": null,
+        "unit": null,
+        "manualProgress": 35,
+        "weight": 1,
+        "status": "IN_PROGRESS",
+        "sortOrder": 0,
+        "createdAt": "2026-09-30T06:08:39.062Z",
+        "updatedAt": "2026-09-30T06:08:39.062Z",
+        "progressUpdates": [
+          {
+            "id": "cmunpfkig0009ppbctdgufcvv",
+            "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+            "currentValue": null,
+            "manualProgress": 35,
+            "calculatedProgress": 35,
+            "noteZh": "原始进度历史",
+            "noteEn": null,
+            "recordedAt": "2026-09-30T06:08:39.065Z"
+          }
+        ]
+      },
+      "after": {
+        "id": "cmunpfkid0007ppbc8c22wcz5",
+        "objectiveId": "cmunpfkib0005ppbcobi7727a",
+        "titleZh": "不随行动自动变更",
+        "titleEn": null,
+        "descriptionZh": null,
+        "descriptionEn": null,
+        "progressMode": "MANUAL",
+        "startValue": null,
+        "currentValue": null,
+        "targetValue": null,
+        "unit": null,
+        "manualProgress": 35,
+        "weight": 1,
+        "status": "IN_PROGRESS",
+        "sortOrder": 0,
+        "createdAt": "2026-09-30T06:08:39.062Z",
+        "updatedAt": "2026-09-30T06:08:39.062Z",
+        "progressUpdates": [
+          {
+            "id": "cmunpfkig0009ppbctdgufcvv",
+            "keyResultId": "cmunpfkid0007ppbc8c22wcz5",
+            "currentValue": null,
+            "manualProgress": 35,
+            "calculatedProgress": 35,
+            "noteZh": "原始进度历史",
+            "noteEn": null,
+            "recordedAt": "2026-09-30T06:08:39.065Z"
+          }
+        ]
+      }
+    }
+  },
+  "head": "7221fcbf91031a92f0aafc059acfc5da3eee35fc",
+  "buildId": "keK4etzVpBGfqpfHsycqN",
+  "sourceHashes": {
+    "src/lib/services/okr.ts": "f9d19eb5474a788231a1cbe0d90f9eced08c020f519a3547844f6dba8af8d033",
+    "src/lib/okr/recurrence.ts": "4017003cfc1014a847b3f35bb70d8def0c9695499b420e3faa5ec1a44c293f8d",
+    "src/lib/validators/okr.ts": "a69766f9aa1a0351f7b6a349c44b54aff66e8341d29c681915e3e0fe18d91f09",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02",
+    "src/app/api/admin/okr/action-items/[id]/route.ts": "28920a05d439318d2a2661f421860310a03aab2868bfe785d514e7c1bfc90cc8"
+  },
+  "concurrentStatuses": [
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200,
+    200
+  ],
+  "completed": true,
+  "passed": true,
+  "cleanup": {
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3017Free": true,
+    "ownedTempDeleted": true
+  }
+}
