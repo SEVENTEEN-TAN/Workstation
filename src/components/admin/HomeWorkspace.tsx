@@ -228,11 +228,17 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   }
 
   async function refreshHome() {
-    const flushed = await runAction("home:flush", async () => { await flushPreviewEdits(); return true; });
-    if (!flushed) return;
-    if (isSiteContentDirty(contentRef.current, savedContent) && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
-    const contentAtRequest = contentRef.current;
-    await runAction("home:refresh", () => fetchHomeData(contentAtRequest), "主页内容已更新");
+    await runAction("home:operation", async () => {
+      const flushed = await runAction("home:flush", async () => { await flushPreviewEdits(); return true; });
+      if (!flushed) return;
+      if (isSiteContentDirty(contentRef.current, savedContent) && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
+      const contentAtRequest = contentRef.current;
+      await runAction("home:refresh", () => fetchHomeData(contentAtRequest), "主页内容已更新");
+    });
+  }
+
+  function runHomeAction<T>(key: string, work: () => Promise<T>, successMessage: string) {
+    return runAction("home:operation", () => runAction(key, work, successMessage));
   }
 
   function flushPreviewEdits() {
@@ -251,7 +257,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   }
 
   async function saveDraft() {
-    await runAction("home:save", async () => {
+    await runHomeAction("home:save", async () => {
       await flushPreviewEdits();
       if (!validateSiteContent(contentRef.current).valid) throw new Error("请先修正主页内容问题，再保存草稿。");
       const submittedContent = contentRef.current;
@@ -261,7 +267,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   }
 
   async function publishDraft() {
-    await runAction("home:publish", async () => {
+    await runHomeAction("home:publish", async () => {
       await flushPreviewEdits();
       if (isSiteContentDirty(contentRef.current, savedContent)) throw new Error("首页还有未保存修改，请先保存草稿。");
       if (!validateSiteContent(contentRef.current).valid) throw new Error("请先修正主页内容问题，再发布。");
@@ -300,8 +306,9 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   async function confirmRollback() {
     if (!rollbackRequest) return;
     const versionId = rollbackRequest.id;
-    const contentAtRequest = contentRef.current;
-    const result = await runAction(`home:rollback:${versionId}`, async () => {
+    const result = await runHomeAction(`home:rollback:${versionId}`, async () => {
+      await flushPreviewEdits();
+      const contentAtRequest = contentRef.current;
       const nextDraft = await adminRequest<SiteVersionData>("/api/admin/site/rollback", jsonRequest("POST", { id: versionId }));
       const nextVersions = await adminRequest<SiteVersionData[]>("/api/admin/site/versions");
       const nextContent = siteContentSchema.parse(nextDraft.content);
@@ -315,6 +322,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   }
 
   const refreshBusy = isBusy("home:refresh");
+  const operationBusy = isBusy("home:operation");
   const saveBusy = isBusy("home:save");
   const publishBusy = isBusy("home:publish");
   const checkBusy = isBusy("home:check-projects");
@@ -330,7 +338,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
         title="主页 CMS"
         description="维护公开主页的完整双语内容，保存、预览确认后再发布。"
         action={(
-          <button type="button" className={styles.iconTextButton} onClick={refreshHome} disabled={refreshBusy}>
+          <button type="button" className={styles.iconTextButton} onClick={refreshHome} disabled={operationBusy}>
             {refreshBusy ? <LoaderCircle className={styles.spin} size={18} /> : <RefreshCw size={18} />}
             {refreshBusy ? "刷新中" : "刷新"}
           </button>
@@ -344,14 +352,14 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             <h2>结构化内容</h2>
           </div>
           <div className={styles.actions}>
-            <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={(view !== "visual" && (!dirty || !validation.valid)) || saveBusy}>
+            <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={(view !== "visual" && (!dirty || !validation.valid)) || operationBusy}>
               {saveBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}
               {saveBusy ? "保存中" : "保存草稿"}
             </button>
             <button type="button" onClick={() => window.open(`/preview?id=${draft.id}`, "_blank", "noopener,noreferrer")}>
               <ExternalLink size={17} />预览页面
             </button>
-            <button type="button" onClick={publishDraft} disabled={!validation.valid || dirty || publishBusy}>
+            <button type="button" onClick={publishDraft} disabled={!validation.valid || dirty || operationBusy}>
               {publishBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Send size={17} />}
               {publishBusy ? "发布中" : "发布"}
             </button>
@@ -460,7 +468,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
                 <div className={styles.listRow} key={version.id}>
                   <span><strong>v{version.version}</strong><small>{version.status}</small></span>
                   <time>{formatVersionDate(version)}</time>
-                  <button type="button" onClick={(event) => requestRollback(event, version)} disabled={version.id === draft.id || isBusy(busyKey)}>
+                  <button type="button" onClick={(event) => requestRollback(event, version)} disabled={version.id === draft.id || operationBusy}>
                     {isBusy(busyKey) ? <LoaderCircle className={styles.spin} size={16} /> : <RotateCcw size={16} />}
                     {isBusy(busyKey) ? "恢复中" : "恢复为草稿"}
                   </button>
@@ -470,7 +478,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
               <EmptyState
                 title="还没有版本记录"
                 description="保存当前草稿后，版本会出现在这里。"
-                action={<button type="button" className={styles.secondaryButton} onClick={saveDraft}>保存当前草稿</button>}
+                action={<button type="button" className={styles.secondaryButton} onClick={saveDraft} disabled={operationBusy}>保存当前草稿</button>}
               />
             )}
           </>
@@ -481,7 +489,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
         title="确认恢复主页版本为草稿"
         target={rollbackRequest ? `v${rollbackRequest.version}` : ""}
         description="当前未保存修改将被替换，公开内容保持不变。恢复后仍需明确预览并发布。"
-        busy={rollbackRequest ? isBusy(`home:rollback:${rollbackRequest.id}`) : false}
+        busy={operationBusy}
         confirmLabel="恢复为草稿"
         busyLabel="恢复中"
         triggerRef={rollbackTriggerRef}

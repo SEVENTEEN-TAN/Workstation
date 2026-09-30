@@ -1,0 +1,810 @@
+{
+  "startedAt": "2026-09-30T03:50:10.356Z",
+  "completedAt": "2026-09-30T03:50:16.014Z",
+  "head": "751cd4e07053f23c5913e35287fc2e474720511a",
+  "homeSourceHash": "953a8a5904f954bfa50f00bb14a8c6db0af423072814413b7c9e3706917e8275",
+  "browser": "154.0.4258.37",
+  "baseURL": "http://127.0.0.1:3012",
+  "build": "Existing repaired production .next build provided by root; runner did not rebuild.",
+  "scenarioCount": 7,
+  "passCount": 7,
+  "pass": true,
+  "pageErrors": [],
+  "results": [
+    {
+      "name": "refresh-held-mutex-edit-b-and-save",
+      "pass": true,
+      "firstEvent": 1,
+      "lastEvent": 12
+    },
+    {
+      "name": "save-readback-held-mutex-new-edit-preserved",
+      "pass": true,
+      "firstEvent": 13,
+      "lastEvent": 22
+    },
+    {
+      "name": "publish-readback-held-mutex-new-edit-preserved",
+      "pass": true,
+      "firstEvent": 23,
+      "lastEvent": 33
+    },
+    {
+      "name": "rollback-post-and-versions-held-mutex-modal-limit",
+      "pass": true,
+      "firstEvent": 34,
+      "lastEvent": 43
+    },
+    {
+      "name": "refresh-500-unlocks-and-retries",
+      "pass": true,
+      "firstEvent": 44,
+      "lastEvent": 47
+    },
+    {
+      "name": "save-500-unlocks-and-retries",
+      "pass": true,
+      "firstEvent": 48,
+      "lastEvent": 51
+    },
+    {
+      "name": "visual-flush-waits-with-mutex-before-http",
+      "pass": true,
+      "firstEvent": 52,
+      "lastEvent": 56
+    }
+  ],
+  "timeline": [
+    {
+      "sequence": 1,
+      "event": "scenario-start",
+      "name": "refresh-held-mutex-edit-b-and-save"
+    },
+    {
+      "sequence": 2,
+      "event": "01-baseline",
+      "title": "GREEN REFRESH X",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": false
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 3,
+      "event": "browser-dialog-accepted",
+      "type": "confirm",
+      "message": "刷新会丢弃当前未保存修改，确定继续吗？"
+    },
+    {
+      "sequence": 4,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/versions",
+      "status": 200,
+      "count": 2
+    },
+    {
+      "sequence": 5,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/draft",
+      "status": 200,
+      "title": "GREEN REFRESH X"
+    },
+    {
+      "sequence": 6,
+      "event": "02-refresh-held",
+      "title": "GREEN REFRESH A",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新中",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 7,
+      "event": "02-refresh-held-history",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新中",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 8,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/versions"
+    },
+    {
+      "sequence": 9,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/draft"
+    },
+    {
+      "sequence": 10,
+      "event": "03-refresh-released-b-preserved",
+      "title": "GREEN REFRESH B",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": false
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 11,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN REFRESH B",
+      "databaseTitle": "GREEN REFRESH B"
+    },
+    {
+      "sequence": 12,
+      "event": "04-refresh-b-saved",
+      "title": "GREEN REFRESH B",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": false
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 13,
+      "event": "scenario-start",
+      "name": "save-readback-held-mutex-new-edit-preserved"
+    },
+    {
+      "sequence": 14,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/draft",
+      "status": 200,
+      "title": "GREEN SAVE A"
+    },
+    {
+      "sequence": 15,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/versions",
+      "status": 200,
+      "count": 2
+    },
+    {
+      "sequence": 16,
+      "event": "05-save-readback-held",
+      "title": "GREEN SAVE A",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存中",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 17,
+      "event": "05-save-readback-held-history",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存中",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 18,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/draft"
+    },
+    {
+      "sequence": 19,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/versions"
+    },
+    {
+      "sequence": 20,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN SAVE A",
+      "databaseTitle": "GREEN SAVE A"
+    },
+    {
+      "sequence": 21,
+      "event": "06-save-b-preserved",
+      "title": "GREEN SAVE B",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": false
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 22,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN SAVE B",
+      "databaseTitle": "GREEN SAVE B"
+    },
+    {
+      "sequence": 23,
+      "event": "scenario-start",
+      "name": "publish-readback-held-mutex-new-edit-preserved"
+    },
+    {
+      "sequence": 24,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/versions",
+      "status": 200,
+      "count": 2
+    },
+    {
+      "sequence": 25,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/draft",
+      "status": 200,
+      "title": "GREEN PUBLISH A"
+    },
+    {
+      "sequence": 26,
+      "event": "07-publish-readback-held",
+      "title": "GREEN PUBLISH A",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布中",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 27,
+      "event": "07-publish-readback-held-history",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布中",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 28,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/versions"
+    },
+    {
+      "sequence": 29,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/draft"
+    },
+    {
+      "sequence": 30,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN PUBLISH A",
+      "databaseTitle": "GREEN PUBLISH A"
+    },
+    {
+      "sequence": 31,
+      "event": "published-db-title",
+      "title": "GREEN PUBLISH A"
+    },
+    {
+      "sequence": 32,
+      "event": "08-publish-b-preserved",
+      "title": "GREEN PUBLISH B",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": false
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 33,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN PUBLISH B",
+      "databaseTitle": "GREEN PUBLISH B"
+    },
+    {
+      "sequence": 34,
+      "event": "scenario-start",
+      "name": "rollback-post-and-versions-held-mutex-modal-limit"
+    },
+    {
+      "sequence": 35,
+      "event": "actual-response-held",
+      "key": "POST /api/admin/site/rollback",
+      "status": 200,
+      "title": "GREEN PUBLISH A"
+    },
+    {
+      "sequence": 36,
+      "event": "09-rollback-post-held",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        },
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": true
+    },
+    {
+      "sequence": 37,
+      "event": "actual-response-released",
+      "key": "POST /api/admin/site/rollback"
+    },
+    {
+      "sequence": 38,
+      "event": "actual-response-held",
+      "key": "GET /api/admin/site/versions",
+      "status": 200,
+      "count": 3
+    },
+    {
+      "sequence": 39,
+      "event": "10-rollback-versions-held",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        },
+        {
+          "text": "恢复为草稿",
+          "disabled": true
+        },
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": true
+    },
+    {
+      "sequence": 40,
+      "event": "rollback-editing-limit",
+      "nativeModalMatches": true,
+      "attemptedBackgroundEdit": false,
+      "reason": "Native modal remains open across POST and versions readback; underlying field editing is not an actual user path."
+    },
+    {
+      "sequence": 41,
+      "event": "actual-response-released",
+      "key": "GET /api/admin/site/versions"
+    },
+    {
+      "sequence": 42,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN PUBLISH A",
+      "databaseTitle": "GREEN PUBLISH A"
+    },
+    {
+      "sequence": 43,
+      "event": "11-rollback-completed",
+      "title": "GREEN PUBLISH A",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": false
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 44,
+      "event": "scenario-start",
+      "name": "refresh-500-unlocks-and-retries"
+    },
+    {
+      "sequence": 45,
+      "event": "simulated-http-500",
+      "mode": "refresh"
+    },
+    {
+      "sequence": 46,
+      "event": "12-refresh-500-unlocked",
+      "title": "GREEN FAILURE refresh",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": false
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 47,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN FAILURE refresh",
+      "databaseTitle": "GREEN FAILURE refresh"
+    },
+    {
+      "sequence": 48,
+      "event": "scenario-start",
+      "name": "save-500-unlocks-and-retries"
+    },
+    {
+      "sequence": 49,
+      "event": "simulated-http-500",
+      "mode": "save"
+    },
+    {
+      "sequence": 50,
+      "event": "12-save-500-unlocked",
+      "title": "GREEN RETRY SAVE",
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n有未保存修改",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": false
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 51,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN RETRY SAVE",
+      "databaseTitle": "GREEN RETRY SAVE"
+    },
+    {
+      "sequence": 52,
+      "event": "scenario-start",
+      "name": "visual-flush-waits-with-mutex-before-http"
+    },
+    {
+      "sequence": 53,
+      "event": "13-visual-flush-held",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": true
+      },
+      "save": {
+        "text": "保存中",
+        "disabled": true
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": true
+      },
+      "rollback": [
+        {
+          "text": "恢复中",
+          "disabled": true
+        }
+      ],
+      "dialogOpen": false
+    },
+    {
+      "sequence": 54,
+      "event": "flush-before-http",
+      "simulation": "Synthetic compositionstart delays actual iframe flush acknowledgement; not a real system IME check.",
+      "requestsBeforeAcknowledgement": [
+        {
+          "method": "PUT",
+          "endpoint": "/api/admin/site/draft"
+        },
+        {
+          "method": "GET",
+          "endpoint": "/api/admin/site/draft"
+        },
+        {
+          "method": "GET",
+          "endpoint": "/api/admin/site/versions"
+        }
+      ]
+    },
+    {
+      "sequence": 55,
+      "event": "fresh-api-db-agree",
+      "apiStatus": 200,
+      "apiTitle": "GREEN FLUSH",
+      "databaseTitle": "GREEN FLUSH"
+    },
+    {
+      "sequence": 56,
+      "event": "14-visual-flush-completed",
+      "title": null,
+      "readiness": "中文\n完整\nEnglish\n完整\n总计\n无问题\n状态\n已保存",
+      "refresh": {
+        "text": "刷新",
+        "disabled": false
+      },
+      "save": {
+        "text": "保存草稿",
+        "disabled": false
+      },
+      "publish": {
+        "text": "发布",
+        "disabled": false
+      },
+      "rollback": [
+        {
+          "text": "恢复为草稿",
+          "disabled": false
+        }
+      ],
+      "dialogOpen": false
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3012Closed": true,
+    "temporaryDatabaseDeleted": true
+  },
+  "limits": [
+    "Local Windows Edge and copied SQLite only; no production/merge/deployment.",
+    "Rollback native modal blocks background editing; recovery during continued new input is not proven.",
+    "Synthetic composition events test flush sequencing, not a real Windows Chinese IME."
+  ]
+}

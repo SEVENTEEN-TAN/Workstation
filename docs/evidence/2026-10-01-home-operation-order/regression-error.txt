@@ -1,0 +1,6 @@
+RED: a completed save must survive an older refresh response
++ actual - expected
+
++ 'ORDER OLD X'
+- 'ORDER SAVED A'
+         ^

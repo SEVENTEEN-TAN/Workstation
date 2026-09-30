@@ -1,0 +1,142 @@
+{
+  "head": "751cd4e07053f23c5913e35287fc2e474720511a",
+  "browser": "154.0.4258.37",
+  "baseURL": "http://127.0.0.1:3012",
+  "delayedResponses": "Actual GET responses were read from the server before PUT, then held at the browser route boundary.",
+  "field": "zh.hero.lineOne",
+  "oldTitle": "ORDER OLD X",
+  "savedTitle": "ORDER SAVED A",
+  "baseline": {
+    "title": "ORDER OLD X",
+    "dirtyLabel": "已保存",
+    "saveDisabled": true,
+    "publishDisabled": false,
+    "refreshText": "刷新"
+  },
+  "edited": {
+    "title": "ORDER SAVED A",
+    "dirtyLabel": "有未保存修改",
+    "saveDisabled": false,
+    "publishDisabled": true,
+    "refreshText": "刷新"
+  },
+  "afterSave": {
+    "title": "ORDER SAVED A",
+    "dirtyLabel": "已保存",
+    "saveDisabled": true,
+    "publishDisabled": false,
+    "refreshText": "刷新中"
+  },
+  "afterOldRefresh": {
+    "title": "ORDER OLD X",
+    "dirtyLabel": "已保存",
+    "saveDisabled": true,
+    "publishDisabled": false,
+    "refreshText": "刷新"
+  },
+  "databaseTitle": "ORDER SAVED A",
+  "expectations": {
+    "workingCopy": "ORDER SAVED A",
+    "savedBaselineDirtyLabel": "已保存",
+    "freshAPI": "ORDER SAVED A"
+  },
+  "inference": "Working copy returned to X and the UI still says saved; together these show savedContent also returned to X. Internal React state was not read directly.",
+  "pass": false,
+  "timeline": [
+    {
+      "sequence": 1,
+      "event": "01-old-x-baseline",
+      "title": "ORDER OLD X",
+      "dirtyLabel": "已保存",
+      "saveDisabled": true,
+      "publishDisabled": false,
+      "refreshText": "刷新"
+    },
+    {
+      "sequence": 2,
+      "event": "02-local-a-unsaved",
+      "title": "ORDER SAVED A",
+      "dirtyLabel": "有未保存修改",
+      "saveDisabled": false,
+      "publishDisabled": true,
+      "refreshText": "刷新"
+    },
+    {
+      "sequence": 3,
+      "event": "refresh-confirm-accepted",
+      "message": "刷新会丢弃当前未保存修改，确定继续吗？"
+    },
+    {
+      "sequence": 4,
+      "event": "old-refresh-response-captured",
+      "endpoint": "/api/admin/site/draft",
+      "status": 200,
+      "title": "ORDER OLD X"
+    },
+    {
+      "sequence": 5,
+      "event": "old-refresh-response-captured",
+      "endpoint": "/api/admin/site/versions",
+      "status": 200,
+      "count": 2
+    },
+    {
+      "sequence": 6,
+      "event": "03-refresh-held-save-enabled",
+      "title": "ORDER SAVED A",
+      "dirtyLabel": "有未保存修改",
+      "saveDisabled": false,
+      "publishDisabled": true,
+      "refreshText": "刷新中"
+    },
+    {
+      "sequence": 7,
+      "event": "save-operation-api-response",
+      "method": "PUT",
+      "status": 200,
+      "title": "ORDER SAVED A"
+    },
+    {
+      "sequence": 8,
+      "event": "save-operation-api-response",
+      "method": "GET",
+      "status": 200,
+      "title": "ORDER SAVED A"
+    },
+    {
+      "sequence": 9,
+      "event": "04-save-a-completed",
+      "title": "ORDER SAVED A",
+      "dirtyLabel": "已保存",
+      "saveDisabled": true,
+      "publishDisabled": false,
+      "refreshText": "刷新中"
+    },
+    {
+      "sequence": 10,
+      "event": "old-refresh-response-released",
+      "endpoint": "/api/admin/site/draft"
+    },
+    {
+      "sequence": 11,
+      "event": "old-refresh-response-released",
+      "endpoint": "/api/admin/site/versions"
+    },
+    {
+      "sequence": 12,
+      "event": "05-stale-refresh-overwrites-a",
+      "title": "ORDER OLD X",
+      "dirtyLabel": "已保存",
+      "saveDisabled": true,
+      "publishDisabled": false,
+      "refreshText": "刷新"
+    },
+    {
+      "sequence": 13,
+      "event": "fresh-api-and-database-after-stale-response",
+      "apiStatus": 200,
+      "apiTitle": "ORDER SAVED A",
+      "databaseTitle": "ORDER SAVED A"
+    }
+  ]
+}
