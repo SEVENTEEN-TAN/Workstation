@@ -1,0 +1,2450 @@
+{
+  "runAt": "2026-09-30T04:23:18.203Z",
+  "viewportHeights": {
+    "desktop": 1000,
+    "mobile": 900
+  },
+  "source": "Copied supplied source SQLite; only the copy is writable",
+  "synthetic": [
+    "portfolioProject",
+    "experienceRecord",
+    "skillArea",
+    "careerActivity",
+    "okrCycle"
+  ],
+  "pages": [
+    {
+      "slug": "projects",
+      "label": "desktop",
+      "filename": "01-projects-desktop.png",
+      "status": 200,
+      "title": "项目证据",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文标题\n缺少英文摘要\n缺少英文项目背景\n缺少英文职责\n缺少英文挑战\n缺少英文方案\n缺少英文结果\n展示去向：项目页 /projects；被首页选中时可进入首页卡片\n生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+          "left": 501.296875,
+          "right": 1068.984375,
+          "height": 251.0625,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "当前设为私密",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文标题",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文摘要",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文项目背景",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文职责",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文挑战",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文方案",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "缺少英文结果",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "展示去向：项目页 /projects；被首页选中时可进入首页卡片",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+              "left": 501.296875,
+              "right": 1068.984375,
+              "height": 19.1875,
+              "scrollWidth": 568,
+              "clientWidth": 568
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建项目",
+          "top": 104.390625,
+          "bottom": 144.390625,
+          "left": 1294,
+          "right": 1398
+        },
+        {
+          "text": "AI 整理说明",
+          "top": 459.265625,
+          "bottom": 499.265625,
+          "left": 1086.984375,
+          "right": 1207
+        },
+        {
+          "text": "编辑项目 视觉验收项目",
+          "top": 459.265625,
+          "bottom": 499.265625,
+          "left": 1215,
+          "right": 1291
+        },
+        {
+          "text": "删除项目 视觉验收项目",
+          "top": 459.265625,
+          "bottom": 499.265625,
+          "left": 1299,
+          "right": 1375
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收项目"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "AI 整理说明",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑项目 视觉验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除项目 视觉验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "experience",
+      "label": "desktop",
+      "filename": "02-experience-desktop.png",
+      "status": 200,
+      "title": "经历时间线",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文机构名称\n缺少英文职位或专业\n缺少英文描述\n展示去向：经历页 /experience；近期经历可进入首页职业路径\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 555.515625,
+          "right": 1196.984375,
+          "height": 158.3125,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "当前设为私密",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "缺少英文机构名称",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "缺少英文职位或专业",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "缺少英文描述",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "展示去向：经历页 /experience；近期经历可进入首页职业路径",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建经历",
+          "top": 104.390625,
+          "bottom": 144.390625,
+          "left": 1294,
+          "right": 1398
+        },
+        {
+          "text": "编辑经历 视觉验收机构",
+          "top": 407.140625,
+          "bottom": 447.140625,
+          "left": 1214.984375,
+          "right": 1290.984375
+        },
+        {
+          "text": "删除经历 视觉验收机构",
+          "top": 407.140625,
+          "bottom": 447.140625,
+          "left": 1298.984375,
+          "right": 1374.984375
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收机构 · 测试工程师"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建经历",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑经历 视觉验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除经历 视觉验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "skills",
+      "label": "desktop",
+      "filename": "03-skills-desktop.png",
+      "status": 200,
+      "title": "能力矩阵",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文名称\n缺少英文说明\n没有满足前台展示条件的公开技能\n展示去向：能力页 /skills；首页能力区块\n生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+          "left": 530.359375,
+          "right": 1100,
+          "height": 158.3125,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "当前设为私密",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "缺少英文名称",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "缺少英文说明",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "没有满足前台展示条件的公开技能",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "展示去向：能力页 /skills；首页能力区块",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+              "left": 530.359375,
+              "right": 1100,
+              "height": 19.1875,
+              "scrollWidth": 570,
+              "clientWidth": 570
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建能力域",
+          "top": 104.390625,
+          "bottom": 144.390625,
+          "left": 1281,
+          "right": 1398
+        },
+        {
+          "text": "公开页",
+          "top": 407.140625,
+          "bottom": 447.140625,
+          "left": 1118,
+          "right": 1207
+        },
+        {
+          "text": "编辑能力域 视觉验收能力",
+          "top": 407.140625,
+          "bottom": 447.140625,
+          "left": 1215,
+          "right": 1291
+        },
+        {
+          "text": "删除能力域 视觉验收能力",
+          "top": 407.140625,
+          "bottom": 447.140625,
+          "left": 1299,
+          "right": 1375
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收能力"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "公开页",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑能力域 视觉验收能力",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除能力域 视觉验收能力",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "resume",
+      "label": "desktop",
+      "filename": "04-resume-desktop.png",
+      "status": 200,
+      "title": "简历管理",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n尚未上传文件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 313,
+          "right": 814,
+          "height": 88.75,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 313,
+              "right": 814,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "尚未上传文件",
+              "left": 313,
+              "right": 814,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "left": 313,
+              "right": 814,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "left": 313,
+              "right": 814,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        },
+        {
+          "text": "暂不在前台展示\n尚未上传文件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 874,
+          "right": 1375,
+          "height": 88.75,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 874,
+              "right": 1375,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "尚未上传文件",
+              "left": 874,
+              "right": 1375,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "left": 874,
+              "right": 1375,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "left": 874,
+              "right": 1375,
+              "height": 19.1875,
+              "scrollWidth": 501,
+              "clientWidth": 501
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "预览打印版",
+          "top": 104.390625,
+          "bottom": 144.390625,
+          "left": 1281,
+          "right": 1398
+        },
+        {
+          "text": "上传文件",
+          "top": 573.640625,
+          "bottom": 613.640625,
+          "left": 710,
+          "right": 814
+        },
+        {
+          "text": "上传文件",
+          "top": 573.640625,
+          "bottom": 613.640625,
+          "left": 1271,
+          "right": 1375
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [],
+      "scrolledActions": [
+        {
+          "text": "预览打印版",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "上传文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "上传文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "activities",
+      "label": "desktop",
+      "filename": "05-activities-desktop.png",
+      "status": 200,
+      "title": "职业动态",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文标题\n缺少英文摘要\n展示去向：动态页 /activities；近期动态可进入首页\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 555.515625,
+          "right": 1196.984375,
+          "height": 135.125,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "当前设为私密",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "缺少英文标题",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "缺少英文摘要",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "展示去向：动态页 /activities；近期动态可进入首页",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "left": 555.515625,
+              "right": 1196.984375,
+              "height": 19.1875,
+              "scrollWidth": 641,
+              "clientWidth": 641
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建动态",
+          "top": 104.390625,
+          "bottom": 144.390625,
+          "left": 1294,
+          "right": 1398
+        },
+        {
+          "text": "编辑动态 视觉验收动态",
+          "top": 383.796875,
+          "bottom": 423.796875,
+          "left": 1214.984375,
+          "right": 1290.984375
+        },
+        {
+          "text": "删除动态 视觉验收动态",
+          "top": 383.796875,
+          "bottom": 423.796875,
+          "left": 1298.984375,
+          "right": 1374.984375
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收动态"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑动态 视觉验收动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除动态 视觉验收动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "okr",
+      "label": "desktop",
+      "filename": "06-okr-desktop.png",
+      "status": 200,
+      "title": "OKR 执行工作台",
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少周期英文名称\n展示去向：OKR 页 /okr\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 311,
+          "right": 629,
+          "height": 131.125,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 311,
+              "right": 629,
+              "height": 19.1875,
+              "scrollWidth": 318,
+              "clientWidth": 318
+            },
+            {
+              "text": "当前设为私密",
+              "left": 311,
+              "right": 629,
+              "height": 19.1875,
+              "scrollWidth": 318,
+              "clientWidth": 318
+            },
+            {
+              "text": "缺少周期英文名称",
+              "left": 311,
+              "right": 629,
+              "height": 19.1875,
+              "scrollWidth": 318,
+              "clientWidth": 318
+            },
+            {
+              "text": "展示去向：OKR 页 /okr",
+              "left": 311,
+              "right": 629,
+              "height": 19.1875,
+              "scrollWidth": 318,
+              "clientWidth": 318
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "left": 311,
+              "right": 629,
+              "height": 38.375,
+              "scrollWidth": 318,
+              "clientWidth": 318
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建周期",
+          "top": 104.390625,
+          "bottom": 144.390625,
+          "left": 1293,
+          "right": 1398
+        },
+        {
+          "text": "进入周期",
+          "top": 782.515625,
+          "bottom": 806.515625,
+          "left": 311,
+          "right": 375
+        },
+        {
+          "text": "编辑周期 视觉验收周期",
+          "top": 774.515625,
+          "bottom": 814.515625,
+          "left": 541,
+          "right": 581
+        },
+        {
+          "text": "删除周期 视觉验收周期",
+          "top": 774.515625,
+          "bottom": 814.515625,
+          "left": 589,
+          "right": 629
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收周期"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "进入周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑周期 视觉验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除周期 视觉验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/projects",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr/cycles/cmunlo3cg0004pp98fo5ne0b6",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr/cycles/cmunlo3cg0004pp98fo5ne0b6",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/home",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/okr",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/activities",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/milestones",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/timeline",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/weekly",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/experience",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/knowledge",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/resume",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/skills",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/github",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/ai",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "urlPath": "/admin/media",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "label": "mobile",
+      "filename": "01-projects-mobile.png",
+      "status": 200,
+      "title": "项目证据",
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文标题\n缺少英文摘要\n缺少英文项目背景\n缺少英文职责\n缺少英文挑战\n缺少英文方案\n缺少英文结果\n展示去向：项目页 /projects；被首页选中时可进入首页卡片\n生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+          "left": 28,
+          "right": 347,
+          "height": 270.25,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "当前设为私密",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文标题",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文摘要",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文项目背景",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文职责",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文挑战",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文方案",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文结果",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：项目页 /projects；被首页选中时可进入首页卡片",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后项目页读取；首页卡片另需同步、保存草稿并发布。",
+              "left": 28,
+              "right": 347,
+              "height": 38.375,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建项目",
+          "top": 216.78125,
+          "bottom": 256.78125,
+          "left": 12,
+          "right": 116
+        },
+        {
+          "text": "AI 整理说明",
+          "top": 841.71875,
+          "bottom": 881.71875,
+          "left": 28,
+          "right": 148.015625
+        },
+        {
+          "text": "编辑项目 视觉验收项目",
+          "top": 841.71875,
+          "bottom": 881.71875,
+          "left": 156.015625,
+          "right": 232.015625
+        },
+        {
+          "text": "删除项目 视觉验收项目",
+          "top": 841.71875,
+          "bottom": 881.71875,
+          "left": 240.015625,
+          "right": 316.015625
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收项目"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "AI 整理说明",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 78
+        },
+        {
+          "text": "编辑项目 视觉验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 78
+        },
+        {
+          "text": "删除项目 视觉验收项目",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 78
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "experience",
+      "label": "mobile",
+      "filename": "02-experience-mobile.png",
+      "status": 200,
+      "title": "经历时间线",
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文机构名称\n缺少英文职位或专业\n缺少英文描述\n展示去向：经历页 /experience；近期经历可进入首页职业路径\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 28,
+          "right": 347,
+          "height": 196.6875,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "当前设为私密",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文机构名称",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文职位或专业",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文描述",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：经历页 /experience；近期经历可进入首页职业路径",
+              "left": 28,
+              "right": 347,
+              "height": 38.375,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "left": 28,
+              "right": 347,
+              "height": 38.375,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建经历",
+          "top": 216.78125,
+          "bottom": 256.78125,
+          "left": 12,
+          "right": 116
+        },
+        {
+          "text": "编辑经历 视觉验收机构",
+          "top": 779.15625,
+          "bottom": 819.15625,
+          "left": 28,
+          "right": 104
+        },
+        {
+          "text": "删除经历 视觉验收机构",
+          "top": 779.15625,
+          "bottom": 819.15625,
+          "left": 112,
+          "right": 188
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收机构 · 测试工程师"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建经历",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑经历 视觉验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 15
+        },
+        {
+          "text": "删除经历 视觉验收机构",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 15
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "skills",
+      "label": "mobile",
+      "filename": "03-skills-mobile.png",
+      "status": 200,
+      "title": "能力矩阵",
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文名称\n缺少英文说明\n没有满足前台展示条件的公开技能\n展示去向：能力页 /skills；首页能力区块\n生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+          "left": 28,
+          "right": 347,
+          "height": 177.5,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "当前设为私密",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文名称",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文说明",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "没有满足前台展示条件的公开技能",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：能力页 /skills；首页能力区块",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；部分技能或证据可能省略，无需发布首页。",
+              "left": 28,
+              "right": 347,
+              "height": 38.375,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建能力域",
+          "top": 194.390625,
+          "bottom": 234.390625,
+          "left": 12,
+          "right": 129
+        },
+        {
+          "text": "公开页",
+          "top": 715.078125,
+          "bottom": 755.078125,
+          "left": 28,
+          "right": 117
+        },
+        {
+          "text": "编辑能力域 视觉验收能力",
+          "top": 715.078125,
+          "bottom": 755.078125,
+          "left": 125,
+          "right": 201
+        },
+        {
+          "text": "删除能力域 视觉验收能力",
+          "top": 715.078125,
+          "bottom": 755.078125,
+          "left": 209,
+          "right": 285
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收能力"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建能力域",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "公开页",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑能力域 视觉验收能力",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除能力域 视觉验收能力",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "resume",
+      "label": "mobile",
+      "filename": "04-resume-mobile.png",
+      "status": 200,
+      "title": "简历管理",
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n尚未上传文件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 35,
+          "right": 340,
+          "height": 107.9375,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 35,
+              "right": 340,
+              "height": 19.1875,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "尚未上传文件",
+              "left": 35,
+              "right": 340,
+              "height": 19.1875,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "left": 35,
+              "right": 340,
+              "height": 19.1875,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "left": 35,
+              "right": 340,
+              "height": 38.375,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        },
+        {
+          "text": "暂不在前台展示\n尚未上传文件\n展示去向：在线简历 /resume；公开 PDF 可下载\n生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+          "left": 35,
+          "right": 340,
+          "height": 107.9375,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 35,
+              "right": 340,
+              "height": 19.1875,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "尚未上传文件",
+              "left": 35,
+              "right": 340,
+              "height": 19.1875,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "展示去向：在线简历 /resume；公开 PDF 可下载",
+              "left": 35,
+              "right": 340,
+              "height": 19.1875,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            },
+            {
+              "text": "生效步骤：在线简历入口始终可用；文件满足公开条件且可用时才提供对应语言下载。",
+              "left": 35,
+              "right": 340,
+              "height": 38.375,
+              "scrollWidth": 305,
+              "clientWidth": 305
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "预览打印版",
+          "top": 216.78125,
+          "bottom": 256.78125,
+          "left": 12,
+          "right": 129
+        },
+        {
+          "text": "上传文件",
+          "top": 753.21875,
+          "bottom": 793.21875,
+          "left": 35,
+          "right": 340
+        },
+        {
+          "text": "上传文件",
+          "top": 1295.65625,
+          "bottom": 1335.65625,
+          "left": 35,
+          "right": 340
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [],
+      "scrolledActions": [
+        {
+          "text": "预览打印版",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "上传文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 323
+        },
+        {
+          "text": "上传文件",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 521
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": []
+    },
+    {
+      "slug": "activities",
+      "label": "mobile",
+      "filename": "05-activities-mobile.png",
+      "status": 200,
+      "title": "职业动态",
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少英文标题\n缺少英文摘要\n展示去向：动态页 /activities；近期动态可进入首页\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 28,
+          "right": 347,
+          "height": 154.3125,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "当前设为私密",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文标题",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "缺少英文摘要",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "展示去向：动态页 /activities；近期动态可进入首页",
+              "left": 28,
+              "right": 347,
+              "height": 19.1875,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "left": 28,
+              "right": 347,
+              "height": 38.375,
+              "scrollWidth": 319,
+              "clientWidth": 319
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建动态",
+          "top": 194.390625,
+          "bottom": 234.390625,
+          "left": 12,
+          "right": 116
+        },
+        {
+          "text": "编辑动态 视觉验收动态",
+          "top": 690.890625,
+          "bottom": 730.890625,
+          "left": 28,
+          "right": 104
+        },
+        {
+          "text": "删除动态 视觉验收动态",
+          "top": 690.890625,
+          "bottom": 730.890625,
+          "left": 112,
+          "right": 188
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收动态"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "编辑动态 视觉验收动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "删除动态 视觉验收动态",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/overview",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    },
+    {
+      "slug": "okr",
+      "label": "mobile",
+      "filename": "06-okr-mobile.png",
+      "status": 200,
+      "title": "OKR 执行工作台",
+      "viewport": 375,
+      "scrollWidth": 375,
+      "bodyScrollWidth": 375,
+      "readiness": [
+        {
+          "text": "暂不在前台展示\n当前设为私密\n缺少周期英文名称\n展示去向：OKR 页 /okr\n生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+          "left": 33,
+          "right": 342,
+          "height": 131.125,
+          "children": [
+            {
+              "text": "暂不在前台展示",
+              "left": 33,
+              "right": 342,
+              "height": 19.1875,
+              "scrollWidth": 309,
+              "clientWidth": 309
+            },
+            {
+              "text": "当前设为私密",
+              "left": 33,
+              "right": 342,
+              "height": 19.1875,
+              "scrollWidth": 309,
+              "clientWidth": 309
+            },
+            {
+              "text": "缺少周期英文名称",
+              "left": 33,
+              "right": 342,
+              "height": 19.1875,
+              "scrollWidth": 309,
+              "clientWidth": 309
+            },
+            {
+              "text": "展示去向：OKR 页 /okr",
+              "left": 33,
+              "right": 342,
+              "height": 19.1875,
+              "scrollWidth": 309,
+              "clientWidth": 309
+            },
+            {
+              "text": "生效步骤：满足上述公开条件后由前台读取；无需发布首页。",
+              "left": 33,
+              "right": 342,
+              "height": 38.375,
+              "scrollWidth": 309,
+              "clientWidth": 309
+            }
+          ],
+          "withinViewport": true,
+          "clippedByAncestor": false
+        }
+      ],
+      "actions": [
+        {
+          "text": "新建周期",
+          "top": 216.78125,
+          "bottom": 256.78125,
+          "left": 12,
+          "right": 117
+        },
+        {
+          "text": "进入周期",
+          "top": 1141.90625,
+          "bottom": 1165.90625,
+          "left": 33,
+          "right": 246
+        },
+        {
+          "text": "编辑周期 视觉验收周期",
+          "top": 1133.90625,
+          "bottom": 1173.90625,
+          "left": 254,
+          "right": 294
+        },
+        {
+          "text": "删除周期 视觉验收周期",
+          "top": 1133.90625,
+          "bottom": 1173.90625,
+          "left": 302,
+          "right": 342
+        }
+      ],
+      "brandImages": [
+        {
+          "complete": true,
+          "naturalWidth": 1122,
+          "naturalHeight": 1402,
+          "urlPath": "/images/zedian-portrait-v3.png"
+        }
+      ],
+      "recordTitles": [
+        "视觉验收周期"
+      ],
+      "scrolledActions": [
+        {
+          "text": "新建周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 0
+        },
+        {
+          "text": "进入周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 343
+        },
+        {
+          "text": "编辑周期 视觉验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 343
+        },
+        {
+          "text": "删除周期 视觉验收周期",
+          "visibleAfterScroll": true,
+          "unobstructed": true,
+          "scrollY": 343
+        }
+      ],
+      "actionsReachable": true,
+      "errors": [],
+      "failedRequests": [
+        {
+          "urlPath": "/admin/okr/cycles/cmunlo3cg0004pp98fo5ne0b6",
+          "error": "net::ERR_ABORTED"
+        }
+      ]
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverStopped": true,
+    "portFree": true,
+    "temporaryDirectoryRemoved": true
+  },
+  "seedCounts": {
+    "portfolioProject": 0,
+    "experienceRecord": 0,
+    "skillArea": 0,
+    "resumeFile": 0,
+    "careerActivity": 0,
+    "okrCycle": 0
+  },
+  "brandImageProvided": true
+}

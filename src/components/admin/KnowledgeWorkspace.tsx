@@ -144,6 +144,12 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
   const keyResults = (okrCycles ?? []).flatMap((cycle) => cycle.objectives.flatMap((objective) => objective.keyResults.map((keyResult) => ({ id: keyResult.id, label: `${cycle.nameZh} / ${objective.titleZh} / ${keyResult.titleZh}` }))));
   const totalNotes = vaults.reduce((sum, vault) => sum + vault.notes.length, 0);
 
+  function selectVault(id: string) {
+    setSelectedId(id);
+    setQuery("");
+    setViewingNote(null);
+  }
+
   async function createVault(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -159,7 +165,7 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
     ), "知识库已登记，可开始只读扫描");
     if (!created) return;
     setVaults((current) => [...current, created].sort((left, right) => left.name.localeCompare(right.name)));
-    setSelectedId(created.id);
+    selectVault(created.id);
     form.reset();
   }
 
@@ -180,7 +186,7 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
     ), "知识库登记与索引已移除，本地文件未改动");
     if (!removed) return;
     setVaults((current) => current.filter((item) => item.id !== deleteRequest.id));
-    if (selectedId === deleteRequest.id) setSelectedId("");
+    if (selected?.id === deleteRequest.id) selectVault("");
     setDeleteRequest(null);
   }
 
@@ -326,7 +332,7 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
           <aside className={styles.vaultStack} aria-label="已登记知识库">
             {vaults.map((vault) => (
               <article key={vault.id} className={`${styles.vaultCard} ${selected?.id === vault.id ? styles.vaultCardActive : ""}`}>
-                <button type="button" className={styles.vaultSelect} onClick={() => { setSelectedId(vault.id); setQuery(""); setViewingNote(null); }}>
+                <button type="button" className={styles.vaultSelect} onClick={() => selectVault(vault.id)}>
                   <BookOpen size={18} /><span><strong>{vault.name}</strong><small>{vault.rootPath}</small></span>
                 </button>
                 <div className={styles.vaultMeta}><span>{vault.lastScanStatus === "NEVER" ? "尚未扫描" : vault.lastScanStatus === "FAILED" ? "扫描失败" : `${vault.lastScanFileCount} 篇`}</span><span>{vault.enabled ? "已启用" : "已停用"}</span></div>

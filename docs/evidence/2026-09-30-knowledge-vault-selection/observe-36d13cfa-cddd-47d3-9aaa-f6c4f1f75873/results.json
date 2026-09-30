@@ -1,0 +1,178 @@
+{
+  "startedAt": "2026-09-30T04:04:16.149Z",
+  "runId": "36d13cfa-cddd-47d3-9aaa-f6c4f1f75873",
+  "scenarios": [
+    {
+      "name": "add-empty-vault-clears-viewer",
+      "expectedViewerPresent": false,
+      "observed": {
+        "indexTitle": "C Empty Vault",
+        "viewerPresent": true,
+        "viewerTitle": "A META TITLE",
+        "viewerText": "A META TITLE\nsame.md\n\nNote unavailable\n\n笔记属性\ntitle\nA META TITLE\nmarker\nA_METADATA_ONLY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n\n尚未捕获源修订，请重新扫描知识库。",
+        "errors": [
+          "Note unavailable"
+        ],
+        "sourceRevisionIds": [],
+        "registeredVaults": [
+          "A Selection Vault",
+          "B Selection Vault",
+          "C Empty Vault"
+        ]
+      },
+      "fixtureEmpty": true
+    },
+    {
+      "name": "remove-selected-vault-clears-viewer",
+      "expectedViewerPresent": false,
+      "observed": {
+        "indexTitle": "B Selection Vault",
+        "viewerPresent": true,
+        "viewerTitle": "A META TITLE",
+        "viewerText": "A META TITLE\nsame.md\ntitle: B META TITLE marker: B_METADATA_ONLY\nB SOURCE BODY\n\nB_BODY_ONLY\n\n笔记属性\ntitle\nA META TITLE\nmarker\nA_METADATA_ONLY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\nfb0a4c9a03\n2026年9月30日 12:04\n创建发布草稿",
+        "errors": [],
+        "sourceRevisionIds": [
+          "revision-cmunkzn09000appioptwpyk2g"
+        ],
+        "registeredVaults": [
+          "B Selection Vault",
+          "C Empty Vault"
+        ]
+      },
+      "freshBContent": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n",
+      "removedAInDatabase": true,
+      "sourceAUnchanged": true
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunkzmyr0000ppiotzj1jd3d/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/admin/knowledge/vaults",
+      "query": "",
+      "status": 201,
+      "data": {
+        "id": "cmunkznmq000gppioqprm3krr",
+        "name": "C Empty Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-36d13cfa-cddd-47d3-9aaa-f6c4f1f75873\\empty",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "NEVER",
+        "lastScannedAt": null,
+        "lastScanFileCount": 0,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:04:18.146Z",
+        "updatedAt": "2026-09-30T04:04:18.146Z",
+        "notes": [],
+        "noteLinks": [],
+        "sourceRevisions": [],
+        "syncReports": []
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunkznmq000gppioqprm3krr/notes",
+      "query": "?path=same.md",
+      "status": 400,
+      "data": {
+        "error": "Note unavailable"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunkzmyr0000ppiotzj1jd3d/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/api/admin/knowledge/vaults/cmunkzmyr0000ppiotzj1jd3d",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunkzmyr0000ppiotzj1jd3d",
+        "name": "A Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-36d13cfa-cddd-47d3-9aaa-f6c4f1f75873\\a",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:04:17.307Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:04:17.283Z",
+        "updatedAt": "2026-09-30T04:04:17.316Z"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunkzmzy0008ppiok7qlsje2/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n"
+      }
+    }
+  ],
+  "pageErrors": [],
+  "head": "11cff68013298a031bd2c2185e13c42c19848e9f",
+  "browser": "154.0.4258.37",
+  "aIndex": {
+    "id": "cmunkzmyr0000ppiotzj1jd3d",
+    "name": "A Selection Vault",
+    "note": {
+      "id": "cmunkzmzm0003ppiod76eeejj",
+      "relativePath": "same.md",
+      "frontmatterJson": "{\"title\":\"A META TITLE\",\"marker\":\"A_METADATA_ONLY\"}"
+    },
+    "revision": {
+      "id": "cmunkzmzk0002ppio80b048xw",
+      "origin": "LOCAL_SCAN",
+      "relativePath": "same.md",
+      "markdown": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+    }
+  },
+  "bIndex": {
+    "id": "cmunkzmzy0008ppiok7qlsje2",
+    "name": "B Selection Vault",
+    "note": {
+      "id": "cmunkzn09000bppiogpidvqmu",
+      "relativePath": "same.md",
+      "frontmatterJson": "{\"title\":\"B META TITLE\",\"marker\":\"B_METADATA_ONLY\"}"
+    },
+    "revision": {
+      "id": "cmunkzn09000appioptwpyk2g",
+      "origin": "LOCAL_SCAN",
+      "relativePath": "same.md",
+      "markdown": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n"
+    }
+  },
+  "captureCompleted": true,
+  "fixture": {
+    "relativePath": "same.md",
+    "createdVia": "real authenticated POST",
+    "indexedVia": "real authenticated scan API",
+    "emptyVaultId": "cmunkznmq000gppioqprm3krr"
+  },
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3012Closed": true,
+    "verifiedOwnedTempDeleted": true
+  },
+  "completedAt": "2026-09-30T04:04:20.147Z"
+}

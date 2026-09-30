@@ -1,0 +1,15 @@
+{
+  "indexTitle": "A Selection Vault",
+  "viewerPresent": true,
+  "viewerTitle": "A META TITLE",
+  "viewerText": "A META TITLE\nsame.md\ntitle: A META TITLE marker: A_METADATA_ONLY\nA SOURCE BODY\n\nA_BODY_ONLY\n\n笔记属性\ntitle\nA META TITLE\nmarker\nA_METADATA_ONLY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n8e2583b8f0\n2026年9月30日 12:30\n创建发布草稿",
+  "errors": [],
+  "sourceRevisionIds": [
+    "revision-cmunlxjgy0002pp2412t01awf"
+  ],
+  "registeredVaults": [
+    "A Selection Vault",
+    "B Selection Vault",
+    "D Empty Fallback"
+  ]
+}

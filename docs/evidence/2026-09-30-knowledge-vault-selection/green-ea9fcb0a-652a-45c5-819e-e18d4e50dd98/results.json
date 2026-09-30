@@ -1,0 +1,253 @@
+{
+  "startedAt": "2026-09-30T04:30:37.824Z",
+  "runId": "ea9fcb0a-652a-45c5-819e-e18d4e50dd98",
+  "mode": "assert-viewer-cleared",
+  "scenarios": [
+    {
+      "name": "add-empty-vault-clears-viewer",
+      "expectedViewerPresent": false,
+      "observed": {
+        "indexTitle": "C Empty Vault",
+        "viewerPresent": false,
+        "viewerTitle": null,
+        "viewerText": null,
+        "errors": [],
+        "sourceRevisionIds": [],
+        "registeredVaults": [
+          "A Selection Vault",
+          "B Selection Vault",
+          "C Empty Vault",
+          "D Empty Fallback"
+        ]
+      },
+      "fixtureEmpty": true,
+      "assertion": {
+        "pass": true
+      }
+    },
+    {
+      "name": "remove-selected-vault-clears-viewer",
+      "expectedViewerPresent": false,
+      "observed": {
+        "indexTitle": "B Selection Vault",
+        "viewerPresent": false,
+        "viewerTitle": null,
+        "viewerText": null,
+        "errors": [],
+        "sourceRevisionIds": [],
+        "registeredVaults": [
+          "B Selection Vault",
+          "C Empty Vault",
+          "D Empty Fallback"
+        ]
+      },
+      "freshBContent": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n",
+      "removedAInDatabase": true,
+      "sourceAUnchanged": true,
+      "assertion": {
+        "pass": true
+      }
+    },
+    {
+      "name": "remove-unselected-vault-retains-current-viewer",
+      "expectedViewerPresent": true,
+      "observed": {
+        "indexTitle": "B Selection Vault",
+        "viewerPresent": true,
+        "viewerTitle": "B META TITLE",
+        "viewerText": "B META TITLE\nsame.md\ntitle: B META TITLE marker: B_METADATA_ONLY\nB SOURCE BODY\n\nB_BODY_ONLY\n\n笔记属性\ntitle\nB META TITLE\nmarker\nB_METADATA_ONLY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\nfb0a4c9a03\n2026年9月30日 12:30\n创建发布草稿",
+        "errors": [],
+        "sourceRevisionIds": [
+          "revision-cmunlxjhn000app24fzf09ajp"
+        ],
+        "registeredVaults": [
+          "B Selection Vault",
+          "D Empty Fallback"
+        ]
+      },
+      "assertion": {
+        "pass": true
+      }
+    },
+    {
+      "name": "remove-automatic-fallback-vault-clears-viewer",
+      "expectedViewerPresent": false,
+      "observed": {
+        "indexTitle": "D Empty Fallback",
+        "viewerPresent": false,
+        "viewerTitle": null,
+        "viewerText": null,
+        "errors": [],
+        "sourceRevisionIds": [],
+        "registeredVaults": [
+          "D Empty Fallback"
+        ]
+      },
+      "assertion": {
+        "pass": true
+      }
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunlxjg40000pp24028p61by/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/admin/knowledge/vaults",
+      "query": "",
+      "status": 201,
+      "data": {
+        "id": "cmunlxk4n000ipp24mgn0g4mu",
+        "name": "C Empty Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-ea9fcb0a-652a-45c5-819e-e18d4e50dd98\\empty",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "NEVER",
+        "lastScannedAt": null,
+        "lastScanFileCount": 0,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:30:39.911Z",
+        "updatedAt": "2026-09-30T04:30:39.911Z",
+        "notes": [],
+        "noteLinks": [],
+        "sourceRevisions": [],
+        "syncReports": []
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunlxjg40000pp24028p61by/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/api/admin/knowledge/vaults/cmunlxjg40000pp24028p61by",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunlxjg40000pp24028p61by",
+        "name": "A Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-ea9fcb0a-652a-45c5-819e-e18d4e50dd98\\a",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:30:39.055Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:30:39.029Z",
+        "updatedAt": "2026-09-30T04:30:39.060Z"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/admin/knowledge/vaults/cmunlxjhc0008pp242npqcmyv/notes",
+      "query": "?path=same.md",
+      "status": 200,
+      "data": {
+        "relativePath": "same.md",
+        "content": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n"
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/api/admin/knowledge/vaults/cmunlxk4n000ipp24mgn0g4mu",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunlxk4n000ipp24mgn0g4mu",
+        "name": "C Empty Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-ea9fcb0a-652a-45c5-819e-e18d4e50dd98\\empty",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "NEVER",
+        "lastScannedAt": null,
+        "lastScanFileCount": 0,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:30:39.911Z",
+        "updatedAt": "2026-09-30T04:30:39.911Z"
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/api/admin/knowledge/vaults/cmunlxjhc0008pp242npqcmyv",
+      "query": "",
+      "status": 200,
+      "data": {
+        "id": "cmunlxjhc0008pp242npqcmyv",
+        "name": "B Selection Vault",
+        "rootPath": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-vault-selection-ea9fcb0a-652a-45c5-819e-e18d4e50dd98\\b",
+        "enabled": true,
+        "ignorePatterns": [],
+        "lastScanStatus": "SUCCESS",
+        "lastScannedAt": "2026-09-30T04:30:39.081Z",
+        "lastScanFileCount": 1,
+        "lastScanError": null,
+        "createdAt": "2026-09-30T04:30:39.072Z",
+        "updatedAt": "2026-09-30T04:30:39.084Z"
+      }
+    }
+  ],
+  "pageErrors": [],
+  "head": "11cff68013298a031bd2c2185e13c42c19848e9f",
+  "knowledgeSourceHash": "3926320eb5984144131f322e62836a35dfc8e67c29209ee16fdf93fb47e4bdcb",
+  "browser": "154.0.4258.37",
+  "aIndex": {
+    "id": "cmunlxjg40000pp24028p61by",
+    "name": "A Selection Vault",
+    "note": {
+      "id": "cmunlxjgz0003pp24widoc016",
+      "relativePath": "same.md",
+      "frontmatterJson": "{\"title\":\"A META TITLE\",\"marker\":\"A_METADATA_ONLY\"}"
+    },
+    "revision": {
+      "id": "cmunlxjgy0002pp2412t01awf",
+      "origin": "LOCAL_SCAN",
+      "relativePath": "same.md",
+      "markdown": "---\ntitle: A META TITLE\nmarker: A_METADATA_ONLY\n---\n\n# A SOURCE BODY\n\nA_BODY_ONLY\n"
+    }
+  },
+  "bIndex": {
+    "id": "cmunlxjhc0008pp242npqcmyv",
+    "name": "B Selection Vault",
+    "note": {
+      "id": "cmunlxjhn000bpp24r6jah7gl",
+      "relativePath": "same.md",
+      "frontmatterJson": "{\"title\":\"B META TITLE\",\"marker\":\"B_METADATA_ONLY\"}"
+    },
+    "revision": {
+      "id": "cmunlxjhn000app24fzf09ajp",
+      "origin": "LOCAL_SCAN",
+      "relativePath": "same.md",
+      "markdown": "---\ntitle: B META TITLE\nmarker: B_METADATA_ONLY\n---\n\n# B SOURCE BODY\n\nB_BODY_ONLY\n"
+    }
+  },
+  "captureCompleted": true,
+  "fixture": {
+    "relativePath": "same.md",
+    "createdVia": "real authenticated POST",
+    "indexedVia": "real authenticated scan API",
+    "emptyVaultId": "cmunlxk4n000ipp24mgn0g4mu"
+  },
+  "assertionsPassed": true,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3012Closed": true,
+    "verifiedOwnedTempDeleted": true
+  },
+  "completedAt": "2026-09-30T04:30:42.175Z"
+}

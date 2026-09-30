@@ -1,0 +1,15 @@
+{
+  "indexTitle": "C Empty Vault",
+  "viewerPresent": true,
+  "viewerTitle": "A META TITLE",
+  "viewerText": "A META TITLE\nsame.md\n\nNote unavailable\n\n笔记属性\ntitle\nA META TITLE\nmarker\nA_METADATA_ONLY\n正向链接\n\n没有正向链接。\n\n反向链接\n\n没有反向链接。\n\n发布检查\n源笔记保持私有\n已提供标题\n链接均可解析\n不含待选择附件\n不含 Dataview 查询\n笔记任务\n\n没有标准 Markdown 任务。\n\n源修订\n\n尚未捕获源修订，请重新扫描知识库。",
+  "errors": [
+    "Note unavailable"
+  ],
+  "sourceRevisionIds": [],
+  "registeredVaults": [
+    "A Selection Vault",
+    "B Selection Vault",
+    "C Empty Vault"
+  ]
+}

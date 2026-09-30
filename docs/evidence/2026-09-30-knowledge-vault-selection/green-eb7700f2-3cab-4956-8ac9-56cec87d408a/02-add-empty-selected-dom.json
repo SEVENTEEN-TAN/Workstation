@@ -1,0 +1,14 @@
+{
+  "indexTitle": "C Empty Vault",
+  "viewerPresent": false,
+  "viewerTitle": null,
+  "viewerText": null,
+  "errors": [],
+  "sourceRevisionIds": [],
+  "registeredVaults": [
+    "A Selection Vault",
+    "B Selection Vault",
+    "C Empty Vault",
+    "D Empty Fallback"
+  ]
+}
