@@ -25,7 +25,7 @@ async function ownedTemp() {
 }
 async function capture(page, name) { await page.screenshot({ path: path.join(output, name + '.png'), fullPage: true }); results.screenshots.push(name + '.png'); }
 async function check(name, work) {
-  if (process.env.HISTORY_ONLY && !name.includes(['fragment', 'legacy'].includes(process.env.HISTORY_ONLY) ? process.env.HISTORY_ONLY : 'navigation-' + (process.env.HISTORY_ONLY === 'native' ? 'true' : 'false'))) return;
+  if (process.env.HISTORY_ONLY && !name.includes(['fragment', 'legacy', 'boundary', 'reverted'].includes(process.env.HISTORY_ONLY) ? process.env.HISTORY_ONLY : 'navigation-' + (process.env.HISTORY_ONLY === 'native' ? 'true' : 'false'))) return;
   currentCase = name;
   const existingPages = new Set(context?.pages());
   try { await work(); results.assertions.push({ name, pass: true }); }
@@ -226,6 +226,109 @@ async function main() {
       const page = await makePage(375); await visit(page); await open(page); await disableStorage(page); const text = '存储失败保留-' + runId; await edit(page, text);
       await page.getByRole('status').filter({ hasText: '浏览器未能保留当前周报的修改' }).waitFor(); await open(page, second); assert.equal(await value(page).inputValue(), text); await nav(page, '仪表盘'); assert.equal(new URL(page.url()).pathname, '/admin/weekly'); assert.equal(await value(page).inputValue(), text); assert.equal(await recovery(page), null); await unchanged(); await capture(page, '07-storage-block-mobile'); await page.close();
     });
+    const pendingPage = async draft => {
+      const page = await makePage(); await page.addInitScript(() => { window.evidenceNavigation = window.navigation; Object.defineProperty(window, 'navigation', { value: undefined, configurable: true }); });
+      await visit(page, '/admin/overview'); await page.evaluate(() => { const legacy = { ...history.state }; delete legacy.__weeklyEditorHistoryPosition; History.prototype.replaceState.call(history, legacy, ''); });
+      await nav(page, '每周动态'); await ready(page); await page.reload({ waitUntil: 'networkidle' }); await ready(page); await open(page, draft); await disableStorage(page);
+      return page;
+    };
+    const saveResponse = async (page, draft) => {
+      const response = page.waitForResponse(r => new URL(r.url()).pathname === '/api/admin/weekly/' + draft.id && r.request().method() === 'PATCH');
+      await page.getByRole('button', { name: '保存草稿', exact: true }).click(); const result = await response; await result.finished(); return result;
+    };
+    const blockPending = async page => {
+      page.dialogDecision = 'dismiss'; await page.goBack({ waitUntil: 'domcontentloaded', timeout: 1500 }).catch(() => null);
+      await page.getByRole('status').filter({ hasText: '保存或取消编辑后，会继续返回' }).waitFor();
+    };
+    await check('boundary-pending-real-database-save-failure-retains-input-then-retry-resumes', async () => {
+      const draft = await seed('待导航失败重试', start + 21 * 86400000), page = await pendingPage(draft);
+      const text = '失败仍保留-' + runId; await edit(page, text); await blockPending(page);
+      const trigger = 'weekly_failure_' + runId.replaceAll('-', '');
+      await db.$executeRawUnsafe(`CREATE TRIGGER ${trigger} BEFORE UPDATE ON weekly_activity_drafts BEGIN SELECT RAISE(ABORT, 'isolated weekly failure'); END`);
+      try {
+        const failed = await saveResponse(page, draft); assert.equal(failed.status(), 400); await page.getByRole('alert').filter({ hasText: 'Invalid' }).waitFor();
+        assert.equal(await value(page).inputValue(), text); assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: draft.id } })).titleZh, draft.titleZh);
+        const next = text + '-继续输入'; await edit(page, next); assert.equal(new URL(page.url()).pathname, '/admin/overview');
+        await capture(page, '14-pending-save-failed');
+        await db.$executeRawUnsafe(`DROP TRIGGER ${trigger}`);
+        assert.equal((await saveResponse(page, draft)).status(), 200); await page.getByRole('heading', { name: '仪表盘', exact: true }).waitFor();
+        assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: draft.id } })).titleZh, next);
+      } finally { await db.$executeRawUnsafe(`DROP TRIGGER IF EXISTS ${trigger}`); }
+      await unchanged(); await page.close();
+    });
+    await check('boundary-pending-real-409-retains-input-until-explicit-discard', async () => {
+      const draft = await seed('待导航版本冲突', start + 28 * 86400000), loser = await pendingPage(draft), winner = await makePage();
+      await visit(winner); await open(winner, draft); const winning = '待导航胜者-' + runId; await edit(winner, winning);
+      const text = '冲突仍保留-' + runId; await edit(loser, text); await blockPending(loser);
+      assert.equal((await saveResponse(winner, draft)).status(), 200); const failed = await saveResponse(loser, draft); assert.equal(failed.status(), 409);
+      await loser.getByRole('alert').filter({ hasText: '周报草稿已在其他位置更新' }).waitFor(); assert.equal(await value(loser).inputValue(), text);
+      await edit(loser, text + '-继续输入'); assert.equal(await recovery(loser, draft), null);
+      await capture(loser, '15-pending-conflict-retained'); loser.dialogDecision = 'accept'; await loser.getByRole('button', { name: '取消', exact: true }).click();
+      await loser.getByRole('heading', { name: '仪表盘', exact: true }).waitFor(); assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: draft.id } })).titleZh, winning);
+      await unchanged(); await loser.close(); await winner.close();
+    });
+    await check('boundary-removeItem-failure-discard-does-not-resurrect-recovery', async () => {
+      const page = await makePage(); await visit(page); await open(page); const text = '明确放弃副本-' + runId; await edit(page, text); assert.equal((await recovery(page)).values.titleZh, text);
+      await page.evaluate(() => { Storage.prototype.removeItem = function () { throw new DOMException('Evidence remove disabled', 'SecurityError'); }; });
+      await page.getByRole('button', { name: '取消', exact: true }).click(); await open(page);
+      assert.equal(await value(page).inputValue(), first.titleZh, 'Explicitly discarded recovery must not reappear');
+      await page.reload({ waitUntil: 'networkidle' }); await ready(page); await open(page); assert.equal(await value(page).inputValue(), first.titleZh);
+      await unchanged(); await capture(page, '16-remove-discard-cleared'); await page.close();
+    });
+    await check('boundary-removeItem-failure-save-reopen-uses-current-version', async () => {
+      const draft = await seed('删除副本保存版本', start + 35 * 86400000), page = await makePage(); await visit(page); await open(page, draft);
+      const text = '已保存副本-' + runId; await edit(page, text); await page.evaluate(() => { Storage.prototype.removeItem = function () { throw new DOMException('Evidence remove disabled', 'SecurityError'); }; });
+      assert.equal((await saveResponse(page, draft)).status(), 200); await value(page).waitFor({ state: 'hidden' });
+      await open(page, { ...draft, titleZh: text }); await edit(page, text + '-再次保存');
+      assert.equal((await saveResponse(page, draft)).status(), 200, 'Reopened saved draft must use the current server version');
+      assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: draft.id } })).titleZh, text + '-再次保存');
+      await unchanged(); await capture(page, '17-remove-save-current-version'); await page.close();
+    });
+    await check('boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers', async () => {
+      const page = await makePage(); await visit(page); await open(page); const text = '不能清理先保留-' + runId; await edit(page, text);
+      await page.evaluate(() => { window.evidenceRemoveItem = Storage.prototype.removeItem; Storage.prototype.removeItem = function () { throw new DOMException('Evidence remove disabled', 'SecurityError'); }; }); await disableStorage(page);
+      await page.getByRole('button', { name: '取消', exact: true }).click();
+      assert.equal(await value(page).count(), 1, 'Failed cleanup must keep the editor open');
+      assert.equal(await value(page).inputValue(), text, 'Failed recovery cleanup must not pretend to discard');
+      await page.getByRole('status').filter({ hasText: '未能清除恢复副本' }).waitFor();
+      await page.evaluate(() => { Storage.prototype.removeItem = window.evidenceRemoveItem; Storage.prototype.setItem = window.evidenceSetItem; });
+      await page.getByRole('button', { name: '取消', exact: true }).click(); await page.reload({ waitUntil: 'networkidle' }); await ready(page); await open(page);
+      assert.equal(await value(page).inputValue(), first.titleZh); await unchanged(); await capture(page, '18-cleanup-discard-retried'); await page.close();
+    });
+    await check('boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry', async () => {
+      const draft = await seed('保存成功清理失败', start + 42 * 86400000), page = await pendingPage(draft);
+      await page.evaluate(() => { Storage.prototype.setItem = window.evidenceSetItem; }); const text = '保存成功仍待清理-' + runId; await edit(page, text);
+      await page.evaluate(() => { window.evidenceRemoveItem = Storage.prototype.removeItem; Storage.prototype.removeItem = function () { throw new DOMException('Evidence remove disabled', 'SecurityError'); }; }); await disableStorage(page); await blockPending(page);
+      assert.equal((await saveResponse(page, draft)).status(), 200);
+      assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: draft.id } })).titleZh, text);
+      assert.equal(await value(page).count(), 1, 'Successful save with failed cleanup must keep the editor open');
+      assert.equal(await value(page).inputValue(), text, 'Saved input must remain until obsolete recovery can be cleared');
+      await page.getByRole('status').filter({ hasText: '已保存' }).filter({ hasText: '未能清除恢复副本' }).waitFor();
+      const next = text + '-再次编辑'; await edit(page, next); assert.equal((await saveResponse(page, draft)).status(), 200);
+      assert.equal(await value(page).inputValue(), next); await capture(page, '19-saved-cleanup-retained');
+      await page.evaluate(() => { Storage.prototype.removeItem = window.evidenceRemoveItem; Storage.prototype.setItem = window.evidenceSetItem; });
+      page.dialogDecision = 'accept';
+      await page.getByRole('button', { name: '取消', exact: true }).click(); await page.getByRole('heading', { name: '仪表盘', exact: true }).waitFor();
+      await nav(page, '每周动态'); await ready(page); await page.reload({ waitUntil: 'networkidle' }); await ready(page); await open(page, { ...draft, titleZh: next });
+      assert.equal(await value(page).inputValue(), next); assert.equal(await recovery(page, draft), null); await unchanged(); await page.close();
+    });
+    for (const cancelFirst of [false, true]) await check('boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-' + cancelFirst, async () => {
+      const draft = await seed('回退输入仍待清理-' + cancelFirst, start + (cancelFirst ? 56 : 49) * 86400000), page = await pendingPage(draft);
+      await page.evaluate(() => { Storage.prototype.setItem = window.evidenceSetItem; }); const text = '待清理旧副本-' + runId; await edit(page, text);
+      await page.evaluate(() => { window.evidenceRemoveItem = Storage.prototype.removeItem; Storage.prototype.removeItem = function () { throw new DOMException('Evidence remove disabled', 'SecurityError'); }; }); await disableStorage(page); await blockPending(page);
+      if (cancelFirst) { page.dialogDecision = 'accept'; await page.getByRole('button', { name: '取消', exact: true }).click(); await page.getByRole('status').filter({ hasText: '未能清除恢复副本' }).waitFor(); }
+      await value(page).fill(draft.titleZh);
+      const state = await page.evaluate(() => ({ editorPresent: Boolean(document.querySelector('input[name="titleZh"]')), saveEnabled: [...document.querySelectorAll('button')].some(button => button.textContent === '保存草稿' && !button.disabled) }));
+      results.observations.push({ case: currentCase, revertedEditor: state, actualUrl: page.url() });
+      assert.equal(state.editorPresent, true, 'Reverting fields must not resume pending navigation before cleanup');
+      assert.equal(state.saveEnabled, true, 'Cleanup retry must remain available even when fields match the server');
+      assert.equal((await recovery(page, draft)).values.titleZh, text); assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: draft.id } })).titleZh, draft.titleZh);
+      await capture(page, '20-cleanup-reverted-retained-' + cancelFirst);
+      await page.evaluate(() => { Storage.prototype.removeItem = window.evidenceRemoveItem; Storage.prototype.setItem = window.evidenceSetItem; });
+      page.dialogDecision = 'accept'; await page.getByRole('button', { name: '取消', exact: true }).click(); await page.getByRole('heading', { name: '仪表盘', exact: true }).waitFor();
+      await nav(page, '每周动态'); await ready(page); await page.reload({ waitUntil: 'networkidle' }); await ready(page); await open(page, draft);
+      assert.equal(await value(page).inputValue(), draft.titleZh); assert.equal(await recovery(page, draft), null); await unchanged(); await page.close();
+    });
     await check('two-tabs-same-version-sequential-save-200-409-loser-recovery-retained', async () => {
       const winner = await makePage(), loser = await makePage(); await visit(winner); await visit(loser); await open(winner); await open(loser); const winnerText = '并行胜者-' + runId, loserText = '并行败者-' + runId; await edit(winner, winnerText); await edit(loser, loserText);
       const endpoint = '/api/admin/weekly/' + first.id;
@@ -233,7 +336,7 @@ async function main() {
       const winning = await save(winner); assert.equal(winning.status, 200); await winner.getByRole('textbox', { name: '中文标题', exact: true }).waitFor({ state: 'hidden' }); const losing = await save(loser); assert.equal(losing.status, 409); await loser.getByRole('alert').filter({ hasText: '周报草稿已在其他位置更新' }).waitFor(); assert.equal(await value(loser).inputValue(), loserText); const retained = await recovery(loser); assert.equal(retained.values.titleZh, loserText); assert.equal(retained.expectedUpdatedAt, first.updatedAt.toISOString()); assert.equal(winning.request.expectedUpdatedAt, losing.request.expectedUpdatedAt); assert.equal((await db.weeklyActivityDraft.findUniqueOrThrow({ where: { id: first.id } })).titleZh, winnerText);
       results.observations.push({ case: currentCase, winning, losing, loserRecovery: retained }); await capture(loser, '08-conflict-loser-retained'); await loser.reload({ waitUntil: 'networkidle' }); await ready(loser); await open(loser, { ...first, titleZh: winnerText }); assert.equal(await value(loser).inputValue(), loserText); await loser.getByRole('status').filter({ hasText: '服务端版本已经变化' }).waitFor(); await capture(loser, '09-conflict-loser-reopen'); await winner.close(); await loser.close();
     });
-    results.completed = true; results.passed = results.assertions.length === (process.env.HISTORY_ONLY === 'fragment' ? 2 : process.env.HISTORY_ONLY === 'legacy' ? 4 : process.env.HISTORY_ONLY ? 5 : 19) && results.assertions.every(a => a.pass); process.exitCode = results.passed ? 0 : 1;
+    results.completed = true; results.passed = results.assertions.length === (process.env.HISTORY_ONLY === 'fragment' || process.env.HISTORY_ONLY === 'reverted' ? 2 : process.env.HISTORY_ONLY === 'legacy' ? 4 : process.env.HISTORY_ONLY === 'boundary' ? 8 : process.env.HISTORY_ONLY ? 5 : 27) && results.assertions.every(a => a.pass); process.exitCode = results.passed ? 0 : 1;
   } catch (e) { results.setupFailure = { stage: currentCase, message: e.message, stack: e.stack }; process.exitCode = 2; }
   finally {
     const cleanupErrors = [];

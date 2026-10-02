@@ -67,3 +67,7 @@ owned Temp directory. Existing processes are never terminated.
 旧历史修复后的最终构建 `zMAzau2vY3sDBrnISDYl7` 再次独立运行 [run-6e93b13c-429e-4173-91db-9f20e0d07f0c/results.json](run-6e93b13c-429e-4173-91db-9f20e0d07f0c/results.json)，18/18 通过，14次PATCH。三组双请求均 `[200,409]`，发送/响应重叠、四字段一致、旧/新版本重试及SQLite触发器回滚/重试断言全部通过；源码、构建路由和HEAD前后不变，清理成功。这份记录是最终构建的API证据。
 
 未知锚点位置推断修复后的最新构建 `5XM__utDMz2yLZPp0q9PJ` 再次独立运行 [run-1f7843d7-08b1-4d8a-afaf-cd642405e28d/results.json](run-1f7843d7-08b1-4d8a-afaf-cd642405e28d/results.json)，**18/18通过，14次PATCH**。三组双请求均 `[200,409]`；重叠发送、唯一胜者四字段和版本、旧/新版本重试、触发器失败400完整回滚与恢复后重试全部通过。5个相关源码摘要、构建编号和运行期间稳定性核对见导航验证摘要；服务退出、库断开、所属Temp删除，3020空闲。此记录取代上段作为本批最终API证据；保存业务代码保持不变。
+
+后续恢复副本清理修复使用构建 `QDZ3X7Bqy2gvbXSqNr_dN` 再次独立运行 [run-8615cff5-8c6b-4a2f-b20d-f370bba08b86/results.json](run-8615cff5-8c6b-4a2f-b20d-f370bba08b86/results.json)，18/18通过、14次PATCH，三组均200/409；源码5个摘要、实际路由摘要和构建编号经主代理核对，所属服务/库/Temp已清理，3020空闲。保存业务代码未改；此记录为后续清理修复的API证据，不能与前一批19组构建混用。
+
+v31复核补上手动回退输入后的清理保护；中间构建 `uwA60YZrQV54ePvBEEsv0` 的 [18项运行](run-73970fca-5814-4dba-8f47-f5ca4ba24af5/results.json) 保留。最终构建 `YDX50WB22r7Pd9kD-nWRY` 使用 [run-41dc0dee-9dca-436c-97bd-cad0418fcd58/results.json](run-41dc0dee-9dca-436c-97bd-cad0418fcd58/results.json)，18/18通过、14次PATCH，三组均唯一200/409；源码、实际API路由摘要和构建编号经主代理核对，清理完成。此为最终27组导航对应的API证据，保存业务仍未修改。

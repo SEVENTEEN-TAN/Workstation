@@ -1,0 +1,16 @@
+{
+  "baseHead": "bbeb0d680f60f7dfc345b2d94e1aceb2214d29e6",
+  "buildId": "YDX50WB22r7Pd9kD-nWRY",
+  "scope": "Recovery cleanup failures and pending-navigation save boundaries; not whole-branch release acceptance",
+  "vitest": { "exitCode": 0, "files": 85, "tests": 567, "log": "verification-vitest-cleanup-2026-10-02.log" },
+  "build": { "exitCode": 0, "database": "Independent migrated temporary SQLite", "generatedPages": 56, "log": "verification-build-cleanup-2026-10-02.log" },
+  "typescript": { "exitCode": 0, "diagnostics": [], "log": "verification-typescript-cleanup-2026-10-02.log" },
+  "eslint": { "exitCode": 0, "diagnostics": [], "log": "verification-eslint-cleanup-2026-10-02.log" },
+  "browser": { "run": "run-26b28cf4-912c-41ae-83ae-b9fe06777dc4", "exitCode": 0, "passed": 27, "total": 27, "sourceHashMatches": 10, "buildIdMatches": true, "pageErrors": [] },
+  "api": { "run": "../2026-09-30-weekly-save-boundaries/run-41dc0dee-9dca-436c-97bd-cad0418fcd58", "exitCode": 0, "passed": 18, "total": 18, "patchRequests": 14, "sourceHashMatches": 5, "buildIdMatches": true, "routeHashMatches": true },
+  "review": "v31 follow-up read-only review: P2 closed, no actionable findings, ready to commit and push this batch; see final-cleanup-review-2026-10-02.md",
+  "eslintException": "One guarded state update synchronizes external sessionStorage cleanup failure; dirty prevents repeated updates, before history resume; original diagnostic preserved",
+  "diffCheck": "Standard staged diff check excludes only raw runtime logs to preserve emitted whitespace; all source, scripts, Markdown and JSON are checked",
+  "merged": false,
+  "deployed": false
+}

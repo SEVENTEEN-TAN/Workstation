@@ -32,6 +32,7 @@ type EditingState = {
   baseUpdatedAt: string;
   candidate: WeeklyAiRewriteCandidate | null;
   recovered: boolean;
+  recoveryCleanupRequired?: boolean;
 };
 
 const copyFields = [
@@ -42,6 +43,7 @@ const copyFields = [
 ] as const;
 
 const recoveryUnavailableNotice = "浏览器未能保留当前周报的修改。请先保存或取消编辑，再切换内容。";
+const recoveryCleanupNotice = "浏览器未能清除恢复副本。修改仍在编辑器中；请恢复浏览器存储后再保存或取消编辑。";
 
 function dateOnly(value: string | Date) {
   const date = new Date(value);
@@ -94,8 +96,15 @@ export function writeRecovery(id: string, values: WeeklyDraftCopy, expectedUpdat
 function clearRecovery(id: string) {
   try {
     sessionStorage.removeItem(weeklyDraftRecoveryKey(id));
+    return true;
   } catch {
-    // Storage can be disabled; saving and editing must still work.
+    try {
+      // An empty value cannot be parsed as a recovery, even after reloading.
+      sessionStorage.setItem(weeklyDraftRecoveryKey(id), "");
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
 
@@ -128,12 +137,11 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   const generating = isBusy("weekly:generate");
   const saving = isBusy("weekly:save");
   const converting = drafts.some((draft) => isBusy(`weekly:convert:${draft.id}`));
-  const dirty = editing ? !sameWeeklyDraftCopy(editing.values, copyFromWeeklyDraft(editing.draft)) : false;
+  // Keep leave protection active until an obsolete recovery is cleared too.
+  const dirty = editing ? Boolean(editing.recoveryCleanupRequired || !sameWeeklyDraftCopy(editing.values, copyFromWeeklyDraft(editing.draft))) : false;
+  const leavePrompt = editing?.recoveryCleanupRequired
+    ? "浏览器恢复副本尚未清理，仍要离开吗？" : "当前周报有未保存修改，仍要离开吗？";
   const candidateStale = Boolean(editing?.candidate && !sameWeeklyDraftCopy(editing.values, editing.candidate.source));
-
-  useEffect(() => {
-    if (editing && !dirty) clearRecovery(editing.draft.id);
-  }, [dirty, editing]);
 
   useEffect(() => {
     if (!dirty) return;
@@ -149,7 +157,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     if (!dirty || !editing) return;
     const guardHistory = (event: Event) => {
       // The tracker restores history before Next can unmount this editor.
-      if (!window.confirm("当前周报有未保存修改，仍要离开吗？")) {
+      if (!window.confirm(leavePrompt)) {
         event.preventDefault();
       } else if (!writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt)) {
         setEditorNotice(recoveryUnavailableNotice);
@@ -163,18 +171,25 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
       window.removeEventListener(WEEKLY_HISTORY_LEAVE, guardHistory);
       window.removeEventListener(WEEKLY_HISTORY_BLOCKED, blocked);
     };
-  }, [dirty, editing]);
+  }, [dirty, editing, leavePrompt]);
 
   useEffect(() => {
-    if (!dirty) window.dispatchEvent(new Event(WEEKLY_HISTORY_READY));
-  }, [dirty]);
+    if (dirty) return;
+    if (editing && !clearRecovery(editing.draft.id)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- One guarded update reflects failed external storage cleanup before resuming history.
+      setEditing({ ...editing, recoveryCleanupRequired: true });
+      setEditorNotice(recoveryCleanupNotice);
+      return;
+    }
+    window.dispatchEvent(new Event(WEEKLY_HISTORY_READY));
+  }, [dirty, editing]);
 
   useEffect(() => {
     if (!dirty) return;
     const guardLinks = (event: MouseEvent) => {
       const target = event.target instanceof Element ? event.target.closest("a[href]") : null;
       if (!target || target.getAttribute("target") === "_blank") return;
-      if (!window.confirm("当前周报有未保存修改，仍要离开吗？")) {
+      if (!window.confirm(leavePrompt)) {
         event.preventDefault();
         event.stopPropagation();
         return;
@@ -187,7 +202,7 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     };
     document.addEventListener("click", guardLinks, true);
     return () => document.removeEventListener("click", guardLinks, true);
-  }, [dirty, editing]);
+  }, [dirty, editing, leavePrompt]);
 
   function preserveCurrentEdits() {
     if (!dirty || !editing) return true;
@@ -210,7 +225,11 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
   function closeEditor() {
     if (!editing || saving || generating || converting) return;
     if (dirty && !window.confirm("确定放弃这次未保存的修改吗？")) return;
-    clearRecovery(editing.draft.id);
+    if (!clearRecovery(editing.draft.id)) {
+      setEditing({ ...editing, recoveryCleanupRequired: true });
+      setEditorNotice(recoveryCleanupNotice);
+      return;
+    }
     setEditing(null);
     setEditorNotice(null);
   }
@@ -248,8 +267,12 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
       jsonRequest("PATCH", { ...editing.values, expectedUpdatedAt: editing.baseUpdatedAt }),
     ), "周报草稿已保存");
     if (!saved) return;
-    clearRecovery(saved.id);
     setDrafts((current) => current.map((item) => item.id === saved.id ? saved : item));
+    if (!clearRecovery(saved.id)) {
+      setEditing({ draft: saved, values: copyFromWeeklyDraft(saved), baseUpdatedAt: saved.updatedAt, candidate: null, recovered: false, recoveryCleanupRequired: true });
+      setEditorNotice("周报已保存，但浏览器未能清除恢复副本。当前内容已保留；请恢复浏览器存储后再保存或取消编辑。");
+      return;
+    }
     setEditing(null);
     setEditorNotice(null);
   }

@@ -1,6 +1,6 @@
 # Weekly navigation evidence — original RED and 2026-10-02 GREEN
 
-最新完整验收为 [19/19 GREEN](run-faef91b8-832d-4103-9ac2-f025f49aa3c9/results.json)，构建 `5XM__utDMz2yLZPp0q9PJ`，包含旧路由历史和最终审查发现的旧锚点路径。下面保留原始失败与中间验收，最终实现和边界见文末；较早18组实现仍有未知锚点位置推断缺陷。
+最新完整验收为 [27/27 GREEN](run-26b28cf4-912c-41ae-83ae-b9fe06777dc4/results.json)，构建 `YDX50WB22r7Pd9kD-nWRY`，包含待处理导航下保存失败/409、恢复副本删除异常及清理失败后手动回退输入。下面保留原始失败、前一批19组和本批中间25组验收，最新实现和边界见文末；较早18组实现仍有未知锚点位置推断缺陷。
 
 ## Original 2026-09-30 RED
 
@@ -81,7 +81,7 @@ $env:EXPECTED_HEAD = (git rev-parse HEAD).Trim()
 & 'C:/Users/23399/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe' 'docs/evidence/2026-09-30-weekly-navigation/weekly-edge.cjs'
 ```
 
-`SOURCE_DB` 可指定另一份独立测试库。每次创建 UUID 证据目录；`HISTORY_ONLY=native`、`1`、`fragment` 或 `legacy` 仅用于局部诊断，最终结论使用不设该变量的完整 19 组运行。
+`SOURCE_DB` 可指定另一份独立测试库。每次创建 UUID 证据目录；`HISTORY_ONLY=native`、`1`、`fragment`、`legacy`、`boundary` 或 `reverted` 仅用于局部诊断，最终结论使用不设该变量的完整 27 组运行。
 
 ## 旧路由历史修复及18组中间验收
 
@@ -106,3 +106,44 @@ $env:EXPECTED_HEAD = (git rev-parse HEAD).Trim()
 截图：[未知锚点跨条目保留输入](run-a1595b89-e78a-46c6-9ee7-6f3d82696c22/10-fragment-storage-block.png)、[旧锚点取消后继续使用编辑器](run-faef91b8-832d-4103-9ac2-f025f49aa3c9/13-legacy-fragment-resumed.png)。完整19组运行中，同名截图被结束后的截图覆盖；脚本仅调整结束截图名称后独立重跑 [锚点2/2](run-a1595b89-e78a-46c6-9ee7-6f3d82696c22/results.json)，保留前后两张截图，源码与构建不变。这是本批周报修复的验收，整分支发布审查、其他浏览器和真实手机、快速交错导航、所有旧历史/片段组合及真实AI/IME仍开放；总计划23/30，F2/F4保持未勾选。
 
 最终独立只读 [v30审查](final-review-2026-10-02.md) 未发现需修复问题，本批可以提交推送。pending 中失败保存/409保持dirty的结论来自源码，尚未单独实际覆盖该组合，继续保留在F2/F4；不把本批审查升级为整分支发布完成。
+
+## 后续恢复副本清理修复及25组验收
+
+上一批提交 `bbeb0d680f60f7dfc345b2d94e1aceb2214d29e6` 后，继续补验 v30 保留的两个 pending 组合及存储删除异常。只修改 `WeeklyActivityWorkspace.tsx`，历史追踪器、保存业务、API、schema和迁移均未改。
+
+新增6组实际Edge检查：
+
+| 场景 | 实际结果 |
+| --- | --- |
+| 未知旧路由pending中保存发生真实SQLite触发器故障 | 返回400、DB不变、输入仍可继续修改；删除触发器后原编辑器重试200，才继续目标路由。 |
+| pending中另一标签页胜出 | 实际200→409，败者输入可继续修改；明确取消后才完成路由，DB仍为胜者。 |
+| removeItem抛错，setItem仍可用，取消编辑 | 未修复时旧内容重现；修复后以不可解析为空恢复副本的空值替代，重开和真实reload均读取原DB内容。 |
+| removeItem抛错，保存成功后重开再保存 | 未修复时恢复旧版本、错误409；修复后两次实际保存均200，读取当前服务器版本。 |
+| removeItem与setItem都抛错，取消编辑 | 明确提示未能清除副本，保留编辑器；恢复存储后取消/重载，不再重现放弃内容。 |
+| pending中保存200，但副本清理两条路径都失败 | DB已保存，编辑器提示“已保存，但未能清除恢复副本”并继续离开保护；再次编辑保存仍200，基准版本更新；恢复存储并明确取消后继续目标路由，真实reload重开读取最新保存值且无恢复副本。 |
+
+先保留 [初次诊断](run-477d808c-12dc-4484-9668-def501ab76c4/results.json) 与 [第二次诊断](run-3cef9d85-8485-4f61-8fed-1d34cc147eef/results.json)。首项最初使用未过滤的alert定位器，匹配Next路由播报节点；后两项初轮以等待已消失输入框表现为超时。修正断言定位后，[准确RED](run-0c978aec-88d6-4dd7-adbd-342d82f7e873/results.json) 为2通过/4业务失败，源码未先改。
+
+修复后的 [6组诊断](run-c8258449-4384-4462-aeb1-ab550bb85dae/results.json) 和 [25组中间运行](run-dfb47003-fede-40cd-9c56-c2439040bdb8/results.json) 都在最后清理重试时自动拒绝了取消确认，并非确认后继续导航失败。原始dialog记录保留该事实；脚本改为明确接受后，[完整25/25](run-45920b88-57c3-43b5-9807-4ef4fbb3f674/results.json) 通过。
+
+实现：`clearRecovery`返回结果；删除异常时尝试写空值，若两条路径都失败则不声称清理完成。取消保留编辑器和提示；保存200更新服务器记录与版本基准，保留待清理状态和导航保护，允许继续编辑/重试，清理完成后才结束。没有阻止服务器保存或把清理失败冒充保存失败。
+
+主代理核对导航10个/API5个源码摘要与构建 `QDZ3X7Bqy2gvbXSqNr_dN`，API实际路由摘要也匹配。[同构建API18/18](../2026-09-30-weekly-save-boundaries/run-8615cff5-8c6b-4a2f-b20d-f370bba08b86/results.json) 通过，14次PATCH，三个重叠双请求均200/409。全量85文件/567项、TypeScript、ESLint及独立SQLite生产构建退出0（56页），见 [本批验证摘要](verification-cleanup-summary-2026-10-02.json)。全部所属浏览器、服务、Temp清理，3019/3020空闲。
+
+已视觉核对 [真实保存失败后继续输入](run-45920b88-57c3-43b5-9807-4ef4fbb3f674/14-pending-save-failed.png) 与 [保存成功但副本未清理的提示](run-45920b88-57c3-43b5-9807-4ef4fbb3f674/19-saved-cleanup-retained.png)。pending失败/409实测及存储删除边界本批已补；其他平台、所有旧历史/片段组合、快速交错、真实AI/IME及完整发布审查仍开放。用户强行接受原生卸载提示时，不能承诺在完全不可用的浏览器存储中持久化或清除数据。
+
+### v31复核发现：手动回退输入后也必须等待清理
+
+v31只读审查指出取消清理失败没有标记待清理；手动把四字段回退到服务器值会使dirty变false，自动清理失败仍发READY。新增“先取消”和“直接回退”两条实际Edge回归，[8组RED](run-9fb9e007-f6aa-426d-83b1-75f946f39efe/results.json) 为6通过/2业务失败；两条回退路径都实际提前卸载编辑器，并非只保留源码猜测。
+
+修复后，取消清理失败标记待清理；自动清理和READY合在同一效果中，只有清理成功才继续导航，失败则保留状态和提示。该效果放在周报历史监听效果之后，结束编辑时先移除旧离开监听，再重放pending。局部 [2/2 GREEN](run-0b8a25a4-4a7f-42b4-b53d-9fc062e03658/results.json) 和 [27组中间GREEN](run-1cfeb6e4-829f-481b-a335-0d847bebe282/results.json) 验证回退原值后编辑器及清理重试仍可用，恢复存储后取消才继续，真实reload不恢复旧X。
+
+代码检查对效果中的状态更新报告规则错误，原始 [诊断](diagnostic-eslint-cleanup-2026-10-02.log) 保留。该更新只在外部sessionStorage清理失败时发生一次，标记后dirty为true，下一次效果立即返回；因此使用带原因的单行`react-hooks/set-state-in-effect`例外，没有修改全库配置。单行注释加入后重新核对生产构建和实际证据身份，最终运行见下节。
+
+### 最终27组验收
+
+最终构建 `YDX50WB22r7Pd9kD-nWRY` 的完整 [27/27 GREEN](run-26b28cf4-912c-41ae-83ae-b9fe06777dc4/results.json) 退出0；新增8组包含前述6组与v31指出的两条手动回退路径，保留前19组回归。同构建 [API18/18](../2026-09-30-weekly-save-boundaries/run-41dc0dee-9dca-436c-97bd-cad0418fcd58/results.json) 退出0，14次PATCH，三组双请求均恰一200/409；主代理核对10个导航/5个API源码摘要、实际API路由摘要与构建编号，全部一致。最终TypeScript和ESLint退出0无诊断，567项测试和56页独立SQLite构建通过；运行的所属服务、浏览器、Temp已清理，3019/3020空闲。
+
+主代理视觉核对最终 [直接回退原值后的清理提示](run-26b28cf4-912c-41ae-83ae-b9fe06777dc4/20-cleanup-reverted-retained-false.png) 与 [保存200但清理未完成的保留状态](run-26b28cf4-912c-41ae-83ae-b9fe06777dc4/19-saved-cleanup-retained.png)。最新摘要与后续独立审查结论保存在 [本批验证摘要](verification-cleanup-summary-2026-10-02.json)。这些结论仍不代替真实AI/IME、其他平台、所有历史组合、快速交错及整分支发布门槛。
+
+最终 [v31只读复审](final-cleanup-review-2026-10-02.md) 确认手动回退遗漏已修复，没有新待修问题，本批可提交推送；总计划仍23/30，F2/F4未勾选。

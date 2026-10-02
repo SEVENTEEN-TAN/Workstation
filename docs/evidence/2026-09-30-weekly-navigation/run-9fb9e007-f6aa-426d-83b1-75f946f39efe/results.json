@@ -1,0 +1,2856 @@
+{
+  "runId": "9fb9e007-f6aa-426d-83b1-75f946f39efe",
+  "startedAt": "2026-10-02T08:25:53.166Z",
+  "assertions": [
+    {
+      "name": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "pass": true
+    },
+    {
+      "name": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "pass": true
+    },
+    {
+      "name": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "pass": true
+    },
+    {
+      "name": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "pass": true
+    },
+    {
+      "name": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "pass": true
+    },
+    {
+      "name": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "pass": true
+    },
+    {
+      "name": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "pass": false,
+      "error": "Reverting fields must not resume pending navigation before cleanup\n\nfalse !== true\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "pass": false,
+      "error": "Reverting fields must not resume pending navigation before cleanup\n\nfalse !== true\n",
+      "classification": "business-assertion"
+    }
+  ],
+  "observations": [
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "revertedEditor": {
+        "editorPresent": false,
+        "saveEnabled": false
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "revertedEditor": {
+        "editorPresent": false,
+        "saveEnabled": false
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview"
+    }
+  ],
+  "dialogs": [
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    }
+  ],
+  "requests": [
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/api/admin/weekly/cmuqp7tvv0005ppd4y7b5ilvp",
+      "method": "PATCH",
+      "status": 400,
+      "body": {
+        "titleZh": "失败仍保留-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+        "titleEn": "待导航失败重试 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:25:56.492Z"
+      }
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/api/admin/weekly/cmuqp7tvv0005ppd4y7b5ilvp",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "失败仍保留-9fb9e007-f6aa-426d-83b1-75f946f39efe-继续输入",
+        "titleEn": "待导航失败重试 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:25:56.492Z"
+      }
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/api/admin/weekly/cmuqp7wym0006ppd4147g4z76",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "待导航胜者-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+        "titleEn": "待导航版本冲突 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:26:00.478Z"
+      }
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/api/admin/weekly/cmuqp7wym0006ppd4147g4z76",
+      "method": "PATCH",
+      "status": 409,
+      "body": {
+        "titleZh": "冲突仍保留-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+        "titleEn": "待导航版本冲突 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:26:00.478Z"
+      }
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/api/admin/weekly/cmuqp866k0007ppd4vnl3f0rv",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "已保存副本-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+        "titleEn": "删除副本保存版本 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:26:12.429Z"
+      }
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/api/admin/weekly/cmuqp866k0007ppd4vnl3f0rv",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "已保存副本-9fb9e007-f6aa-426d-83b1-75f946f39efe-再次保存",
+        "titleEn": "删除副本保存版本 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:26:13.386Z"
+      }
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/api/admin/weekly/cmuqp88l80008ppd4yvw3nwnt",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "保存成功仍待清理-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+        "titleEn": "保存成功清理失败 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:26:15.549Z"
+      }
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/api/admin/weekly/cmuqp88l80008ppd4yvw3nwnt",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "保存成功仍待清理-9fb9e007-f6aa-426d-83b1-75f946f39efe-再次编辑",
+        "titleEn": "保存成功清理失败 isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T08:26:18.191Z"
+      }
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-database-save-failure-retains-input-then-retry-resumes",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-real-409-retains-input-until-explicit-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-discard-does-not-resurrect-recovery",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-removeItem-failure-save-reopen-uses-current-version",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-remove-and-set-failure-keeps-discard-pending-until-storage-recovers",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-pending-save-success-cleanup-failure-keeps-editor-until-cleanup-retry",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "screenshots": [
+    "00-desktop-baseline.png",
+    "01-desktop-editor-baseline.png",
+    "14-pending-save-failed.png",
+    "15-pending-conflict-retained.png",
+    "16-remove-discard-cleared.png",
+    "17-remove-save-current-version.png",
+    "18-cleanup-discard-retried.png",
+    "19-saved-cleanup-retained.png"
+  ],
+  "sourceDatabaseSha256": "d04135b0fdfafd401f526d83a7a281aceeaaa2e2e400f64f6d1cf2def2049fe4",
+  "head": "bbeb0d680f60f7dfc345b2d94e1aceb2214d29e6",
+  "buildId": "QDZ3X7Bqy2gvbXSqNr_dN",
+  "sourceHashes": {
+    "src/app/layout.tsx": "819f07cb81a4028ef2c720a117e0c34a1a487988fe40307066db3abff694df2c",
+    "src/components/admin/WeeklyHistoryTracker.tsx": "36d0cb2c4b73abc1b3d2143ce74783745cc6697ed0570635f691c8d22ecc6dd5",
+    "src/components/admin/WeeklyActivityWorkspace.tsx": "b8127871227c409814bdd4f381eac077f74d20e99d9821493543267f71e4d55b",
+    "src/components/admin/weekly-editor-state.ts": "da56493432a6bc2de691999283003026808f21dd74d8f0d23b647deb6d5dc68c",
+    "src/components/admin/AdminShell.tsx": "44a8485f061b28ec3962ab04a08e83e3f5e08f0afe728e94f1cfc1a54e60579f",
+    "src/components/admin/navigation.ts": "746d9ce44007288dce7937cdc27841833014b6e46bb9683c2345cb9c7031d9a4",
+    "src/components/admin/useAdminAction.ts": "d2fdab37c627fca58bdc2924084644b84af3846339f65995f55c54333b5590d5",
+    "src/lib/services/weekly-activity-drafts.ts": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26",
+    "src/app/api/admin/weekly/[id]/route.ts": "8e5ede50d3e5829eba4ecf76e392bc78fb16ac5bb77bf507c880d24251f18036",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+  },
+  "fixtures": [
+    {
+      "id": "cmuqp7roh0003ppd4tz4znfzn",
+      "weekStart": "2124-01-24T00:00:00.000Z",
+      "weekEnd": "2124-01-30T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 A-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+      "titleEn": "导航证据 A isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:25:53.633Z",
+      "createdAt": "2026-10-02T08:25:53.633Z",
+      "updatedAt": "2026-10-02T08:25:53.633Z"
+    },
+    {
+      "id": "cmuqp7roi0004ppd4nmxpsh8n",
+      "weekStart": "2124-01-31T00:00:00.000Z",
+      "weekEnd": "2124-02-06T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 B-9fb9e007-f6aa-426d-83b1-75f946f39efe",
+      "titleEn": "导航证据 B isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:25:53.635Z",
+      "createdAt": "2026-10-02T08:25:53.635Z",
+      "updatedAt": "2026-10-02T08:25:53.635Z"
+    }
+  ],
+  "serverPid": 12408,
+  "browser": "154.0.4258.48",
+  "completed": true,
+  "passed": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3019Free": true,
+    "ownedTempDeleted": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-02T08:26:26.600Z"
+}

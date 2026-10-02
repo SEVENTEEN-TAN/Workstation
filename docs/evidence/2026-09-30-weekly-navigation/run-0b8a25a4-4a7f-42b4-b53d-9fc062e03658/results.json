@@ -1,0 +1,1173 @@
+{
+  "runId": "0b8a25a4-4a7f-42b4-b53d-9fc062e03658",
+  "startedAt": "2026-10-02T08:27:17.764Z",
+  "assertions": [
+    {
+      "name": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "pass": true
+    },
+    {
+      "name": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "pass": true
+    }
+  ],
+  "observations": [
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "revertedEditor": {
+        "editorPresent": true,
+        "saveEnabled": true
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "revertedEditor": {
+        "editorPresent": true,
+        "saveEnabled": true
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview"
+    }
+  ],
+  "dialogs": [
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    }
+  ],
+  "requests": [],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "boundary-cleanup-failure-reverted-input-keeps-pending-navigation-cancel-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "screenshots": [
+    "00-desktop-baseline.png",
+    "01-desktop-editor-baseline.png",
+    "20-cleanup-reverted-retained-false.png",
+    "20-cleanup-reverted-retained-true.png"
+  ],
+  "sourceDatabaseSha256": "d04135b0fdfafd401f526d83a7a281aceeaaa2e2e400f64f6d1cf2def2049fe4",
+  "head": "bbeb0d680f60f7dfc345b2d94e1aceb2214d29e6",
+  "buildId": "uwA60YZrQV54ePvBEEsv0",
+  "sourceHashes": {
+    "src/app/layout.tsx": "819f07cb81a4028ef2c720a117e0c34a1a487988fe40307066db3abff694df2c",
+    "src/components/admin/WeeklyHistoryTracker.tsx": "36d0cb2c4b73abc1b3d2143ce74783745cc6697ed0570635f691c8d22ecc6dd5",
+    "src/components/admin/WeeklyActivityWorkspace.tsx": "4f1565fb3cf00e8fdf34947e06f20a0cb09f6a580e02c805926b18cde4781d1c",
+    "src/components/admin/weekly-editor-state.ts": "da56493432a6bc2de691999283003026808f21dd74d8f0d23b647deb6d5dc68c",
+    "src/components/admin/AdminShell.tsx": "44a8485f061b28ec3962ab04a08e83e3f5e08f0afe728e94f1cfc1a54e60579f",
+    "src/components/admin/navigation.ts": "746d9ce44007288dce7937cdc27841833014b6e46bb9683c2345cb9c7031d9a4",
+    "src/components/admin/useAdminAction.ts": "d2fdab37c627fca58bdc2924084644b84af3846339f65995f55c54333b5590d5",
+    "src/lib/services/weekly-activity-drafts.ts": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26",
+    "src/app/api/admin/weekly/[id]/route.ts": "8e5ede50d3e5829eba4ecf76e392bc78fb16ac5bb77bf507c880d24251f18036",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+  },
+  "fixtures": [
+    {
+      "id": "cmuqp9kyg0003ppm8uawoc0x2",
+      "weekStart": "2134-02-15T00:00:00.000Z",
+      "weekEnd": "2134-02-21T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 A-0b8a25a4-4a7f-42b4-b53d-9fc062e03658",
+      "titleEn": "导航证据 A isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:27:18.233Z",
+      "createdAt": "2026-10-02T08:27:18.233Z",
+      "updatedAt": "2026-10-02T08:27:18.233Z"
+    },
+    {
+      "id": "cmuqp9kyi0004ppm8wh246lp1",
+      "weekStart": "2134-02-22T00:00:00.000Z",
+      "weekEnd": "2134-02-28T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 B-0b8a25a4-4a7f-42b4-b53d-9fc062e03658",
+      "titleEn": "导航证据 B isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:27:18.234Z",
+      "createdAt": "2026-10-02T08:27:18.234Z",
+      "updatedAt": "2026-10-02T08:27:18.234Z"
+    }
+  ],
+  "serverPid": 2060,
+  "browser": "154.0.4258.48",
+  "completed": true,
+  "passed": true,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3019Free": true,
+    "ownedTempDeleted": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-02T08:27:32.561Z"
+}
