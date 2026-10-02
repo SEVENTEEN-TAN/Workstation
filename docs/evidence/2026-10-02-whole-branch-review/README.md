@@ -6,9 +6,9 @@
 
 本轮实际只读查询远端：`main`为上述基线，`feat/homepage-visual-editor`为上述候选；本地main另有既有弹窗与设计文档提交，不用本地main缩小完整候选审查范围。75个源码/配置/迁移差异文件及摘要见 [source-inventory.json](source-inventory.json)，差异统计见 [branch-stat.txt](branch-stat.txt)。
 
-独立审查者`whole_branch_review_20261002`已完整阅读75文件差异并追踪调用方，原候选发现1个Important与1个Minor。Important已实际RED复现、最小修复并独立复审关闭；Minor二维码alt快捷定位仍延后。整分支静态审查加修复差异复审已完成，完整结论见 [review.md](review.md)。[review-package.md](review-package.md)记录原候选要求。
+独立审查者`whole_branch_review_20261002`已完整阅读75文件差异并追踪调用方，原候选发现1个Important与1个Minor。Important已实际RED复现、最小修复并独立复审关闭。随后 [图片说明定位](../2026-10-02-home-alt-target/README.md)补齐干净/dirty入口及跨页面保护，13组Edge和590项通过，Minor也独立复审关闭。整分支静态审查加两批修复差异复审已完成，未留待修Critical/Important/Minor；完整原审查结论见 [review.md](review.md)。[review-package.md](review-package.md)记录原候选要求。
 
-原候选验证为85文件/581项、TypeScript、ESLint、32迁移独立SQLite生产构建56页。修复后的最终验证为86文件/586项、类型/代码检查、独立库构建56页，以及5组真实Edge刷新/关闭检查；没有新增迁移。来源见 [输入保护验证](../2026-10-02-home-preview-unload/README.md)。原source-inventory对应5023732，最新修复源码摘要记录在该批verification-summary中。
+原候选验证为85文件/581项、TypeScript、ESLint、32迁移独立SQLite生产构建56页。原位输入保护批次的最终验证为86文件/586项、类型/代码检查、独立库构建56页，以及5组真实Edge刷新/关闭检查；没有新增迁移。来源见 [输入保护验证](../2026-10-02-home-preview-unload/README.md)。原source-inventory对应5023732，各修复批次源码摘要记录在对应verification-summary中；最新图片说明批次为590项与13组Edge，见上述链接。
 
 ## 执行者核对
 

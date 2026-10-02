@@ -1,0 +1,219 @@
+{
+  "date": "2026-10-02",
+  "baseline": "15ece8d186d20fa267144b7d93c6b690b5e7f712",
+  "buildId": "FtKzie28NxXLkA9JkhUXO",
+  "businessSourceFiles": 3,
+  "componentRed": {
+    "passed": 14,
+    "log": "component-red.log",
+    "files": 1,
+    "failed": 2,
+    "exitCode": 1
+  },
+  "firstFocusedGreen": {
+    "passed": 116,
+    "log": "component-green.log",
+    "files": 3,
+    "exitCode": 0
+  },
+  "browserRed": {
+    "exitCode": 1,
+    "record": "red-results.json",
+    "failed": 4
+  },
+  "dirtyBrowserRed": {
+    "exitCode": 1,
+    "record": "dirty-red-results.json",
+    "failed": 4
+  },
+  "browserGreen": {
+    "cleanDesktopMobile": 8,
+    "record": "green-results.json",
+    "log": "browser-green-final.log",
+    "crossPage": 1,
+    "dirty": 4,
+    "exitCode": 0,
+    "passed": 13
+  },
+  "fullSuite": {
+    "passed": 590,
+    "log": "vitest-final.log",
+    "files": 86,
+    "exitCode": 0
+  },
+  "eslint": {
+    "exitCode": 0,
+    "log": "eslint-final.log"
+  },
+  "typescript": {
+    "exitCode": 0,
+    "log": "typescript-final.log"
+  },
+  "build": {
+    "newMigrations": false,
+    "exitCode": 0,
+    "reusedIsolatedMigratedDatabase": true,
+    "log": "build-final.log",
+    "pages": 56
+  },
+  "review": {
+    "independentWholeSuiteRerun": false,
+    "reviewer": "whole_branch_review_20261002",
+    "outstandingMinor": 0,
+    "originalMinorClosed": true,
+    "outstandingCritical": 0,
+    "finalReviewReceived": true,
+    "outstandingImportant": 0,
+    "record": "README.md"
+  },
+  "cleanup": {
+    "port3022Free": true,
+    "ownedEdgeAndServerClosed": true,
+    "record": "cleanup.json",
+    "newScratchDatabasesDeleted": 7,
+    "previousDeleteRejection": "blocked by policy",
+    "previousBuildDatabaseCleanupCompleted": false
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "ed869b4b56e5e05ad53c1d167b4555be0b4916f30eeb06ad6c0924b94242d80a"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "1216fc364841530968ffff3985914b1f2385ec4f161d9758163ce05bf7e6f313"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "0b8120ce3c62a0296ee20dfdcd64300db12e595f2f5f81b72b7ac505110cd881"
+    },
+    {
+      "path": "tests/home-visual-editor.test.ts",
+      "sha256": "14ae4863affb27ea56b705594768b6cd6a64144b19895fcde90e910526f431c3"
+    },
+    {
+      "path": "tests/admin-ui-contracts.test.ts",
+      "sha256": "d597285c50be52732b90e4f44c4e22e1a84560d00dcd7fc48a320bd1bb41930b"
+    },
+    {
+      "path": "docs/evidence/2026-10-02-home-alt-target/acceptance-edge.cjs",
+      "sha256": "6462519fb7764d3ad78ffe463980cb83edea1c9ec6a1eca12e06132d5dc566b5"
+    },
+    {
+      "path": "docs/evidence/2026-10-02-home-alt-target/check-local-ai.cjs",
+      "sha256": "470f62e92ae4775007d3bcfbcdc41342e84bdd5289cccac9b7287ee75e1cdd8e"
+    }
+  ],
+  "logHashes": [
+    {
+      "path": "browser-dirty-red.log",
+      "bytes": 1005,
+      "sha256": "a51dbcb6f1c656f2aced9f830d37beebed9f25352d2a3c11802c6790df7947e7"
+    },
+    {
+      "path": "browser-green-final.log",
+      "bytes": 2679,
+      "sha256": "ecbe3cb206adf6aeb52d6d4ab730700a040cf3a44898aadb82a33b2185351a57"
+    },
+    {
+      "path": "browser-green-scroll-selector-diagnostic.log",
+      "bytes": 926,
+      "sha256": "4c5d030076375f8c810d49e2fd1a7bccbef9716a342f5d533f66b3cfcecb7dfb"
+    },
+    {
+      "path": "browser-green.log",
+      "bytes": 926,
+      "sha256": "4c5d030076375f8c810d49e2fd1a7bccbef9716a342f5d533f66b3cfcecb7dfb"
+    },
+    {
+      "path": "browser-red-hover-diagnostic.log",
+      "bytes": 5675,
+      "sha256": "b9ecbba726297df9f9d893ea800a01817207fdcfab247f6a665fb1b9b2040829"
+    },
+    {
+      "path": "browser-red-image-overlay-diagnostic.log",
+      "bytes": 3400,
+      "sha256": "75da542cd42ab2fdc3d77a73c3f0c5b06c1c5aac511d6d4b87c856ed96de4c57"
+    },
+    {
+      "path": "browser-red-selector-diagnostic.log",
+      "bytes": 1041,
+      "sha256": "54c3fb71fd725bb9c7312ab7e786aaa14b3548b8bb99cbd2e0d13db94e29ab76"
+    },
+    {
+      "path": "browser-red.log",
+      "bytes": 873,
+      "sha256": "c68958c4a1b707ceadf4e1be670f4d85001f0179490222d366166cf600a70672"
+    },
+    {
+      "path": "build-final.log",
+      "bytes": 4084,
+      "sha256": "4ab134879192af45e3d1a610a323764a8f4cf306294ec2612fa1dd3067946cec"
+    },
+    {
+      "path": "build.log",
+      "bytes": 4084,
+      "sha256": "6f3d97dbb490703ff0946e14cb1be2564a3930f44d30254e3feb0e44b5988849"
+    },
+    {
+      "path": "component-green.log",
+      "bytes": 439,
+      "sha256": "ecf098b07767b594a530c0b451ae1456eaff49190b34e309c4e47a650680af92"
+    },
+    {
+      "path": "component-red.log",
+      "bytes": 43605,
+      "sha256": "dd2cf27e6b35e27670a58bb0529ad14e0bfd6e2b1dcca245d2f91fab5cf5cf19"
+    },
+    {
+      "path": "eslint-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "eslint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "typescript-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "typescript.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "vitest-final.log",
+      "bytes": 5446,
+      "sha256": "6c312a84c0e68adb472616484e0b25882ae7f86737a7f9e125cc3e6a3caf33e1"
+    },
+    {
+      "path": "vitest.log",
+      "bytes": 5441,
+      "sha256": "065163d7a415b5c4b8dffe7dbd8a758f16b3a54f34af5b1d31d4eeab0d993efa"
+    }
+  ],
+  "localAi": {
+    "realModelRequest": false,
+    "primaryLocalOnly": true,
+    "readOnly": true,
+    "record": "local-ai-readiness.json",
+    "weeklySettingPresent": false
+  },
+  "boundaries": {
+    "goal": "active",
+    "releaseScopeConfirmed": false,
+    "CGroupScopeConfirmed": false,
+    "planCompleted": 23,
+    "planTotal": 30,
+    "deployed": false,
+    "systemIme": false,
+    "serverPreflight": false,
+    "merged": false,
+    "realAi": false,
+    "productionTouched": false
+  }
+}

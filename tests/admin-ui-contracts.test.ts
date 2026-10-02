@@ -868,7 +868,7 @@ describe("homepage version safety contracts", () => {
     expect(visualSource).toContain("重试预览");
     expect(visualSource).toContain("转到字段编辑");
     expect(visualSource).toContain("onOpenFields");
-    expect(workspaceSource).toContain('onOpenFields={() => changeView("fields")}');
+    expect(workspaceSource).toContain('onOpenFields={(path) => changeView("fields", path)}');
   });
 });
 

@@ -34,7 +34,7 @@ type HomepageVisualWorkspaceProps = {
   onRequestAsset(path: HomepageImagePath, trigger: HTMLButtonElement): void;
   onPreviewLoad(): void;
   onRetryPreview(): void;
-  onOpenFields(): void;
+  onOpenFields(path?: string): void;
 };
 
 const sourceLabels = {
@@ -112,8 +112,8 @@ export function HomepageVisualWorkspace({
           {!field ? <div className={styles.homeVisualInspectorEmpty}><p>在预览中选择可编辑文案、联系方式或图片，随后会在这里显示设置。</p><p>{dirty ? "当前工作副本有未保存修改。" : "当前工作副本与已保存草稿一致。"}</p></div>
             : field.kind === "text" ? <div className={styles.homeVisualInspector}><strong>{field.label}</strong><small>{field.path}</small>{fieldError ? <p role="alert">{fieldError}</p> : <p>当前字段有效。</p>}<p>请在页面原位编辑</p></div>
               : field.kind === "link" ? <label className={styles.homeField} htmlFor={`homepage-visual-${field.path}`}><span>{field.label}</span><input id={`homepage-visual-${field.path}`} type="text" value={field.path === "settings.email" ? content.settings.email : content.settings.githubUrl} aria-invalid={fieldError ? true : undefined} onChange={(event) => updateLink(field.path as "settings.email" | "settings.githubUrl", event)} />{fieldError ? <span role="alert">{fieldError}</span> : null}</label>
-                : <div className={styles.homeVisualInspector}><strong>{field.label}</strong><Image src={imageValue(content, field.path as HomepageImagePath)} alt="" width={160} height={120} unoptimized /><button type="button" className={styles.secondaryButton} onClick={(event) => onRequestAsset(field.path as HomepageImagePath, event.currentTarget)}>替换图片</button><p>替代文本：{field.altPaths ? <><a href={`#homepage-${field.altPaths.zh.replaceAll(".", "-")}`} onClick={onOpenFields}>中文</a> / <a href={`#homepage-${field.altPaths.en.replaceAll(".", "-")}`} onClick={onOpenFields}>English</a></> : null}</p></div>}
-          {previewStatus === "error" ? <div className={styles.homePreviewRecovery}><button type="button" className={styles.secondaryButton} onClick={onRetryPreview}>重试预览</button><button type="button" onClick={onOpenFields}>转到字段编辑</button></div> : null}
+                : <div className={styles.homeVisualInspector}><strong>{field.label}</strong><Image src={imageValue(content, field.path as HomepageImagePath)} alt="" width={160} height={120} unoptimized /><button type="button" className={styles.secondaryButton} onClick={(event) => onRequestAsset(field.path as HomepageImagePath, event.currentTarget)}>替换图片</button><p>替代文本：{field.altPaths ? <><a href={`#homepage-${field.altPaths.zh.replaceAll(".", "-")}`} onClick={(event) => { event.preventDefault(); onOpenFields(field.altPaths?.zh); }}>中文</a> / <a href={`#homepage-${field.altPaths.en.replaceAll(".", "-")}`} onClick={(event) => { event.preventDefault(); onOpenFields(field.altPaths?.en); }}>English</a></> : null}</p></div>}
+          {previewStatus === "error" ? <div className={styles.homePreviewRecovery}><button type="button" className={styles.secondaryButton} onClick={onRetryPreview}>重试预览</button><button type="button" onClick={() => onOpenFields()}>转到字段编辑</button></div> : null}
         </aside>
       </div>
     </section>

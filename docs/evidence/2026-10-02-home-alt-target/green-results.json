@@ -1,0 +1,187 @@
+{
+  "phase": "green",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-alt-target\\581dca0b-e74e-4db5-8eb4-63145ba4e848.db",
+  "results": [
+    {
+      "width": 1440,
+      "kind": "portrait",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 1440 portrait zh"
+    },
+    {
+      "width": 1440,
+      "kind": "portrait",
+      "locale": "en",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 1440 portrait en"
+    },
+    {
+      "width": 1440,
+      "kind": "wechat",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "联系与导航",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 1440 wechat zh"
+    },
+    {
+      "width": 1440,
+      "kind": "wechat",
+      "locale": "en",
+      "targetExists": true,
+      "task": "联系与导航",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 1440 wechat en"
+    },
+    {
+      "width": 375,
+      "kind": "portrait",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 375 portrait zh"
+    },
+    {
+      "width": 375,
+      "kind": "portrait",
+      "locale": "en",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 375 portrait en"
+    },
+    {
+      "width": 375,
+      "kind": "wechat",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "联系与导航",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 375 wechat zh"
+    },
+    {
+      "width": 375,
+      "kind": "wechat",
+      "locale": "en",
+      "targetExists": true,
+      "task": "联系与导航",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": true,
+      "pass": true,
+      "saveStatus": 200,
+      "savedValue": "ALT TARGET 375 wechat en"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "portrait",
+      "locale": "zh",
+      "dialogs": [],
+      "targetExists": true,
+      "focused": true,
+      "advancedOpen": true,
+      "pass": true,
+      "savedText": "DIRTY ALT portrait zh"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "portrait",
+      "locale": "en",
+      "dialogs": [],
+      "targetExists": true,
+      "focused": true,
+      "advancedOpen": true,
+      "pass": true,
+      "savedText": "DIRTY ALT portrait en"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "wechat",
+      "locale": "zh",
+      "dialogs": [],
+      "targetExists": true,
+      "focused": true,
+      "advancedOpen": true,
+      "pass": true,
+      "savedText": "DIRTY ALT wechat zh"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "wechat",
+      "locale": "en",
+      "dialogs": [],
+      "targetExists": true,
+      "focused": true,
+      "advancedOpen": true,
+      "pass": true,
+      "savedText": "DIRTY ALT wechat en"
+    },
+    {
+      "name": "cross-page-navigation-still-protected",
+      "dialogs": [
+        "confirm"
+      ],
+      "pathname": "/admin/home",
+      "value": "DIRTY CROSS PAGE NAV",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "buildId": "FtKzie28NxXLkA9JkhUXO",
+  "browser": "154.0.4258.48",
+  "pass": true,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "ed869b4b56e5e05ad53c1d167b4555be0b4916f30eeb06ad6c0924b94242d80a"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "1216fc364841530968ffff3985914b1f2385ec4f161d9758163ce05bf7e6f313"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "0b8120ce3c62a0296ee20dfdcd64300db12e595f2f5f81b72b7ac505110cd881"
+    }
+  ]
+}

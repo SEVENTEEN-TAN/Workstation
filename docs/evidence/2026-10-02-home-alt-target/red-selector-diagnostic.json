@@ -1,0 +1,30 @@
+{
+  "phase": "red",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-alt-target\\25be2348-b398-4b2b-b3ce-825275bf4ad4.db",
+  "results": [],
+  "errors": [],
+  "buildId": "4IZRneWEjp-FKFncjaSjs",
+  "browser": "154.0.4258.48",
+  "errorMessage": "locator.click: Error: strict mode violation: locator('[data-cms-path=\"settings.portraitImage\"]') resolved to 2 elements:\n    1) <div class=\"id-card\" data-cms-path=\"settings.portraitImage\">…</div> aka locator('div').filter({ hasText: 'SEVENTEEN.全栈开发工程师在线' }).nth(5)\n    2) <img tabindex=\"0\" width=\"1024\" role=\"button\" height=\"1280\" loading=\"eager\" fetchpriority=\"high\" alt=\"全栈开发工程师 SEVENTEEN 的肖像\" src=\"/images/zedian-portrait-v3.png\" data-cms-path=\"settings.portraitImage\" class=\"h-full w-full rounded-[1rem] object-cover grayscale-[0.1] md:rounded-[1.55rem]\"/> aka getByRole('button', { name: '全栈开发工程师 SEVENTEEN 的肖像' })\n\nCall log:\n\u001b[2m  - waiting for locator('iframe[title=\"真实首页预览\"]').contentFrame().locator('[data-cms-path=\"settings.portraitImage\"]')\u001b[22m\n",
+  "pass": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "953a8a5904f954bfa50f00bb14a8c6db0af423072814413b7c9e3706917e8275"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "bd3e56afbc207d63698bef58986b1fb0453ac2f7565d2ec47370a754ebbae781"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "42d917d848bc718a65a386cca9c3044cc64cb116b0d2532400afd667d4b5373b"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "phase": "dirty-red",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-alt-target\\0c51655b-4ba7-4bba-b8af-96ab65ed60ab.db",
+  "results": [
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "portrait",
+      "locale": "zh",
+      "dialogs": [
+        "confirm"
+      ],
+      "targetExists": false,
+      "focused": false,
+      "advancedOpen": false,
+      "pass": false,
+      "savedText": "DIRTY ALT portrait zh"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "portrait",
+      "locale": "en",
+      "dialogs": [
+        "confirm"
+      ],
+      "targetExists": false,
+      "focused": false,
+      "advancedOpen": false,
+      "pass": false,
+      "savedText": "DIRTY ALT portrait en"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "wechat",
+      "locale": "zh",
+      "dialogs": [
+        "confirm"
+      ],
+      "targetExists": false,
+      "focused": false,
+      "advancedOpen": false,
+      "pass": false,
+      "savedText": "DIRTY ALT wechat zh"
+    },
+    {
+      "name": "dirty-alt-shortcut",
+      "kind": "wechat",
+      "locale": "en",
+      "dialogs": [
+        "confirm"
+      ],
+      "targetExists": false,
+      "focused": false,
+      "advancedOpen": false,
+      "pass": false,
+      "savedText": "DIRTY ALT wechat en"
+    }
+  ],
+  "errors": [],
+  "buildId": "N9TsAxnzmoIUOjE3p38wD",
+  "browser": "154.0.4258.48",
+  "errorMessage": "Each image/language shortcut must open, expand and focus its target, then save",
+  "pass": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "9a5ec5e6293adeddd387d55cec6cbf8a4999e1126bdbe355adcce523e444c09c"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "1216fc364841530968ffff3985914b1f2385ec4f161d9758163ce05bf7e6f313"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "0b8120ce3c62a0296ee20dfdcd64300db12e595f2f5f81b72b7ac505110cd881"
+    }
+  ]
+}

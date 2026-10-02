@@ -58,6 +58,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const [content, setContent] = useState<SiteContent>(initialContent);
   const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
   const [view, setView] = useState<"visual" | "fields" | "history">("visual");
+  const [initialFieldPath, setInitialFieldPath] = useState<string>();
   const [versions, setVersions] = useState(initialVersions);
   const [rollbackRequest, setRollbackRequest] = useState<SiteVersionData | null>(null);
   const visualPreviewRef = useRef<HTMLIFrameElement>(null);
@@ -195,6 +196,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
 
       const destination = new URL(anchor.href, window.location.href);
       if (destination.origin !== window.location.origin || destination.href === window.location.href) return;
+      if (destination.pathname === window.location.pathname && destination.search === window.location.search) return;
       if (!window.confirm("当前有未保存修改，确定离开此页面吗？")) {
         event.preventDefault();
         event.stopPropagation();
@@ -221,10 +223,13 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     setVersions(nextVersions);
   }
 
-  async function changeView(next: typeof view) {
+  async function changeView(next: typeof view, fieldPath?: string) {
     if (next === view) return;
     const flushed = await runAction("home:flush", async () => { await flushPreviewEdits(); return true; });
-    if (flushed) setView(next);
+    if (flushed) {
+      setInitialFieldPath(next === "fields" ? fieldPath : undefined);
+      setView(next);
+    }
   }
 
   async function refreshHome() {
@@ -447,11 +452,12 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             onRequestAsset={requestAsset}
             onPreviewLoad={handlePreviewLoad}
             onRetryPreview={retryPreview}
-            onOpenFields={() => changeView("fields")}
+            onOpenFields={(path) => changeView("fields", path)}
           />
         ) : view === "fields" ? (
           <>
             <HomepageEditor
+              initialFieldPath={initialFieldPath}
               projects={projects}
               content={content}
               validation={validation}

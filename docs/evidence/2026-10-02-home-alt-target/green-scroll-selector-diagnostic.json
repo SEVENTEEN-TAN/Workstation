@@ -1,0 +1,75 @@
+{
+  "phase": "green",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-alt-target\\35f1493b-d4d5-46b8-a0d0-09cc40a5a4a2.db",
+  "results": [
+    {
+      "width": 1440,
+      "kind": "portrait",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": false,
+      "pass": false
+    },
+    {
+      "width": 1440,
+      "kind": "portrait",
+      "locale": "en",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": false,
+      "pass": false
+    },
+    {
+      "width": 1440,
+      "kind": "wechat",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "联系与导航",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": false,
+      "pass": false
+    },
+    {
+      "width": 1440,
+      "kind": "wechat",
+      "locale": "en",
+      "targetExists": true,
+      "task": "联系与导航",
+      "advancedOpen": true,
+      "focused": true,
+      "visible": false,
+      "pass": false
+    }
+  ],
+  "errors": [],
+  "buildId": "N9TsAxnzmoIUOjE3p38wD",
+  "browser": "154.0.4258.48",
+  "errorMessage": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: '设置', exact: true })\u001b[22m\n",
+  "pass": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "9a5ec5e6293adeddd387d55cec6cbf8a4999e1126bdbe355adcce523e444c09c"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "1216fc364841530968ffff3985914b1f2385ec4f161d9758163ce05bf7e6f313"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "0b8120ce3c62a0296ee20dfdcd64300db12e595f2f5f81b72b7ac505110cd881"
+    }
+  ]
+}

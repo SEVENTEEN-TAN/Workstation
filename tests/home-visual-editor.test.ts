@@ -20,9 +20,25 @@ import {
   startPreviewReadyRetry,
 } from "../src/components/public/visual-editing";
 import { HomepageVisualWorkspace } from "../src/components/admin/home/HomepageVisualWorkspace";
+import { HomepageEditor } from "../src/components/admin/home/HomepageEditor";
 import { validateSiteContent } from "../src/components/admin/home/content-editor";
 
 describe("homepage visual-editor protocol", () => {
+  it.each([
+    ["zh.hero.portraitAlt", "个人与首屏"],
+    ["en.hero.portraitAlt", "个人与首屏"],
+    ["zh.footer.wechatAlt", "联系与导航"],
+    ["en.footer.wechatAlt", "联系与导航"],
+  ])("opens the field task containing image alt text %s", (initialFieldPath, taskLabel) => {
+    const markup = renderToStaticMarkup(createElement(HomepageEditor, {
+      projects: [], content: bootstrapSiteContent, validation: validateSiteContent(bootstrapSiteContent),
+      initialFieldPath, onContentChange() {}, onRequestAsset() {},
+    }));
+
+    expect(markup).toContain(`id="homepage-${initialFieldPath.replaceAll(".", "-")}"`);
+    expect(markup).toContain(`<h2 id="homepage-task-title">${taskLabel}</h2>`);
+  });
+
   it("retries preview readiness until the parent sends content", () => {
     vi.useFakeTimers();
     const postReady = vi.fn();

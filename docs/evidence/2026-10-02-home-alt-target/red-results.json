@@ -1,0 +1,75 @@
+{
+  "phase": "red",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-alt-target\\906ae79e-6cc7-4c51-ae0c-4d196bb76d9f.db",
+  "results": [
+    {
+      "width": 1440,
+      "kind": "portrait",
+      "locale": "zh",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": false,
+      "focused": false,
+      "visible": false,
+      "pass": false
+    },
+    {
+      "width": 1440,
+      "kind": "portrait",
+      "locale": "en",
+      "targetExists": true,
+      "task": "个人与首屏",
+      "advancedOpen": false,
+      "focused": false,
+      "visible": false,
+      "pass": false
+    },
+    {
+      "width": 1440,
+      "kind": "wechat",
+      "locale": "zh",
+      "targetExists": false,
+      "task": "个人与首屏",
+      "advancedOpen": false,
+      "focused": false,
+      "visible": false,
+      "pass": false
+    },
+    {
+      "width": 1440,
+      "kind": "wechat",
+      "locale": "en",
+      "targetExists": false,
+      "task": "个人与首屏",
+      "advancedOpen": false,
+      "focused": false,
+      "visible": false,
+      "pass": false
+    }
+  ],
+  "errors": [],
+  "buildId": "4IZRneWEjp-FKFncjaSjs",
+  "browser": "154.0.4258.48",
+  "errorMessage": "Each image/language shortcut must open, expand and focus its target, then save",
+  "pass": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "953a8a5904f954bfa50f00bb14a8c6db0af423072814413b7c9e3706917e8275"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "bd3e56afbc207d63698bef58986b1fb0453ac2f7565d2ec47370a754ebbae781"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "42d917d848bc718a65a386cca9c3044cc64cb116b0d2532400afd667d4b5373b"
+    }
+  ]
+}

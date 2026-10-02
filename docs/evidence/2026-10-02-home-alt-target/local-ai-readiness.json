@@ -1,0 +1,8 @@
+{
+  "scope": "primary local checkout only, no production connection or model request",
+  "envFilePresent": true,
+  "localSqliteConfigured": true,
+  "databaseFilePresent": true,
+  "weeklySettingPresent": false,
+  "ready": false
+}

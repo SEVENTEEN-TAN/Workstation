@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowUp, ExternalLink, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 
 import styles from "../../../app/admin/admin.module.css";
 import type { LocalizedSiteContent, SiteContent } from "../../../lib/content/schema";
@@ -160,6 +160,7 @@ const FOOTER_SCALARS: ScalarField[] = [
 ];
 
 interface HomepageEditorProps {
+  initialFieldPath?: string;
   projects: PortfolioProjectData[];
   content: SiteContent;
   validation: SiteContentValidation;
@@ -182,8 +183,17 @@ function sectionDefinition(section: SiteSectionId) {
   return HOME_SECTION_DEFINITIONS.find((item) => item.id === section);
 }
 
-export function HomepageEditor({ projects, content, validation, onContentChange, onRequestAsset }: HomepageEditorProps) {
-  const [task, setTask] = useState<HomeTaskId>("identity");
+export function HomepageEditor({ projects, content, validation, onContentChange, onRequestAsset, initialFieldPath }: HomepageEditorProps) {
+  const [task, setTask] = useState<HomeTaskId>(initialFieldPath?.split(".")[1] === "footer" ? "contact" : "identity");
+
+  useEffect(() => {
+    if (!initialFieldPath) return;
+    const target = document.getElementById(pathId(initialFieldPath));
+    const advanced = target?.closest("details");
+    if (advanced) advanced.open = true;
+    target?.focus();
+    target?.scrollIntoView({ block: "center" });
+  }, [initialFieldPath]);
 
   function update(locale: SiteLocale, path: ContentPath, value: unknown) {
     onContentChange(updateContentAtPath(content, [locale, ...path], value));
