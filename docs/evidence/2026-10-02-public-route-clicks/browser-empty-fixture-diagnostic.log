@@ -1,0 +1,7 @@
+{"width":1440,"locale":"zh","name":"nav-okr","pass":true}
+{"width":1440,"locale":"zh","name":"nav-journey","pass":true}
+{"width":1440,"locale":"zh","name":"nav-knowledge","pass":true}
+{"width":1440,"locale":"zh","name":"about-skills","pass":true}
+{"width":1440,"locale":"zh","name":"now-activities","pass":true}
+{"width":1440,"locale":"zh","name":"work-projects","pass":true}
+{"pass":false,"passed":6,"total":7,"error":"locator.innerText: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#capability').locator('a[href=\"/skills\"]').first()\u001b[22m\n","pageErrors":[],"httpErrors":[],"cleanup":{"browserClosed":true,"databaseDisconnected":true,"serverExited":true,"databaseDeleted":false}}

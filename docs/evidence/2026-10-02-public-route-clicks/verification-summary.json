@@ -1,0 +1,240 @@
+{
+  "widths": [
+    1440,
+    375
+  ],
+  "locales": [
+    "zh",
+    "en"
+  ],
+  "baseline": "4f9764427f318ad038abd33ec4ed6efaacd9e3e1",
+  "eslintExitCode": 0,
+  "cleanup": {
+    "port3023Free": true,
+    "previousBuildDatabaseDeleted": false,
+    "deletedDatabaseCopies": 3,
+    "record": "cleanup.json"
+  },
+  "buildId": "FtKzie28NxXLkA9JkhUXO",
+  "failedRequests": {
+    "ERR_ABORTED": 90
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/public/Navbar.tsx",
+      "sha256": "372ea69ac4ed8f9c57fa97ab04e8ca8d7871fba722ca1ada109fa64a03e6f021"
+    },
+    {
+      "path": "src/components/public/HomeExperience.tsx",
+      "sha256": "cf8a7fa571eb1544794df629da5d77d9ee888f1710d238674cc5569cc40024d5"
+    },
+    {
+      "path": "src/components/public/About.tsx",
+      "sha256": "48496056d6ed3b866920b2b77f9f3a510a29f253b7ca792b1826cc363262a29c"
+    },
+    {
+      "path": "src/components/public/HomeNow.tsx",
+      "sha256": "fdeaec7da8998fc62187784730e9e3caf2a1519efc2eb135770dee56a2b67cfe"
+    },
+    {
+      "path": "src/components/public/RecentWorks.tsx",
+      "sha256": "1c11b74c46d3ea4077018e2a92b8e507cf01c54a14140f7e253a3bb70702addb"
+    },
+    {
+      "path": "src/components/public/HomeCapabilities.tsx",
+      "sha256": "cefa6d04c88f5653476bf8a38c497bce5f8355a4974cdd51d33c0250e5e3beb3"
+    },
+    {
+      "path": "src/components/public/HomeJourney.tsx",
+      "sha256": "67b53215bad4ade5e3fa509010a0f36fd83332b770814865649e7e27ba853351"
+    },
+    {
+      "path": "src/components/public/i18n.tsx",
+      "sha256": "b8fc93cec2b07aee7aa7eb39768fcb020dbd3c266e6025c26eb4544547fb1cc8"
+    },
+    {
+      "path": "src/components/public/OkrExperience.tsx",
+      "sha256": "14ead84d30e40f38350e486d004decd01f086ab2c1cb7e467d09f703217ceb6a"
+    },
+    {
+      "path": "src/components/public/ExperienceTimeline.tsx",
+      "sha256": "2df909ebbbaa38005322adedf2b159df8d5a2918c846a66a6127b9520b409f6e"
+    },
+    {
+      "path": "src/components/public/SkillCapabilitiesExperience.tsx",
+      "sha256": "ab313366f6347a0d46524a9360d2ebdfb97bfe7e89f2e301eb9172880ca577b6"
+    },
+    {
+      "path": "src/components/public/ActivityExperience.tsx",
+      "sha256": "c3f162148d5a753689146eab5734109c93124158ff491ddd62c2f18a3427ca39"
+    },
+    {
+      "path": "src/components/public/ProjectExperience.tsx",
+      "sha256": "c736361533ad06fd6f8bae8d84211303a2378becbdfa36b1170081db217db49f"
+    },
+    {
+      "path": "src/components/public/PrintableResume.tsx",
+      "sha256": "d241e8011e2031de89d4da82672b61d1367d3062ffbf32e4fa5b57752f59ffa9"
+    },
+    {
+      "path": "src/components/public/ResumeToolbar.tsx",
+      "sha256": "a88151bb2684bec64c9fe964a24b250ffbf387cb13bf112c0b276f9a05045f80"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "87818f321cf3464037ba9d3bbbcb372fb2ae9f33a02a268f44e6812283893d5f"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "sha256": "7705d2461f73525b652864aead3c616bd79e304130874264e0a33c3de80845f9"
+    },
+    {
+      "path": "src/app/okr/page.tsx",
+      "sha256": "24a646ff56e6446b7c403ef8b97d06710a43ab51ddc5131e08696ae54a03b55e"
+    },
+    {
+      "path": "src/app/experience/page.tsx",
+      "sha256": "eab91ac759c62facf417356c7e572c9d086ec983099b9aece99b9012d61e527a"
+    },
+    {
+      "path": "src/app/knowledge/page.tsx",
+      "sha256": "3fd29eb994167449212db17c0c387ce5e64d66e39a29ad6f336da6206a05c2be"
+    },
+    {
+      "path": "src/app/skills/page.tsx",
+      "sha256": "17a12363d01d504c1e0f2385cebc9955483809f8722c5ec76380cfb411167462"
+    },
+    {
+      "path": "src/app/activities/page.tsx",
+      "sha256": "1bc42857b70a95ed46015c2369df21a611163eee0d11c80708ca9d0b9f88a099"
+    },
+    {
+      "path": "src/app/projects/page.tsx",
+      "sha256": "cc443b2d6e00723e10e358d937646a265853fb9bcc7ba9f6a49b36e641240805"
+    },
+    {
+      "path": "src/app/resume/page.tsx",
+      "sha256": "abf02a7c41e60597f9840d87aa8c4c42cb5014888576e1e6300fa07dd2dfec88"
+    }
+  ],
+  "fullSuiteRerun": false,
+  "businessSourceChanged": false,
+  "entryCount": 9,
+  "passed": 36,
+  "routeCount": 7,
+  "boundaries": {
+    "systemIme": false,
+    "planCompleted": 23,
+    "goal": "active",
+    "serverPreflight": false,
+    "planTotal": 30,
+    "merged": false,
+    "releaseScopeConfirmed": false,
+    "realAi": false,
+    "CGroupScopeConfirmed": false,
+    "productionTouched": false,
+    "deployed": false
+  },
+  "pageErrors": 0,
+  "artifactHashes": [
+    {
+      "path": "1440-en-journey-resume.png",
+      "sha256": "92e7b597bbe8ca077b9a156902139f456b8f4d574c25aebc31b27c8cfc8843d4",
+      "bytes": 53977
+    },
+    {
+      "path": "1440-en-nav-knowledge.png",
+      "sha256": "4d7b63b11d9a2a283680d7eb48e89d10d1a81447e28ab7eddc8b2bad504fea13",
+      "bytes": 41466
+    },
+    {
+      "path": "1440-zh-journey-resume.png",
+      "sha256": "290e88008e08385474d32fa8d756affff25b1890b03bcaf9a47090bdf928f524",
+      "bytes": 56924
+    },
+    {
+      "path": "1440-zh-nav-knowledge.png",
+      "sha256": "4d7b63b11d9a2a283680d7eb48e89d10d1a81447e28ab7eddc8b2bad504fea13",
+      "bytes": 41466
+    },
+    {
+      "path": "375-en-journey-resume.png",
+      "sha256": "da83a4a0397d971666fa54c945addc99be72ef4f9dc029e4bda4f67c2833f1a2",
+      "bytes": 39043
+    },
+    {
+      "path": "375-en-nav-knowledge.png",
+      "sha256": "bade09d0a605f35add95aa230854380d134e323c9654d270f6ce7b5fda4c24f0",
+      "bytes": 26131
+    },
+    {
+      "path": "375-zh-journey-resume.png",
+      "sha256": "1af9f7fdda206889e853174872f5111a73339a17cfb98c9aac57d8b753bff2c1",
+      "bytes": 44745
+    },
+    {
+      "path": "375-zh-nav-knowledge.png",
+      "sha256": "bade09d0a605f35add95aa230854380d134e323c9654d270f6ce7b5fda4c24f0",
+      "bytes": 26131
+    },
+    {
+      "path": "acceptance-edge.cjs",
+      "sha256": "976b958398e0101ef1dc94b6bc91ccbe2e072408e76380a283644b6aa68f52d7",
+      "bytes": 10889
+    },
+    {
+      "path": "browser-empty-fixture-diagnostic.log",
+      "sha256": "38d6581a9b86892563611237cfc89b49d2c7817c8b41223a9530d4310d0a74ad",
+      "bytes": 722
+    },
+    {
+      "path": "browser-final.log",
+      "sha256": "e2d2144a5185e04ca8429551b4903c3be5a60bbd0099c18abbd5040834cac52b",
+      "bytes": 2481
+    },
+    {
+      "path": "browser-first-green.log",
+      "sha256": "e2d2144a5185e04ca8429551b4903c3be5a60bbd0099c18abbd5040834cac52b",
+      "bytes": 2481
+    },
+    {
+      "path": "cleanup.json",
+      "sha256": "2cf7e5fd241a3461a2835777ebecc1951fa3aa396cf02af8bcdabd76a721be7c",
+      "bytes": 973
+    },
+    {
+      "path": "empty-fixture-diagnostic.json",
+      "sha256": "d5c7dd54b5883e8438e3bda82b826e951ce9612c0decea02881a865c503afc89",
+      "bytes": 7912
+    },
+    {
+      "path": "eslint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "eslint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "first-green-results.json",
+      "sha256": "4d0770fb6e113283d0aa6463134a3c53177f8da4c833931ae566e91ba438b473",
+      "bytes": 24816
+    },
+    {
+      "path": "results.json",
+      "sha256": "99b88094d6ecb72131eadf8cd76a13eb4ea941fe732988dbd9236dbf3aeee555",
+      "bytes": 24307
+    }
+  ],
+  "browserExitCode": 0,
+  "browser": "154.0.4258.48",
+  "buildRerun": false,
+  "snapshotsManuallyViewed": [
+    "375-en-journey-resume.png",
+    "375-zh-nav-knowledge.png",
+    "1440-en-nav-knowledge.png"
+  ],
+  "httpErrors": 0
+}
