@@ -1,0 +1,16 @@
+
+ RUN  v4.0.16 C:/Users/23399/Desktop/sqtan/WorkStation/.worktrees/homepage-visual-editor
+
+ ✓ tests/okr-execution.test.ts (6 tests) 7ms
+ ✓ tests/okr-recurrence.test.ts (6 tests) 4ms
+ ✓ tests/overview-queue.test.ts (13 tests) 38ms
+ ✓ tests/okr-validation.test.ts (2 tests) 13ms
+ ✓ tests/okr-public-readiness.test.ts (6 tests) 15ms
+ ✓ tests/okr-action-items.test.ts (13 tests) 18ms
+ ✓ tests/admin-ui-contracts.test.ts (95 tests) 190ms
+
+ Test Files  7 passed (7)
+      Tests  141 passed (141)
+   Start at  16:41:07
+   Duration  1.44s (transform 1.16s, setup 0ms, import 2.36s, tests 284ms, environment 1ms)
+
