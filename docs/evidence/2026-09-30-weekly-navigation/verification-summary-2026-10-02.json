@@ -1,0 +1,15 @@
+{
+  "baseHead": "db4684132f50f43105cbac251cff23d87f8d1928",
+  "buildId": "5XM__utDMz2yLZPp0q9PJ",
+  "scope": "Current uncommitted weekly history repair and its evidence; not whole-branch release acceptance",
+  "vitest": { "command": "node node_modules/vitest/vitest.mjs run", "exitCode": 0, "files": 85, "tests": 567, "log": "verification-vitest-2026-10-02.log" },
+  "build": { "command": "node node_modules/next/dist/bin/next build", "exitCode": 0, "database": "Independent migrated temporary SQLite", "generatedPages": 56, "log": "verification-build-2026-10-02.log" },
+  "typescript": { "command": "node node_modules/typescript/bin/tsc --noEmit", "exitCode": 0, "diagnostics": [], "log": "verification-typescript-2026-10-02.log" },
+  "eslint": { "command": "node node_modules/eslint/bin/eslint.js .", "exitCode": 0, "diagnostics": [], "log": "verification-eslint-2026-10-02.log" },
+  "browser": { "run": "run-faef91b8-832d-4103-9ac2-f025f49aa3c9", "exitCode": 0, "passed": 19, "total": 19, "sourceHashMatches": 10, "buildIdMatches": true, "pageErrors": [] },
+  "api": { "run": "../2026-09-30-weekly-save-boundaries/run-1f7843d7-08b1-4d8a-afaf-cd642405e28d", "exitCode": 0, "passed": 18, "total": 18, "patchRequests": 14, "sourceHashMatches": 5, "buildIdMatches": true },
+  "review": "v30 final focused read-only review: no actionable findings; ready to commit and push this batch, not whole-branch merge or release acceptance; see final-review-2026-10-02.md",
+  "diffCheck": "Standard staged diff check passes excluding only the two raw build/vitest logs, whose emitted trailing spaces and terminal blank lines are preserved",
+  "merged": false,
+  "deployed": false
+}

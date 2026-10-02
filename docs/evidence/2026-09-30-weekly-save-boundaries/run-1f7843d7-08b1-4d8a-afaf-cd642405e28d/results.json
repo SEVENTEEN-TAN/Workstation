@@ -1,0 +1,1201 @@
+{
+  "runId": "1f7843d7-08b1-4d8a-afaf-cd642405e28d",
+  "purpose": "weekly-save-boundaries",
+  "port": 3020,
+  "startedAt": "2026-10-02T08:03:45.872Z",
+  "assertions": [
+    {
+      "name": "burst-1:two-PATCH-overlap-and-both-sent-before-first-response",
+      "pass": true
+    },
+    {
+      "name": "burst-1:exactly-one-200-and-one-409",
+      "pass": true
+    },
+    {
+      "name": "burst-1:stored-four-fields-and-version-match-sole-winner",
+      "pass": true
+    },
+    {
+      "name": "burst-1:stale-loser-retry-409-with-no-overwrite",
+      "pass": true
+    },
+    {
+      "name": "burst-1:fresh-version-retry-200-with-complete-four-fields",
+      "pass": true
+    },
+    {
+      "name": "burst-2:two-PATCH-overlap-and-both-sent-before-first-response",
+      "pass": true
+    },
+    {
+      "name": "burst-2:exactly-one-200-and-one-409",
+      "pass": true
+    },
+    {
+      "name": "burst-2:stored-four-fields-and-version-match-sole-winner",
+      "pass": true
+    },
+    {
+      "name": "burst-2:stale-loser-retry-409-with-no-overwrite",
+      "pass": true
+    },
+    {
+      "name": "burst-2:fresh-version-retry-200-with-complete-four-fields",
+      "pass": true
+    },
+    {
+      "name": "burst-3:two-PATCH-overlap-and-both-sent-before-first-response",
+      "pass": true
+    },
+    {
+      "name": "burst-3:exactly-one-200-and-one-409",
+      "pass": true
+    },
+    {
+      "name": "burst-3:stored-four-fields-and-version-match-sole-winner",
+      "pass": true
+    },
+    {
+      "name": "burst-3:stale-loser-retry-409-with-no-overwrite",
+      "pass": true
+    },
+    {
+      "name": "burst-3:fresh-version-retry-200-with-complete-four-fields",
+      "pass": true
+    },
+    {
+      "name": "real-SQLite-BEFORE-UPDATE-failure-preserves-all-data-and-version",
+      "pass": true
+    },
+    {
+      "name": "trigger-dropped-and-original-version-retry-200",
+      "pass": true
+    },
+    {
+      "name": "source-head-and-built-route-remained-unchanged-during-run",
+      "pass": true
+    }
+  ],
+  "requests": [
+    {
+      "label": "burst-1-0",
+      "endpoint": "/api/admin/weekly/cmuqofbp40003pptw95h3966j",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-1-A",
+        "titleEn": "English title burst-1-A",
+        "summaryZh": "中文摘要-burst-1-A",
+        "summaryEn": "English summary burst-1-A",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:46.554Z",
+      "dispatchedMs": 711.0308,
+      "socketConnectedMs": 716.7615,
+      "sentMs": 717.2444,
+      "responseStartedMs": 1574.3283,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.421Z",
+      "finishedMs": 1577.0057,
+      "body": {
+        "id": "cmuqofbp40003pptw95h3966j",
+        "weekStart": "2080-01-02T00:00:00.000Z",
+        "weekEnd": "2080-01-08T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-1-A",
+        "titleEn": "English title burst-1-A",
+        "summaryZh": "中文摘要-burst-1-A",
+        "summaryEn": "English summary burst-1-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:46.552Z",
+        "createdAt": "2026-10-02T08:03:46.552Z",
+        "updatedAt": "2026-10-02T08:03:47.392Z"
+      }
+    },
+    {
+      "label": "burst-1-1",
+      "endpoint": "/api/admin/weekly/cmuqofbp40003pptw95h3966j",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-1-B",
+        "titleEn": "English title burst-1-B",
+        "summaryZh": "中文摘要-burst-1-B",
+        "summaryEn": "English summary burst-1-B",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:46.558Z",
+      "dispatchedMs": 714.1581,
+      "socketConnectedMs": 717.3562,
+      "sentMs": 717.4641,
+      "responseStartedMs": 1579.8397,
+      "status": 409,
+      "finishedAt": "2026-10-02T08:03:47.424Z",
+      "finishedMs": 1580.353,
+      "body": {
+        "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+      }
+    },
+    {
+      "label": "burst-1-loser-stale-retry",
+      "endpoint": "/api/admin/weekly/cmuqofbp40003pptw95h3966j",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-1-B",
+        "titleEn": "English title burst-1-B",
+        "summaryZh": "中文摘要-burst-1-B",
+        "summaryEn": "English summary burst-1-B",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.426Z",
+      "dispatchedMs": 1582.2795,
+      "socketConnectedMs": 1583.1676,
+      "sentMs": 1583.2679,
+      "responseStartedMs": 1599.4545,
+      "status": 409,
+      "finishedAt": "2026-10-02T08:03:47.444Z",
+      "finishedMs": 1599.974,
+      "body": {
+        "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+      }
+    },
+    {
+      "label": "burst-1-loser-fresh-retry",
+      "endpoint": "/api/admin/weekly/cmuqofbp40003pptw95h3966j",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-1-B",
+        "titleEn": "English title burst-1-B",
+        "summaryZh": "中文摘要-burst-1-B",
+        "summaryEn": "English summary burst-1-B",
+        "expectedUpdatedAt": "2026-10-02T08:03:47.392Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.445Z",
+      "dispatchedMs": 1601.1336,
+      "socketConnectedMs": 1602.0683,
+      "sentMs": 1602.1647,
+      "responseStartedMs": 1621.3135,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.465Z",
+      "finishedMs": 1621.8778,
+      "body": {
+        "id": "cmuqofbp40003pptw95h3966j",
+        "weekStart": "2080-01-02T00:00:00.000Z",
+        "weekEnd": "2080-01-08T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-1-B",
+        "titleEn": "English title burst-1-B",
+        "summaryZh": "中文摘要-burst-1-B",
+        "summaryEn": "English summary burst-1-B",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:46.552Z",
+        "createdAt": "2026-10-02T08:03:46.552Z",
+        "updatedAt": "2026-10-02T08:03:47.460Z"
+      }
+    },
+    {
+      "label": "burst-2-0",
+      "endpoint": "/api/admin/weekly/cmuqofcek0004pptw7f9htvh3",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-2-A",
+        "titleEn": "English title burst-2-A",
+        "summaryZh": "中文摘要-burst-2-A",
+        "summaryEn": "English summary burst-2-A",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.469Z",
+      "dispatchedMs": 1625.2643,
+      "socketConnectedMs": 1627.9549,
+      "sentMs": 1630.3139,
+      "responseStartedMs": 1663.139,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.507Z",
+      "finishedMs": 1663.732,
+      "body": {
+        "id": "cmuqofcek0004pptw7f9htvh3",
+        "weekStart": "2080-01-03T00:00:00.000Z",
+        "weekEnd": "2080-01-09T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-2-A",
+        "titleEn": "English title burst-2-A",
+        "summaryZh": "中文摘要-burst-2-A",
+        "summaryEn": "English summary burst-2-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.468Z",
+        "createdAt": "2026-10-02T08:03:47.468Z",
+        "updatedAt": "2026-10-02T08:03:47.496Z"
+      }
+    },
+    {
+      "label": "burst-2-1",
+      "endpoint": "/api/admin/weekly/cmuqofcek0004pptw7f9htvh3",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-2-B",
+        "titleEn": "English title burst-2-B",
+        "summaryZh": "中文摘要-burst-2-B",
+        "summaryEn": "English summary burst-2-B",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.470Z",
+      "dispatchedMs": 1625.8868,
+      "socketConnectedMs": 1630.3736,
+      "sentMs": 1630.4787,
+      "responseStartedMs": 1675.6014,
+      "status": 409,
+      "finishedAt": "2026-10-02T08:03:47.519Z",
+      "finishedMs": 1675.7204,
+      "body": {
+        "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+      }
+    },
+    {
+      "label": "burst-2-loser-stale-retry",
+      "endpoint": "/api/admin/weekly/cmuqofcek0004pptw7f9htvh3",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-2-B",
+        "titleEn": "English title burst-2-B",
+        "summaryZh": "中文摘要-burst-2-B",
+        "summaryEn": "English summary burst-2-B",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.520Z",
+      "dispatchedMs": 1676.3475,
+      "socketConnectedMs": 1676.8704,
+      "sentMs": 1676.94,
+      "responseStartedMs": 1682.3807,
+      "status": 409,
+      "finishedAt": "2026-10-02T08:03:47.526Z",
+      "finishedMs": 1682.502,
+      "body": {
+        "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+      }
+    },
+    {
+      "label": "burst-2-loser-fresh-retry",
+      "endpoint": "/api/admin/weekly/cmuqofcek0004pptw7f9htvh3",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-2-B",
+        "titleEn": "English title burst-2-B",
+        "summaryZh": "中文摘要-burst-2-B",
+        "summaryEn": "English summary burst-2-B",
+        "expectedUpdatedAt": "2026-10-02T08:03:47.496Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.527Z",
+      "dispatchedMs": 1683.0534,
+      "socketConnectedMs": 1683.5577,
+      "sentMs": 1683.6218,
+      "responseStartedMs": 1706.6813,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.551Z",
+      "finishedMs": 1707.0775,
+      "body": {
+        "id": "cmuqofcek0004pptw7f9htvh3",
+        "weekStart": "2080-01-03T00:00:00.000Z",
+        "weekEnd": "2080-01-09T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-2-B",
+        "titleEn": "English title burst-2-B",
+        "summaryZh": "中文摘要-burst-2-B",
+        "summaryEn": "English summary burst-2-B",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.468Z",
+        "createdAt": "2026-10-02T08:03:47.468Z",
+        "updatedAt": "2026-10-02T08:03:47.543Z"
+      }
+    },
+    {
+      "label": "burst-3-0",
+      "endpoint": "/api/admin/weekly/cmuqofcgx0005pptw1ldx7ckc",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-3-A",
+        "titleEn": "English title burst-3-A",
+        "summaryZh": "中文摘要-burst-3-A",
+        "summaryEn": "English summary burst-3-A",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.554Z",
+      "dispatchedMs": 1710.5856,
+      "socketConnectedMs": 1712.218,
+      "sentMs": 1712.3208,
+      "responseStartedMs": 1740.3473,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.585Z",
+      "finishedMs": 1740.9896,
+      "body": {
+        "id": "cmuqofcgx0005pptw1ldx7ckc",
+        "weekStart": "2080-01-04T00:00:00.000Z",
+        "weekEnd": "2080-01-10T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-3-A",
+        "titleEn": "English title burst-3-A",
+        "summaryZh": "中文摘要-burst-3-A",
+        "summaryEn": "English summary burst-3-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.553Z",
+        "createdAt": "2026-10-02T08:03:47.553Z",
+        "updatedAt": "2026-10-02T08:03:47.571Z"
+      }
+    },
+    {
+      "label": "burst-3-1",
+      "endpoint": "/api/admin/weekly/cmuqofcgx0005pptw1ldx7ckc",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-3-B",
+        "titleEn": "English title burst-3-B",
+        "summaryZh": "中文摘要-burst-3-B",
+        "summaryEn": "English summary burst-3-B",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.555Z",
+      "dispatchedMs": 1711.0003,
+      "socketConnectedMs": 1712.3886,
+      "sentMs": 1712.8572,
+      "responseStartedMs": 1742.8294,
+      "status": 409,
+      "finishedAt": "2026-10-02T08:03:47.587Z",
+      "finishedMs": 1743.2196,
+      "body": {
+        "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+      }
+    },
+    {
+      "label": "burst-3-loser-stale-retry",
+      "endpoint": "/api/admin/weekly/cmuqofcgx0005pptw1ldx7ckc",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-3-B",
+        "titleEn": "English title burst-3-B",
+        "summaryZh": "中文摘要-burst-3-B",
+        "summaryEn": "English summary burst-3-B",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.588Z",
+      "dispatchedMs": 1744.3696,
+      "socketConnectedMs": 1745.1551,
+      "sentMs": 1745.231,
+      "responseStartedMs": 1759.7524,
+      "status": 409,
+      "finishedAt": "2026-10-02T08:03:47.604Z",
+      "finishedMs": 1760.44,
+      "body": {
+        "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+      }
+    },
+    {
+      "label": "burst-3-loser-fresh-retry",
+      "endpoint": "/api/admin/weekly/cmuqofcgx0005pptw1ldx7ckc",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-burst-3-B",
+        "titleEn": "English title burst-3-B",
+        "summaryZh": "中文摘要-burst-3-B",
+        "summaryEn": "English summary burst-3-B",
+        "expectedUpdatedAt": "2026-10-02T08:03:47.571Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.605Z",
+      "dispatchedMs": 1761.4145,
+      "socketConnectedMs": 1762.1283,
+      "sentMs": 1762.3025,
+      "responseStartedMs": 1787.9023,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.632Z",
+      "finishedMs": 1788.1035,
+      "body": {
+        "id": "cmuqofcgx0005pptw1ldx7ckc",
+        "weekStart": "2080-01-04T00:00:00.000Z",
+        "weekEnd": "2080-01-10T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-3-B",
+        "titleEn": "English title burst-3-B",
+        "summaryZh": "中文摘要-burst-3-B",
+        "summaryEn": "English summary burst-3-B",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.553Z",
+        "createdAt": "2026-10-02T08:03:47.553Z",
+        "updatedAt": "2026-10-02T08:03:47.616Z"
+      }
+    },
+    {
+      "label": "rollback-trigger-failure",
+      "endpoint": "/api/admin/weekly/cmuqofcj60006pptwqsa32cn6",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-rollback",
+        "titleEn": "English title rollback",
+        "summaryZh": "中文摘要-rollback",
+        "summaryEn": "English summary rollback",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.638Z",
+      "dispatchedMs": 1794.5542,
+      "socketConnectedMs": 1795.5217,
+      "sentMs": 1795.6072,
+      "responseStartedMs": 1830.54,
+      "status": 400,
+      "finishedAt": "2026-10-02T08:03:47.674Z",
+      "finishedMs": 1830.6968,
+      "body": {
+        "error": "\nInvalid `prisma.weeklyActivityDraft.update()` invocation:\n\n\nForeign key constraint violated on the foreign key"
+      }
+    },
+    {
+      "label": "rollback-after-trigger-drop-retry",
+      "endpoint": "/api/admin/weekly/cmuqofcj60006pptwqsa32cn6",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-rollback",
+        "titleEn": "English title rollback",
+        "summaryZh": "中文摘要-rollback",
+        "summaryEn": "English summary rollback",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.678Z",
+      "dispatchedMs": 1834.1471,
+      "socketConnectedMs": 1834.8989,
+      "sentMs": 1834.9775,
+      "responseStartedMs": 1852.8221,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.697Z",
+      "finishedMs": 1853.3589,
+      "body": {
+        "id": "cmuqofcj60006pptwqsa32cn6",
+        "weekStart": "2080-01-21T00:00:00.000Z",
+        "weekEnd": "2080-01-27T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-rollback",
+        "titleEn": "English title rollback",
+        "summaryZh": "中文摘要-rollback",
+        "summaryEn": "English summary rollback",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.634Z",
+        "createdAt": "2026-10-02T08:03:47.634Z",
+        "updatedAt": "2026-10-02T08:03:47.690Z"
+      }
+    }
+  ],
+  "bursts": [
+    {
+      "index": 1,
+      "before": {
+        "id": "cmuqofbp40003pptw95h3966j",
+        "weekStart": "2080-01-02T00:00:00.000Z",
+        "weekEnd": "2080-01-08T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "初始中文标题-1",
+        "titleEn": "Initial English title 1",
+        "summaryZh": "初始中文摘要-1",
+        "summaryEn": "Initial English summary 1",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:46.552Z",
+        "createdAt": "2026-10-02T08:03:46.552Z",
+        "updatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "after": {
+        "id": "cmuqofbp40003pptw95h3966j",
+        "weekStart": "2080-01-02T00:00:00.000Z",
+        "weekEnd": "2080-01-08T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-1-A",
+        "titleEn": "English title burst-1-A",
+        "summaryZh": "中文摘要-burst-1-A",
+        "summaryEn": "English summary burst-1-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:46.552Z",
+        "createdAt": "2026-10-02T08:03:46.552Z",
+        "updatedAt": "2026-10-02T08:03:47.392Z"
+      },
+      "statuses": [
+        200,
+        409
+      ],
+      "requestLabels": [
+        "burst-1-0",
+        "burst-1-1"
+      ],
+      "requestIntervalsOverlap": true,
+      "socketsSentBeforeFirstResponse": true,
+      "staleRetry": {
+        "label": "burst-1-loser-stale-retry",
+        "endpoint": "/api/admin/weekly/cmuqofbp40003pptw95h3966j",
+        "method": "PATCH",
+        "payload": {
+          "titleZh": "中文标题-burst-1-B",
+          "titleEn": "English title burst-1-B",
+          "summaryZh": "中文摘要-burst-1-B",
+          "summaryEn": "English summary burst-1-B",
+          "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+        },
+        "dispatchedAt": "2026-10-02T08:03:47.426Z",
+        "dispatchedMs": 1582.2795,
+        "socketConnectedMs": 1583.1676,
+        "sentMs": 1583.2679,
+        "responseStartedMs": 1599.4545,
+        "status": 409,
+        "finishedAt": "2026-10-02T08:03:47.444Z",
+        "finishedMs": 1599.974,
+        "body": {
+          "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+        }
+      },
+      "afterStaleRetry": {
+        "id": "cmuqofbp40003pptw95h3966j",
+        "weekStart": "2080-01-02T00:00:00.000Z",
+        "weekEnd": "2080-01-08T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-1-A",
+        "titleEn": "English title burst-1-A",
+        "summaryZh": "中文摘要-burst-1-A",
+        "summaryEn": "English summary burst-1-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:46.552Z",
+        "createdAt": "2026-10-02T08:03:46.552Z",
+        "updatedAt": "2026-10-02T08:03:47.392Z"
+      },
+      "freshRetry": {
+        "label": "burst-1-loser-fresh-retry",
+        "endpoint": "/api/admin/weekly/cmuqofbp40003pptw95h3966j",
+        "method": "PATCH",
+        "payload": {
+          "titleZh": "中文标题-burst-1-B",
+          "titleEn": "English title burst-1-B",
+          "summaryZh": "中文摘要-burst-1-B",
+          "summaryEn": "English summary burst-1-B",
+          "expectedUpdatedAt": "2026-10-02T08:03:47.392Z"
+        },
+        "dispatchedAt": "2026-10-02T08:03:47.445Z",
+        "dispatchedMs": 1601.1336,
+        "socketConnectedMs": 1602.0683,
+        "sentMs": 1602.1647,
+        "responseStartedMs": 1621.3135,
+        "status": 200,
+        "finishedAt": "2026-10-02T08:03:47.465Z",
+        "finishedMs": 1621.8778,
+        "body": {
+          "id": "cmuqofbp40003pptw95h3966j",
+          "weekStart": "2080-01-02T00:00:00.000Z",
+          "weekEnd": "2080-01-08T00:00:00.000Z",
+          "status": "DRAFT",
+          "titleZh": "中文标题-burst-1-B",
+          "titleEn": "English title burst-1-B",
+          "summaryZh": "中文摘要-burst-1-B",
+          "summaryEn": "English summary burst-1-B",
+          "sourceSnapshot": {
+            "github": [],
+            "progress": [],
+            "actions": [],
+            "projects": [],
+            "articles": [],
+            "activities": []
+          },
+          "convertedActivityId": null,
+          "generatedAt": "2026-10-02T08:03:46.552Z",
+          "createdAt": "2026-10-02T08:03:46.552Z",
+          "updatedAt": "2026-10-02T08:03:47.460Z"
+        }
+      },
+      "afterFreshRetry": {
+        "id": "cmuqofbp40003pptw95h3966j",
+        "weekStart": "2080-01-02T00:00:00.000Z",
+        "weekEnd": "2080-01-08T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-1-B",
+        "titleEn": "English title burst-1-B",
+        "summaryZh": "中文摘要-burst-1-B",
+        "summaryEn": "English summary burst-1-B",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:46.552Z",
+        "createdAt": "2026-10-02T08:03:46.552Z",
+        "updatedAt": "2026-10-02T08:03:47.460Z"
+      }
+    },
+    {
+      "index": 2,
+      "before": {
+        "id": "cmuqofcek0004pptw7f9htvh3",
+        "weekStart": "2080-01-03T00:00:00.000Z",
+        "weekEnd": "2080-01-09T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "初始中文标题-2",
+        "titleEn": "Initial English title 2",
+        "summaryZh": "初始中文摘要-2",
+        "summaryEn": "Initial English summary 2",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.468Z",
+        "createdAt": "2026-10-02T08:03:47.468Z",
+        "updatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "after": {
+        "id": "cmuqofcek0004pptw7f9htvh3",
+        "weekStart": "2080-01-03T00:00:00.000Z",
+        "weekEnd": "2080-01-09T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-2-A",
+        "titleEn": "English title burst-2-A",
+        "summaryZh": "中文摘要-burst-2-A",
+        "summaryEn": "English summary burst-2-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.468Z",
+        "createdAt": "2026-10-02T08:03:47.468Z",
+        "updatedAt": "2026-10-02T08:03:47.496Z"
+      },
+      "statuses": [
+        200,
+        409
+      ],
+      "requestLabels": [
+        "burst-2-0",
+        "burst-2-1"
+      ],
+      "requestIntervalsOverlap": true,
+      "socketsSentBeforeFirstResponse": true,
+      "staleRetry": {
+        "label": "burst-2-loser-stale-retry",
+        "endpoint": "/api/admin/weekly/cmuqofcek0004pptw7f9htvh3",
+        "method": "PATCH",
+        "payload": {
+          "titleZh": "中文标题-burst-2-B",
+          "titleEn": "English title burst-2-B",
+          "summaryZh": "中文摘要-burst-2-B",
+          "summaryEn": "English summary burst-2-B",
+          "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+        },
+        "dispatchedAt": "2026-10-02T08:03:47.520Z",
+        "dispatchedMs": 1676.3475,
+        "socketConnectedMs": 1676.8704,
+        "sentMs": 1676.94,
+        "responseStartedMs": 1682.3807,
+        "status": 409,
+        "finishedAt": "2026-10-02T08:03:47.526Z",
+        "finishedMs": 1682.502,
+        "body": {
+          "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+        }
+      },
+      "afterStaleRetry": {
+        "id": "cmuqofcek0004pptw7f9htvh3",
+        "weekStart": "2080-01-03T00:00:00.000Z",
+        "weekEnd": "2080-01-09T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-2-A",
+        "titleEn": "English title burst-2-A",
+        "summaryZh": "中文摘要-burst-2-A",
+        "summaryEn": "English summary burst-2-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.468Z",
+        "createdAt": "2026-10-02T08:03:47.468Z",
+        "updatedAt": "2026-10-02T08:03:47.496Z"
+      },
+      "freshRetry": {
+        "label": "burst-2-loser-fresh-retry",
+        "endpoint": "/api/admin/weekly/cmuqofcek0004pptw7f9htvh3",
+        "method": "PATCH",
+        "payload": {
+          "titleZh": "中文标题-burst-2-B",
+          "titleEn": "English title burst-2-B",
+          "summaryZh": "中文摘要-burst-2-B",
+          "summaryEn": "English summary burst-2-B",
+          "expectedUpdatedAt": "2026-10-02T08:03:47.496Z"
+        },
+        "dispatchedAt": "2026-10-02T08:03:47.527Z",
+        "dispatchedMs": 1683.0534,
+        "socketConnectedMs": 1683.5577,
+        "sentMs": 1683.6218,
+        "responseStartedMs": 1706.6813,
+        "status": 200,
+        "finishedAt": "2026-10-02T08:03:47.551Z",
+        "finishedMs": 1707.0775,
+        "body": {
+          "id": "cmuqofcek0004pptw7f9htvh3",
+          "weekStart": "2080-01-03T00:00:00.000Z",
+          "weekEnd": "2080-01-09T00:00:00.000Z",
+          "status": "DRAFT",
+          "titleZh": "中文标题-burst-2-B",
+          "titleEn": "English title burst-2-B",
+          "summaryZh": "中文摘要-burst-2-B",
+          "summaryEn": "English summary burst-2-B",
+          "sourceSnapshot": {
+            "github": [],
+            "progress": [],
+            "actions": [],
+            "projects": [],
+            "articles": [],
+            "activities": []
+          },
+          "convertedActivityId": null,
+          "generatedAt": "2026-10-02T08:03:47.468Z",
+          "createdAt": "2026-10-02T08:03:47.468Z",
+          "updatedAt": "2026-10-02T08:03:47.543Z"
+        }
+      },
+      "afterFreshRetry": {
+        "id": "cmuqofcek0004pptw7f9htvh3",
+        "weekStart": "2080-01-03T00:00:00.000Z",
+        "weekEnd": "2080-01-09T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-2-B",
+        "titleEn": "English title burst-2-B",
+        "summaryZh": "中文摘要-burst-2-B",
+        "summaryEn": "English summary burst-2-B",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.468Z",
+        "createdAt": "2026-10-02T08:03:47.468Z",
+        "updatedAt": "2026-10-02T08:03:47.543Z"
+      }
+    },
+    {
+      "index": 3,
+      "before": {
+        "id": "cmuqofcgx0005pptw1ldx7ckc",
+        "weekStart": "2080-01-04T00:00:00.000Z",
+        "weekEnd": "2080-01-10T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "初始中文标题-3",
+        "titleEn": "Initial English title 3",
+        "summaryZh": "初始中文摘要-3",
+        "summaryEn": "Initial English summary 3",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.553Z",
+        "createdAt": "2026-10-02T08:03:47.553Z",
+        "updatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "after": {
+        "id": "cmuqofcgx0005pptw1ldx7ckc",
+        "weekStart": "2080-01-04T00:00:00.000Z",
+        "weekEnd": "2080-01-10T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-3-A",
+        "titleEn": "English title burst-3-A",
+        "summaryZh": "中文摘要-burst-3-A",
+        "summaryEn": "English summary burst-3-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.553Z",
+        "createdAt": "2026-10-02T08:03:47.553Z",
+        "updatedAt": "2026-10-02T08:03:47.571Z"
+      },
+      "statuses": [
+        200,
+        409
+      ],
+      "requestLabels": [
+        "burst-3-0",
+        "burst-3-1"
+      ],
+      "requestIntervalsOverlap": true,
+      "socketsSentBeforeFirstResponse": true,
+      "staleRetry": {
+        "label": "burst-3-loser-stale-retry",
+        "endpoint": "/api/admin/weekly/cmuqofcgx0005pptw1ldx7ckc",
+        "method": "PATCH",
+        "payload": {
+          "titleZh": "中文标题-burst-3-B",
+          "titleEn": "English title burst-3-B",
+          "summaryZh": "中文摘要-burst-3-B",
+          "summaryEn": "English summary burst-3-B",
+          "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+        },
+        "dispatchedAt": "2026-10-02T08:03:47.588Z",
+        "dispatchedMs": 1744.3696,
+        "socketConnectedMs": 1745.1551,
+        "sentMs": 1745.231,
+        "responseStartedMs": 1759.7524,
+        "status": 409,
+        "finishedAt": "2026-10-02T08:03:47.604Z",
+        "finishedMs": 1760.44,
+        "body": {
+          "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+        }
+      },
+      "afterStaleRetry": {
+        "id": "cmuqofcgx0005pptw1ldx7ckc",
+        "weekStart": "2080-01-04T00:00:00.000Z",
+        "weekEnd": "2080-01-10T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-3-A",
+        "titleEn": "English title burst-3-A",
+        "summaryZh": "中文摘要-burst-3-A",
+        "summaryEn": "English summary burst-3-A",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.553Z",
+        "createdAt": "2026-10-02T08:03:47.553Z",
+        "updatedAt": "2026-10-02T08:03:47.571Z"
+      },
+      "freshRetry": {
+        "label": "burst-3-loser-fresh-retry",
+        "endpoint": "/api/admin/weekly/cmuqofcgx0005pptw1ldx7ckc",
+        "method": "PATCH",
+        "payload": {
+          "titleZh": "中文标题-burst-3-B",
+          "titleEn": "English title burst-3-B",
+          "summaryZh": "中文摘要-burst-3-B",
+          "summaryEn": "English summary burst-3-B",
+          "expectedUpdatedAt": "2026-10-02T08:03:47.571Z"
+        },
+        "dispatchedAt": "2026-10-02T08:03:47.605Z",
+        "dispatchedMs": 1761.4145,
+        "socketConnectedMs": 1762.1283,
+        "sentMs": 1762.3025,
+        "responseStartedMs": 1787.9023,
+        "status": 200,
+        "finishedAt": "2026-10-02T08:03:47.632Z",
+        "finishedMs": 1788.1035,
+        "body": {
+          "id": "cmuqofcgx0005pptw1ldx7ckc",
+          "weekStart": "2080-01-04T00:00:00.000Z",
+          "weekEnd": "2080-01-10T00:00:00.000Z",
+          "status": "DRAFT",
+          "titleZh": "中文标题-burst-3-B",
+          "titleEn": "English title burst-3-B",
+          "summaryZh": "中文摘要-burst-3-B",
+          "summaryEn": "English summary burst-3-B",
+          "sourceSnapshot": {
+            "github": [],
+            "progress": [],
+            "actions": [],
+            "projects": [],
+            "articles": [],
+            "activities": []
+          },
+          "convertedActivityId": null,
+          "generatedAt": "2026-10-02T08:03:47.553Z",
+          "createdAt": "2026-10-02T08:03:47.553Z",
+          "updatedAt": "2026-10-02T08:03:47.616Z"
+        }
+      },
+      "afterFreshRetry": {
+        "id": "cmuqofcgx0005pptw1ldx7ckc",
+        "weekStart": "2080-01-04T00:00:00.000Z",
+        "weekEnd": "2080-01-10T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-burst-3-B",
+        "titleEn": "English title burst-3-B",
+        "summaryZh": "中文摘要-burst-3-B",
+        "summaryEn": "English summary burst-3-B",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.553Z",
+        "createdAt": "2026-10-02T08:03:47.553Z",
+        "updatedAt": "2026-10-02T08:03:47.616Z"
+      }
+    }
+  ],
+  "rollback": {
+    "before": {
+      "id": "cmuqofcj60006pptwqsa32cn6",
+      "weekStart": "2080-01-21T00:00:00.000Z",
+      "weekEnd": "2080-01-27T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "初始中文标题-20",
+      "titleEn": "Initial English title 20",
+      "summaryZh": "初始中文摘要-20",
+      "summaryEn": "Initial English summary 20",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:03:47.634Z",
+      "createdAt": "2026-10-02T08:03:47.634Z",
+      "updatedAt": "2001-01-01T00:00:00.000Z"
+    },
+    "failedRequest": {
+      "label": "rollback-trigger-failure",
+      "endpoint": "/api/admin/weekly/cmuqofcj60006pptwqsa32cn6",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-rollback",
+        "titleEn": "English title rollback",
+        "summaryZh": "中文摘要-rollback",
+        "summaryEn": "English summary rollback",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.638Z",
+      "dispatchedMs": 1794.5542,
+      "socketConnectedMs": 1795.5217,
+      "sentMs": 1795.6072,
+      "responseStartedMs": 1830.54,
+      "status": 400,
+      "finishedAt": "2026-10-02T08:03:47.674Z",
+      "finishedMs": 1830.6968,
+      "body": {
+        "error": "\nInvalid `prisma.weeklyActivityDraft.update()` invocation:\n\n\nForeign key constraint violated on the foreign key"
+      }
+    },
+    "triggerDropped": true,
+    "afterFailure": {
+      "id": "cmuqofcj60006pptwqsa32cn6",
+      "weekStart": "2080-01-21T00:00:00.000Z",
+      "weekEnd": "2080-01-27T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "初始中文标题-20",
+      "titleEn": "Initial English title 20",
+      "summaryZh": "初始中文摘要-20",
+      "summaryEn": "Initial English summary 20",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:03:47.634Z",
+      "createdAt": "2026-10-02T08:03:47.634Z",
+      "updatedAt": "2001-01-01T00:00:00.000Z"
+    },
+    "retry": {
+      "label": "rollback-after-trigger-drop-retry",
+      "endpoint": "/api/admin/weekly/cmuqofcj60006pptwqsa32cn6",
+      "method": "PATCH",
+      "payload": {
+        "titleZh": "中文标题-rollback",
+        "titleEn": "English title rollback",
+        "summaryZh": "中文摘要-rollback",
+        "summaryEn": "English summary rollback",
+        "expectedUpdatedAt": "2001-01-01T00:00:00.000Z"
+      },
+      "dispatchedAt": "2026-10-02T08:03:47.678Z",
+      "dispatchedMs": 1834.1471,
+      "socketConnectedMs": 1834.8989,
+      "sentMs": 1834.9775,
+      "responseStartedMs": 1852.8221,
+      "status": 200,
+      "finishedAt": "2026-10-02T08:03:47.697Z",
+      "finishedMs": 1853.3589,
+      "body": {
+        "id": "cmuqofcj60006pptwqsa32cn6",
+        "weekStart": "2080-01-21T00:00:00.000Z",
+        "weekEnd": "2080-01-27T00:00:00.000Z",
+        "status": "DRAFT",
+        "titleZh": "中文标题-rollback",
+        "titleEn": "English title rollback",
+        "summaryZh": "中文摘要-rollback",
+        "summaryEn": "English summary rollback",
+        "sourceSnapshot": {
+          "github": [],
+          "progress": [],
+          "actions": [],
+          "projects": [],
+          "articles": [],
+          "activities": []
+        },
+        "convertedActivityId": null,
+        "generatedAt": "2026-10-02T08:03:47.634Z",
+        "createdAt": "2026-10-02T08:03:47.634Z",
+        "updatedAt": "2026-10-02T08:03:47.690Z"
+      }
+    },
+    "afterRetry": {
+      "id": "cmuqofcj60006pptwqsa32cn6",
+      "weekStart": "2080-01-21T00:00:00.000Z",
+      "weekEnd": "2080-01-27T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "中文标题-rollback",
+      "titleEn": "English title rollback",
+      "summaryZh": "中文摘要-rollback",
+      "summaryEn": "English summary rollback",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:03:47.634Z",
+      "createdAt": "2026-10-02T08:03:47.634Z",
+      "updatedAt": "2026-10-02T08:03:47.690Z"
+    }
+  },
+  "cleanup": {
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "realpathExactUuidAndOwnerVerified": true,
+    "ownedTempDeleted": true,
+    "port3020Free": true
+  },
+  "portFreeBefore": true,
+  "head": "db4684132f50f43105cbac251cff23d87f8d1928",
+  "buildId": "5XM__utDMz2yLZPp0q9PJ",
+  "sourceHashes": {
+    "src/lib/services/weekly-activity-drafts.ts": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26",
+    "src/lib/validators/weekly-activity-drafts.ts": "b9e9785f8807f1bca29aea4cadb48a3a6a6cb0abcc53174ad06b1801f6b005c7",
+    "src/app/api/admin/weekly/[id]/route.ts": "8e5ede50d3e5829eba4ecf76e392bc78fb16ac5bb77bf507c880d24251f18036",
+    "src/lib/services/http.ts": "13346e3c749cff5d9f6b4949a2dfa8edaa20d8f3783e5034e47d89d0ce3f23dc",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+  },
+  "builtRoute": {
+    "path": ".next/server/app/api/admin/weekly/[id]/route.js",
+    "sha256": "64fdcf002d333a7511bf8b0239cfb00cdb290e7a8f4788d902b85e007e0b0951"
+  },
+  "authentication": {
+    "isolatedUserCreated": true,
+    "randomTokenStoredHashed": true,
+    "tokenRecorded": false
+  },
+  "ownedServerPid": 19740,
+  "completed": true,
+  "finishedAt": "2026-10-02T08:03:47.869Z",
+  "passed": true
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { WeeklyHistoryTracker } from "../components/admin/WeeklyHistoryTracker";
 
 import "./globals.css";
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body><WeeklyHistoryTracker />{children}</body>
     </html>
   );
 }

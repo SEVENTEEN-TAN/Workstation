@@ -17,6 +17,7 @@ import { FeedbackCenter } from "./FeedbackCenter";
 import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
 import { useAdminAction } from "./useAdminAction";
+import { WEEKLY_HISTORY_BLOCKED, WEEKLY_HISTORY_LEAVE, WEEKLY_HISTORY_READY } from "./WeeklyHistoryTracker";
 import {
   copyFromWeeklyDraft,
   parseWeeklyDraftRecovery,
@@ -142,6 +143,30 @@ export function WeeklyActivityWorkspace({ initialDrafts }: { initialDrafts: Week
     };
     window.addEventListener("beforeunload", warn);
     return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+
+  useEffect(() => {
+    if (!dirty || !editing) return;
+    const guardHistory = (event: Event) => {
+      // The tracker restores history before Next can unmount this editor.
+      if (!window.confirm("当前周报有未保存修改，仍要离开吗？")) {
+        event.preventDefault();
+      } else if (!writeRecovery(editing.draft.id, editing.values, editing.baseUpdatedAt)) {
+        setEditorNotice(recoveryUnavailableNotice);
+        event.preventDefault();
+      }
+    };
+    const blocked = () => setEditorNotice("浏览器暂时无法完成返回。修改已保留；保存或取消编辑后，会继续返回。");
+    window.addEventListener(WEEKLY_HISTORY_LEAVE, guardHistory);
+    window.addEventListener(WEEKLY_HISTORY_BLOCKED, blocked);
+    return () => {
+      window.removeEventListener(WEEKLY_HISTORY_LEAVE, guardHistory);
+      window.removeEventListener(WEEKLY_HISTORY_BLOCKED, blocked);
+    };
+  }, [dirty, editing]);
+
+  useEffect(() => {
+    if (!dirty) window.dispatchEvent(new Event(WEEKLY_HISTORY_READY));
   }, [dirty]);
 
   useEffect(() => {

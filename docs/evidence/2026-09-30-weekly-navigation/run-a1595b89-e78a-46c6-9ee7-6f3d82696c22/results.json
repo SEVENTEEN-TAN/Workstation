@@ -1,0 +1,695 @@
+{
+  "runId": "a1595b89-e78a-46c6-9ee7-6f3d82696c22",
+  "startedAt": "2026-10-02T08:06:43.693Z",
+  "assertions": [
+    {
+      "name": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "pass": true
+    },
+    {
+      "name": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "pass": true
+    }
+  ],
+  "observations": [
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "dialogError": null,
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly#old",
+      "dialogs": [
+        {
+          "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+          "type": "confirm",
+          "message": "当前周报有未保存修改，仍要离开吗？",
+          "decision": "dismiss"
+        }
+      ]
+    }
+  ],
+  "dialogs": [
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "type": "confirm",
+      "message": "确定放弃这次未保存的修改吗？",
+      "decision": "accept"
+    }
+  ],
+  "requests": [],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-fragment-back-forward-without-navigation-keeps-editor-until-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "fallback-fragment-multi-traverse-keeps-input-until-discard",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "screenshots": [
+    "00-desktop-baseline.png",
+    "01-desktop-editor-baseline.png",
+    "13-legacy-fragment-resumed.png",
+    "10-fragment-storage-block.png",
+    "10-fragment-resumed.png"
+  ],
+  "sourceDatabaseSha256": "d04135b0fdfafd401f526d83a7a281aceeaaa2e2e400f64f6d1cf2def2049fe4",
+  "head": "db4684132f50f43105cbac251cff23d87f8d1928",
+  "buildId": "5XM__utDMz2yLZPp0q9PJ",
+  "sourceHashes": {
+    "src/app/layout.tsx": "819f07cb81a4028ef2c720a117e0c34a1a487988fe40307066db3abff694df2c",
+    "src/components/admin/WeeklyHistoryTracker.tsx": "36d0cb2c4b73abc1b3d2143ce74783745cc6697ed0570635f691c8d22ecc6dd5",
+    "src/components/admin/WeeklyActivityWorkspace.tsx": "2229b4e6f77122e60d2cddee3158fcaeaac3cf3682c72ee1b4b3a73125ee8884",
+    "src/components/admin/weekly-editor-state.ts": "da56493432a6bc2de691999283003026808f21dd74d8f0d23b647deb6d5dc68c",
+    "src/components/admin/AdminShell.tsx": "44a8485f061b28ec3962ab04a08e83e3f5e08f0afe728e94f1cfc1a54e60579f",
+    "src/components/admin/navigation.ts": "746d9ce44007288dce7937cdc27841833014b6e46bb9683c2345cb9c7031d9a4",
+    "src/components/admin/useAdminAction.ts": "d2fdab37c627fca58bdc2924084644b84af3846339f65995f55c54333b5590d5",
+    "src/lib/services/weekly-activity-drafts.ts": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26",
+    "src/app/api/admin/weekly/[id]/route.ts": "8e5ede50d3e5829eba4ecf76e392bc78fb16ac5bb77bf507c880d24251f18036",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+  },
+  "fixtures": [
+    {
+      "id": "cmuqoj4uc0003ppw470aeq4lu",
+      "weekStart": "2159-09-03T00:00:00.000Z",
+      "weekEnd": "2159-09-09T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 A-a1595b89-e78a-46c6-9ee7-6f3d82696c22",
+      "titleEn": "导航证据 A isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:06:44.292Z",
+      "createdAt": "2026-10-02T08:06:44.292Z",
+      "updatedAt": "2026-10-02T08:06:44.292Z"
+    },
+    {
+      "id": "cmuqoj4ue0004ppw4mq60hsh2",
+      "weekStart": "2159-09-10T00:00:00.000Z",
+      "weekEnd": "2159-09-16T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 B-a1595b89-e78a-46c6-9ee7-6f3d82696c22",
+      "titleEn": "导航证据 B isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T08:06:44.294Z",
+      "createdAt": "2026-10-02T08:06:44.294Z",
+      "updatedAt": "2026-10-02T08:06:44.294Z"
+    }
+  ],
+  "serverPid": 10420,
+  "browser": "154.0.4258.48",
+  "completed": true,
+  "passed": true,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3019Free": true,
+    "ownedTempDeleted": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-02T08:06:52.656Z"
+}

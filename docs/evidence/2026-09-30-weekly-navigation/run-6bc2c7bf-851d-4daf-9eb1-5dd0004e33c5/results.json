@@ -1,0 +1,5169 @@
+{
+  "runId": "6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+  "startedAt": "2026-10-02T07:32:46.779Z",
+  "assertions": [
+    {
+      "name": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "pass": true
+    },
+    {
+      "name": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "pass": true
+    },
+    {
+      "name": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "pass": true
+    },
+    {
+      "name": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "pass": true
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "pass": true
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "pass": false,
+      "error": "History navigation must offer a cancelable dialog\n\n15 !== 16\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "pass": true
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "pass": false,
+      "error": "History navigation must offer a cancelable dialog\n\n22 !== 23\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "pass": true
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "pass": true
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "pass": true
+    },
+    {
+      "name": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "pass": true
+    },
+    {
+      "name": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "pass": true
+    },
+    {
+      "name": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "pass": true
+    }
+  ],
+  "observations": [
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "dismissedReloadError": "page.reload: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "originalHistory": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "history": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+        "index": 2,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+        "index": 2,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goForward: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "originalHistory": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goForward: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "history": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+        "index": 3,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "3e793b9e-5af8-470e-8c70-56d719792baa",
+        "index": 4,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "3e793b9e-5af8-470e-8c70-56d719792baa",
+        "index": 4,
+        "keys": [
+          "4d3dc885-aefa-4290-87f4-6763bf0f7216",
+          "5a939f72-1802-4aa4-aded-3d55ead83a95",
+          "2927867e-cf7c-4aec-8252-ab48d6ea236d",
+          "eebe0dd8-83f9-4336-ba75-9755d1a0b131",
+          "3e793b9e-5af8-470e-8c70-56d719792baa"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "originalHistory": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "history": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "method": "goBackThree",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": "page.waitForEvent: Timeout 1500ms exceeded while waiting for event \"dialog\"\n=========================== logs ===========================\nwaiting for event \"dialog\"\n============================================================",
+      "originalHistory": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+        "index": 3,
+        "keys": [
+          "16d8bcf9-186d-4a37-98cc-9ca36990fde0",
+          "c259092b-2809-4dab-960c-ac4cc1202d35",
+          "92c114d3-284c-444c-b215-5d1f8f89e6f0",
+          "7fd0fe96-1fbe-44d0-85da-8f46ac27ac15",
+          "eef6f1fa-e71d-424b-bef4-7e06792e0dcf"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 0
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "originalHistory": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "history": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "e425130c-a087-447a-b134-8f777e523996",
+        "index": 2,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "e425130c-a087-447a-b134-8f777e523996",
+        "index": 2,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goForward: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "originalHistory": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goForward: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "history": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "79908806-e7d0-437a-a56c-540c1fc92fb9",
+        "index": 3,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "7b312234-0a5a-497b-86ca-828e395e67a6",
+        "index": 4,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "7b312234-0a5a-497b-86ca-828e395e67a6",
+        "index": 4,
+        "keys": [
+          "9c18fb22-4f0b-4aae-bff8-2e91f8305e70",
+          "5e5e2a3f-707f-4417-a09f-90591e2ac537",
+          "e425130c-a087-447a-b134-8f777e523996",
+          "79908806-e7d0-437a-a56c-540c1fc92fb9",
+          "7b312234-0a5a-497b-86ca-828e395e67a6"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "originalHistory": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": "page.goBack: Timeout 1500ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+      "history": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "method": "goBackThree",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": "page.waitForEvent: Timeout 1500ms exceeded while waiting for event \"dialog\"\n=========================== logs ===========================\nwaiting for event \"dialog\"\n============================================================",
+      "originalHistory": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      },
+      "historyImmediatelyAfter": {
+        "key": "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+        "index": 3,
+        "keys": [
+          "937dac3a-2085-4465-b870-23fc9bc86033",
+          "7b605bff-f32a-4d30-b06b-638e1ba8f111",
+          "d6a00dfb-61a0-4c24-b515-6c70f9ee95ec",
+          "188c5f9f-dcc1-4878-8ae3-56cc46324b00",
+          "7f1f0e7a-482f-4d8c-82ab-7021ac53c645"
+        ],
+        "fallbackPosition": null
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/weekly",
+      "dialogCount": 0
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+        "index": 2,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+        "index": 0,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 0
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+        "index": 2,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+        "index": 2,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 2
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "6eb6f074-b997-4bac-b47d-b978be4b3ba8",
+        "index": 4,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+        "index": 3,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "6eb6f074-b997-4bac-b47d-b978be4b3ba8",
+        "index": 4,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "6eb6f074-b997-4bac-b47d-b978be4b3ba8",
+        "index": 4,
+        "keys": [
+          "45aecc97-aa58-4ac0-bb66-fd6d2ac0ce4a",
+          "b5729446-02fa-4050-a9b3-35b33b826c58",
+          "5e763040-5c19-4a53-85f5-b2e4dac83e7b",
+          "f8380bdf-e332-4ef4-a811-b356ee723a2a",
+          "6eb6f074-b997-4bac-b47d-b978be4b3ba8"
+        ],
+        "fallbackPosition": 4
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "9828c749-05d2-4ed2-b110-2045a0ed8123",
+        "index": 2,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "014412d2-3a21-4099-9948-df1ac450194f",
+        "index": 0,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 0
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBackThree",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "014412d2-3a21-4099-9948-df1ac450194f",
+        "index": 0,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 0
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBackThree",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "9828c749-05d2-4ed2-b110-2045a0ed8123",
+        "index": 2,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8",
+        "index": 4,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8",
+        "index": 4,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "c9bed303-fa34-4764-97f1-4ae7d297758d",
+        "index": 3,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8",
+        "index": 4,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8",
+        "index": 4,
+        "keys": [
+          "014412d2-3a21-4099-9948-df1ac450194f",
+          "16709792-0962-428b-834e-918ab318f3e4",
+          "9828c749-05d2-4ed2-b110-2045a0ed8123",
+          "c9bed303-fa34-4764-97f1-4ae7d297758d",
+          "8b2ed7f4-0ce4-4518-b7cc-7d36e4db36f8"
+        ],
+        "fallbackPosition": 4
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+        "index": 2,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "01ef67a3-5b34-491d-b4af-373b07219d36",
+        "index": 0,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 0
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+        "index": 2,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+        "index": 2,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 2
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c",
+        "index": 4,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+        "index": 3,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c",
+        "index": 4,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c",
+        "index": 4,
+        "keys": [
+          "01ef67a3-5b34-491d-b4af-373b07219d36",
+          "c2083117-f376-4e01-a42c-a19cfaf03e4f",
+          "9a9ecf4d-b4f1-446e-97d0-551fb606a48d",
+          "ea6b9b75-fe86-4b86-b90f-94def50440c2",
+          "6c3c9922-0cd2-44ec-88cf-bdcd0db91a9c"
+        ],
+        "fallbackPosition": 4
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+        "index": 2,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBack",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+        "index": 0,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 0
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBackThree",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBackThree",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+        "index": 0,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 0
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBackThree",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+        "index": 2,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 2
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goBack",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "8f305da4-9456-44dd-b424-337c44772eb3",
+        "index": 4,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goForward",
+      "decision": "dismiss",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "8f305da4-9456-44dd-b424-337c44772eb3",
+        "index": 4,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": true,
+      "waitError": null,
+      "history": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      }
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "originalHistory": {
+        "key": "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+        "index": 3,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 3
+      },
+      "historyImmediatelyAfter": {
+        "key": "8f305da4-9456-44dd-b424-337c44772eb3",
+        "index": 4,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 4
+      },
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogCount": 1
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "method": "goForward",
+      "decision": "accept",
+      "blocked": false,
+      "waitError": null,
+      "history": {
+        "key": "8f305da4-9456-44dd-b424-337c44772eb3",
+        "index": 4,
+        "keys": [
+          "d4d93ed4-f02e-4f39-b338-ce8d89c4bb18",
+          "4fdf68c6-cfdc-4e8a-a0df-541061b85e2c",
+          "fffa2ff5-f474-4cc9-bf97-ab1b662c0acc",
+          "5d9ae71f-bafe-4876-b649-51e7fe80a5aa",
+          "8f305da4-9456-44dd-b424-337c44772eb3"
+        ],
+        "fallbackPosition": 4
+      }
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "winning": {
+        "status": 200,
+        "body": {
+          "id": "cmuqnbh5m0003ppsc0hp9omfi",
+          "weekStart": "2131-04-09T00:00:00.000Z",
+          "weekEnd": "2131-04-15T00:00:00.000Z",
+          "status": "DRAFT",
+          "titleZh": "并行胜者-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+          "titleEn": "导航证据 A isolated",
+          "summaryZh": "隔离周报原始摘要",
+          "summaryEn": "Isolated original summary",
+          "sourceSnapshot": {
+            "github": [],
+            "progress": [],
+            "actions": [],
+            "projects": [],
+            "articles": [],
+            "activities": []
+          },
+          "convertedActivityId": null,
+          "generatedAt": "2026-10-02T07:32:47.386Z",
+          "createdAt": "2026-10-02T07:32:47.386Z",
+          "updatedAt": "2026-10-02T07:33:43.351Z"
+        },
+        "request": {
+          "titleZh": "并行胜者-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+          "titleEn": "导航证据 A isolated",
+          "summaryZh": "隔离周报原始摘要",
+          "summaryEn": "Isolated original summary",
+          "expectedUpdatedAt": "2026-10-02T07:32:47.386Z"
+        }
+      },
+      "losing": {
+        "status": 409,
+        "body": {
+          "error": "周报草稿已在其他位置更新，请刷新后合并修改"
+        },
+        "request": {
+          "titleZh": "并行败者-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+          "titleEn": "导航证据 A isolated",
+          "summaryZh": "隔离周报原始摘要",
+          "summaryEn": "Isolated original summary",
+          "expectedUpdatedAt": "2026-10-02T07:32:47.386Z"
+        }
+      },
+      "loserRecovery": {
+        "values": {
+          "titleZh": "并行败者-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+          "titleEn": "导航证据 A isolated",
+          "summaryZh": "隔离周报原始摘要",
+          "summaryEn": "Isolated original summary"
+        },
+        "expectedUpdatedAt": "2026-10-02T07:32:47.386Z"
+      }
+    }
+  ],
+  "dialogs": [
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要切换吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要切换吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "type": "beforeunload",
+      "message": "",
+      "decision": "dismiss"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "type": "beforeunload",
+      "message": "",
+      "decision": "accept"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "dismiss"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要切换吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "type": "confirm",
+      "message": "当前周报有未保存修改，仍要离开吗？",
+      "decision": "accept"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "type": "beforeunload",
+      "message": "",
+      "decision": "accept"
+    }
+  ],
+  "requests": [
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/api/admin/weekly/cmuqnbh5m0003ppsc0hp9omfi",
+      "method": "PATCH",
+      "status": 200,
+      "body": {
+        "titleZh": "并行胜者-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+        "titleEn": "导航证据 A isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T07:32:47.386Z"
+      }
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/api/admin/weekly/cmuqnbh5m0003ppsc0hp9omfi",
+      "method": "PATCH",
+      "status": 409,
+      "body": {
+        "titleZh": "并行败者-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+        "titleEn": "导航证据 A isolated",
+        "summaryZh": "隔离周报原始摘要",
+        "summaryEn": "Isolated original summary",
+        "expectedUpdatedAt": "2026-10-02T07:32:47.386Z"
+      }
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "draft-switch-dismiss-accept-and-reopen-recovery",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "true-reload-beforeunload-dismiss-accept-reopen-recovery-db-unchanged",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-1440",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "sidebar-leave-dismiss-accept-return-recovery-375",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-1440-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-1440-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-normal-375-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "actual-back-forward-cancel-retry-storage-throws-375-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "storage-failure-blocks-switch-and-sidebar-leave-preserves-input",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "two-tabs-same-version-sequential-save-200-409-loser-recovery-retained",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "screenshots": [
+    "00-desktop-baseline.png",
+    "01-desktop-editor-baseline.png",
+    "02-switch-recovered.png",
+    "03-reload-recovered.png",
+    "04-sidebar-recovered-1440.png",
+    "04-sidebar-recovered-375.png",
+    "05-back-canceled-false-1440-true.png",
+    "06-history-recovered-false-1440-true.png",
+    "05-back-canceled-true-1440-true.png",
+    "05-back-canceled-false-375-true.png",
+    "06-history-recovered-false-375-true.png",
+    "05-back-canceled-true-375-true.png",
+    "05-back-canceled-false-1440-false.png",
+    "06-history-recovered-false-1440-false.png",
+    "05-back-canceled-true-1440-false.png",
+    "06-history-storage-block-1440-false.png",
+    "06-history-recovered-true-1440-false.png",
+    "05-back-canceled-false-375-false.png",
+    "06-history-recovered-false-375-false.png",
+    "05-back-canceled-true-375-false.png",
+    "06-history-storage-block-375-false.png",
+    "06-history-recovered-true-375-false.png",
+    "07-storage-block-mobile.png",
+    "08-conflict-loser-retained.png",
+    "09-conflict-loser-reopen.png"
+  ],
+  "sourceDatabaseSha256": "d04135b0fdfafd401f526d83a7a281aceeaaa2e2e400f64f6d1cf2def2049fe4",
+  "head": "db4684132f50f43105cbac251cff23d87f8d1928",
+  "buildId": "ybCFC5Nb2JTOeAT0fn4c3",
+  "sourceHashes": {
+    "src/app/layout.tsx": "819f07cb81a4028ef2c720a117e0c34a1a487988fe40307066db3abff694df2c",
+    "src/components/admin/WeeklyHistoryTracker.tsx": "654b1e124a40086f8ec7b73c5baf6eeed0ff2cc6440ed98acbbdff3716ec3dd2",
+    "src/components/admin/WeeklyActivityWorkspace.tsx": "b15d07c567d0b81b4b84b0a6211a2032ddac8bf8d5ae42f441f5ea461b37a31a",
+    "src/components/admin/weekly-editor-state.ts": "da56493432a6bc2de691999283003026808f21dd74d8f0d23b647deb6d5dc68c",
+    "src/components/admin/AdminShell.tsx": "44a8485f061b28ec3962ab04a08e83e3f5e08f0afe728e94f1cfc1a54e60579f",
+    "src/components/admin/navigation.ts": "746d9ce44007288dce7937cdc27841833014b6e46bb9683c2345cb9c7031d9a4",
+    "src/components/admin/useAdminAction.ts": "d2fdab37c627fca58bdc2924084644b84af3846339f65995f55c54333b5590d5",
+    "src/lib/services/weekly-activity-drafts.ts": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26",
+    "src/app/api/admin/weekly/[id]/route.ts": "8e5ede50d3e5829eba4ecf76e392bc78fb16ac5bb77bf507c880d24251f18036",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+  },
+  "fixtures": [
+    {
+      "id": "cmuqnbh5m0003ppsc0hp9omfi",
+      "weekStart": "2131-04-09T00:00:00.000Z",
+      "weekEnd": "2131-04-15T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 A-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+      "titleEn": "导航证据 A isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T07:32:47.386Z",
+      "createdAt": "2026-10-02T07:32:47.386Z",
+      "updatedAt": "2026-10-02T07:32:47.386Z"
+    },
+    {
+      "id": "cmuqnbh5o0004ppsc1vlzp76s",
+      "weekStart": "2131-04-16T00:00:00.000Z",
+      "weekEnd": "2131-04-22T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 B-6bc2c7bf-851d-4daf-9eb1-5dd0004e33c5",
+      "titleEn": "导航证据 B isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T07:32:47.388Z",
+      "createdAt": "2026-10-02T07:32:47.388Z",
+      "updatedAt": "2026-10-02T07:32:47.388Z"
+    }
+  ],
+  "serverPid": 16612,
+  "browser": "154.0.4258.48",
+  "completed": true,
+  "passed": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3019Free": true,
+    "ownedTempDeleted": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-02T07:33:44.859Z"
+}

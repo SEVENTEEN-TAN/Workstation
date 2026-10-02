@@ -1,0 +1,835 @@
+{
+  "runId": "5beba2ed-b75a-4508-9768-8df5953fcd9c",
+  "startedAt": "2026-10-02T07:44:52.796Z",
+  "assertions": [
+    {
+      "name": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "pass": false,
+      "error": "Legacy Back must not silently unload dirty input\n\n0 !== 1\n",
+      "classification": "business-assertion"
+    },
+    {
+      "name": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "pass": false,
+      "error": "Legacy Back must not silently unload dirty input\n\n0 !== 1\n",
+      "classification": "business-assertion"
+    }
+  ],
+  "observations": [
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "waitError": null,
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogs": []
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "waitError": null,
+      "actualUrl": "http://127.0.0.1:3019/admin/overview",
+      "dialogs": []
+    }
+  ],
+  "dialogs": [],
+  "requests": [],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "setup",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-true",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/overview",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/home",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/okr",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/activities",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/weekly",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/milestones",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/timeline",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/projects",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/experience",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/skills",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/knowledge",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/resume",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/media",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/github",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "case": "legacy-history-after-reload-cancel-storage-failure-navigation-false",
+      "path": "/admin/ai",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "screenshots": [
+    "00-desktop-baseline.png",
+    "01-desktop-editor-baseline.png"
+  ],
+  "sourceDatabaseSha256": "d04135b0fdfafd401f526d83a7a281aceeaaa2e2e400f64f6d1cf2def2049fe4",
+  "head": "db4684132f50f43105cbac251cff23d87f8d1928",
+  "buildId": "lypQpSO9-mFGtL-dUCy5o",
+  "sourceHashes": {
+    "src/app/layout.tsx": "819f07cb81a4028ef2c720a117e0c34a1a487988fe40307066db3abff694df2c",
+    "src/components/admin/WeeklyHistoryTracker.tsx": "1b8af81240225dd30a80d04f944102c7fff18900ee1ec746db6e191a21f3e855",
+    "src/components/admin/WeeklyActivityWorkspace.tsx": "82bf30d1b044e80e8cb72ef110e97e7bef8dd31967ce512bb70cce2814988eca",
+    "src/components/admin/weekly-editor-state.ts": "da56493432a6bc2de691999283003026808f21dd74d8f0d23b647deb6d5dc68c",
+    "src/components/admin/AdminShell.tsx": "44a8485f061b28ec3962ab04a08e83e3f5e08f0afe728e94f1cfc1a54e60579f",
+    "src/components/admin/navigation.ts": "746d9ce44007288dce7937cdc27841833014b6e46bb9683c2345cb9c7031d9a4",
+    "src/components/admin/useAdminAction.ts": "d2fdab37c627fca58bdc2924084644b84af3846339f65995f55c54333b5590d5",
+    "src/lib/services/weekly-activity-drafts.ts": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26",
+    "src/app/api/admin/weekly/[id]/route.ts": "8e5ede50d3e5829eba4ecf76e392bc78fb16ac5bb77bf507c880d24251f18036",
+    "prisma/schema.prisma": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+  },
+  "fixtures": [
+    {
+      "id": "cmuqnr1bb0003pp9c65cskwse",
+      "weekStart": "2102-05-29T00:00:00.000Z",
+      "weekEnd": "2102-06-04T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 A-5beba2ed-b75a-4508-9768-8df5953fcd9c",
+      "titleEn": "导航证据 A isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T07:44:53.351Z",
+      "createdAt": "2026-10-02T07:44:53.351Z",
+      "updatedAt": "2026-10-02T07:44:53.351Z"
+    },
+    {
+      "id": "cmuqnr1bc0004pp9cuafrmflp",
+      "weekStart": "2102-06-05T00:00:00.000Z",
+      "weekEnd": "2102-06-11T00:00:00.000Z",
+      "status": "DRAFT",
+      "titleZh": "导航证据 B-5beba2ed-b75a-4508-9768-8df5953fcd9c",
+      "titleEn": "导航证据 B isolated",
+      "summaryZh": "隔离周报原始摘要",
+      "summaryEn": "Isolated original summary",
+      "sourceSnapshot": {
+        "github": [],
+        "progress": [],
+        "actions": [],
+        "projects": [],
+        "articles": [],
+        "activities": []
+      },
+      "convertedActivityId": null,
+      "generatedAt": "2026-10-02T07:44:53.353Z",
+      "createdAt": "2026-10-02T07:44:53.353Z",
+      "updatedAt": "2026-10-02T07:44:53.353Z"
+    }
+  ],
+  "serverPid": 20316,
+  "browser": "154.0.4258.48",
+  "completed": true,
+  "passed": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "ownedServerExited": true,
+    "port3019Free": true,
+    "ownedTempDeleted": true,
+    "errors": []
+  },
+  "finishedAt": "2026-10-02T07:45:01.237Z"
+}

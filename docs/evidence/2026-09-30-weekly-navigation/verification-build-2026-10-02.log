@@ -1,0 +1,131 @@
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 63ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.4s
+  Running TypeScript ...
+  Finished TypeScript in 3.9s ...
+  Collecting page data using 23 workers ...
+  Generating static pages using 23 workers (0/56) ...
+  Generating static pages using 23 workers (14/56) 
+  Generating static pages using 23 workers (28/56) 
+  Generating static pages using 23 workers (42/56) 
+✓ Generating static pages using 23 workers (56/56) in 517ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /activities
+├ ○ /admin
+├ ƒ /admin/activities
+├ ƒ /admin/ai
+├ ƒ /admin/experience
+├ ƒ /admin/github
+├ ƒ /admin/home
+├ ƒ /admin/home/visual-preview
+├ ƒ /admin/knowledge
+├ ƒ /admin/knowledge/collections
+├ ƒ /admin/login
+├ ƒ /admin/media
+├ ƒ /admin/milestones
+├ ƒ /admin/okr
+├ ƒ /admin/okr/cycles/[cycleId]
+├ ƒ /admin/okr/cycles/[cycleId]/objectives/[objectiveId]
+├ ƒ /admin/overview
+├ ƒ /admin/projects
+├ ƒ /admin/resume
+├ ƒ /admin/setup
+├ ƒ /admin/skills
+├ ƒ /admin/timeline
+├ ƒ /admin/weekly
+├ ƒ /api/admin/activities
+├ ƒ /api/admin/activities/[id]
+├ ƒ /api/admin/ai/defaults
+├ ƒ /api/admin/ai/drafts
+├ ƒ /api/admin/ai/drafts/[id]
+├ ƒ /api/admin/ai/drafts/[id]/apply
+├ ƒ /api/admin/ai/providers
+├ ƒ /api/admin/ai/providers/[id]
+├ ƒ /api/admin/ai/providers/[id]/models
+├ ƒ /api/admin/ai/providers/[id]/test
+├ ƒ /api/admin/assets
+├ ƒ /api/admin/assets/[id]
+├ ƒ /api/admin/audit
+├ ƒ /api/admin/dashboard
+├ ƒ /api/admin/experience
+├ ƒ /api/admin/experience/[id]
+├ ƒ /api/admin/github
+├ ƒ /api/admin/github/sync
+├ ƒ /api/admin/knowledge/articles
+├ ƒ /api/admin/knowledge/articles/[id]
+├ ƒ /api/admin/knowledge/collections
+├ ƒ /api/admin/knowledge/collections/[id]
+├ ƒ /api/admin/knowledge/publications/attachments
+├ ƒ /api/admin/knowledge/publications/drafts
+├ ƒ /api/admin/knowledge/sync-changes/[id]/review
+├ ƒ /api/admin/knowledge/vaults
+├ ƒ /api/admin/knowledge/vaults/[id]
+├ ƒ /api/admin/knowledge/vaults/[id]/notes
+├ ƒ /api/admin/knowledge/vaults/[id]/scan
+├ ƒ /api/admin/milestones
+├ ƒ /api/admin/milestones/[id]
+├ ƒ /api/admin/milestones/[id]/convert
+├ ƒ /api/admin/okr
+├ ƒ /api/admin/okr/action-items
+├ ƒ /api/admin/okr/action-items/[id]
+├ ƒ /api/admin/okr/cycles
+├ ƒ /api/admin/okr/cycles/[id]
+├ ƒ /api/admin/okr/key-results
+├ ƒ /api/admin/okr/key-results/[id]
+├ ƒ /api/admin/okr/key-results/[id]/progress
+├ ƒ /api/admin/okr/objectives
+├ ƒ /api/admin/okr/objectives/[id]
+├ ƒ /api/admin/okr/reviews
+├ ƒ /api/admin/okr/reviews/[id]
+├ ƒ /api/admin/overview-queue
+├ ƒ /api/admin/projects
+├ ƒ /api/admin/projects/[id]
+├ ƒ /api/admin/resume
+├ ƒ /api/admin/resume/[id]
+├ ƒ /api/admin/site/draft
+├ ƒ /api/admin/site/preview
+├ ƒ /api/admin/site/publish
+├ ƒ /api/admin/site/rollback
+├ ƒ /api/admin/site/versions
+├ ƒ /api/admin/skills
+├ ƒ /api/admin/skills/[id]
+├ ƒ /api/admin/timeline
+├ ƒ /api/admin/timeline/[id]
+├ ƒ /api/admin/timeline/[id]/convert
+├ ƒ /api/admin/weekly
+├ ƒ /api/admin/weekly/[id]
+├ ƒ /api/admin/weekly/[id]/ai
+├ ƒ /api/admin/weekly/[id]/convert
+├ ƒ /api/assets/[id]
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/setup
+├ ƒ /api/knowledge/assets/[id]
+├ ƒ /api/resume/[locale]
+├ ƒ /api/sync/knowledge/attachments/[id]
+├ ƒ /api/sync/knowledge/vaults/[id]
+├ ƒ /api/sync/knowledge/vaults/[id]/attachments
+├ ƒ /experience
+├ ƒ /knowledge
+├ ƒ /knowledge/[slug]
+├ ƒ /knowledge/collections
+├ ƒ /knowledge/collections/[slug]
+├ ƒ /okr
+├ ƒ /preview
+├ ƒ /projects
+├ ƒ /projects/[slug]
+├ ƒ /resume
+└ ƒ /skills
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
