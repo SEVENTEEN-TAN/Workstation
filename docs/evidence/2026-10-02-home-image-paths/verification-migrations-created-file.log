@@ -1,0 +1,107 @@
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": SQLite database "workstation-home-image-74cc5c8774f0499cbb1f13fc7f4e6c3f.db" at "file:C:/Users/23399/AppData/Local/Temp/workstation-home-image-74cc5c8774f0499cbb1f13fc7f4e6c3f.db"
+
+32 migrations found in prisma/migrations
+
+Applying migration `20260914084359_init`
+Applying migration `20260915000000_add_action_items`
+Applying migration `20260915010000_add_career_activities`
+Applying migration `20260915120000_add_portfolio_projects`
+Applying migration `20260915174124_add_experience_records`
+Applying migration `20260915180000_add_experience_contract_fields`
+Applying migration `20260915191000_add_skill_capabilities`
+Applying migration `20260915192000_restrict_skill_project_delete`
+Applying migration `20260916090000_add_resume_files`
+Applying migration `20260916120000_add_knowledge_vaults`
+Applying migration `20260916133000_add_knowledge_sync_reports`
+Applying migration `20260917070040_add_knowledge_note_frontmatter`
+Applying migration `20260917070510_add_knowledge_note_moc`
+Applying migration `20260917071213_add_knowledge_note_links`
+Applying migration `20260917072507_add_knowledge_link_kinds`
+Applying migration `20260917072849_add_knowledge_note_visibility`
+Applying migration `20260917082049_add_knowledge_source_revisions`
+Applying migration `20260917082622_add_knowledge_publication_drafts`
+Applying migration `20260917084110_add_knowledge_articles`
+Applying migration `20260917094744_add_knowledge_article_attachments`
+Applying migration `20260917173000_add_knowledge_collections`
+Applying migration `20260918000000_add_knowledge_sync_change_reviews`
+Applying migration `20260918010000_add_knowledge_attachment_transfer_requests`
+Applying migration `20260918011000_add_attachment_transfer_asset`
+Applying migration `20260918020000_add_github_sync`
+Applying migration `20260918040000_add_weekly_activity_drafts`
+Applying migration `20260918050000_add_okr_milestone_drafts`
+Applying migration `20260918060000_add_career_timeline_drafts`
+Applying migration `20260918070000_add_ai_provider_foundation`
+Applying migration `20260918100000_add_ai_content_drafts`
+Applying migration `20260919080000_add_audit_logs`
+Applying migration `20260923000000_add_action_item_recurrence_source`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20260914084359_init/
+    └─ migration.sql
+  └─ 20260915000000_add_action_items/
+    └─ migration.sql
+  └─ 20260915010000_add_career_activities/
+    └─ migration.sql
+  └─ 20260915120000_add_portfolio_projects/
+    └─ migration.sql
+  └─ 20260915174124_add_experience_records/
+    └─ migration.sql
+  └─ 20260915180000_add_experience_contract_fields/
+    └─ migration.sql
+  └─ 20260915191000_add_skill_capabilities/
+    └─ migration.sql
+  └─ 20260915192000_restrict_skill_project_delete/
+    └─ migration.sql
+  └─ 20260916090000_add_resume_files/
+    └─ migration.sql
+  └─ 20260916120000_add_knowledge_vaults/
+    └─ migration.sql
+  └─ 20260916133000_add_knowledge_sync_reports/
+    └─ migration.sql
+  └─ 20260917070040_add_knowledge_note_frontmatter/
+    └─ migration.sql
+  └─ 20260917070510_add_knowledge_note_moc/
+    └─ migration.sql
+  └─ 20260917071213_add_knowledge_note_links/
+    └─ migration.sql
+  └─ 20260917072507_add_knowledge_link_kinds/
+    └─ migration.sql
+  └─ 20260917072849_add_knowledge_note_visibility/
+    └─ migration.sql
+  └─ 20260917082049_add_knowledge_source_revisions/
+    └─ migration.sql
+  └─ 20260917082622_add_knowledge_publication_drafts/
+    └─ migration.sql
+  └─ 20260917084110_add_knowledge_articles/
+    └─ migration.sql
+  └─ 20260917094744_add_knowledge_article_attachments/
+    └─ migration.sql
+  └─ 20260917173000_add_knowledge_collections/
+    └─ migration.sql
+  └─ 20260918000000_add_knowledge_sync_change_reviews/
+    └─ migration.sql
+  └─ 20260918010000_add_knowledge_attachment_transfer_requests/
+    └─ migration.sql
+  └─ 20260918011000_add_attachment_transfer_asset/
+    └─ migration.sql
+  └─ 20260918020000_add_github_sync/
+    └─ migration.sql
+  └─ 20260918040000_add_weekly_activity_drafts/
+    └─ migration.sql
+  └─ 20260918050000_add_okr_milestone_drafts/
+    └─ migration.sql
+  └─ 20260918060000_add_career_timeline_drafts/
+    └─ migration.sql
+  └─ 20260918070000_add_ai_provider_foundation/
+    └─ migration.sql
+  └─ 20260918100000_add_ai_content_drafts/
+    └─ migration.sql
+  └─ 20260919080000_add_audit_logs/
+    └─ migration.sql
+  └─ 20260923000000_add_action_item_recurrence_source/
+    └─ migration.sql
+      
+All migrations have been successfully applied.

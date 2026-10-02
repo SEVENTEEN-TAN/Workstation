@@ -1,0 +1,14 @@
+
+ RUN  v4.0.16 C:/Users/23399/Desktop/sqtan/WorkStation/.worktrees/homepage-visual-editor
+
+ ✓ tests/site-content-schema.test.ts (21 tests) 40ms
+ ✓ tests/homepage-projects.test.ts (7 tests) 17ms
+ ✓ tests/home-content-editor.test.ts (14 tests) 17ms
+ ✓ tests/home-visual-editor.test.ts (12 tests) 39ms
+ ✓ tests/admin-services.test.ts (35 tests) 45ms
+
+ Test Files  5 passed (5)
+      Tests  89 passed (89)
+   Start at  16:50:40
+   Duration  1.14s (transform 678ms, setup 0ms, import 1.58s, tests 157ms, environment 1ms)
+

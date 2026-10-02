@@ -7,8 +7,15 @@ export const DEFAULT_HOMEPAGE_SETTINGS = {
   githubUrl: "https://github.com/SEVENTEEN-TAN",
 } as const;
 
-export const homepageImagePathSchema = z.string().regex(
-  /^\/(?:images\/[^?#]+|api\/assets\/[^/?#]+)$/,
+const homepageImagePathPattern = /^\/(?:images\/[^?#]+|api\/assets\/[^/?#]+)$/;
+
+export const homepageImagePathSchema = z.string().refine(
+  (value) => {
+    if (!homepageImagePathPattern.test(value)) return false;
+    const pathname = new URL(value, "https://homepage.invalid").pathname;
+    const prefix = value.startsWith("/images/") ? "/images/" : "/api/assets/";
+    return homepageImagePathPattern.test(pathname) && pathname.startsWith(prefix);
+  },
   "图片必须使用本地静态路径或媒体库资源",
 );
 

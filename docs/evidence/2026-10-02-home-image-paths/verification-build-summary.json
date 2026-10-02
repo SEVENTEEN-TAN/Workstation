@@ -1,0 +1,12 @@
+{
+  "database": "C:\\Users\\23399\\AppData\\Local\\Temp\\workstation-home-image-74cc5c8774f0499cbb1f13fc7f4e6c3f.db",
+  "databaseUrlWasTemporary": true,
+  "cleanupCompleted": false,
+  "migrationExit": 0,
+  "migrationLog": "verification-migrations-created-file.log",
+  "initialMissingDatabaseMigrationExit": 1,
+  "validateExit": 0,
+  "seedExit": 0,
+  "buildExit": 0,
+  "buildId": "C-3wi8e8hycxpO4V2KWBo"
+}

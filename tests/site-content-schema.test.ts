@@ -113,6 +113,38 @@ describe("siteContentSchema", () => {
     }).success).toBe(false);
   });
 
+  it.each([
+    "/images/../admin/login",
+    "/images/%2e%2e/admin/login",
+    "/images/.%2e/admin/login",
+    "/images/%2E./admin/login",
+    "/images/..\\admin\\login",
+    "/images/../api/assets/unvalidated-image",
+    "/api/assets/..",
+    "/api/assets/%2e%2e",
+    "/api/assets/image\\nested",
+  ])("rejects homepage image paths that normalize outside their allowed route: %s", (path) => {
+    const content = structuredClone(bootstrapSiteContent);
+    content.settings.portraitImage = path;
+
+    expect(siteContentSchema.safeParse(content).success).toBe(false);
+    expect(siteContentEditingSchema.safeParse(content).success).toBe(false);
+  });
+
+  it.each([
+    "/images/zedian-portrait-v3.png",
+    "/images/projects/portrait.webp",
+    "/images/人物图.png",
+    "/images/portrait%20photo.png",
+    "/api/assets/homepage-image-1",
+  ])("preserves allowed homepage image paths: %s", (path) => {
+    const content = structuredClone(bootstrapSiteContent);
+    content.settings.wechatQrImage = path;
+
+    expect(siteContentSchema.parse(content).settings.wechatQrImage).toBe(path);
+    expect(siteContentEditingSchema.parse(content).settings.wechatQrImage).toBe(path);
+  });
+
   it("distinguishes legacy projects from explicit structured selections", () => {
     const legacy = { en: locale, zh: locale };
 

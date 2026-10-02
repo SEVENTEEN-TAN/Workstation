@@ -1,0 +1,192 @@
+{
+  "date": "2026-10-02",
+  "baseline": "3e9b70dc5f900b728a26ee96c8ed63b2e6db46be",
+  "branch": "feat/homepage-visual-editor",
+  "buildId": "C-3wi8e8hycxpO4V2KWBo",
+  "verification": {
+    "originalRed": {
+      "failed": 8,
+      "passed": 12,
+      "log": "schema-red.log"
+    },
+    "namespaceRed": {
+      "failed": 1,
+      "passed": 20,
+      "log": "schema-namespace-red.log"
+    },
+    "focused": {
+      "passed": 89,
+      "files": 5,
+      "exitCode": 0,
+      "log": "schema-namespace-green.log"
+    },
+    "fullSuite": {
+      "passed": 581,
+      "files": 85,
+      "exitCode": 0,
+      "log": "verification-vitest-final.log"
+    },
+    "eslint": {
+      "log": "verification-eslint-final.log",
+      "exitCode": 0
+    },
+    "typescript": {
+      "log": "verification-typescript.log",
+      "exitCode": 0
+    },
+    "migration": {
+      "applied": 32,
+      "initialLog": "verification-migrations.log",
+      "exitCode": 0,
+      "initialMissingFileExitCode": 1,
+      "log": "verification-migrations-created-file.log"
+    },
+    "prismaValidate": {
+      "log": "verification-prisma.log",
+      "exitCode": 0
+    },
+    "seed": {
+      "log": "verification-seed.log",
+      "exitCode": 0
+    },
+    "build": {
+      "pages": 56,
+      "exitCode": 0,
+      "log": "verification-build.log"
+    },
+    "bootstrapImages": {
+      "file": "bootstrap-static-images.json",
+      "uniqueReferences": 6,
+      "allFilesExist": true
+    }
+  },
+  "review": {
+    "record": "review.md",
+    "scope": "this image-route fix only",
+    "outstandingImportant": 0,
+    "outstandingMinor": 0,
+    "outstandingCritical": 0,
+    "reviewer": "home_image_path_review",
+    "finalReviewReceived": true
+  },
+  "sourceHashes": [
+    {
+      "path": "src/lib/content/schema.ts",
+      "sha256": "c3eec9bf2b59d838137b0abbaacc42a3a1d496f35df4b5c78d0d79cf5cadc9b7"
+    },
+    {
+      "path": "tests/site-content-schema.test.ts",
+      "sha256": "125d5c29773fda4f6b75b7d3536f24f6495ffd0f6b6284acb3f2b9bda8dbc214"
+    },
+    {
+      "path": "src/lib/services/site-content.ts",
+      "sha256": "8c280dd28ef0efa645aaa59b0282e69bfaa8371fdfc10ebdf4895f0ec0384c23"
+    },
+    {
+      "path": "src/components/admin/home/visual-editor-protocol.ts",
+      "sha256": "a23dd2c8592395e9963410394d62b093cdb53440917057ee2e7cadadb47bbd5f"
+    },
+    {
+      "path": "src/components/admin/home/content-editor.ts",
+      "sha256": "e205cddd36c320baa8c4a42a06dc53b83d41f17738caedb7cfdd9a3e13955871"
+    },
+    {
+      "path": "src/components/public/data.ts",
+      "sha256": "2889fcc7655b4d67988fcbaf88da784952e6f55794846e5be8c1e6a2da855460"
+    },
+    {
+      "path": "src/lib/content/bootstrap.ts",
+      "sha256": "a4f940c3cac5efea7ebd3e16cc13e696ad1f96550d3980eff2eaf40738afe96a"
+    }
+  ],
+  "logHashes": [
+    {
+      "path": "schema-green.log",
+      "sha256": "2bc9ba6b99dda0b9cc6b52ca480d6331a0e88d5792aaa38b68ad88b95744fc41",
+      "bytes": 541
+    },
+    {
+      "path": "schema-namespace-green.log",
+      "sha256": "5a345d41485635cb22739615dee88b566ac891fde799f33d419db49181178a15",
+      "bytes": 541
+    },
+    {
+      "path": "schema-namespace-red.log",
+      "sha256": "936bb987b2ae5f7fcc066751de19241737b0d4dc695d2c4387e2b8dac693b1a2",
+      "bytes": 3026
+    },
+    {
+      "path": "schema-red.log",
+      "sha256": "c3b591a2c7bf20388e693e4f36879774ea4d9874b00a8fe1d476c848875153bf",
+      "bytes": 3993
+    },
+    {
+      "path": "verification-build.log",
+      "sha256": "e5b911dff77fe68260d086f53e64a2fb794b603db70e6ff9814ac820c233d62d",
+      "bytes": 4084
+    },
+    {
+      "path": "verification-eslint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "verification-eslint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "verification-migrations-created-file.log",
+      "sha256": "917e6453f13d66fea50cc11f3a7bff352388068948d0dc165a9d442444f3d345",
+      "bytes": 4900
+    },
+    {
+      "path": "verification-migrations.log",
+      "sha256": "b4383d2363b66160f2e76de8c1f9c758652fb7d27cbe541cc7d35d53c3aec721",
+      "bytes": 279
+    },
+    {
+      "path": "verification-prisma.log",
+      "sha256": "25ed99279b7cadd2f020f513c9b9e5e47bf809a71cff881d3dd5be5e81db7177",
+      "bytes": 98
+    },
+    {
+      "path": "verification-seed.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "verification-typescript.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "verification-vitest-final.log",
+      "sha256": "2507ed889dc8903c7fa0fedc76d4b227c7cbdd3cc4fdd52726cda70849bf4753",
+      "bytes": 5220
+    },
+    {
+      "path": "verification-vitest.log",
+      "sha256": "57f55e8ad63296b71e11bba5d5fd4ecb79bebd2c03ff68b17c0a9f5d1cef5a36",
+      "bytes": 5383
+    }
+  ],
+  "cleanup": {
+    "specificReasonProvided": false,
+    "database": "C:/Users/23399/AppData/Local/Temp/workstation-home-image-74cc5c8774f0499cbb1f13fc7f4e6c3f.db",
+    "rejectionText": "blocked by policy",
+    "cleanupCompleted": false,
+    "deletionRejectedByAutomaticApproval": true
+  },
+  "boundaries": {
+    "productionDatabaseTouched": false,
+    "staticFileExistenceValidationAdded": false,
+    "planCompleted": 23,
+    "browserAcceptanceAdded": false,
+    "historicalProductionSnapshotCompatibilityVerified": false,
+    "goalStatus": "active",
+    "merged": false,
+    "deployed": false,
+    "planTotal": 30
+  }
+}

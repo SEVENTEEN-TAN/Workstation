@@ -1,0 +1,30 @@
+{
+  "scope": "bootstrap static image references only",
+  "checks": [
+    {
+      "path": "/images/zedian-portrait-v3.png",
+      "isFile": true
+    },
+    {
+      "path": "/images/wechat-qr.png",
+      "isFile": true
+    },
+    {
+      "path": "/images/projects/neon-system.webp",
+      "isFile": true
+    },
+    {
+      "path": "/images/projects/analog-archive.webp",
+      "isFile": true
+    },
+    {
+      "path": "/images/projects/signal-editorial.webp",
+      "isFile": true
+    },
+    {
+      "path": "/images/projects/vertical-habitat.webp",
+      "isFile": true
+    }
+  ],
+  "passed": true
+}

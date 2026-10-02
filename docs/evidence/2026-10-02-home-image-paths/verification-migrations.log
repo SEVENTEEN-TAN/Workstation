@@ -1,0 +1,5 @@
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": SQLite database "workstation-home-image-74cc5c8774f0499cbb1f13fc7f4e6c3f.db" at "file:C:/Users/23399/AppData/Local/Temp/workstation-home-image-74cc5c8774f0499cbb1f13fc7f4e6c3f.db"
+
+Error: Schema engine error:
+

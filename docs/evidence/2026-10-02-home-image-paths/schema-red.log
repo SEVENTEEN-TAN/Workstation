@@ -1,0 +1,59 @@
+
+ RUN  v4.0.16 C:/Users/23399/Desktop/sqtan/WorkStation/.worktrees/homepage-visual-editor
+
+ ❯ tests/site-content-schema.test.ts (20 tests | 8 failed) 48ms
+     ✓ accepts a complete bilingual site snapshot 2ms
+     ✓ supplies deterministic settings for legacy snapshots 2ms
+     ✓ rejects remote homepage images 2ms
+     × rejects homepage image paths that normalize outside their allowed route: /images/../admin/login 10ms
+     × rejects homepage image paths that normalize outside their allowed route: /images/%2e%2e/admin/login 2ms
+     × rejects homepage image paths that normalize outside their allowed route: /images/.%2e/admin/login 1ms
+     × rejects homepage image paths that normalize outside their allowed route: /images/%2E./admin/login 1ms
+     × rejects homepage image paths that normalize outside their allowed route: /images/..\admin\login 2ms
+     × rejects homepage image paths that normalize outside their allowed route: /api/assets/.. 2ms
+     × rejects homepage image paths that normalize outside their allowed route: /api/assets/%2e%2e 1ms
+     × rejects homepage image paths that normalize outside their allowed route: /api/assets/image\nested 2ms
+     ✓ preserves allowed homepage image paths: /images/zedian-portrait-v3.png 5ms
+     ✓ preserves allowed homepage image paths: /images/projects/portrait.webp 1ms
+     ✓ preserves allowed homepage image paths: /images/人物图.png 2ms
+     ✓ preserves allowed homepage image paths: /images/portrait%20photo.png 1ms
+     ✓ preserves allowed homepage image paths: /api/assets/homepage-image-1 3ms
+     ✓ distinguishes legacy projects from explicit structured selections 2ms
+     ✓ rejects a snapshot missing a required locale section 1ms
+     ✓ rejects empty required text and incomplete projects 1ms
+     ✓ permits unfinished editable copy while retaining strict image paths 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /images/../admin/login
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /images/%2e%2e/admin/login
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /images/.%2e/admin/login
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /images/%2E./admin/login
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /images/..\admin\login
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /api/assets/..
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /api/assets/%2e%2e
+ FAIL  tests/site-content-schema.test.ts > siteContentSchema > rejects homepage image paths that normalize outside their allowed route: /api/assets/image\nested
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/site-content-schema.test.ts:129:58
+    127|     content.settings.portraitImage = path;
+    128| 
+    129|     expect(siteContentSchema.safeParse(content).success).toBe(false);
+       |                                                          ^
+    130|     expect(siteContentEditingSchema.safeParse(content).success).toBe(f…
+    131|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 12 passed (20)
+   Start at  16:46:46
+   Duration  467ms (transform 84ms, setup 0ms, import 142ms, tests 48ms, environment 0ms)
+
