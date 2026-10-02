@@ -1,0 +1,56 @@
+{
+  "phase": "green",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-preview-unload\\40b8e0d3-56d7-4516-95d5-f7e577b8e310.db",
+  "results": [
+    {
+      "name": "focused-native-reload-cancel",
+      "parentClean": true,
+      "focused": true,
+      "dialogs": [
+        "beforeunload"
+      ],
+      "after": "UNCOMMITTED FOCUSED TEXT",
+      "expected": "UNCOMMITTED FOCUSED TEXT",
+      "pass": true
+    },
+    {
+      "name": "saved-native-reload",
+      "dialogs": [],
+      "after": "UNCOMMITTED FOCUSED TEXT",
+      "pass": true
+    },
+    {
+      "name": "composition-native-reload-cancel",
+      "dialogs": [
+        "beforeunload"
+      ],
+      "simulation": "Synthetic composition event, not system IME",
+      "pass": true
+    },
+    {
+      "name": "clean-focus-native-reload",
+      "dialogs": [],
+      "pass": true
+    },
+    {
+      "name": "focused-native-close-cancel",
+      "dialogs": [
+        "beforeunload"
+      ],
+      "closed": false,
+      "after": "UNCOMMITTED BEFORE CLOSE",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "buildId": "4IZRneWEjp-FKFncjaSjs",
+  "browser": "154.0.4258.48",
+  "pass": true,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHash": "a669eee43d6e3bc69c2c45ff8c6c744411febc45ce13507ad3549bdaf049a314"
+}

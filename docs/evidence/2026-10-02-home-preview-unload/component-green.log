@@ -1,0 +1,11 @@
+
+ RUN  v4.0.16 C:/Users/23399/Desktop/sqtan/WorkStation/.worktrees/homepage-visual-editor
+
+ ✓ tests/home-preview-unload.test.ts (5 tests) 15ms
+ ✓ tests/home-visual-editor.test.ts (12 tests) 24ms
+
+ Test Files  2 passed (2)
+      Tests  17 passed (17)
+   Start at  17:05:17
+   Duration  710ms (transform 339ms, setup 0ms, import 628ms, tests 39ms, environment 0ms)
+

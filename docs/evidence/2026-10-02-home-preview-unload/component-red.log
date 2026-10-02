@@ -1,0 +1,75 @@
+
+ RUN  v4.0.16 C:/Users/23399/Desktop/sqtan/WorkStation/.worktrees/homepage-visual-editor
+
+ ❯ tests/home-preview-unload.test.ts (5 tests | 3 failed) 17ms
+     ✓ does not warn for a clean preview 6ms
+     × protects text still focused and not yet sent to the parent 7ms
+     × protects unfinished and completed composition until the text is flushed 1ms
+     × keeps protection when a flush is waiting for composition 1ms
+     ✓ does not mark non-text selections as pending text 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/home-preview-unload.test.ts > preview native unload protection > protects text still focused and not yet sent to the parent
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/home-preview-unload.test.ts:75:22
+     73|     field.textContent = "尚未失焦的新输入";
+     74|     editEvent("input");
+     75|     expect(unload()).toBe(true);
+       |                      ^
+     76|     expect(window.parent.postMessage).not.toHaveBeenCalledWith(
+     77|       expect.objectContaining({ type: "homepage-editor:commit" }), exp…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/home-preview-unload.test.ts > preview native unload protection > protects unfinished and completed composition until the text is flushed
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/home-preview-unload.test.ts:84:22
+     82|     editEvent("compositionstart");
+     83|     field.textContent = "组合输入";
+     84|     expect(unload()).toBe(true);
+       |                      ^
+     85|     editEvent("compositionend");
+     86|     expect(unload()).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/home-preview-unload.test.ts > preview native unload protection > keeps protection when a flush is waiting for composition
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/home-preview-unload.test.ts:95:22
+     93|     editEvent("compositionstart");
+     94|     flush();
+     95|     expect(unload()).toBe(true);
+       |                      ^
+     96|     editEvent("compositionend");
+     97|     await vi.runAllTicks();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 2 passed (5)
+   Start at  17:03:47
+   Duration  630ms (transform 195ms, setup 0ms, import 320ms, tests 17ms, environment 0ms)
+

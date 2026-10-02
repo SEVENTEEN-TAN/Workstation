@@ -1,0 +1,24 @@
+{
+  "browserClosed": true,
+  "serverExited": true,
+  "databaseDisconnected": true,
+  "port3021Free": true,
+  "databases": [
+    {
+      "run": "red-results.json",
+      "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-preview-unload\\c66f296a-c761-40a3-aead-3d13801fc65a.db",
+      "deleted": true
+    },
+    {
+      "run": "green-reload-wait-diagnostic.json",
+      "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-preview-unload\\27245908-9664-40d2-b1d6-1c7daeb9a19a.db",
+      "deleted": true
+    },
+    {
+      "run": "green-results.json",
+      "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-preview-unload\\40b8e0d3-56d7-4516-95d5-f7e577b8e310.db",
+      "deleted": true
+    }
+  ],
+  "previousImageBuildDatabaseCleanupCompleted": false
+}

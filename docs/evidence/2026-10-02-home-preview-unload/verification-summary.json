@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-02",
+  "baseline": "50237324c221b9994ff1e218c4f1218d2ae8884a",
+  "buildId": "4IZRneWEjp-FKFncjaSjs",
+  "componentRed": {
+    "files": 1,
+    "exitCode": 1,
+    "log": "component-red.log",
+    "passed": 2,
+    "failed": 3
+  },
+  "componentGreen": {
+    "files": 2,
+    "exitCode": 0,
+    "passed": 17,
+    "log": "component-green.log"
+  },
+  "browserRed": {
+    "expectedFailure": "No beforeunload, focused text lost after native reload",
+    "exitCode": 1,
+    "record": "red-results.json"
+  },
+  "browserGreen": {
+    "scenarios": 5,
+    "exitCode": 0,
+    "systemIme": false,
+    "record": "green-results.json",
+    "sourceHash": "a669eee43d6e3bc69c2c45ff8c6c744411febc45ce13507ad3549bdaf049a314"
+  },
+  "fullSuite": {
+    "files": 86,
+    "exitCode": 0,
+    "passed": 586,
+    "log": "vitest.log"
+  },
+  "eslint": {
+    "finalRunnerLog": "runner-eslint-final.log",
+    "exitCode": 0,
+    "finalRunnerExit": 0,
+    "log": "eslint.log"
+  },
+  "typescript": {
+    "exitCode": 0,
+    "log": "typescript.log"
+  },
+  "build": {
+    "newMigrations": false,
+    "pages": 56,
+    "exitCode": 0,
+    "previousMigrationCount": 32,
+    "database": "Previous task-owned isolated migrated SQLite",
+    "log": "build.log"
+  },
+  "review": {
+    "remainingCritical": 0,
+    "record": "../2026-10-02-whole-branch-review/review.md",
+    "independentVerificationRerun": false,
+    "remainingMinor": 1,
+    "originalImportant": 1,
+    "importantFixReviewReceived": true,
+    "reviewer": "whole_branch_review_20261002",
+    "remainingImportant": 0,
+    "originalFilesRead": 75
+  },
+  "cleanup": {
+    "ownedBrowserAndServerClosed": true,
+    "previousRejection": "blocked by policy",
+    "previousBuildDatabaseCleanupCompleted": false,
+    "port3021Free": true,
+    "record": "cleanup.json",
+    "newScratchDatabasesDeleted": 3
+  },
+  "sourceHashes": [
+    {
+      "path": "src/components/public/HomeVisualEditor.tsx",
+      "sha256": "a669eee43d6e3bc69c2c45ff8c6c744411febc45ce13507ad3549bdaf049a314"
+    },
+    {
+      "path": "tests/home-preview-unload.test.ts",
+      "sha256": "b69533d5b62f209ac24fed7145bc11ba283801a6eb724afe43223b3f7dd99c68"
+    },
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "953a8a5904f954bfa50f00bb14a8c6db0af423072814413b7c9e3706917e8275"
+    },
+    {
+      "path": "src/components/admin/home/visual-editor-protocol.ts",
+      "sha256": "a23dd2c8592395e9963410394d62b093cdb53440917057ee2e7cadadb47bbd5f"
+    },
+    {
+      "path": "src/components/public/visual-editing.ts",
+      "sha256": "66be0b08d10b31d33026180fe091b34459e6f1b1fd7cdc727787b4780ca98e9a"
+    },
+    {
+      "path": "docs/evidence/2026-10-02-home-preview-unload/acceptance-edge.cjs",
+      "sha256": "64abdc90c58c01a5a7148f25558bb08480474a7fd489b5677a8eda3ddcc07ecd"
+    }
+  ],
+  "logHashes": [
+    {
+      "path": "browser-green-reload-wait-diagnostic.log",
+      "sha256": "e2ba498cf4b092555810ec1ac570e0fef48d2d463751c76b9683da2319f204df",
+      "bytes": 293
+    },
+    {
+      "path": "browser-green.log",
+      "sha256": "c4e45bdc288c0f59b1e38d90d41c3525cd01414209a78099812bba3a5f7b76d5",
+      "bytes": 757
+    },
+    {
+      "path": "browser-red.log",
+      "sha256": "7587cfb8b6a9f200b0ed06bb1e0912951f683e44275c9bccd1965928f852cfab",
+      "bytes": 426
+    },
+    {
+      "path": "build.log",
+      "sha256": "a7affcb3add90398a91af8009ee904171e03a92fa5adb0cf504c720413fe3db9",
+      "bytes": 4084
+    },
+    {
+      "path": "component-green.log",
+      "sha256": "a1f5ac153035b566ddc5cd15d953a9d06f545484abcdea90eca05c7f323e19e2",
+      "bytes": 379
+    },
+    {
+      "path": "component-red.log",
+      "sha256": "ebc5194edb45629213c9eeb1c9d4f6a3374c992f05e442633eb72a1117fdb06b",
+      "bytes": 2716
+    },
+    {
+      "path": "eslint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runner-eslint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "typescript.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "vitest.log",
+      "sha256": "d0c144edfcca1d5d1c93f093cffcdedc79b5cd8a9cbb613fb51a49bfb25d3d7d",
+      "bytes": 5439
+    }
+  ],
+  "boundaries": {
+    "deployed": false,
+    "planCompleted": 23,
+    "merged": false,
+    "planTotal": 30,
+    "systemIme": false,
+    "productionTouched": false,
+    "serverPreflight": false,
+    "realAi": false,
+    "goal": "active"
+  }
+}

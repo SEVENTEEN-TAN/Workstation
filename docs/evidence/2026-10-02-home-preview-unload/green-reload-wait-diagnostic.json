@@ -1,0 +1,17 @@
+{
+  "phase": "green",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-preview-unload\\27245908-9664-40d2-b1d6-1c7daeb9a19a.db",
+  "results": [],
+  "errors": [],
+  "buildId": "4IZRneWEjp-FKFncjaSjs",
+  "browser": "154.0.4258.48",
+  "errorMessage": "page.reload: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"domcontentloaded\"\u001b[22m\n",
+  "pass": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHash": "a669eee43d6e3bc69c2c45ff8c6c744411febc45ce13507ad3549bdaf049a314"
+}

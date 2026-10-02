@@ -54,6 +54,7 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
 
   useEffect(() => {
     let pendingFlushId: number | null = null;
+    let hasUncommittedEdits = false;
 
     function fieldTarget(target: EventTarget | null) {
       if (!(target instanceof Element)) return null;
@@ -68,7 +69,21 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
 
     function commitTarget(target: HTMLElement) {
       const message = createTextCommit(contentRef.current, target.dataset.cmsPath, target.textContent ?? "", composing.current);
-      if (message) window.parent.postMessage(message, window.location.origin);
+      if (message) {
+        window.parent.postMessage(message, window.location.origin);
+        hasUncommittedEdits = false;
+      }
+    }
+
+    function onInput(event: Event) {
+      const target = fieldTarget(event.target);
+      if (target && getVisualEditField(contentRef.current, target.dataset.cmsPath)?.kind === "text") hasUncommittedEdits = true;
+    }
+
+    function warnBeforeUnload(event: BeforeUnloadEvent) {
+      if (!hasUncommittedEdits) return;
+      event.preventDefault();
+      event.returnValue = "";
     }
 
     function acknowledgeFlush(requestId: number) {
@@ -116,12 +131,14 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
       if (!target || getVisualEditField(contentRef.current, target.dataset.cmsPath)?.kind !== "text") return;
       event.preventDefault();
       insertPlainText(event.clipboardData?.getData("text/plain") ?? "");
+      hasUncommittedEdits = true;
     }
 
     function onComposition(event: CompositionEvent) {
       const target = fieldTarget(event.target);
       if (!target || getVisualEditField(contentRef.current, target.dataset.cmsPath)?.kind !== "text") return;
       composing.current = event.type === "compositionstart";
+      if (composing.current) hasUncommittedEdits = true;
       if (!composing.current && pendingFlushId !== null) {
         const requestId = pendingFlushId;
         pendingFlushId = null;
@@ -140,19 +157,23 @@ export function HomeVisualEditor({ initialData }: { initialData: PublicResumeDat
     document.addEventListener("submit", preventSubmit, true);
     document.addEventListener("focusin", select);
     document.addEventListener("focusout", onFocusOut);
+    document.addEventListener("input", onInput);
     document.addEventListener("paste", onPaste);
     document.addEventListener("compositionstart", onComposition);
     document.addEventListener("compositionend", onComposition);
     window.addEventListener("message", flushOnRequest);
+    window.addEventListener("beforeunload", warnBeforeUnload);
     return () => {
       document.removeEventListener("click", onClick, true);
       document.removeEventListener("submit", preventSubmit, true);
       document.removeEventListener("focusin", select);
       document.removeEventListener("focusout", onFocusOut);
+      document.removeEventListener("input", onInput);
       document.removeEventListener("paste", onPaste);
       document.removeEventListener("compositionstart", onComposition);
       document.removeEventListener("compositionend", onComposition);
       window.removeEventListener("message", flushOnRequest);
+      window.removeEventListener("beforeunload", warnBeforeUnload);
     };
   }, []);
 

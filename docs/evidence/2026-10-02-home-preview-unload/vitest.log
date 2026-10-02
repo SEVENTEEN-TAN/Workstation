@@ -1,0 +1,100 @@
+
+ RUN  v4.0.16 C:/Users/23399/Desktop/sqtan/WorkStation/.worktrees/homepage-visual-editor
+
+ ✓ tests/knowledge-article-attachment-snapshots.test.ts (1 test) 124ms
+ ✓ tests/article-attachment-persistence.test.ts (2 tests) 128ms
+ ✓ tests/password.test.ts (1 test) 348ms
+     ✓ uses an Argon2id hash that verifies only the original password  346ms
+ ✓ tests/overview-queue-route.test.ts (1 test) 51ms
+ ✓ tests/bootstrap-admin.test.ts (5 tests) 323ms
+ ✓ tests/knowledge-sync-client.test.ts (8 tests) 160ms
+ ✓ tests/knowledge-vault-scanner.test.ts (8 tests) 172ms
+ ✓ tests/release-metadata.test.ts (1 test) 44ms
+ ✓ tests/ai-provider-service.test.ts (7 tests) 149ms
+ ✓ tests/ai-adapters.test.ts (11 tests) 154ms
+ ✓ tests/homepage-retirement.test.ts (2 tests) 831ms
+     ✓ has no executable dependency on the sibling HomePage project  810ms
+ ✓ tests/ai-generation-service.test.ts (3 tests) 69ms
+ ✓ tests/weekly-activity-drafts.test.ts (13 tests) 116ms
+ ✓ tests/backup-paths.test.ts (10 tests) 457ms
+     ✓ prunes only timestamped backup directories beyond the retention window  352ms
+ ✓ tests/knowledge-note-tree.test.ts (2 tests) 27ms
+ ✓ tests/overview-queue.test.ts (13 tests) 77ms
+ ✓ tests/audit-logs.test.ts (8 tests) 184ms
+ ✓ tests/site-content-schema.test.ts (21 tests) 46ms
+ ✓ tests/public-projects.test.ts (3 tests) 74ms
+ ✓ tests/knowledge-article-attachments.test.ts (1 test) 51ms
+ ✓ tests/overview-workspace.test.ts (2 tests) 45ms
+ ✓ tests/portfolio-projects.test.ts (9 tests) 32ms
+ ✓ tests/admin-activity-target.test.ts (6 tests) 88ms
+ ✓ tests/draft-conversion-validation.test.ts (39 tests) 55ms
+ ✓ tests/okr-action-items.test.ts (13 tests) 38ms
+ ✓ tests/draft-conversion-navigation.test.ts (11 tests) 97ms
+ ✓ tests/knowledge-note-reader.test.ts (3 tests) 214ms
+ ✓ tests/ai-content-drafts.test.ts (7 tests) 41ms
+ ✓ tests/admin-public-readiness.test.ts (5 tests) 30ms
+ ✓ tests/homepage-projects.test.ts (7 tests) 30ms
+ ✓ tests/okr-milestone-drafts.test.ts (6 tests) 23ms
+ ✓ tests/career-activities.test.ts (5 tests) 32ms
+ ✓ tests/knowledge-sync-report.test.ts (5 tests) 42ms
+ ✓ tests/okr-public-readiness.test.ts (6 tests) 34ms
+ ✓ tests/home-project-sync-workspace.test.ts (4 tests) 93ms
+ ✓ tests/public-knowledge.test.ts (3 tests) 46ms
+ ✓ tests/admin-services.test.ts (35 tests) 111ms
+ ✓ tests/home-content-editor.test.ts (14 tests) 24ms
+ ✓ tests/knowledge-vaults.test.ts (8 tests) 18ms
+ ✓ tests/public-experience.test.ts (2 tests) 54ms
+ ✓ tests/admin-ui-contracts.test.ts (95 tests) 1437ms
+     ✓ keeps throttling distinct while hiding every credential failure detail  478ms
+     ✓ combines filename, type, and alternative-text filters  701ms
+ ✓ tests/admin-action-order.test.ts (5 tests) 26ms
+ ✓ tests/knowledge-sync-payload.test.ts (3 tests) 23ms
+ ✓ tests/okr-execution.test.ts (6 tests) 20ms
+ ✓ tests/public-data.test.ts (4 tests) 24ms
+ ✓ tests/resume-files.test.ts (8 tests) 37ms
+ ✓ tests/career-timeline-drafts.test.ts (5 tests) 42ms
+ ✓ tests/knowledge-sync-reviews.test.ts (2 tests) 10ms
+ ✓ tests/public-uninitialized.test.ts (1 test) 22ms
+ ✓ tests/json-snapshot.test.ts (2 tests) 17ms
+ ✓ tests/ai-provider-config.test.ts (7 tests) 19ms
+ ✓ tests/knowledge-collections.test.ts (4 tests) 18ms
+ ✓ tests/experience-records.test.ts (8 tests) 28ms
+ ✓ tests/knowledge-articles.test.ts (8 tests) 18ms
+ ✓ tests/github-sync.test.ts (8 tests) 25ms
+ ✓ tests/skill-capabilities.test.ts (10 tests) 31ms
+ ✓ tests/home-visual-editor.test.ts (12 tests) 56ms
+ ✓ tests/weekly-editor-state.test.ts (3 tests) 12ms
+ ✓ tests/knowledge-publications.test.ts (4 tests) 13ms
+ ✓ tests/public-skills.test.ts (2 tests) 37ms
+ ✓ tests/knowledge-publication-updates.test.ts (3 tests) 18ms
+ ✓ tests/service-boundary-types.test.ts (1 test) 10ms
+ ✓ tests/session-token.test.ts (1 test) 4ms
+ ✓ tests/okr-recurrence.test.ts (6 tests) 4ms
+ ✓ tests/okr-validation.test.ts (2 tests) 16ms
+ ✓ tests/knowledge-vault-removal.test.ts (2 tests) 5ms
+ ✓ tests/okr-progress.test.ts (8 tests) 6ms
+ ✓ tests/knowledge-publication-inspector.test.ts (2 tests) 14ms
+ ✓ tests/public-knowledge-search.test.ts (2 tests) 4ms
+ ✓ tests/public-resume.test.ts (3 tests) 27ms
+ ✓ tests/knowledge-scan-update.test.ts (5 tests) 15ms
+ ✓ tests/bootstrap-content.test.ts (2 tests) 18ms
+ ✓ tests/home-preview-unload.test.ts (5 tests) 48ms
+ ✓ tests/knowledge-attachment-publication.test.ts (2 tests) 8ms
+ ✓ tests/knowledge-note-tasks.test.ts (1 test) 3ms
+ ✓ tests/rate-limit.test.ts (2 tests) 3ms
+ ✓ tests/knowledge-attachment-transfers.test.ts (2 tests) 8ms
+ ✓ tests/knowledge-draft-attachments.test.ts (3 tests) 9ms
+ ✓ tests/knowledge-sync-auth.test.ts (2 tests) 5ms
+ ✓ tests/overview-page.test.ts (1 test) 6ms
+ ✓ tests/knowledge-sync-route.test.ts (1 test) 3ms
+ ✓ tests/documentation-contracts.test.ts (1 test) 4ms
+ ✓ tests/homepage-composition.test.ts (8 tests) 362ms
+ ✓ tests/draft-conversion-transaction.test.ts (10 tests) 4429ms
+ ✓ tests/overview-deep-links.test.ts (2 tests) 65ms
+ ✓ tests/overview-knowledge-page.test.ts (1 test) 3ms
+
+ Test Files  86 passed (86)
+      Tests  586 passed (586)
+   Start at  17:06:02
+   Duration  9.02s (transform 66.06s, setup 0ms, import 111.46s, tests 11.75s, environment 29ms)
+

@@ -1,0 +1,314 @@
+{
+  "date": "2026-10-02",
+  "base": "f0723cfca51e9c287c61a7f4cdf92be3940a5822",
+  "head": "50237324c221b9994ff1e218c4f1218d2ae8884a",
+  "localMain": "eaa675047f079ea82be462f8f91e7939e9b7cbe5",
+  "cachedOriginMain": "f0723cfca51e9c287c61a7f4cdf92be3940a5822",
+  "scope": "complete candidate branch against existing F4 baseline; not a deployment range approval",
+  "fileCount": 75,
+  "files": [
+    {
+      "path": "prisma/migrations/20260923000000_add_action_item_recurrence_source/migration.sql",
+      "sha256": "b637740e5606e81121c92d62bd3d794d35c8ed727b2d07efbf66bd7e63066fb5"
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "sha256": "d8b64b8c8d331cdd768607a7713716d7deba94c4af01233a0fc9a2a100670a02"
+    },
+    {
+      "path": "src/app/admin/(preview)/home/visual-preview/page.tsx",
+      "sha256": "a80998f2b707e6c06947814cf2fb69ec3c9a66d7c054e9af8a87606c226fe2e3"
+    },
+    {
+      "path": "src/app/admin/(workspace)/activities/page.tsx",
+      "sha256": "49897e3729bdb604b30e4ca0d73f93f30371d8cb50f5753cb42df55fa2d70475"
+    },
+    {
+      "path": "src/app/admin/(workspace)/knowledge/page.tsx",
+      "sha256": "68c56b614578e16ac54f08d6ad7fa4c8a46de198f875c48006394e64a8285ef8"
+    },
+    {
+      "path": "src/app/admin/(workspace)/layout.tsx",
+      "sha256": "188e4f54bd0b9d3bb3104bda312fd45c10e7767439fa7d25b1b2dd6b52c5818d"
+    },
+    {
+      "path": "src/app/admin/(workspace)/overview/page.tsx",
+      "sha256": "d13994e891c0f48929b398df1ead2f9ea272f73c21c21b5b95fe508bfd15ee42"
+    },
+    {
+      "path": "src/app/admin/admin.module.css",
+      "sha256": "e8d0c5e5ffba9183828be45de75b9498a08cc083d29b2caddd974b9651bc1401"
+    },
+    {
+      "path": "src/app/admin/setup/SetupForm.tsx",
+      "sha256": "397665f97bf392528eb4fa9342cea13b1606f6877ccf1ef90b724ce733ffa033"
+    },
+    {
+      "path": "src/app/api/admin/overview-queue/route.ts",
+      "sha256": "663c6ea75d1c116ddfa634235383dc9918d96d13c75ab89d4a6c18ffd07ea62e"
+    },
+    {
+      "path": "src/app/api/admin/weekly/[id]/ai/route.ts",
+      "sha256": "a33f951cb2025e60b19971e239d141d221fa2674d247aa4d3eea503e83a5a69b"
+    },
+    {
+      "path": "src/app/api/admin/weekly/route.ts",
+      "sha256": "ac721966f807424200ec778128e00ac297056ad1cc3bc705148e98a1f0080a8a"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "87818f321cf3464037ba9d3bbbcb372fb2ae9f33a02a268f44e6812283893d5f"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "sha256": "819f07cb81a4028ef2c720a117e0c34a1a487988fe40307066db3abff694df2c"
+    },
+    {
+      "path": "src/components/admin/AdminShell.tsx",
+      "sha256": "44a8485f061b28ec3962ab04a08e83e3f5e08f0afe728e94f1cfc1a54e60579f"
+    },
+    {
+      "path": "src/components/admin/CareerActivitiesWorkspace.tsx",
+      "sha256": "68ac2d2feed9c424b5dfa1ae61e98325521276c026d5508bd861f2fb297034c0"
+    },
+    {
+      "path": "src/components/admin/CareerTimelineDraftWorkspace.tsx",
+      "sha256": "71f46902aac44cc819f443e9a18ea29d04b9b76a6ebad63cc4723eaf48f0fe81"
+    },
+    {
+      "path": "src/components/admin/ExperienceRecordsWorkspace.tsx",
+      "sha256": "2b6b03d5d463c3342bcfdbb0a93f6115a83d6197bdc943de64caa57f58affe5c"
+    },
+    {
+      "path": "src/components/admin/HomeWorkspace.tsx",
+      "sha256": "953a8a5904f954bfa50f00bb14a8c6db0af423072814413b7c9e3706917e8275"
+    },
+    {
+      "path": "src/components/admin/KnowledgeWorkspace.tsx",
+      "sha256": "3f1a510d8f1625349a1e6a6b35930adaf42b4cafabc3c5e0d8bdad1795355e3a"
+    },
+    {
+      "path": "src/components/admin/OkrMilestoneDraftWorkspace.tsx",
+      "sha256": "b0a67073f8f8abbbea0fa559590b6ced3a99a6b73f264b9fb76075fc06135448"
+    },
+    {
+      "path": "src/components/admin/OverviewWorkspace.tsx",
+      "sha256": "0b36127257cd49261e453c5986df2f874f9ff7b2185e54e60d642652b87af561"
+    },
+    {
+      "path": "src/components/admin/PortfolioProjectsWorkspace.tsx",
+      "sha256": "7c44feaa662fc3534d1f7adebcd7caf8630cba8daa04e1548639e9ddaee07e1d"
+    },
+    {
+      "path": "src/components/admin/ResumeFilesWorkspace.tsx",
+      "sha256": "02434069d768c67d44c16936e583c79ca12e128e34de54faa03d9eeb7e5dfbc1"
+    },
+    {
+      "path": "src/components/admin/SkillAreasWorkspace.tsx",
+      "sha256": "25452bcfcaed0410bfc4bd9485bb045adf4d914fec8dd50c130593efab878416"
+    },
+    {
+      "path": "src/components/admin/WeeklyActivityWorkspace.tsx",
+      "sha256": "317afebae6ca60112093dfd297e1406c6a4a4f429ed29d4ffc8961935540e894"
+    },
+    {
+      "path": "src/components/admin/WeeklyHistoryTracker.tsx",
+      "sha256": "36d0cb2c4b73abc1b3d2143ce74783745cc6697ed0570635f691c8d22ecc6dd5"
+    },
+    {
+      "path": "src/components/admin/home/HomepageEditor.tsx",
+      "sha256": "bd3e56afbc207d63698bef58986b1fb0453ac2f7565d2ec47370a754ebbae781"
+    },
+    {
+      "path": "src/components/admin/home/HomepageVisualWorkspace.tsx",
+      "sha256": "42d917d848bc718a65a386cca9c3044cc64cb116b0d2532400afd667d4b5373b"
+    },
+    {
+      "path": "src/components/admin/home/content-editor.ts",
+      "sha256": "e205cddd36c320baa8c4a42a06dc53b83d41f17738caedb7cfdd9a3e13955871"
+    },
+    {
+      "path": "src/components/admin/home/visual-editor-protocol.ts",
+      "sha256": "a23dd2c8592395e9963410394d62b093cdb53440917057ee2e7cadadb47bbd5f"
+    },
+    {
+      "path": "src/components/admin/knowledge-scan-update.ts",
+      "sha256": "ee47513132cf657e5e427cde8e39282457184e53945e73bdcd69b78dbd5b9627"
+    },
+    {
+      "path": "src/components/admin/okr/ActionItemList.tsx",
+      "sha256": "c36e9d73aa333936b62aeb0affb1ee33e6e9cf049f7e3bdd04994d49b0459646"
+    },
+    {
+      "path": "src/components/admin/okr/ObjectiveWorkspace.tsx",
+      "sha256": "dedcbbfa126ab3e79cd4b136ae72781fc623dc20e37a03652ce6f5464b28990e"
+    },
+    {
+      "path": "src/components/admin/okr/OkrCycleListWorkspace.tsx",
+      "sha256": "2f2c7ddc38ffa47e6245400c26b35d4b0dd4e457e98bd74c900aaf31b6cad000"
+    },
+    {
+      "path": "src/components/admin/okr/OkrCycleWorkspace.tsx",
+      "sha256": "b8704ff19d76c2ca2aec80373c1d327a9dca3a641e0513569c26b91f1f60eb53"
+    },
+    {
+      "path": "src/components/admin/okr/OkrEntityDialog.tsx",
+      "sha256": "6e4ced99e3942aa7781e9cfa4cbdc3dc62658b2bb1c4a93601612ea298572bcc"
+    },
+    {
+      "path": "src/components/admin/okr/PublicReadiness.tsx",
+      "sha256": "6eabd75cae23354fe4967c0d1123c16e5f425d494a56eed7ad68c464c41ad7a4"
+    },
+    {
+      "path": "src/components/admin/useAdminAction.ts",
+      "sha256": "d2fdab37c627fca58bdc2924084644b84af3846339f65995f55c54333b5590d5"
+    },
+    {
+      "path": "src/components/admin/weekly-editor-state.ts",
+      "sha256": "da56493432a6bc2de691999283003026808f21dd74d8f0d23b647deb6d5dc68c"
+    },
+    {
+      "path": "src/components/admin/workspace-utils.ts",
+      "sha256": "fcc45067881b6940ee4d54602459d82a3da4bf44446eb4e556884bb221da856a"
+    },
+    {
+      "path": "src/components/public/About.tsx",
+      "sha256": "48496056d6ed3b866920b2b77f9f3a510a29f253b7ca792b1826cc363262a29c"
+    },
+    {
+      "path": "src/components/public/Footer.tsx",
+      "sha256": "5650ae8630cd8f1c2a85bf2a95a7f51ad142e221b0e4edb13bdda5f2671dd940"
+    },
+    {
+      "path": "src/components/public/Hero.tsx",
+      "sha256": "043c366378bdef8bd8e98de40933a20f339ec421be0da0aed12c624dfd98aeef"
+    },
+    {
+      "path": "src/components/public/HomeExperience.tsx",
+      "sha256": "cf8a7fa571eb1544794df629da5d77d9ee888f1710d238674cc5569cc40024d5"
+    },
+    {
+      "path": "src/components/public/HomeJourney.tsx",
+      "sha256": "67b53215bad4ade5e3fa509010a0f36fd83332b770814865649e7e27ba853351"
+    },
+    {
+      "path": "src/components/public/HomeVisualEditor.tsx",
+      "sha256": "e498c4e027ca0bc5b8d7cf31e3751ac7cfc07c16ba77a89c4ce61f0899d56e4f"
+    },
+    {
+      "path": "src/components/public/Navbar.tsx",
+      "sha256": "372ea69ac4ed8f9c57fa97ab04e8ca8d7871fba722ca1ada109fa64a03e6f021"
+    },
+    {
+      "path": "src/components/public/RecentWorks.tsx",
+      "sha256": "1c11b74c46d3ea4077018e2a92b8e507cf01c54a14140f7e253a3bb70702addb"
+    },
+    {
+      "path": "src/components/public/Services.tsx",
+      "sha256": "add7abc1db8497ed84357795ab07c3a5f69c257f3c7a925c926ce1998bdbf912"
+    },
+    {
+      "path": "src/components/public/i18n.tsx",
+      "sha256": "b8fc93cec2b07aee7aa7eb39768fcb020dbd3c266e6025c26eb4544547fb1cc8"
+    },
+    {
+      "path": "src/components/public/visual-editing.ts",
+      "sha256": "66be0b08d10b31d33026180fe091b34459e6f1b1fd7cdc727787b4780ca98e9a"
+    },
+    {
+      "path": "src/lib/content/homepage-projects.ts",
+      "sha256": "5c06a5a8dc093e33d1e667dd7a12dca3be301ee3e6fb6dc620ac068f42bd8f42"
+    },
+    {
+      "path": "src/lib/content/schema.ts",
+      "sha256": "c3eec9bf2b59d838137b0abbaacc42a3a1d496f35df4b5c78d0d79cf5cadc9b7"
+    },
+    {
+      "path": "src/lib/okr/public-readiness.ts",
+      "sha256": "3ecefc71db50fe055961f8467315339c6a59a18911f4a8e6a07f8767120a6a0c"
+    },
+    {
+      "path": "src/lib/okr/recurrence.ts",
+      "sha256": "4017003cfc1014a847b3f35bb70d8def0c9695499b420e3faa5ec1a44c293f8d"
+    },
+    {
+      "path": "src/lib/public-readiness.ts",
+      "sha256": "47ea346eba930b0f6b5e0c5af970241b4ac88f16ce662bd8fdcfd486c02c95da"
+    },
+    {
+      "path": "src/lib/services/career-activities.ts",
+      "sha256": "0ce6fe9a7edaf6c51b08ce59f8e38ec1ead71ab49d0f172eb900247a04cc63a8"
+    },
+    {
+      "path": "src/lib/services/career-timeline-drafts.ts",
+      "sha256": "6f83e224085cfd07922a3f5ed4590735ab98cbf2fe53f6792354ed4094b23c84"
+    },
+    {
+      "path": "src/lib/services/experience-records.ts",
+      "sha256": "04b30f5386dbd39a090a1b493978076a22b3d5cf49bcf70f1969b33293e3daa4"
+    },
+    {
+      "path": "src/lib/services/knowledge-publications.ts",
+      "sha256": "2525f8abd1c8c0012e43fea837835306b9a6481dda7cc5f4473853c09fcd4c76"
+    },
+    {
+      "path": "src/lib/services/okr-milestone-drafts.ts",
+      "sha256": "10110746760982fb05242d929aaad0a6333b74314aeb399b3b03201abf23615d"
+    },
+    {
+      "path": "src/lib/services/okr.ts",
+      "sha256": "f9d19eb5474a788231a1cbe0d90f9eced08c020f519a3547844f6dba8af8d033"
+    },
+    {
+      "path": "src/lib/services/overview-queue.ts",
+      "sha256": "1049971123ad0cc0081183b8c8a8fa76cfadeeca3f7d681cd215a3ba3482320f"
+    },
+    {
+      "path": "src/lib/services/portfolio-projects.ts",
+      "sha256": "328940a543a0655c0a2634f07d566b39d54f8e39d1c4a37c7b78e2a01bb0461d"
+    },
+    {
+      "path": "src/lib/services/public-data.ts",
+      "sha256": "da3b574616e7ad952fd09bd55d08bbf3d2c3b865133d370dc1510c7cf31112c4"
+    },
+    {
+      "path": "src/lib/services/public-resume.ts",
+      "sha256": "57c5c8766bc06ddb207e78868663cf7728feba7cafa1641d020a4568de365ce1"
+    },
+    {
+      "path": "src/lib/services/resume-files.ts",
+      "sha256": "a13173e65649e1bb344d0ebaade80b3ce947132262dfe36e048982a8e43d3494"
+    },
+    {
+      "path": "src/lib/services/site-content.ts",
+      "sha256": "8c280dd28ef0efa645aaa59b0282e69bfaa8371fdfc10ebdf4895f0ec0384c23"
+    },
+    {
+      "path": "src/lib/services/skill-capabilities.ts",
+      "sha256": "7365d4b2bdd24fc7fcb1138d7a10f296a8bebb8eb1dd0e991912a7d065e49884"
+    },
+    {
+      "path": "src/lib/services/weekly-activity-drafts.ts",
+      "sha256": "9c0c56468ac997eac99ffedb44ffaaa5271e8b52154dd7e33022553a0cbe3e26"
+    },
+    {
+      "path": "src/lib/validators/career-activities.ts",
+      "sha256": "5d4f1b55df6b397cdbdfa084f9d527b08fce96af744454db5c964e067d065e82"
+    },
+    {
+      "path": "src/lib/validators/okr.ts",
+      "sha256": "a69766f9aa1a0351f7b6a349c44b54aff66e8341d29c681915e3e0fe18d91f09"
+    },
+    {
+      "path": "src/lib/validators/weekly-activity-drafts.ts",
+      "sha256": "b9e9785f8807f1bca29aea4cadb48a3a6a6cb0abcc53174ad06b1801f6b005c7"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "e3738decb95e94e3480b87fa80c4d640bbef5e930ecedd09510b9ce277b6a738"
+    }
+  ],
+  "verifiedRemoteMain": "f0723cfca51e9c287c61a7f4cdf92be3940a5822",
+  "verifiedRemoteFeature": "50237324c221b9994ff1e218c4f1218d2ae8884a",
+  "remoteVerificationMethod": "git ls-remote origin refs/heads/main refs/heads/feat/homepage-visual-editor"
+}

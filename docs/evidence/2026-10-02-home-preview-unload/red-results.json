@@ -1,0 +1,27 @@
+{
+  "phase": "red",
+  "databasePath": "C:\\Users\\23399\\Desktop\\sqtan\\WorkStation\\.worktrees\\homepage-visual-editor\\.superpowers\\home-preview-unload\\c66f296a-c761-40a3-aead-3d13801fc65a.db",
+  "results": [
+    {
+      "name": "focused-native-reload-cancel",
+      "parentClean": true,
+      "focused": true,
+      "dialogs": [],
+      "after": "JAVA + AI",
+      "expected": "UNCOMMITTED FOCUSED TEXT",
+      "pass": false
+    }
+  ],
+  "errors": [],
+  "buildId": "C-3wi8e8hycxpO4V2KWBo",
+  "browser": "154.0.4258.48",
+  "errorMessage": "Focused uncommitted text must trigger native unload confirmation and survive Cancel\n\nfalse !== true\n",
+  "pass": false,
+  "cleanup": {
+    "browserClosed": true,
+    "databaseDisconnected": true,
+    "serverExited": true,
+    "databaseDeleted": false
+  },
+  "sourceHash": "e498c4e027ca0bc5b8d7cf31e3751ac7cfc07c16ba77a89c4ce61f0899d56e4f"
+}
