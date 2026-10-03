@@ -1,12 +1,17 @@
 "use client";
 
 import { Focus, Network, Search, X, ZoomIn, ZoomOut } from "lucide-react";
-import { useMemo, useRef, useState, type PointerEvent } from "react";
+import { useMemo, useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
 import type { KnowledgeGraph } from "@/lib/knowledge/graph-contract";
 import { clampGraphZoom, filterKnowledgeGraph, GRAPH_COLORS, GRAPH_HEIGHT, GRAPH_WIDTH, graphNeighbors, layoutKnowledgeGraph, type GraphPoint } from "@/lib/knowledge/graph-view";
 import styles from "./knowledge-graph.module.css";
 
+const subscribeToHydration = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
+
 export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
+  const hydrated = useSyncExternalStore(subscribeToHydration, clientSnapshot, serverSnapshot);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [selectedId, setSelectedId] = useState("");
@@ -14,7 +19,7 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
   const [view, setView] = useState({ zoom: 1, x: 0, y: 0 });
   const [movedPoints, setMovedPoints] = useState<Record<string, GraphPoint>>({});
   const drag = useRef<{ id: string; start: GraphPoint; origin: GraphPoint; moved: boolean } | null>(null);
-  const layout = useMemo(() => layoutKnowledgeGraph(graph), [graph]);
+  const layout = useMemo(() => hydrated ? layoutKnowledgeGraph(graph) : {}, [graph, hydrated]);
   const categories = useMemo(() => [...new Set(graph.nodes.map((node) => node.category))].sort(), [graph]);
   const colors = useMemo(() => new Map(categories.map((name, index) => [name, GRAPH_COLORS[index % GRAPH_COLORS.length]])), [categories]);
   const visible = useMemo(() => filterKnowledgeGraph(graph, query, category), [graph, query, category]);
@@ -63,6 +68,8 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
     drag.current = null;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   }
+
+  if (!hydrated) return <section className={styles.explorer} aria-label="知识图谱浏览器"><p className={styles.toolbar} role="status">正在载入知识图谱…</p></section>;
 
   return <section className={styles.explorer} aria-label="知识图谱浏览器">
     <div className={styles.toolbar}>

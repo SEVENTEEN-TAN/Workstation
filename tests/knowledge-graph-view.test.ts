@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { KnowledgeGraphView } from "../src/components/knowledge/KnowledgeGraphView";
 import type { KnowledgeGraph } from "../src/lib/knowledge/graph-contract";
 import { clampGraphZoom, filterKnowledgeGraph, graphNeighbors, layoutKnowledgeGraph } from "../src/lib/knowledge/graph-view";
 
@@ -7,6 +10,11 @@ const graph: KnowledgeGraph = { version: 1, generatedAt: "2026-10-03T00:00:00.00
 ], edges: [{ source: "a", target: "b" }, { source: "b", target: "a" }, { source: "c", target: "a" }] };
 
 describe("knowledge graph browsing", () => {
+  it("defers floating-point layout until hydration to avoid server/browser coordinate mismatches", () => {
+    const html = renderToStaticMarkup(createElement(KnowledgeGraphView, { graph }));
+    expect(html).toContain("正在载入知识图谱");
+    expect(html).not.toContain("<svg");
+  });
   it("filters case-insensitive titles and categories without retaining dangling links", () => {
     expect(filterKnowledgeGraph(graph, " JAVA ", "Java")).toMatchObject({ nodes: graph.nodes.slice(0, 2), edges: graph.edges.slice(0, 2) });
     expect(filterKnowledgeGraph(graph, "none")).toMatchObject({ nodes: [], edges: [] });

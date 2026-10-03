@@ -50,7 +50,7 @@ export function KnowledgeGraphWorkspace({ initialData }: { initialData: Knowledg
   }
 
   return <section className={graphStyles.workspace}>
-    <PageHeader title="技术知识图谱" description="从本地 Obsidian 导出笔记关系，预览后发布到网站。正文和附件留在本地。" action={<Link href="/knowledge/graph" target="_blank" className={styles.secondaryButton}><ExternalLink size={16} />查看公开图谱</Link>} />
+    <PageHeader title="技术知识图谱" description="从本地 Obsidian 导出笔记关系，预览后发布到网站。正文和附件留在本地。" action={<Link href="/knowledge/graph" target="_blank" className={graphStyles.publicLink}><ExternalLink size={16} />查看公开图谱</Link>} />
     <section className={styles.panel}>
       <div className={styles.sectionHeading}><div><h2>导入图谱</h2><p className={graphStyles.description}>选择本地导出的 JSON；导入只更新私有草稿，公开内容保持到下一次发布。</p></div><span className={graphStyles.publicStatus}>{data.published ? `已公开 ${data.published.nodeCount} 篇 · ${data.published.edgeCount} 条引用` : "尚未公开"}</span></div>
       <form onSubmit={importFile} className={graphStyles.importForm}><label><span>图谱 JSON 文件</span><input name="graphFile" type="file" accept=".json,application/json" required disabled={busy} /><small>最大 4 MiB，最多 2,000 篇笔记。标题与分类也会公开，请先检查。</small></label><button type="submit" className={styles.primaryButton} disabled={busy}><Upload size={16} />{busy ? "处理中" : "导入草稿"}</button></form>
