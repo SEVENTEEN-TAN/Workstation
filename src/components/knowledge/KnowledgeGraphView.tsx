@@ -3,7 +3,7 @@
 import { Focus, Network, Search, X, ZoomIn, ZoomOut } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type PointerEvent } from "react";
 import type { KnowledgeGraph } from "@/lib/knowledge/graph-contract";
-import { clampGraphZoom, filterKnowledgeGraph, focusKnowledgeGraph, GRAPH_COLORS, GRAPH_HEIGHT, GRAPH_WIDTH, graphNeighbors, layoutFocusedKnowledgeGraph, layoutKnowledgeGraph, type GraphPoint } from "@/lib/knowledge/graph-view";
+import { filterKnowledgeGraph, focusKnowledgeGraph, GRAPH_COLORS, GRAPH_HEIGHT, GRAPH_WIDTH, graphNeighbors, graphWheelZoomFactor, layoutFocusedKnowledgeGraph, layoutKnowledgeGraph, zoomGraphAt, type GraphPoint } from "@/lib/knowledge/graph-view";
 import styles from "./knowledge-graph.module.css";
 
 const subscribeToHydration = () => () => {};
@@ -20,6 +20,7 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
   const [movedPoints, setMovedPoints] = useState<Record<string, GraphPoint>>({});
   const [width, setWidth] = useState(GRAPH_WIDTH);
   const stage = useRef<HTMLDivElement>(null);
+  const svg = useRef<SVGSVGElement>(null);
   const arrowId = useId();
   const drag = useRef<{ id: string; start: GraphPoint; origin: GraphPoint; moved: boolean } | null>(null);
   useEffect(() => {
@@ -27,6 +28,21 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
     const observer = new ResizeObserver(([entry]) => setWidth(Math.max(280, Math.round(entry.contentRect.width))));
     observer.observe(stage.current);
     return () => observer.disconnect();
+  }, [hydrated]);
+  useEffect(() => {
+    const canvas = svg.current;
+    if (!hydrated || !canvas) return;
+    function wheel(event: WheelEvent) {
+      if (!event.deltaY) return;
+      const matrix = canvas!.getScreenCTM();
+      if (!matrix) return;
+      event.preventDefault();
+      const anchor = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
+      const factor = graphWheelZoomFactor(event.deltaY, event.deltaMode, stage.current?.clientHeight ?? GRAPH_HEIGHT);
+      setView((current) => zoomGraphAt(current, factor, anchor));
+    }
+    canvas.addEventListener("wheel", wheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", wheel);
   }, [hydrated]);
   const categories = useMemo(() => [...new Set(graph.nodes.map((node) => node.category))].sort(), [graph]);
   const colors = useMemo(() => new Map(categories.map((name, index) => [name, GRAPH_COLORS[index % GRAPH_COLORS.length]])), [categories]);
@@ -51,11 +67,8 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
   }
 
   function zoomBy(factor: number) {
-    setView((current) => {
-      const zoom = clampGraphZoom(current.zoom * factor), ratio = zoom / current.zoom;
-      const centerY = Math.min(height, stage.current?.clientHeight ?? height) / 2;
-      return { zoom, x: width / 2 - (width / 2 - current.x) * ratio, y: centerY - (centerY - current.y) * ratio };
-    });
+    const centerY = Math.min(height, stage.current?.clientHeight ?? height) / 2 + (stage.current?.scrollTop ?? 0);
+    setView((current) => zoomGraphAt(current, factor, { x: width / 2, y: centerY }));
   }
 
   function svgPoint(event: PointerEvent<SVGSVGElement>): GraphPoint {
@@ -97,8 +110,8 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
     <div className={styles.body}>
       <div className={styles.canvas}>
         <div className={styles.canvasHeading}><Network size={16} /><span>{activeId ? "直接关联" : "笔记关系图"}</span>{activeId ? <button type="button" onClick={() => selectNote("")}>返回全图</button> : <small>选择节点查看清晰的直接关联</small>}</div>
-        <div ref={stage} className={styles.graphStage}>
-        <svg viewBox={`0 0 ${width} ${height}`} style={{ height }} role="img" aria-label={`知识图谱${activeId ? "直接关联" : "全图"}：${rendered.nodes.length} 篇笔记，${rendered.edges.length} 条引用。可使用笔记选择器浏览。`} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={() => { drag.current = null; }}>
+        <div ref={stage} className={styles.graphStage} tabIndex={0} aria-label="图谱画布，可使用滚动条或方向键浏览更多关联">
+        <svg ref={svg} viewBox={`0 0 ${width} ${height}`} style={{ height }} role="img" aria-label={`知识图谱${activeId ? "直接关联" : "全图"}：${rendered.nodes.length} 篇笔记，${rendered.edges.length} 条引用。可使用笔记选择器浏览。`} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={() => { drag.current = null; }}>
           <defs><marker id={arrowId} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#72d9b2" /></marker></defs>
           <g transform={`translate(${view.x} ${view.y}) scale(${view.zoom})`}>
             {rendered.edges.map((edge) => {
@@ -128,7 +141,7 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
         </svg>
         </div>
         {!visible.nodes.length ? <div className={styles.noResults}><Search size={24} /><strong>没有匹配的笔记</strong><button type="button" onClick={() => { setQuery(""); setCategory(""); }}>清除筛选</button></div> : null}
-        <div className={styles.canvasFooter}><span>{activeId ? "箭头表示引用方向 · 更多关联可向下滚动" : "拖动节点或空白区域"}</span><div className={styles.zoomControls}><button type="button" aria-label="缩小图谱" onClick={() => zoomBy(1 / 1.25)} disabled={view.zoom <= 0.5}><ZoomOut size={17} /></button><span aria-label="当前缩放">{Math.round(view.zoom * 100)}%</span><button type="button" aria-label="放大图谱" onClick={() => zoomBy(1.25)} disabled={view.zoom >= 4}><ZoomIn size={17} /></button><button type="button" aria-label="重置图谱视图" onClick={() => { setView({ zoom: 1, x: 0, y: 0 }); setMovedPoints({}); stage.current?.scrollTo({ top: 0 }); }}><Focus size={17} /></button></div></div>
+        <div className={styles.canvasFooter}><span>{activeId ? "滚轮缩放 · 拖动平移 · 滚动条浏览更多" : "滚轮缩放 · 拖动节点或空白区域"}</span><div className={styles.zoomControls}><button type="button" aria-label="缩小图谱" onClick={() => zoomBy(1 / 1.25)} disabled={view.zoom <= 0.5}><ZoomOut size={17} /></button><span aria-label="当前缩放">{Math.round(view.zoom * 100)}%</span><button type="button" aria-label="放大图谱" onClick={() => zoomBy(1.25)} disabled={view.zoom >= 4}><ZoomIn size={17} /></button><button type="button" aria-label="重置图谱视图" onClick={() => { setView({ zoom: 1, x: 0, y: 0 }); setMovedPoints({}); stage.current?.scrollTo({ top: 0 }); }}><Focus size={17} /></button></div></div>
       </div>
       <aside className={styles.sidebar} aria-label="笔记与关联">
         <label className={styles.notePicker}><span>选择笔记</span><select aria-label="选择笔记" value={activeId} onChange={(event) => selectNote(event.target.value)}><option value="">点击节点或选择笔记</option>{visible.nodes.map((node) => <option key={node.id} value={node.id}>{node.title} · {node.category}</option>)}</select></label>

@@ -66,6 +66,16 @@ export function layoutFocusedKnowledgeGraph(graph: KnowledgeGraph, id: string, w
 
 export function clampGraphZoom(value: number) { return Math.min(4, Math.max(0.5, value)); }
 
+export function zoomGraphAt(view: GraphPoint & { zoom: number }, factor: number, anchor: GraphPoint) {
+  const zoom = clampGraphZoom(view.zoom * factor), ratio = zoom / view.zoom;
+  return { zoom, x: anchor.x - (anchor.x - view.x) * ratio, y: anchor.y - (anchor.y - view.y) * ratio };
+}
+
+export function graphWheelZoomFactor(deltaY: number, deltaMode: number, pageHeight: number) {
+  const pixels = deltaY * (deltaMode === 1 ? 16 : deltaMode === 2 ? pageHeight : 1);
+  return Math.exp(-Math.max(-240, Math.min(240, pixels)) * 0.002);
+}
+
 export function layoutKnowledgeGraph(graph: KnowledgeGraph, width = GRAPH_WIDTH, height = GRAPH_HEIGHT): Record<string, GraphPoint> {
   const nodes = [...graph.nodes].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0).map((node) => {
     let seed = 2166136261;

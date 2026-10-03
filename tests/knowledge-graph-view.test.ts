@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { KnowledgeGraphView } from "../src/components/knowledge/KnowledgeGraphView";
 import type { KnowledgeGraph } from "../src/lib/knowledge/graph-contract";
-import { clampGraphZoom, filterKnowledgeGraph, focusKnowledgeGraph, graphNeighbors, layoutFocusedKnowledgeGraph, layoutKnowledgeGraph } from "../src/lib/knowledge/graph-view";
+import { clampGraphZoom, filterKnowledgeGraph, focusKnowledgeGraph, graphNeighbors, graphWheelZoomFactor, layoutFocusedKnowledgeGraph, layoutKnowledgeGraph, zoomGraphAt } from "../src/lib/knowledge/graph-view";
 
 const graph: KnowledgeGraph = { version: 1, generatedAt: "2026-10-03T00:00:00.000Z", nodes: [
   { id: "a", title: "Java Basics", category: "Java" }, { id: "b", title: "Java Memory", category: "Java" }, { id: "c", title: "Model", category: "AI" },
@@ -34,6 +34,23 @@ describe("knowledge graph browsing", () => {
     expect(layoutKnowledgeGraph({ ...graph, nodes: graph.nodes.slice(0, 1), edges: [] })).toEqual({ a: { x: 480, y: 320 } });
   });
   it("bounds zoom controls", () => { expect(clampGraphZoom(0.1)).toBe(0.5); expect(clampGraphZoom(6)).toBe(4); expect(clampGraphZoom(1.2)).toBe(1.2); });
+  it("keeps the cursor's graph point fixed while zooming and at both limits", () => {
+    const anchor = { x: 240, y: 180 };
+    expect(zoomGraphAt({ zoom: 1, x: 40, y: 20 }, 2, anchor)).toEqual({ zoom: 2, x: -160, y: -140 });
+    expect(zoomGraphAt({ zoom: 2, x: -160, y: -140 }, 0.5, anchor)).toEqual({ zoom: 1, x: 40, y: 20 });
+    expect(zoomGraphAt({ zoom: 1, x: 0, y: 0 }, 100, anchor)).toEqual({ zoom: 4, x: -720, y: -540 });
+    expect(zoomGraphAt({ zoom: 1, x: 0, y: 0 }, 0.001, anchor)).toEqual({ zoom: 0.5, x: 120, y: 90 });
+    expect(zoomGraphAt({ zoom: 4, x: 12, y: 24 }, 2, anchor)).toEqual({ zoom: 4, x: 12, y: 24 });
+  });
+  it("normalizes wheel units, zooms in for up, and bounds extreme single events", () => {
+    expect(graphWheelZoomFactor(-120, 0, 640)).toBeGreaterThan(1);
+    expect(graphWheelZoomFactor(120, 0, 640)).toBeLessThan(1);
+    expect(graphWheelZoomFactor(0, 0, 640)).toBe(1);
+    expect(graphWheelZoomFactor(3, 1, 640)).toBeCloseTo(graphWheelZoomFactor(48, 0, 640));
+    expect(graphWheelZoomFactor(0.125, 2, 640)).toBeCloseTo(graphWheelZoomFactor(80, 0, 640));
+    expect(graphWheelZoomFactor(-1000000, 0, 640)).toBeLessThan(1.7);
+    expect(graphWheelZoomFactor(1000000, 0, 640)).toBeGreaterThan(0.6);
+  });
   it("focuses only the selected note and direct references without unrelated links", () => {
     const extended = { ...graph, nodes: [...graph.nodes, { id: "d", title: "Unrelated", category: "AI" }], edges: [...graph.edges, { source: "b", target: "c" }, { source: "c", target: "d" }] };
     expect(focusKnowledgeGraph(extended, "a")).toMatchObject({ nodes: graph.nodes, edges: graph.edges });
