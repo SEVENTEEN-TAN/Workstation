@@ -311,7 +311,7 @@ export function KnowledgeWorkspace({ initialVaults, initialVaultId, initialRevis
 
   return (
     <section>
-      <PageHeader title="个人知识库" description="登记本地 Obsidian Vault，执行只读扫描并检查 Markdown 结构。笔记正文与附件不会上传。" action={<Link href="/admin/knowledge/collections" className={styles.secondaryButton}>知识合集</Link>} />
+      <PageHeader title="Vault 索引与文章" description="此处登记服务器可读取的 Vault 路径。已有同步可包含私有正文快照，文章需要单独审查后发布。" action={<Link href="/admin/knowledge/collections" className={styles.secondaryButton}>知识合集</Link>} />
 
       <div className={styles.metrics}>
         <article><span>已登记 Vault</span><strong>{vaults.length}</strong></article>
