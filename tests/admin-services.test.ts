@@ -613,16 +613,27 @@ describe("public data service", () => {
     ]);
   });
 
-  it("reports an uninitialized site instead of manufacturing content", async () => {
+  it("creates the first editable draft without publishing an uninitialized site", async () => {
+    const versions: Array<{ id: string; version: number; status: string; content: SiteContent; publishedAt: Date | null; createdById?: string | null }> = [];
+    const createVersion = vi.fn(async (input) => {
+      const version = { id: "first-draft", publishedAt: null, ...input };
+      versions.push(version);
+      return version;
+    });
     const service = createSiteContentService({
-      transaction: async () => { throw new Error("not used"); },
-      listVersions: async () => [],
-      findPublished: async () => null,
-      findDraft: async () => null,
+      transaction: async (run) => run({ latestVersionNumber: async () => 0, createVersion } as never),
+      listVersions: async () => versions,
+      findPublished: async () => versions.find((version) => version.status === "PUBLISHED") ?? null,
+      findDraft: async () => versions.find((version) => version.status === "DRAFT") ?? null,
     });
 
     await expect(service.getPublished()).resolves.toBeNull();
-    await expect(service.getOrCreateDraft()).rejects.toThrow("站点尚未初始化，请先运行数据库种子");
+    const draft = await service.getOrCreateDraft("admin-1");
+    expect(draft).toMatchObject({ version: 1, status: "DRAFT", content: bootstrapSiteContent, publishedAt: null });
+    expect(createVersion).toHaveBeenCalledWith(expect.objectContaining({ createdById: "admin-1" }));
+    await expect(service.getOrCreateDraft("admin-1")).resolves.toEqual(draft);
+    expect(createVersion).toHaveBeenCalledTimes(1);
+    await expect(service.getPublished()).resolves.toBeNull();
   });
 });
 

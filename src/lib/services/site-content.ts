@@ -1,6 +1,7 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
 
 import { siteContentSchema, type SiteContent } from "../content/schema";
+import { bootstrapSiteContent } from "../content/bootstrap";
 import { homepageProjectCardsMatch, materializeHomepageProjects } from "../content/homepage-projects";
 import { getDatabase } from "../db";
 import { parsePortfolioProjectRecord, type PortfolioProjectRecord } from "./portfolio-projects";
@@ -113,8 +114,7 @@ export function createSiteContentService(repository: SiteContentRepository) {
       const existing = await repository.findDraft();
       if (existing) return toSiteVersionData(existing);
       const published = await repository.findPublished();
-      if (!published) throw new Error("站点尚未初始化，请先运行数据库种子");
-      const content = siteContentSchema.parse(published.content);
+      const content = siteContentSchema.parse(published?.content ?? bootstrapSiteContent);
       return repository.transaction(async (transaction) => {
         return toSiteVersionData(await transaction.createVersion({
           version: (await transaction.latestVersionNumber()) + 1,
