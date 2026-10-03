@@ -145,7 +145,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       pendingFlushRef.current = null;
     }
     clearPreviewTimeout();
-    setPreviewStatus("loading");
+    setPreviewStatus((current) => current === "ready" ? current : "loading");
     previewTimeoutRef.current = window.setTimeout(() => {
       setPreviewStatus((current) => current === "loading" ? "error" : current);
     }, 10_000);
