@@ -114,6 +114,12 @@ describe("homepage visual-editor protocol", () => {
     expect(markup).toContain("重试预览");
     expect(markup).toContain("转到字段编辑");
     expect(markup).toContain('value="' + bootstrapSiteContent.settings.email + '"');
+    expect(markup.match(/<aside/g)).toHaveLength(1);
+    expect(markup.match(/role="tab"/g)).toHaveLength(2);
+    expect(markup).toContain('aria-haspopup="dialog"');
+    expect(markup).toMatch(/<dialog[^>]+aria-labelledby="homepage-visual-settings-title"/);
+    expect(markup).not.toMatch(/<dialog[^>]+\bopen(?:=|[ >])/);
+    expect(markup.indexOf("重试预览")).toBeLessThan(markup.indexOf("<iframe"));
   });
 
   it("builds editor-only attributes and safe text commits", () => {

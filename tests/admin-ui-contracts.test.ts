@@ -715,7 +715,7 @@ describe("homepage version safety contracts", () => {
   const visualWorkspaceSource = readOptionalProjectFile("src/components/admin/home/HomepageVisualWorkspace.tsx");
   const homepageCmsSource = `${workspaceSource}\n${editorSource}`;
 
-  it("provides separate visual, field, and history views with a responsive three-pane visual workspace", () => {
+  it("provides separate visual, field, and history views with a responsive two-pane visual workspace", () => {
     for (const label of ["可视化编辑", "字段编辑", "发布记录"]) {
       expect(workspaceSource).toContain(label);
     }

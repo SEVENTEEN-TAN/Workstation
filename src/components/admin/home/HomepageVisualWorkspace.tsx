@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, type ChangeEvent, type RefObject } from "react";
+import { useRef, useState, type ChangeEvent, type RefObject } from "react";
 
 import styles from "../../../app/admin/admin.module.css";
 import type { SiteContent } from "../../../lib/content/schema";
@@ -62,7 +62,6 @@ function imageValue(content: SiteContent, path: HomepageImagePath) {
 export function HomepageVisualWorkspace({
   content,
   validation,
-  dirty,
   locale,
   device,
   selectedPath,
@@ -79,7 +78,9 @@ export function HomepageVisualWorkspace({
   onRetryPreview,
   onOpenFields,
 }: HomepageVisualWorkspaceProps) {
-  const [activePane, setActivePane] = useState<"structure" | "preview" | "inspector">("preview");
+  const [activePane, setActivePane] = useState<"structure" | "preview">("preview");
+  const settingsDialogRef = useRef<HTMLDialogElement>(null);
+  const settingsTriggerRef = useRef<HTMLButtonElement>(null);
   const field = getVisualEditField(content, selectedPath);
   const fieldError = field ? validation.fieldErrors[field.path] : undefined;
   const savedComposition = content.composition;
@@ -110,7 +111,6 @@ export function HomepageVisualWorkspace({
       <div className={styles.homeVisualPaneTabs} role="tablist" aria-label="可视化编辑面板">
         <button type="button" role="tab" aria-selected={activePane === "structure"} onClick={() => setActivePane("structure")}>页面结构</button>
         <button type="button" role="tab" aria-selected={activePane === "preview"} onClick={() => setActivePane("preview")}>真实首页预览</button>
-        <button type="button" role="tab" aria-selected={activePane === "inspector"} onClick={() => setActivePane("inspector")}>选中项设置</button>
       </div>
       <div className={styles.homeVisualLayout}>
         <aside className={styles.homeVisualPane} data-mobile-active={activePane === "structure"} aria-label="页面结构">
@@ -147,20 +147,20 @@ export function HomepageVisualWorkspace({
             <div className={styles.homeVisualControls}>
               <div aria-label="预览设备"><button type="button" aria-pressed={device === "desktop"} onClick={() => onDeviceChange("desktop")}>桌面预览</button><button type="button" aria-pressed={device === "mobile"} onClick={() => onDeviceChange("mobile")}>手机预览</button></div>
               <div aria-label="预览语言"><button type="button" aria-pressed={locale === "zh"} onClick={() => onLocaleChange("zh")}>中文</button><button type="button" aria-pressed={locale === "en"} onClick={() => onLocaleChange("en")}>English</button></div>
+              {field ? <button ref={settingsTriggerRef} type="button" aria-haspopup="dialog" onClick={() => settingsDialogRef.current?.showModal()}>选中项设置</button> : null}
             </div>
           </div>
           <p className={styles.homePreviewStatus} role="status">{previewStatus === "error" ? "预览加载失败，工作副本仍可继续编辑。" : previewStatus === "loading" ? "预览加载中" : "预览已同步当前工作副本。"}</p>
+          {previewStatus === "error" ? <div className={styles.homePreviewRecovery}><button type="button" className={styles.secondaryButton} onClick={onRetryPreview}>重试预览</button><button type="button" onClick={() => onOpenFields()}>转到字段编辑</button></div> : null}
           <div className={styles.homePreviewFrameWrap}><iframe key={previewKey} ref={iframeRef} onLoad={onPreviewLoad} title="真实首页预览" src="/admin/home/visual-preview" className={styles.homePreviewFrame} data-device={device} /></div>
         </section>
-        <aside className={styles.homeVisualPane} data-mobile-active={activePane === "inspector"} aria-label="选中项设置">
-          <div className={styles.homeVisualPaneHeading}><span className={styles.kicker}>INSPECTOR</span><h2>选中项设置</h2></div>
-          {!field ? <div className={styles.homeVisualInspectorEmpty}><p>在预览中选择可编辑文案、联系方式或图片，随后会在这里显示设置。</p><p>{dirty ? "当前工作副本有未保存修改。" : "当前工作副本与已保存草稿一致。"}</p></div>
-            : field.kind === "text" ? <div className={styles.homeVisualInspector}><strong>{field.label}</strong><small>{field.path}</small>{fieldError ? <p role="alert">{fieldError}</p> : <p>当前字段有效。</p>}<p>请在页面原位编辑</p></div>
+      </div>
+      <dialog ref={settingsDialogRef} className={`${styles.assetPickerDialog} ${styles.homeVisualSettingsDialog}`} aria-labelledby="homepage-visual-settings-title" onClose={() => settingsTriggerRef.current?.focus()}>
+        <div className={styles.assetPickerHead}><h2 id="homepage-visual-settings-title">选中项设置</h2><button type="button" aria-label="关闭选中项设置" onClick={() => settingsDialogRef.current?.close()}>关闭</button></div>
+          {!field ? null : field.kind === "text" ? <div className={styles.homeVisualInspector}><strong>{field.label}</strong><small>{field.path}</small>{fieldError ? <p role="alert">{fieldError}</p> : <p>当前字段有效。</p>}<p>请在页面原位编辑</p></div>
               : field.kind === "link" ? <label className={styles.homeField} htmlFor={`homepage-visual-${field.path}`}><span>{field.label}</span><input id={`homepage-visual-${field.path}`} type="text" value={field.path === "settings.email" ? content.settings.email : content.settings.githubUrl} aria-invalid={fieldError ? true : undefined} onChange={(event) => updateLink(field.path as "settings.email" | "settings.githubUrl", event)} />{fieldError ? <span role="alert">{fieldError}</span> : null}</label>
                 : <div className={styles.homeVisualInspector}><strong>{field.label}</strong><Image src={imageValue(content, field.path as HomepageImagePath)} alt="" width={160} height={120} unoptimized /><button type="button" className={styles.secondaryButton} onClick={(event) => onRequestAsset(field.path as HomepageImagePath, event.currentTarget)}>替换图片</button><p>替代文本：{field.altPaths ? <><a href={`#homepage-${field.altPaths.zh.replaceAll(".", "-")}`} onClick={(event) => { event.preventDefault(); onOpenFields(field.altPaths?.zh); }}>中文</a> / <a href={`#homepage-${field.altPaths.en.replaceAll(".", "-")}`} onClick={(event) => { event.preventDefault(); onOpenFields(field.altPaths?.en); }}>English</a></> : null}</p></div>}
-          {previewStatus === "error" ? <div className={styles.homePreviewRecovery}><button type="button" className={styles.secondaryButton} onClick={onRetryPreview}>重试预览</button><button type="button" onClick={() => onOpenFields()}>转到字段编辑</button></div> : null}
-        </aside>
-      </div>
+      </dialog>
     </section>
   );
 }
