@@ -67,24 +67,20 @@ export function layoutFocusedKnowledgeGraph(graph: KnowledgeGraph, id: string, w
 export function clampGraphZoom(value: number) { return Math.min(4, Math.max(0.5, value)); }
 
 export function layoutKnowledgeGraph(graph: KnowledgeGraph, width = GRAPH_WIDTH, height = GRAPH_HEIGHT): Record<string, GraphPoint> {
-  const categories = [...new Set(graph.nodes.map((node) => node.category))].sort();
-  const counts = new Map<string, number>();
-  const nodes = graph.nodes.map((node) => {
-    const index = counts.get(node.category) ?? 0;
-    counts.set(node.category, index + 1);
-    const categoryAngle = categories.indexOf(node.category) * Math.PI * 2 / categories.length;
-    const angle = index * 2.399963229728653 + categoryAngle;
-    const anchorX = categories.length > 1 ? Math.cos(categoryAngle) * 260 : 0;
-    const anchorY = categories.length > 1 ? Math.sin(categoryAngle) * 180 : 0;
-    const radius = Math.sqrt(index + 0.5) * 12;
-    return { id: node.id, x: anchorX + Math.cos(angle) * radius, y: anchorY + Math.sin(angle) * radius, anchorX, anchorY, fx: 0, fy: 0 };
+  const nodes = [...graph.nodes].sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0).map((node) => {
+    let seed = 2166136261;
+    for (const character of node.id) seed = Math.imul(seed ^ character.charCodeAt(0), 16777619);
+    const random = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return (seed >>> 0) / 4294967296; };
+    const angle = random() * Math.PI * 2;
+    const radius = Math.sqrt(random() * graph.nodes.length) * 12;
+    return { id: node.id, x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, fx: 0, fy: 0 };
   });
   const byId = new Map(nodes.map((node) => [node.id, node]));
   // ponytail: a bounded, deterministic layout for the contract's 2,000-node ceiling; no live physics loop.
   for (let step = 0; step < 100; step++) {
     const cells = new Map<string, typeof nodes>();
     for (const node of nodes) {
-      node.fx = (node.anchorX - node.x) * 0.035; node.fy = (node.anchorY - node.y) * 0.035;
+      node.fx = -node.x * 0.025; node.fy = -node.y * 0.025;
       const key = `${Math.floor(node.x / 160)},${Math.floor(node.y / 160)}`;
       const cell = cells.get(key) ?? []; cell.push(node); cells.set(key, cell);
     }
@@ -112,7 +108,7 @@ export function layoutKnowledgeGraph(graph: KnowledgeGraph, width = GRAPH_WIDTH,
   if (!nodes.length) return {};
   const minX = Math.min(...nodes.map((node) => node.x)), maxX = Math.max(...nodes.map((node) => node.x));
   const minY = Math.min(...nodes.map((node) => node.y)), maxY = Math.max(...nodes.map((node) => node.y));
-  const padding = Math.min(60, width / 8);
+  const padding = Math.min(60, width / 14);
   const scale = Math.min((width - padding * 2) / Math.max(maxX - minX, 1), (height - padding * 2) / Math.max(maxY - minY, 1));
   return Object.fromEntries(nodes.map((node) => [node.id, { x: (node.x - (minX + maxX) / 2) * scale + width / 2, y: (node.y - (minY + maxY) / 2) * scale + height / 2 }]));
 }

@@ -56,15 +56,21 @@ describe("knowledge graph browsing", () => {
     for (let i = 1; i < boxes.length; i++) expect(boxes[i].top).toBeGreaterThan(boxes[i - 1].bottom);
     expect(layoutFocusedKnowledgeGraph({ ...graph, nodes: graph.nodes.slice(0, 1), edges: [] }, "a", 360).points.a.x).toBeGreaterThan(0);
   });
-  it("groups unconnected categories around distinct anchors without grid bands", () => {
-    const grouped: KnowledgeGraph = { ...graph, nodes: Array.from({ length: 40 }, (_, i) => ({ id: `${i}`, title: `Note ${i}`, category: i < 20 ? "AI" : "Java" })), edges: [] };
+  it("fills a round network rather than category islands or an empty ring", () => {
+    const grouped: KnowledgeGraph = { ...graph, nodes: Array.from({ length: 160 }, (_, i) => ({ id: `${i}`, title: `Note ${i}`, category: i < 80 ? "AI" : "Java" })), edges: [] };
     const points = layoutKnowledgeGraph(grouped);
-    const center = (category: string) => {
-      const nodes = grouped.nodes.filter((node) => node.category === category);
-      return nodes.reduce((sum, node) => ({ x: sum.x + points[node.id].x / nodes.length, y: sum.y + points[node.id].y / nodes.length }), { x: 0, y: 0 });
-    };
-    expect(Math.hypot(center("AI").x - center("Java").x, center("AI").y - center("Java").y)).toBeGreaterThan(300);
+    expect(layoutKnowledgeGraph({ ...grouped, nodes: [...grouped.nodes].reverse() })).toEqual(points);
+    expect(layoutKnowledgeGraph({ ...grouped, nodes: grouped.nodes.map((node) => ({ ...node, category: "One category" })) })).toEqual(points);
+    const locations = Object.values(points);
+    const spanX = Math.max(...locations.map((point) => point.x)) - Math.min(...locations.map((point) => point.x));
+    const spanY = Math.max(...locations.map((point) => point.y)) - Math.min(...locations.map((point) => point.y));
+    expect(spanX / spanY).toBeGreaterThan(0.85);
+    expect(spanX / spanY).toBeLessThan(1.15);
+    const radii = locations.map((point) => Math.hypot(point.x - 480, point.y - 320));
+    const radius = Math.max(...radii);
+    expect(radii.filter((value) => value < radius / 2).length).toBeGreaterThan(grouped.nodes.length * 0.15);
+    expect(radii.filter((value) => value > radius * 0.75).length).toBeGreaterThan(grouped.nodes.length * 0.15);
     expect(new Set(Object.values(points).map((point) => Math.round(point.y))).size).toBeGreaterThan(20);
-    for (const point of Object.values(layoutKnowledgeGraph(grouped, 360, 380))) { expect(point.x).toBeGreaterThanOrEqual(45); expect(point.x).toBeLessThanOrEqual(315); }
+    for (const point of Object.values(layoutKnowledgeGraph(grouped, 360, 380))) { expect(point.x).toBeGreaterThanOrEqual(25); expect(point.x).toBeLessThanOrEqual(335); expect(point.y).toBeGreaterThanOrEqual(25); expect(point.y).toBeLessThanOrEqual(355); }
   });
 });

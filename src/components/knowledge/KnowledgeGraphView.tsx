@@ -120,7 +120,7 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
                 <title>{node.title} · {node.category}</title>
                 {activeId ? <rect x={location.x - 12} y={location.y - label.height / 2} width={label.width} height={label.height} rx={8} className={isSelected ? styles.focusCardSelected : styles.focusCard} /> : null}
                 {isSelected ? <circle cx={location.x} cy={location.y} r={14} className={styles.nodeHalo} /> : null}
-                <circle cx={location.x} cy={location.y} r={Math.min(9, 3.2 + Math.sqrt(degrees.get(node.id) ?? 0) * 0.65)} fill={colors.get(node.category)} stroke={isSelected ? "#ffffff" : "#0d1116"} strokeWidth={isSelected ? 2 : 1} />
+                <circle cx={location.x} cy={location.y} r={Math.min(9, 3.2 + Math.sqrt(degrees.get(node.id) ?? 0) * 0.65) * (activeId ? 1 : Math.min(1, width / 520))} fill={colors.get(node.category)} stroke={isSelected ? "#ffffff" : "#0d1116"} strokeWidth={isSelected ? 2 : 1} />
                 {showLabel ? activeId ? <text x={location.x + 20} y={location.y - (label.lines.length - 1) * 10.5 + 5}>{label.lines.map((line, index) => <tspan key={index} x={location.x + 20} dy={index ? 21 : 0}>{line}</tspan>)}</text> : <text x={location.x + (labelOnLeft ? -12 : 12)} y={location.y + 4} textAnchor={labelOnLeft ? "end" : "start"}>{node.title.length > 18 ? `${node.title.slice(0, 18)}…` : node.title}</text> : null}
               </g>;
             })}
