@@ -955,7 +955,9 @@ describe("OKR execution workspace contracts", () => {
     expect(workspaceSource).toContain("initialProjects");
     expect(workspaceSource).toContain("projects={projects}");
     expect(workspaceSource).toContain("const previewContent = content;");
-    expect(workspaceSource).toContain("contentRef.current = next;");
+    expect(workspaceSource).toContain("editHistoryRef.current = next;");
+    expect(workspaceSource).toContain("contentRef.current = next.present;");
+    expect(workspaceSource).toContain("previewContentRef.current = next.present;");
     expect(workspaceSource).toContain("onContentChange={applyFieldChange}");
     expect(workspaceSource).toContain("onContentChange={commitContent}");
     expect(workspaceSource).not.toContain("onContentChange={setContent}");

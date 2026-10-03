@@ -11,7 +11,7 @@ import { editableTextProps, selectableFieldProps } from "./visual-editing";
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-export function Hero() {
+export function Hero({ visibleSections = ["work", "contact"] }: { visibleSections?: readonly string[] } = {}) {
   const dragArea = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { locale, copy, settings, editor } = useI18n();
@@ -56,14 +56,14 @@ export function Hero() {
           </div>
           <p {...editableTextProps(editor, `${locale}.hero.intro`)} className={`${isCompact ? "mt-6" : "mt-9"} max-w-xl text-base leading-relaxed text-gray-400 sm:text-lg`}>{copy.hero.intro}</p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <button type="button" onClick={(event) => {
+            {visibleSections.includes("work") && <button type="button" onClick={(event) => {
               if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
               scrollTo("work");
-            }} className="primary-button focus-ring group"><span {...editableTextProps(editor, `${locale}.hero.work`)}>{copy.hero.work}</span><ArrowDownRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" /></button>
-            <button type="button" onClick={(event) => {
+            }} className="primary-button focus-ring group"><span {...editableTextProps(editor, `${locale}.hero.work`)}>{copy.hero.work}</span><ArrowDownRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" /></button>}
+            {visibleSections.includes("contact") && <button type="button" onClick={(event) => {
               if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
               scrollTo("contact");
-            }} className="secondary-button focus-ring group"><span className="size-2 rounded-full bg-accent" /><span {...editableTextProps(editor, `${locale}.hero.contact`)}>{copy.hero.contact}</span><ArrowUpRight className="size-4 text-gray-400 transition-colors group-hover:text-accent" /></button>
+            }} className="secondary-button focus-ring group"><span className="size-2 rounded-full bg-accent" /><span {...editableTextProps(editor, `${locale}.hero.contact`)}>{copy.hero.contact}</span><ArrowUpRight className="size-4 text-gray-400 transition-colors group-hover:text-accent" /></button>}
           </div>
         </motion.div>
 

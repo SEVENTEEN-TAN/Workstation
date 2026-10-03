@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, LoaderCircle, RefreshCw, RotateCcw, Send, Save } from "lucide-react";
+import { ExternalLink, LoaderCircle, Redo2, RefreshCw, RotateCcw, Send, Save, Undo2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
@@ -10,7 +10,9 @@ import { siteContentSchema, type SiteContent } from "../../lib/content/schema";
 import { AssetPicker } from "./home/AssetPicker";
 import { HomepageEditor } from "./home/HomepageEditor";
 import { HomepageVisualWorkspace } from "./home/HomepageVisualWorkspace";
-import { applyHomepageEditorChange, isSiteContentDirty, reconcileFetchedHomeContent, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
+import { HomepageSourceSelection, type HomepageSourceOptions } from "./home/HomepageSourceSelection";
+import { applyHomepageEditorChange, isSiteContentDirty, type SiteLocale, updateVisualContent, validateSiteContent } from "./home/content-editor";
+import { createEditHistory, recordEdit, redoEdit, synchronizeEditHistory, undoEdit, type EditHistory } from "./home/edit-history";
 import { getVisualEditField, isTrustedEditorMessage, parseIframeMessage, sendEditorPreviewState, type HomepageImagePath } from "./home/visual-editor-protocol";
 import { adminRequest } from "./request";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -26,6 +28,7 @@ interface HomeWorkspaceProps {
   initialVersions: SiteVersionData[];
   initialProjects: PortfolioProjectData[];
   assets: AssetData[];
+  sourceOptions?: HomepageSourceOptions;
 }
 
 function formatVersionDate(version: SiteVersionData) {
@@ -49,13 +52,15 @@ const UNAVAILABLE_REASONS = {
   incomplete: "资料不完整",
 } as const;
 
-export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, assets }: HomeWorkspaceProps) {
+export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, assets, sourceOptions = { activities: [], skills: [], experiences: [] } }: HomeWorkspaceProps) {
   const router = useRouter();
   const [draft, setDraft] = useState(initialDraft);
   const [projects, setProjects] = useState(initialProjects);
   const [projectCheckFailed, setProjectCheckFailed] = useState(false);
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
+  const [editHistory, setEditHistory] = useState(() => createEditHistory(initialContent));
+  const editHistoryRef = useRef(editHistory);
   const [savedContent, setSavedContent] = useState<SiteContent>(initialContent);
   const [view, setView] = useState<"visual" | "fields" | "history">("visual");
   const [initialFieldPath, setInitialFieldPath] = useState<string>();
@@ -83,11 +88,16 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const workingSync = useMemo(() => inspectHomepageProjectSync(content, projects), [content, projects]);
   const previewContent = content;
   const previewContentRef = useRef(previewContent);
-  const commitContent = useCallback((next: SiteContent) => {
-    contentRef.current = next;
-    previewContentRef.current = next;
-    setContent(next);
+  const applyEditHistory = useCallback((next: EditHistory) => {
+    editHistoryRef.current = next;
+    setEditHistory(next);
+    contentRef.current = next.present;
+    previewContentRef.current = next.present;
+    setContent(next.present);
   }, []);
+  const commitContent = useCallback((next: SiteContent) => {
+    applyEditHistory(recordEdit(editHistoryRef.current, next));
+  }, [applyEditHistory]);
 
   useEffect(() => {
     localeRef.current = previewLocale;
@@ -211,14 +221,14 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
     };
   }, [dirty]);
 
-  async function fetchHomeData(contentAtRequest: SiteContent): Promise<void> {
+  async function fetchHomeData(contentAtRequest: SiteContent, resetHistory = false): Promise<void> {
     const [nextDraft, nextVersions] = await Promise.all([
       adminRequest<SiteVersionData>("/api/admin/site/draft"),
       adminRequest<SiteVersionData[]>("/api/admin/site/versions"),
     ]);
     const nextContent = siteContentSchema.parse(nextDraft.content);
     setDraft(nextDraft);
-    commitContent(reconcileFetchedHomeContent(contentRef.current, contentAtRequest, nextContent));
+    applyEditHistory(synchronizeEditHistory(editHistoryRef.current, contentAtRequest, nextContent, resetHistory));
     setSavedContent(nextContent);
     setVersions(nextVersions);
   }
@@ -238,7 +248,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       if (!flushed) return;
       if (isSiteContentDirty(contentRef.current, savedContent) && !window.confirm("刷新会丢弃当前未保存修改，确定继续吗？")) return;
       const contentAtRequest = contentRef.current;
-      await runAction("home:refresh", () => fetchHomeData(contentAtRequest), "主页内容已更新");
+      await runAction("home:refresh", () => fetchHomeData(contentAtRequest, true), "主页内容已更新");
     });
   }
 
@@ -258,6 +268,13 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       }, 3_000);
       pendingFlushRef.current = { id, resolve, reject, timeout };
       target.postMessage({ type: "homepage-editor:flush", requestId: id }, window.location.origin);
+    });
+  }
+
+  async function changeEditHistory(direction: "undo" | "redo") {
+    await runAction("home:operation", async () => {
+      await flushPreviewEdits();
+      applyEditHistory(direction === "undo" ? undoEdit(editHistoryRef.current) : redoEdit(editHistoryRef.current));
     });
   }
 
@@ -318,7 +335,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
       const nextVersions = await adminRequest<SiteVersionData[]>("/api/admin/site/versions");
       const nextContent = siteContentSchema.parse(nextDraft.content);
       setDraft(nextDraft);
-      commitContent(reconcileFetchedHomeContent(contentRef.current, contentAtRequest, nextContent));
+      applyEditHistory(synchronizeEditHistory(editHistoryRef.current, contentAtRequest, nextContent, true));
       setSavedContent(nextContent);
       setVersions(nextVersions);
       return true;
@@ -357,6 +374,14 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             <h2>结构化内容</h2>
           </div>
           <div className={styles.actions}>
+            <button type="button" onClick={() => changeEditHistory("undo")}
+              disabled={operationBusy || syncBusy || (!editHistory.past.length && (view !== "visual" || previewStatus !== "ready"))}>
+              <Undo2 size={17} />撤销
+            </button>
+            <button type="button" onClick={() => changeEditHistory("redo")}
+              disabled={operationBusy || syncBusy || !editHistory.future.length}>
+              <Redo2 size={17} />重做
+            </button>
             <button type="button" className={styles.primaryButton} onClick={saveDraft} disabled={(view !== "visual" && (!dirty || !validation.valid)) || operationBusy}>
               {saveBusy ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}
               {saveBusy ? "保存中" : "保存草稿"}
@@ -433,6 +458,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
               : "请先修正两种语言中的内容问题，再保存、预览和发布。"}
           </p>
         </section>
+        <HomepageSourceSelection content={content} options={sourceOptions} onChange={commitContent} />
         {view === "visual" ? (
           <HomepageVisualWorkspace
             content={content}

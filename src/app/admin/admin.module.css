@@ -3158,3 +3158,15 @@
   font-size: 12px;
   line-height: 1.6;
 }
+.homeSourceChoice {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.homeSourceChoice input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  flex: 0 0 1rem;
+}

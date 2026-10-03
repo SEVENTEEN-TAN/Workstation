@@ -16,6 +16,18 @@ export const HOME_VISUAL_STRUCTURE = [
   { id: "contact", label: "联系", source: "snapshot" },
 ] as const;
 
+type SectionId = typeof HOME_VISUAL_STRUCTURE[number]["id"];
+type HomepageComposition = {
+  sections: Array<{ id: SectionId; visible: boolean }>;
+  template: "default" | "portfolio" | "compact";
+};
+
+const TEMPLATE_SECTIONS: Record<HomepageComposition["template"], readonly SectionId[]> = {
+  default: ["identity", "about", "now", "work", "capability", "journey", "contact"],
+  portfolio: ["identity", "work", "about", "capability", "journey", "now", "contact"],
+  compact: ["identity", "about", "work", "contact"],
+};
+
 type HomepageVisualWorkspaceProps = {
   content: SiteContent;
   validation: SiteContentValidation;
@@ -70,6 +82,24 @@ export function HomepageVisualWorkspace({
   const [activePane, setActivePane] = useState<"structure" | "preview" | "inspector">("preview");
   const field = getVisualEditField(content, selectedPath);
   const fieldError = field ? validation.fieldErrors[field.path] : undefined;
+  const savedComposition = content.composition;
+  const composition: HomepageComposition = savedComposition ?? {
+    sections: HOME_VISUAL_STRUCTURE.map(({ id }) => ({ id, visible: true })),
+    template: "default",
+  };
+  const availableSections = HOME_VISUAL_STRUCTURE.filter((section) => !composition.sections.some(({ id }) => id === section.id));
+
+  function updateComposition(sections: HomepageComposition["sections"], template = composition.template) {
+    onContentChange({ ...content, composition: { ...savedComposition, sections, template } });
+  }
+
+  function moveSection(index: number, direction: -1 | 1) {
+    const sections = [...composition.sections];
+    const target = index + direction;
+    if (target < 0 || target >= sections.length) return;
+    [sections[index], sections[target]] = [sections[target], sections[index]];
+    updateComposition(sections);
+  }
 
   function updateLink(path: "settings.email" | "settings.githubUrl", event: ChangeEvent<HTMLInputElement>) {
     onContentChange(updateVisualContent(content, path, event.target.value));
@@ -85,16 +115,31 @@ export function HomepageVisualWorkspace({
       <div className={styles.homeVisualLayout}>
         <aside className={styles.homeVisualPane} data-mobile-active={activePane === "structure"} aria-label="页面结构">
           <div className={styles.homeVisualPaneHeading}><span className={styles.kicker}>STRUCTURE</span><h2>页面结构</h2></div>
+          <label className={styles.homeField} htmlFor="homepage-layout-template"><span>页面布局</span><select id="homepage-layout-template" value={composition.template} onChange={(event) => {
+            const template = event.target.value as HomepageComposition["template"];
+            updateComposition(TEMPLATE_SECTIONS[template].map((id) => ({ id, visible: true })), template);
+          }}><option value="default">完整首页</option><option value="portfolio">作品优先</option><option value="compact">精简首页</option></select></label>
+          <p className={styles.homePreviewStatus}>切换布局、隐藏或移除区块会保留已有内容。</p>
           <div className={styles.homeVisualStructureList}>
-            {HOME_VISUAL_STRUCTURE.map((section) => (
-              <article key={section.id}>
-                <button type="button" onClick={() => { onSelectedPathChange(null); onFocusSection(section.id); }}>
+            {composition.sections.map((item, index) => {
+              const section = HOME_VISUAL_STRUCTURE.find(({ id }) => id === item.id)!;
+              return <article key={section.id}>
+                <button type="button" disabled={!item.visible} onClick={() => { onSelectedPathChange(null); onFocusSection(section.id); }}>
                   <strong>{section.label}</strong><span>{sourceLabels[section.source]}</span>
                 </button>
+                <div className={styles.homeVisualControls} role="group" aria-label={`${section.label}区块操作`}>
+                  <button type="button" aria-label={`上移${section.label}`} disabled={index === 0} onClick={() => moveSection(index, -1)}>上移</button>
+                  <button type="button" aria-label={`下移${section.label}`} disabled={index === composition.sections.length - 1} onClick={() => moveSection(index, 1)}>下移</button>
+                  <button type="button" aria-label={`${item.visible ? "隐藏" : "显示"}${section.label}`} aria-pressed={item.visible} onClick={() => updateComposition(composition.sections.map((entry) => entry.id === item.id ? { ...entry, visible: !entry.visible } : entry))}>{item.visible ? "隐藏" : "显示"}</button>
+                  <button type="button" aria-label={`移除${section.label}`} onClick={() => { onSelectedPathChange(null); updateComposition(composition.sections.filter(({ id }) => id !== item.id)); }}>移除</button>
+                </div>
                 {"adminHref" in section ? <a href={section.adminHref}>管理{section.label}</a> : null}
-              </article>
-            ))}
+              </article>;
+            })}
           </div>
+          <label className={styles.homeField} htmlFor="homepage-add-section"><span>添加预设区块</span><select id="homepage-add-section" value="" disabled={availableSections.length === 0} onChange={(event) => {
+            if (event.target.value) updateComposition([...composition.sections, { id: event.target.value as SectionId, visible: true }]);
+          }}><option value="">{availableSections.length ? "选择区块" : "已包含全部预设区块"}</option>{availableSections.map(({ id, label }) => <option key={id} value={id}>{label}</option>)}</select></label>
         </aside>
         <section className={styles.homeVisualPane} data-mobile-active={activePane === "preview"} aria-label="真实首页预览">
           <div className={styles.homeVisualPreviewHeader}>

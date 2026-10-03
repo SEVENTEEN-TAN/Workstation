@@ -28,6 +28,21 @@ export const homepageGithubUrlSchema = z.string().trim().min(1).max(10_000).url(
 const editingText = z.string().max(10_000);
 const savedText = z.string().trim().min(1).max(10_000);
 
+const uniqueIds = z.array(savedText).max(500).refine((ids) => new Set(ids).size === ids.length, "记录不能重复");
+export const homepageCompositionSchema = z.object({
+  template: z.enum(["default", "portfolio", "compact"]),
+  sections: z.array(z.object({
+    id: z.enum(["identity", "about", "now", "work", "capability", "journey", "contact"]),
+    visible: z.boolean(),
+  })).max(7).refine((sections) => new Set(sections.map(({ id }) => id)).size === sections.length, "区块不能重复"),
+});
+export const homepageSelectionSchema = z.object({
+  activities: uniqueIds.optional(),
+  skills: uniqueIds.optional(),
+  experiences: uniqueIds.optional(),
+});
+export type HomepageSelection = z.infer<typeof homepageSelectionSchema>;
+
 const editingSettingsSchema = z.object({
   portraitImage: homepageImagePathSchema,
   wechatQrImage: homepageImagePathSchema,
@@ -137,6 +152,8 @@ function buildSiteContentSchema<
   settingsSchema: TSettings,
 ) {
   return z.object({
+    composition: homepageCompositionSchema.optional(),
+    homepageSelection: homepageSelectionSchema.optional(),
     selectedProjectIds: z.array(savedText)
       .refine((ids) => new Set(ids).size === ids.length, "主页项目不能重复")
       .optional(),

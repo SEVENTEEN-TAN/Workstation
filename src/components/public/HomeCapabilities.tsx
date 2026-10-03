@@ -18,10 +18,10 @@ function localized(locale: Locale, zh: string, en: string) {
   return locale === "zh" ? zh : en;
 }
 
-export function HomeCapabilities({ areas }: { areas: PublicResumeData["skills"] }) {
+export function HomeCapabilities({ areas, fallback = true }: { areas: PublicResumeData["skills"]; fallback?: boolean }) {
   const { locale } = useI18n();
   const copy = labels[locale];
-  if (!areas.length) return <Services sectionNumber="04" />;
+  if (!areas.length && fallback) return <Services sectionNumber="04" />;
 
   return (
     <section id="capability" className="scroll-mt-20 border-t border-white/[0.06] bg-[#0b0f14] py-24 sm:py-32">

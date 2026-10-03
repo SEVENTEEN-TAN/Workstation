@@ -11,9 +11,9 @@ import { editableTextProps, safeEditorLinkTarget, selectableFieldProps } from ".
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-export function Footer({ sectionNumber }: { sectionNumber?: string } = {}) {
+export function Footer({ sectionNumber, visibleSections = ["about", "work", "contact"] }: { sectionNumber?: string; visibleSections?: readonly string[] } = {}) {
   const { copy, settings, locale, editor } = useI18n();
-  const menu = copy.footer.links.map((label, index) => [label, ["about", "work", "contact"][index]] as const);
+  const menu = visibleSections.flatMap((id) => { const index = ["about", "work", "contact"].indexOf(id); return index >= 0 ? [[copy.footer.links[index], id, index] as const] : []; });
 
   return (
     <footer id="contact" className="relative scroll-mt-20 overflow-hidden border-t border-white/10 bg-ink pb-10 pt-24 sm:pt-32">
@@ -22,7 +22,7 @@ export function Footer({ sectionNumber }: { sectionNumber?: string } = {}) {
         <motion.div {...reveal} transition={{ duration: 0.7 }} className="grid gap-16 border-b border-white/10 pb-20 lg:grid-cols-2 lg:gap-24">
           <div><p {...editableTextProps(editor, `${locale}.footer.eyebrow`)} className="eyebrow">{sectionNumber ? copy.footer.eyebrow.replace(/^\d{2}/, sectionNumber) : copy.footer.eyebrow}</p><h2 aria-label={copy.footer.headingLabel} className="section-heading mt-7"><span {...editableTextProps(editor, `${locale}.footer.heading.0`)}>{copy.footer.heading[0]}</span><br /><span {...editableTextProps(editor, `${locale}.footer.heading.1`)} className="text-accent">{copy.footer.heading[1]}</span></h2><p {...editableTextProps(editor, `${locale}.footer.intro`)} className="mt-7 max-w-lg text-base leading-relaxed text-gray-400 sm:text-lg">{copy.footer.intro}</p><a {...selectableFieldProps(editor, "settings.email")} href={editor ? safeEditorLinkTarget("email", settings.email) : `mailto:${settings.email}`} className="focus-ring mt-9 inline-flex items-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-bold text-black transition-transform duration-300 hover:scale-105 sm:px-7">{settings.email}<ArrowUpRight className="size-4" /></a></div>
           <div className="grid grid-cols-2 gap-10 self-end sm:gap-20 lg:justify-self-end">
-            <div><p {...editableTextProps(editor, `${locale}.footer.menu`)} className="mb-6 text-xs font-bold uppercase tracking-[0.22em] text-gray-600">{copy.footer.menu}</p><ul className="space-y-4">{menu.map(([label, id], index) => <li key={id}><button type="button" onClick={(event) => {
+            <div><p {...editableTextProps(editor, `${locale}.footer.menu`)} className="mb-6 text-xs font-bold uppercase tracking-[0.22em] text-gray-600">{copy.footer.menu}</p><ul className="space-y-4">{menu.map(([label, id, index]) => <li key={id}><button type="button" onClick={(event) => {
               if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
               scrollTo(id);
             }} className="focus-ring text-base text-gray-300 transition-colors hover:text-accent"><span {...editableTextProps(editor, `${locale}.footer.links.${index}`)}>{label}</span></button></li>)}</ul></div>

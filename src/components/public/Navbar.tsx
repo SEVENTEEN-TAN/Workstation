@@ -11,17 +11,18 @@ function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function Navbar() {
+export function Navbar({ visibleSections = ["about", "work", "contact"] }: { visibleSections?: readonly string[] } = {}) {
   const { locale, setLocale, copy, editor } = useI18n();
   const [menuOpen, setMenuOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const navItems = [
+  const sectionNavItems = [
     { label: copy.nav.about, target: "about" },
     { label: copy.nav.work, target: "work" },
     { label: copy.nav.contact, target: "contact" },
   ];
+  const navItems = visibleSections.flatMap((id) => sectionNavItems.filter((item) => item.target === id));
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -83,9 +84,9 @@ export function Navbar() {
           <button ref={menuButtonRef} type="button" onClick={() => setMenuOpen(true)} className="focus-ring flex size-10 items-center justify-center rounded-full border border-white/15 text-white md:hidden" aria-label={locale === "zh" ? "打开菜单" : "Open menu"} aria-haspopup="dialog" aria-expanded={menuOpen}>
             <Menu size={20} aria-hidden="true" />
           </button>
-          <button type="button" onClick={() => scrollToSection("contact")} className="group focus-ring hidden size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] transition-all duration-300 hover:border-accent/60 hover:bg-accent/10 md:flex" aria-label={copy.nav.goContact}>
+          {visibleSections.includes("contact") ? <button type="button" onClick={() => scrollToSection("contact")} className="group focus-ring hidden size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] transition-all duration-300 hover:border-accent/60 hover:bg-accent/10 md:flex" aria-label={copy.nav.goContact}>
             <span className="size-2.5 rounded-full bg-accent shadow-[0_0_15px_rgba(0,223,143,0.7)] transition-transform group-hover:scale-125" />
-          </button>
+          </button> : null}
         </div>
       </nav>
       {menuOpen && (
