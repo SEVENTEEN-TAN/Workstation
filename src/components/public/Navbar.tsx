@@ -50,7 +50,7 @@ export function Navbar({ visibleSections = ["about", "work", "contact"] }: { vis
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-16 border-b border-white/[0.07] bg-[#0f1115]/80 backdrop-blur-xl sm:h-24">
-      <nav className="page-shell relative flex h-full items-center justify-between" aria-label="Primary navigation">
+      <nav className="navbar-shell relative flex h-full items-center justify-between" aria-label="Primary navigation">
         <button type="button" onClick={(event) => {
           if (editor && event.target instanceof Element && event.target.closest('[data-cms-path][contenteditable="true"]')) return;
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -84,9 +84,6 @@ export function Navbar({ visibleSections = ["about", "work", "contact"] }: { vis
           <button ref={menuButtonRef} type="button" onClick={() => setMenuOpen(true)} className="focus-ring flex size-10 items-center justify-center rounded-full border border-white/15 text-white md:hidden" aria-label={locale === "zh" ? "打开菜单" : "Open menu"} aria-haspopup="dialog" aria-expanded={menuOpen}>
             <Menu size={20} aria-hidden="true" />
           </button>
-          {visibleSections.includes("contact") ? <button type="button" onClick={() => scrollToSection("contact")} className="group focus-ring hidden size-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] transition-all duration-300 hover:border-accent/60 hover:bg-accent/10 md:flex" aria-label={copy.nav.goContact}>
-            <span className="size-2.5 rounded-full bg-accent shadow-[0_0_15px_rgba(0,223,143,0.7)] transition-transform group-hover:scale-125" />
-          </button> : null}
         </div>
       </nav>
       {menuOpen && (

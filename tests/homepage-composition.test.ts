@@ -50,6 +50,8 @@ describe("public homepage composition", () => {
     expect(markup).toContain('href="/knowledge"');
     expect(markup).toContain('href="/experience"');
     expect(markup).toContain('href="/okr"');
+    expect(markup).toContain(`aria-label="${bootstrapSiteContent.en.nav.switchLanguage}"`);
+    expect(markup).not.toContain(`aria-label="${bootstrapSiteContent.en.nav.goContact}"`);
 
     const chineseMarkup = renderToStaticMarkup(createElement(I18nProvider, {
       content: bootstrapSiteContent, locale: "zh",
