@@ -35,7 +35,7 @@ npm run db:restore -- --from <备份目录>
 
 ## 部署与回滚
 
-生产发布、迁移、切流和回滚流程见 [docs/deployment.md](docs/deployment.md)。
+1Panel 推荐使用仓库的 Dockerfile、Compose 和 `bash deploy/update.sh`：首次配置端口与持久化目录，以后手动运行同一命令更新，普通容器重启只启动镜像。脚本在迁移前停写并备份，不会覆盖外部环境文件或修改当前 Git 工作目录。安装、切换旧容器与回滚步骤见 [docs/deployment.md](docs/deployment.md)。
 
 ## Windows Obsidian 同步
 
