@@ -1,12 +1,10 @@
 "use client";
 
-import { Bot, KeyRound, LoaderCircle, PlugZap, Plus, RefreshCw, Save, ScrollText } from "lucide-react";
+import { LoaderCircle, PlugZap, Plus, RefreshCw, Save } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import styles from "../../app/admin/admin.module.css";
-import { EmptyState } from "./EmptyState";
 import { FeedbackCenter } from "./FeedbackCenter";
-import { PageHeader } from "./PageHeader";
 import { adminRequest } from "./request";
 import type { AiProviderData, AiProviderStateData, AiUseCaseSettingData } from "./types";
 import { useAdminAction } from "./useAdminAction";
@@ -136,6 +134,7 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
   const [selectedId, setSelectedId] = useState<string | null>(initialState.providers[0]?.id ?? null);
   const [form, setForm] = useState(() => createProviderForm(initialState.providers[0]));
   const [defaults, setDefaults] = useState(() => initialDefaults(initialState.defaults));
+  const [tab, setTab] = useState<"providers" | "defaults">("providers");
   const { feedback, dismissFeedback, isBusy, runAction } = useAdminAction();
 
   const editing = state.providers.find((provider) => provider.id === selectedId) ?? null;
@@ -146,6 +145,7 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
   const activeProviders = state.providers.filter((provider) => provider.enabled && provider.lastTestStatus === "SUCCESS");
 
   function editProvider(provider: AiProviderData | null) {
+    setTab("providers");
     setSelectedId(provider?.id ?? null);
     setForm(createProviderForm(provider));
   }
@@ -273,89 +273,81 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
   const models = editing ? providerModels(editing) : uniqueModels([form.manualModels]);
 
   return (
-    <section>
-      <PageHeader
-        title="AI 配置"
-        description="集中管理自定义 AI 服务；所有生成结果后续都先进入私有草稿。"
-        action={(
-          <button type="button" className={styles.primaryButton} onClick={() => editProvider(null)} disabled={saving || testing || refreshing}>
-            <Plus size={17} />新建提供方
-          </button>
-        )}
-      />
+    <section className={styles.aiWorkspace}>
+      <header className={styles.aiHeader}>
+        <div>
+          <h1>AI 配置</h1>
+          <p>管理 AI 服务和默认模型，生成内容先进入私有草稿。</p>
+        </div>
+        <button type="button" className={styles.primaryButton} onClick={() => editProvider(null)} disabled={saving || testing || refreshing}>
+          <Plus size={17} />新建提供方
+        </button>
+      </header>
 
-      <div className={styles.metrics}>
-        <article><span>提供方</span><strong>{state.providers.length}</strong></article>
-        <article><span>可调用</span><strong>{activeProviders.length}</strong></article>
-        <article><span>默认用例</span><strong>{state.defaults.length} / {AI_USE_CASES.length}</strong></article>
-        <article><span>请求日志</span><strong>{state.requestLogs.length}</strong></article>
+      <div className={styles.aiTabs} role="tablist" aria-label="AI 配置分区" onKeyDown={(event) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === "Home" ? "providers" : event.key === "End" ? "defaults" : tab === "providers" ? "defaults" : "providers";
+        setTab(next);
+        event.currentTarget.querySelector<HTMLButtonElement>(`[data-tab="${next}"]`)?.focus();
+      }}>
+        <button type="button" role="tab" id="ai-providers-tab" data-tab="providers" aria-controls="ai-providers-panel" aria-selected={tab === "providers"} tabIndex={tab === "providers" ? 0 : -1} onClick={() => setTab("providers")}>服务配置 <small>{state.providers.length}</small></button>
+        <button type="button" role="tab" id="ai-defaults-tab" data-tab="defaults" aria-controls="ai-defaults-panel" aria-selected={tab === "defaults"} tabIndex={tab === "defaults" ? 0 : -1} onClick={() => setTab("defaults")}>默认模型 <small>{state.defaults.length} / {AI_USE_CASES.length}</small></button>
       </div>
 
-      <section className={styles.panel}>
-        <div className={styles.sectionHeading}>
-          <div><span className={styles.kicker}>PROVIDERS</span><h2>提供方</h2></div>
-          <Bot size={18} aria-hidden="true" />
-        </div>
-        {state.providers.length ? (
-          <div>
+      <section id="ai-providers-panel" role="tabpanel" aria-labelledby="ai-providers-tab" hidden={tab !== "providers"} className={styles.panel}>
+        <div className={styles.aiServiceLayout} data-has-providers={state.providers.length > 0}>
+          {state.providers.length ? <aside className={styles.aiProviderList} aria-label="AI 提供方">
+            <div className={styles.aiListHeading}><strong>提供方</strong><small>{activeProviders.length} 个可调用</small></div>
             {state.providers.map((provider) => (
-              <div key={provider.id} className={styles.listRow}>
-                <strong>{provider.name}</strong>
-                <span>{provider.adapterKind === "OPENAI_COMPATIBLE" ? "OpenAI Compatible" : provider.adapterKind === "ANTHROPIC_MESSAGES" ? "Anthropic Messages" : "Custom JSON"}</span>
-                <small>{providerModels(provider).length} 个模型 · {formatDate(provider.lastTestedAt)}</small>
+              <button key={provider.id} type="button" className={styles.aiProviderItem} aria-pressed={selectedId === provider.id} onClick={() => editProvider(provider)} disabled={saving || testing || refreshing}>
+                <span><strong>{provider.name}</strong><small>{providerModels(provider).length} 个模型</small></span>
                 <span className={provider.enabled ? `${styles.statusBadge} ${styles.statusActive}` : styles.statusBadge}>
                   {provider.enabled ? "已启用" : provider.lastTestStatus === "SUCCESS" ? "待启用" : provider.lastTestStatus === "FAILED" ? "测试失败" : "未测试"}
                 </span>
-                <div className={styles.rowActions}>
-                  <button type="button" onClick={() => editProvider(provider)}>编辑</button>
-                </div>
-              </div>
+              </button>
             ))}
-          </div>
-        ) : (
-          <EmptyState title="还没有 AI 提供方" description="先创建一个提供方，配置模型后执行连接测试。" action={null} />
-        )}
-      </section>
-
-      <section className={styles.panel}>
+          </aside> : null}
+        <div className={styles.aiEditor}>
         <div className={styles.sectionHeading}>
-          <div><span className={styles.kicker}>{editing ? "EDIT" : "CREATE"}</span><h2>{editing ? "编辑提供方" : "新建提供方"}</h2></div>
+          <h2>{editing ? editing.name : "新建提供方"}</h2>
           <span className={form.authType === "NONE" || editing?.credentialConfigured ? `${styles.statusBadge} ${styles.statusActive}` : styles.statusBadge}>
             {editing ? form.authType === "NONE" ? "无需密钥" : editing.credentialConfigured ? "密钥已配置" : "密钥未配置" : "待保存"}
           </span>
         </div>
 
-        <form className={styles.entityForm} onSubmit={saveProvider}>
+        <form className={`${styles.entityForm} ${styles.aiProviderForm}`} onSubmit={saveProvider}>
           <label><span>名称</span><input name="name" required maxLength={80} value={form.name} onChange={(event) => updateField("name", event.target.value)} /></label>
           <label><span>适配协议</span>
             <select name="adapterKind" value={form.adapterKind} onChange={(event) => updateField("adapterKind", event.target.value as ProviderForm["adapterKind"])}>
-              {AI_ADAPTER_KINDS.map((kind) => <option key={kind} value={kind}>{kind}</option>)}
+              {AI_ADAPTER_KINDS.map((kind) => <option key={kind} value={kind}>{kind === "OPENAI_COMPATIBLE" ? "OpenAI 兼容" : kind === "ANTHROPIC_MESSAGES" ? "Anthropic Messages" : "自定义 JSON"}</option>)}
             </select>
           </label>
-          <label><span>基础 URL</span><input name="baseUrl" required value={form.baseUrl} onChange={(event) => updateField("baseUrl", event.target.value)} /></label>
-          <label><span>生成端点</span><input name="generationEndpoint" required value={form.generationEndpoint} onChange={(event) => updateField("generationEndpoint", event.target.value)} /></label>
-          <label><span>模型列表端点</span><input name="modelEndpoint" value={form.modelEndpoint} onChange={(event) => updateField("modelEndpoint", event.target.value)} /></label>
-          <label><span>认证方式</span>
+          <label className={styles.aiFullField}><span>API 地址</span><input name="baseUrl" required value={form.baseUrl} onChange={(event) => updateField("baseUrl", event.target.value)} /></label>
+          <label>
+            <span>密钥环境变量</span>
+            <input name="credentialEnvVar" value={form.credentialEnvVar} onChange={(event) => updateField("credentialEnvVar", event.target.value)} placeholder={editing?.credentialConfigured ? "留空保留当前环境变量" : "OPENAI_API_KEY"} />
+            <small className={styles.mutedCopy}>填写服务器环境变量名，无需在这里输入密钥值。</small>
+          </label>
+          <label><span>模型（每行一个）</span><textarea name="manualModels" rows={3} value={form.manualModels} onChange={(event) => updateField("manualModels", event.target.value)} placeholder="例如 glm-5.3" /></label>
+
+          <details className={styles.aiAdvanced} onInvalidCapture={(event) => { event.currentTarget.open = true; }}>
+            <summary>高级配置 <small>端点、认证和自定义映射</small></summary>
+            <div className={styles.entityForm}>
+            <label><span>生成端点</span><input name="generationEndpoint" required value={form.generationEndpoint} onChange={(event) => updateField("generationEndpoint", event.target.value)} /></label>
+            <label><span>模型列表端点</span><input name="modelEndpoint" value={form.modelEndpoint} onChange={(event) => updateField("modelEndpoint", event.target.value)} /></label>
+            <label><span>认证方式</span>
             <select name="authType" value={form.authType} onChange={(event) => updateField("authType", event.target.value as ProviderForm["authType"])}>
               {AI_AUTH_TYPES.map((kind) => <option key={kind} value={kind}>{kind}</option>)}
             </select>
           </label>
           <label><span>自定义认证头</span><input name="authHeaderName" value={form.authHeaderName} onChange={(event) => updateField("authHeaderName", event.target.value)} /></label>
           <label><span>认证前缀</span><input name="authScheme" value={form.authScheme} onChange={(event) => updateField("authScheme", event.target.value)} /></label>
-          <label>
-            <span>密钥环境变量</span>
-            <input name="credentialEnvVar" value={form.credentialEnvVar} onChange={(event) => updateField("credentialEnvVar", event.target.value)} placeholder={editing?.credentialConfigured ? "留空保留当前环境变量" : "OPENAI_API_KEY"} />
-          </label>
-          <label><span>手工模型（每行一个）</span><textarea name="manualModels" rows={4} value={form.manualModels} onChange={(event) => updateField("manualModels", event.target.value)} /></label>
-          <label className={styles.editorLabel}>
-            <input type="checkbox" name="enabled" checked={form.enabled} onChange={(event) => updateField("enabled", event.target.checked)} disabled={Boolean(editing && editing.lastTestStatus !== "SUCCESS")} />
-            <span><strong>启用提供方</strong><small>连接测试通过后才能启用；修改连接信息会重新进入待测试状态。</small></span>
-          </label>
 
           {form.adapterKind === "CUSTOM_JSON" ? (
             <>
               <label><span>附加请求头 JSON</span><textarea name="headers" required rows={5} value={form.headers} onChange={(event) => updateField("headers", event.target.value)} /></label>
-              <label><span>请求 JSON 模板</span><textarea name="requestTemplate" required rows={10} value={form.requestTemplate} onChange={(event) => updateField("requestTemplate", event.target.value)} /></label>
+              <label><span>请求 JSON 模板</span><textarea name="requestTemplate" required rows={6} value={form.requestTemplate} onChange={(event) => updateField("requestTemplate", event.target.value)} /></label>
               <label><span>响应文本路径</span><input name="responseTextPath" required value={form.responseTextPath} onChange={(event) => updateField("responseTextPath", event.target.value)} /></label>
               <label><span>输入 Token 路径</span><input name="inputTokensPath" value={form.inputTokensPath} onChange={(event) => updateField("inputTokensPath", event.target.value)} /></label>
               <label><span>输出 Token 路径</span><input name="outputTokensPath" value={form.outputTokensPath} onChange={(event) => updateField("outputTokensPath", event.target.value)} /></label>
@@ -365,8 +357,23 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
           ) : (
             <input type="hidden" name="requestTemplate" value={form.requestTemplate} />
           )}
+            </div>
+          </details>
 
-          <div className={styles.entityFormActions}>
+          <label className={`${styles.activityToggle} ${styles.aiFullField}`}>
+            <input type="checkbox" name="enabled" checked={form.enabled} onChange={(event) => updateField("enabled", event.target.checked)} disabled={!editing || editing.lastTestStatus !== "SUCCESS"} />
+            <span><strong>启用提供方</strong><small>保存并通过连接测试后才能启用；修改连接信息需要重新测试。</small></span>
+          </label>
+
+          <div className={styles.aiFormActions}>
+            <button type="button" onClick={testProvider} disabled={!editing || testing || saving || refreshing || models.length === 0}>
+              {testing ? <LoaderCircle className={styles.spin} size={16} /> : <PlugZap size={16} />}
+              {testing ? "测试中" : "测试连接"}
+            </button>
+            <button type="button" onClick={refreshProviderModels} disabled={!editing || refreshing || saving || testing}>
+              {refreshing ? <LoaderCircle className={styles.spin} size={16} /> : <RefreshCw size={16} />}
+              {refreshing ? "刷新中" : "刷新模型"}
+            </button>
             <button type="button" onClick={() => editProvider(editing)} disabled={saving || !editing}>重置</button>
             <button className={styles.primaryButton} disabled={saving || testing || refreshing}>
               {saving ? <LoaderCircle className={styles.spin} size={17} /> : <Save size={17} />}
@@ -375,30 +382,21 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
           </div>
         </form>
 
-        <div className={styles.rowActions}>
-          <button type="button" onClick={testProvider} disabled={!editing || testing || saving || models.length === 0}>
-            {testing ? <LoaderCircle className={styles.spin} size={16} /> : <PlugZap size={16} />}
-            {testing ? "测试中" : "测试连接"}
-          </button>
-          <button type="button" onClick={refreshProviderModels} disabled={!editing || refreshing || saving}>
-            {refreshing ? <LoaderCircle className={styles.spin} size={16} /> : <RefreshCw size={16} />}
-            {refreshing ? "刷新中" : "刷新模型"}
-          </button>
-        </div>
         {editing ? (
           <p className={styles.mutedCopy}>
-            可用模型 {models.length} 个；手工模型与上游缓存会合并去重。缓存更新于 {formatDate(editing.modelsRefreshedAt)}。
+            可用模型 {models.length} 个 · 上次测试 {formatDate(editing.lastTestedAt)} · 模型缓存 {formatDate(editing.modelsRefreshedAt)}
           </p>
         ) : null}
-        <p className={styles.mutedCopy}><KeyRound size={14} aria-hidden="true" /> 密钥只填写服务器环境变量名，系统不会读取或返回密钥值。</p>
+        </div>
+        </div>
       </section>
 
-      <section className={styles.panel}>
+      <section id="ai-defaults-panel" role="tabpanel" aria-labelledby="ai-defaults-tab" hidden={tab !== "defaults"} className={styles.panel}>
         <div className={styles.sectionHeading}>
-          <div><span className={styles.kicker}>DEFAULTS</span><h2>默认用例</h2></div>
+          <h2>默认模型</h2>
           <span>{activeProviders.length} 个可调用提供方</span>
         </div>
-        <form className={styles.entityForm} onSubmit={saveDefaultUseCases}>
+        <form className={`${styles.entityForm} ${styles.aiDefaultsForm}`} onSubmit={saveDefaultUseCases}>
           {AI_USE_CASES.map((useCase) => {
             const selectedProvider = activeProviders.find((provider) => provider.id === defaults[useCase].providerId);
             const availableModels = selectedProvider ? providerModels(selectedProvider) : [];
@@ -444,11 +442,8 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
         </form>
       </section>
 
-      <section className={styles.panel}>
-        <div className={styles.sectionHeading}>
-          <div><span className={styles.kicker}>AUDIT</span><h2>请求日志</h2></div>
-          <ScrollText size={18} aria-hidden="true" />
-        </div>
+      <details className={`${styles.panel} ${styles.aiLogs}`}>
+        <summary>请求日志 <small>{state.requestLogs.length} 条</small></summary>
         {state.requestLogs.length ? (
           <div>
             {state.requestLogs.map((log) => {
@@ -468,7 +463,7 @@ export function AiProviderWorkspace({ initialState }: { initialState: AiProvider
           </div>
         ) : <p className={styles.mutedCopy}>执行连接测试或生成草稿后，这里会显示最近的请求元数据。</p>}
         <p className={styles.mutedCopy}>日志仅记录模型、耗时、Token 与结果，不会保存提示词、生成内容、请求头或原始响应。</p>
-      </section>
+      </details>
 
       <FeedbackCenter feedback={feedback} onDismiss={dismissFeedback} />
     </section>

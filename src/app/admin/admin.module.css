@@ -2425,6 +2425,61 @@
 .activityToggle small { margin-top: 3px; color: #747f8b; font-size: 10px; font-weight: 500; }
 .activityList { display: grid; gap: 0; }
 
+.aiWorkspace { max-width: 1160px; }
+.aiHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.aiHeader h1 { margin: 0; color: #ffffff; font-size: 28px; }
+.aiHeader p { margin: 7px 0 0; color: #8e98a4; font-size: 12px; line-height: 1.6; }
+.aiHeader > button { flex: 0 0 auto; }
+.aiTabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.aiTabs button { gap: 8px; border-color: transparent; background: transparent; }
+.aiTabs button[aria-selected="true"] { border-color: rgba(0, 223, 143, 0.25); background: rgba(0, 223, 143, 0.07); color: #00df8f; }
+.aiTabs small { color: #77818d; font-size: 10px; }
+.aiServiceLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.aiServiceLayout[data-has-providers="true"] { grid-template-columns: 220px minmax(0, 1fr); }
+.aiProviderList { min-width: 0; padding-right: 20px; border-right: 1px solid rgba(255, 255, 255, 0.08); }
+.aiListHeading { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 12px; font-size: 12px; }
+.aiListHeading small { color: #77818d; font-size: 10px; }
+.aiProviderItem { display: flex; width: 100%; justify-content: space-between; gap: 8px; margin-bottom: 6px; padding: 11px !important; text-align: left; }
+.aiProviderItem[aria-pressed="true"] { border-color: rgba(0, 223, 143, 0.3); background: rgba(0, 223, 143, 0.06); }
+.aiProviderItem > span:first-child { min-width: 0; }
+.aiProviderItem strong, .aiProviderItem small { display: block; overflow-wrap: anywhere; }
+.aiProviderItem strong { color: #e6e9eb; font-size: 12px; }
+.aiProviderItem small { margin-top: 4px; color: #77818d; font-size: 10px; }
+.aiEditor { min-width: 0; }
+.aiProviderForm { gap: 12px; }
+.aiProviderForm textarea { min-height: 76px; }
+.aiDefaultsForm { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.aiDefaultsForm .compactField { min-width: 0; display: grid; gap: 12px; }
+.aiProviderForm .mutedCopy { margin-top: 0; font-size: 10px; font-weight: 400; }
+.aiFullField, .aiAdvanced, .aiFormActions { grid-column: 1 / -1; }
+.aiAdvanced { min-width: 0; border-block: 1px solid rgba(255, 255, 255, 0.07); }
+.aiAdvanced summary, .aiLogs summary { padding-block: 12px; color: #c7cfd5; font-size: 12px; font-weight: 650; cursor: pointer; }
+.aiAdvanced summary small, .aiLogs summary small { margin-left: 8px; color: #77818d; font-size: 10px; font-weight: 400; }
+.aiAdvanced > div { padding-bottom: 14px; }
+.aiFormActions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 2px; }
+.aiFormActions > .primaryButton { margin-left: auto; }
+.aiLogs { padding-block: 3px !important; }
+.aiLogs[open] { padding-bottom: 16px !important; }
+.aiLogs .listRow { grid-template-columns: minmax(0, 1fr) auto; }
+.aiLogs .listRow small { overflow-wrap: anywhere; }
+.aiLogs .listRow time { grid-column: 1 / -1; }
+.aiWorkspace [hidden] { display: none; }
+
+@media (max-width: 899px) {
+  .aiServiceLayout[data-has-providers="true"] { grid-template-columns: minmax(0, 1fr); }
+  .aiProviderList { padding-right: 0; padding-bottom: 10px; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+}
+
+@media (max-width: 639px) {
+  .aiHeader { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .aiHeader h1 { font-size: 25px; }
+  .aiWorkspace .aiDefaultsForm { grid-template-columns: minmax(0, 1fr); }
+  .aiWorkspace .aiFullField, .aiAdvanced, .aiFormActions { grid-column: 1 / -1; }
+  .aiFormActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .aiFormActions > .primaryButton { margin-left: 0; }
+  .aiAdvanced summary small { display: block; margin: 4px 0 0 16px; }
+}
+
 .aiDraftList {
   display: grid;
   gap: 12px;
