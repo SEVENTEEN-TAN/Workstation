@@ -1442,9 +1442,10 @@
 }
 
 .homeVisualWorkspace { min-width: 0; margin-top: 16px; }
-.homeVisualLayout { display: grid; grid-template-columns: minmax(170px, 0.55fr) minmax(0, 2.8fr); gap: 16px; align-items: start; }
+.homeVisualLayout { display: grid; grid-template-columns: minmax(170px, 0.55fr) minmax(0, 2.8fr); gap: 16px; align-items: stretch; }
 .homeVisualPaneTabs { display: none; }
 .homeVisualPane { display: grid; min-width: 0; gap: 12px; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 7px; background: #10141a; }
+.homeVisualPreviewPane { display: flex; flex-direction: column; }
 .homeVisualPaneHeading h2 { margin: 4px 0 0; color: #f4f6f5; font-size: 16px; }
 .homeVisualStructureList { display: grid; gap: 7px; }
 .homeVisualStructureList article { display: grid; gap: 6px; padding: 9px; border-left: 2px solid rgba(0, 223, 143, 0.22); background: rgba(255, 255, 255, 0.025); }
@@ -1457,9 +1458,13 @@
 .homeVisualControls > div { display: inline-flex; gap: 4px; }
 .homeVisualControls button[aria-pressed="true"] { border-color: rgba(0, 223, 143, 0.42); background: rgba(0, 223, 143, 0.09); color: #00df8f; }
 .homePreviewStatus { margin: 0; }
-.homePreviewFrameWrap { min-height: 720px; overflow: auto; background: #090d11; }
-.homePreviewFrame { display: block; width: 100%; min-height: 720px; border: 0; background: #090d11; }
-.homePreviewFrame[data-device="mobile"] { width: min(390px, 100%); margin-inline: auto; }
+.homePreviewFrameWrap { position: relative; flex: 1; min-height: 720px; overflow: hidden; background: #090d11; }
+.homePreviewFrame { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; background: #090d11; }
+.homePreviewFrame[data-device="mobile"] { width: 390px; height: calc(100% / var(--home-preview-scale, 1)); transform: scale(var(--home-preview-scale, 1)); transform-origin: top left; }
+.homeProjectSyncResult { display: grid; gap: 8px; padding: 12px 0; color: #929ba5; font-size: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.homeProjectSyncResult p { margin: 4px 0 0; }
+.homeSourceSelection > summary { cursor: pointer; color: #f4f6f5; font-size: 15px; font-weight: 700; }
+.homeSourceSelection[open] > summary { margin-bottom: 12px; }
 .assetPickerDialog.homeVisualSettingsDialog { width: min(420px, calc(100vw - 32px)); }
 .homeVisualInspector, .homePreviewRecovery { display: grid; gap: 10px; }
 .homeVisualInspector p { margin: 0; }

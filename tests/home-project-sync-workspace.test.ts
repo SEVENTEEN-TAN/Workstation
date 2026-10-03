@@ -21,6 +21,9 @@ describe("homepage project synchronization workspace", () => {
   it("offers a deliberate check without marking legacy cards stale", () => {
     const html = render(structuredClone(bootstrapSiteContent));
     expect(html).toContain("检查项目更新");
+    expect(html).not.toContain("PROJECT SYNC");
+    expect(html).not.toContain("首页项目卡片");
+    expect(html.indexOf("检查项目更新")).toBeLessThan(html.indexOf("撤销"));
     expect(html).not.toContain("同步项目更新到工作副本");
     expect(html).not.toContain("项目卡片待同步");
   });

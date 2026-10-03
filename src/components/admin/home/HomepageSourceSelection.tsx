@@ -10,8 +10,8 @@ export function HomepageSourceSelection({ content, options, onChange }: {
   function update(key: keyof HomepageSelection, ids: string[] | undefined) {
     onChange({ ...content, homepageSelection: { ...content.homepageSelection, [key]: ids } });
   }
-  return <section aria-label="首页业务内容选择" className={styles.panel}>
-    <h2>业务内容选择与顺序</h2>
+  return <details aria-label="首页业务内容选择" className={`${styles.panel} ${styles.homeSourceSelection}`}>
+    <summary>业务内容选择与顺序</summary>
     <p>这里选择公开源记录，不修改源资料。每类按顺序展示前三项；未公开或已删除的记录不会展示，源内容更新后随模块更新。项目选择与顺序在字段编辑的项目展示中维护。</p>
     {(Object.keys(labels) as Array<keyof HomepageSelection>).map((key) => {
       const selected = content.homepageSelection?.[key];
@@ -34,5 +34,5 @@ export function HomepageSourceSelection({ content, options, onChange }: {
         </>}
       </fieldset>;
     })}
-  </section>;
+  </details>;
 }

@@ -57,6 +57,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   const [draft, setDraft] = useState(initialDraft);
   const [projects, setProjects] = useState(initialProjects);
   const [projectCheckFailed, setProjectCheckFailed] = useState(false);
+  const [projectChecked, setProjectChecked] = useState(false);
   const initialContent = useMemo(() => siteContentSchema.parse(initialDraft.content), [initialDraft.content]);
   const [content, setContent] = useState<SiteContent>(initialContent);
   const [editHistory, setEditHistory] = useState(() => createEditHistory(initialContent));
@@ -301,6 +302,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
   }
 
   async function checkProjectUpdates() {
+    setProjectChecked(true);
     const checked = await runAction("home:check-projects", async () => {
       const latest = await adminRequest<PortfolioProjectData[]>("/api/admin/projects");
       setProjects(latest);
@@ -374,6 +376,9 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             <h2>结构化内容</h2>
           </div>
           <div className={styles.actions}>
+            <button type="button" onClick={checkProjectUpdates} disabled={checkBusy}>
+              {checkBusy ? "检查中" : "检查项目更新"}
+            </button>
             <button type="button" onClick={() => changeEditHistory("undo")}
               disabled={operationBusy || syncBusy || (!editHistory.past.length && (view !== "visual" || previewStatus !== "ready"))}>
               <Undo2 size={17} />撤销
@@ -400,15 +405,8 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             <button type="button" role="tab" aria-selected={view === "history"} onClick={() => changeView("history")}>发布记录</button>
           </div>
         </div>
-        <section className={styles.readinessSummary} aria-label="首页项目同步">
-          <div>
-            <span className={styles.kicker}>PROJECT SYNC</span>
-            <h2>首页项目卡片</h2>
-          </div>
+        {(projectChecked || showProjectSync) && <section className={styles.homeProjectSyncResult} aria-label="首页项目同步">
           <div className={styles.actions}>
-            <button type="button" onClick={checkProjectUpdates} disabled={checkBusy}>
-              {checkBusy ? "检查中" : "检查项目更新"}
-            </button>
             {showProjectSync && (
               <button type="button" onClick={syncProjectUpdates}
                 disabled={projectCheckFailed || checkBusy || syncBusy || workingSync.status !== "pending"}>
@@ -440,7 +438,7 @@ export function HomeWorkspace({ initialDraft, initialVersions, initialProjects, 
             {savedSync.status === "pending" && workingSync.status === "synced" && <p>项目更新已在工作副本中，请保存草稿后发布。</p>}
             {projectCheckFailed && <p>上次检查失败，请重试；在检查成功前不能同步。</p>}
           </div>
-        </section>
+        </section>}
         <section className={styles.readinessSummary} aria-labelledby="publish-readiness-title">
           <div>
             <span className={styles.kicker}>READINESS</span>

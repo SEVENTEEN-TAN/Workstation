@@ -5,8 +5,21 @@ import { bootstrapSiteContent } from "../src/lib/content/bootstrap";
 import { siteContentSchema } from "../src/lib/content/schema";
 import { HomeExperience } from "../src/components/public/HomeExperience";
 import { selectHomepageRecords } from "../src/lib/content/homepage-composition";
+import { HomepageSourceSelection } from "../src/components/admin/home/HomepageSourceSelection";
 
 describe("homepage layouts", () => {
+  it("starts source selection collapsed while retaining the selected record controls", () => {
+    const content = siteContentSchema.parse({ ...bootstrapSiteContent, homepageSelection: { activities: ["b", "a"] } });
+    const markup = renderToStaticMarkup(createElement(HomepageSourceSelection, {
+      content,
+      options: { activities: [{ id: "a", label: "Alpha" }, { id: "b", label: "Beta" }], skills: [], experiences: [] },
+      onChange() {},
+    }));
+    expect(markup).toMatch(/<details[^>]*><summary>业务内容选择与顺序<\/summary>/);
+    expect(markup).not.toMatch(/<details[^>]*\sopen/);
+    expect(markup.indexOf("Beta")).toBeLessThan(markup.indexOf("Alpha"));
+    expect(markup).toContain('aria-label="下移当前动态记录1"');
+  });
   it("persists composition and rejects duplicate or arbitrary sections", () => {
     const composition = { template: "compact", sections: [{ id: "work", visible: true }] };
     expect(siteContentSchema.parse({ ...bootstrapSiteContent, composition }).composition).toEqual(composition);

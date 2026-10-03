@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRef, useState, type ChangeEvent, type RefObject } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type CSSProperties, type RefObject } from "react";
 
 import styles from "../../../app/admin/admin.module.css";
 import type { SiteContent } from "../../../lib/content/schema";
@@ -81,6 +81,17 @@ export function HomepageVisualWorkspace({
   const [activePane, setActivePane] = useState<"structure" | "preview">("preview");
   const settingsDialogRef = useRef<HTMLDialogElement>(null);
   const settingsTriggerRef = useRef<HTMLButtonElement>(null);
+  const previewFrameWrapRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(1);
+  useEffect(() => {
+    const wrap = previewFrameWrapRef.current;
+    if (!wrap) return;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width > 0) setPreviewScale(entry.contentRect.width / 390);
+    });
+    observer.observe(wrap);
+    return () => observer.disconnect();
+  }, []);
   const field = getVisualEditField(content, selectedPath);
   const fieldError = field ? validation.fieldErrors[field.path] : undefined;
   const savedComposition = content.composition;
@@ -141,7 +152,7 @@ export function HomepageVisualWorkspace({
             if (event.target.value) updateComposition([...composition.sections, { id: event.target.value as SectionId, visible: true }]);
           }}><option value="">{availableSections.length ? "选择区块" : "已包含全部预设区块"}</option>{availableSections.map(({ id, label }) => <option key={id} value={id}>{label}</option>)}</select></label>
         </aside>
-        <section className={styles.homeVisualPane} data-mobile-active={activePane === "preview"} aria-label="真实首页预览">
+        <section className={`${styles.homeVisualPane} ${styles.homeVisualPreviewPane}`} data-mobile-active={activePane === "preview"} aria-label="真实首页预览">
           <div className={styles.homeVisualPreviewHeader}>
             <div className={styles.homeVisualPaneHeading}><span className={styles.kicker}>LIVE WORK COPY</span><h2>真实首页预览</h2></div>
             <div className={styles.homeVisualControls}>
@@ -152,7 +163,7 @@ export function HomepageVisualWorkspace({
           </div>
           <p className={styles.homePreviewStatus} role="status">{previewStatus === "error" ? "预览加载失败，工作副本仍可继续编辑。" : previewStatus === "loading" ? "预览加载中" : "预览已同步当前工作副本。"}</p>
           {previewStatus === "error" ? <div className={styles.homePreviewRecovery}><button type="button" className={styles.secondaryButton} onClick={onRetryPreview}>重试预览</button><button type="button" onClick={() => onOpenFields()}>转到字段编辑</button></div> : null}
-          <div className={styles.homePreviewFrameWrap}><iframe key={previewKey} ref={iframeRef} onLoad={onPreviewLoad} title="真实首页预览" src="/admin/home/visual-preview" className={styles.homePreviewFrame} data-device={device} /></div>
+          <div ref={previewFrameWrapRef} className={styles.homePreviewFrameWrap} style={{ "--home-preview-scale": previewScale } as CSSProperties}><iframe key={previewKey} ref={iframeRef} onLoad={onPreviewLoad} title="真实首页预览" src="/admin/home/visual-preview" className={styles.homePreviewFrame} data-device={device} /></div>
         </section>
       </div>
       <dialog ref={settingsDialogRef} className={`${styles.assetPickerDialog} ${styles.homeVisualSettingsDialog}`} aria-labelledby="homepage-visual-settings-title" onClose={() => settingsTriggerRef.current?.focus()}>
