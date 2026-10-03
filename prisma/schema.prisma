@@ -430,6 +430,17 @@ model Review {
   @@map("reviews")
 }
 
+model KnowledgeGraphState {
+  id          String   @id
+  revisionId  String   @map("revision_id")
+  draft       Json
+  importedAt  DateTime @map("imported_at")
+  published   Json?
+  publishedAt DateTime? @map("published_at")
+
+  @@map("knowledge_graph_states")
+}
+
 model KnowledgeVault {
   id                String          @id @default(cuid())
   name              String

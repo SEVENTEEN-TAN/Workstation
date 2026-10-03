@@ -15,7 +15,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:backup": "tsx scripts/backup.ts",
     "db:restore": "tsx scripts/restore.ts",
-    "knowledge:sync": "tsx scripts/sync-knowledge.ts"
+    "knowledge:sync": "tsx scripts/sync-knowledge.ts",
+    "knowledge:graph": "tsx scripts/export-knowledge-graph.ts"
   },
   "dependencies": {
     "@prisma/client": "6.19.2",
