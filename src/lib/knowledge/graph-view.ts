@@ -22,37 +22,88 @@ export function graphNeighbors(graph: KnowledgeGraph, id: string) {
   return { outgoing, incoming, all: new Set([...outgoing, ...incoming]) };
 }
 
+export function focusKnowledgeGraph(graph: KnowledgeGraph, id: string): KnowledgeGraph {
+  if (!graph.nodes.some((node) => node.id === id)) return { ...graph, nodes: [], edges: [] };
+  const ids = graphNeighbors(graph, id).all;
+  ids.add(id);
+  return { ...graph, nodes: graph.nodes.filter((node) => ids.has(node.id)), edges: graph.edges.filter((edge) => (edge.source === id || edge.target === id) && ids.has(edge.source) && ids.has(edge.target)) };
+}
+
+export function layoutFocusedKnowledgeGraph(graph: KnowledgeGraph, id: string, width: number) {
+  const points: Record<string, GraphPoint> = {};
+  const labels: Record<string, { lines: string[]; width: number; height: number }> = {};
+  const columns = Math.max(1, Math.floor((width - 24) / 250));
+  const cardWidth = (width - 24 - (columns - 1) * 24) / columns;
+  const ordered = [...graph.nodes.filter((node) => node.id === id), ...graph.nodes.filter((node) => node.id !== id)];
+  for (const node of ordered) {
+    const nodeWidth = node.id === id ? Math.min(width - 24, 440) : cardWidth;
+    const lines: string[] = [];
+    let line = "", units = 0;
+    for (const character of node.title) {
+      const size = character.charCodeAt(0) < 128 ? 0.6 : 1;
+      if (line && units + size > (nodeWidth - 48) / 14) { lines.push(line); line = ""; units = 0; }
+      line += character; units += size;
+    }
+    lines.push(line);
+    labels[node.id] = { lines, width: nodeWidth, height: Math.max(52, lines.length * 21 + 20) };
+  }
+  let top = 70;
+  const selected = ordered[0];
+  if (selected) {
+    const label = labels[selected.id];
+    points[selected.id] = { x: (width - label.width) / 2 + 12, y: top + label.height / 2 };
+    top += label.height + 70;
+  }
+  for (let offset = 1; offset < ordered.length; offset += columns) {
+    const row = ordered.slice(offset, offset + columns);
+    const rowHeight = Math.max(...row.map((node) => labels[node.id].height));
+    const rowWidth = row.length * cardWidth + (row.length - 1) * 24;
+    row.forEach((node, column) => { points[node.id] = { x: (width - rowWidth) / 2 + column * (cardWidth + 24) + 12, y: top + rowHeight / 2 }; });
+    top += rowHeight + 32;
+  }
+  return { points, labels, height: Math.max(360, top + 40) };
+}
+
 export function clampGraphZoom(value: number) { return Math.min(4, Math.max(0.5, value)); }
 
-export function layoutKnowledgeGraph(graph: KnowledgeGraph): Record<string, GraphPoint> {
-  const nodes = graph.nodes.map((node, index) => {
-    const angle = index * 2.399963229728653;
-    const radius = Math.sqrt((index + 0.5) / graph.nodes.length) * 300;
-    return { id: node.id, x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, fx: 0, fy: 0 };
+export function layoutKnowledgeGraph(graph: KnowledgeGraph, width = GRAPH_WIDTH, height = GRAPH_HEIGHT): Record<string, GraphPoint> {
+  const categories = [...new Set(graph.nodes.map((node) => node.category))].sort();
+  const counts = new Map<string, number>();
+  const nodes = graph.nodes.map((node) => {
+    const index = counts.get(node.category) ?? 0;
+    counts.set(node.category, index + 1);
+    const categoryAngle = categories.indexOf(node.category) * Math.PI * 2 / categories.length;
+    const angle = index * 2.399963229728653 + categoryAngle;
+    const anchorX = categories.length > 1 ? Math.cos(categoryAngle) * 260 : 0;
+    const anchorY = categories.length > 1 ? Math.sin(categoryAngle) * 180 : 0;
+    const radius = Math.sqrt(index + 0.5) * 12;
+    return { id: node.id, x: anchorX + Math.cos(angle) * radius, y: anchorY + Math.sin(angle) * radius, anchorX, anchorY, fx: 0, fy: 0 };
   });
   const byId = new Map(nodes.map((node) => [node.id, node]));
   // ponytail: a bounded, deterministic layout for the contract's 2,000-node ceiling; no live physics loop.
   for (let step = 0; step < 100; step++) {
     const cells = new Map<string, typeof nodes>();
     for (const node of nodes) {
-      node.fx = -node.x * 0.008; node.fy = -node.y * 0.008;
-      const key = `${Math.floor(node.x / 70)},${Math.floor(node.y / 70)}`;
+      node.fx = (node.anchorX - node.x) * 0.035; node.fy = (node.anchorY - node.y) * 0.035;
+      const key = `${Math.floor(node.x / 160)},${Math.floor(node.y / 160)}`;
       const cell = cells.get(key) ?? []; cell.push(node); cells.set(key, cell);
     }
     for (const node of nodes) {
-      const gx = Math.floor(node.x / 70), gy = Math.floor(node.y / 70);
+      const gx = Math.floor(node.x / 160), gy = Math.floor(node.y / 160);
       for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
         for (const other of cells.get(`${gx + dx},${gy + dy}`) ?? []) {
           if (other === node) continue;
-          const x = node.x - other.x, y = node.y - other.y, square = Math.max(x * x + y * y, 16);
-          node.fx += x * 100 / square; node.fy += y * 100 / square;
+          const x = node.x - other.x, y = node.y - other.y, square = x * x + y * y;
+          const falloff = Math.max(0, 1 - Math.sqrt(square) / 160);
+          const force = 650 * falloff * falloff / (square + 100);
+          node.fx += x * force; node.fy += y * force;
         }
       }
     }
     for (const edge of graph.edges) {
       const source = byId.get(edge.source)!, target = byId.get(edge.target)!;
       const x = target.x - source.x, y = target.y - source.y;
-      const force = (Math.hypot(x, y) - 42) * 0.018 / Math.max(Math.hypot(x, y), 1);
+      const force = (Math.hypot(x, y) - 64) * 0.006 / Math.max(Math.hypot(x, y), 1);
       source.fx += x * force; source.fy += y * force; target.fx -= x * force; target.fy -= y * force;
     }
     const cooling = 1 - step / 125;
@@ -61,6 +112,7 @@ export function layoutKnowledgeGraph(graph: KnowledgeGraph): Record<string, Grap
   if (!nodes.length) return {};
   const minX = Math.min(...nodes.map((node) => node.x)), maxX = Math.max(...nodes.map((node) => node.x));
   const minY = Math.min(...nodes.map((node) => node.y)), maxY = Math.max(...nodes.map((node) => node.y));
-  const scale = Math.min((GRAPH_WIDTH - 120) / Math.max(maxX - minX, 1), (GRAPH_HEIGHT - 120) / Math.max(maxY - minY, 1));
-  return Object.fromEntries(nodes.map((node) => [node.id, { x: (node.x - (minX + maxX) / 2) * scale + GRAPH_WIDTH / 2, y: (node.y - (minY + maxY) / 2) * scale + GRAPH_HEIGHT / 2 }]));
+  const padding = Math.min(60, width / 8);
+  const scale = Math.min((width - padding * 2) / Math.max(maxX - minX, 1), (height - padding * 2) / Math.max(maxY - minY, 1));
+  return Object.fromEntries(nodes.map((node) => [node.id, { x: (node.x - (minX + maxX) / 2) * scale + width / 2, y: (node.y - (minY + maxY) / 2) * scale + height / 2 }]));
 }
