@@ -103,9 +103,14 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
           <g transform={`translate(${view.x} ${view.y}) scale(${view.zoom})`}>
             {rendered.edges.map((edge) => {
               const source = point(edge.source), target = point(edge.target);
-              const sourceLabel = focusedLayout.labels[edge.source], targetLabel = focusedLayout.labels[edge.target];
-              const direction = target.y >= source.y ? 1 : -1;
-              return <line key={`${edge.source}:${edge.target}`} x1={activeId ? source.x + sourceLabel.width / 2 - 12 : source.x} y1={source.y + (activeId ? direction * (sourceLabel.height / 2 + 4) : 0)} x2={activeId ? target.x + targetLabel.width / 2 - 12 : target.x} y2={target.y - (activeId ? direction * (targetLabel.height / 2 + 8) : 0)} className={activeId ? styles.edgeActive : styles.edge} markerEnd={activeId ? `url(#${arrowId})` : undefined} />;
+              if (!activeId) return <line key={`${edge.source}:${edge.target}`} x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={styles.edge} />;
+              const selectedPoint = point(activeId), selectedLabel = focusedLayout.labels[activeId];
+              const targetPoint = edge.source === activeId ? target : source;
+              const startX = selectedPoint.x + selectedLabel.width / 2 - 12, startY = selectedPoint.y + selectedLabel.height / 2 + 4;
+              const laneX = targetPoint.x - 20, endX = targetPoint.x - 16, joinY = startY + 30;
+              const route = [[startX, startY], [startX, joinY], [laneX, joinY], [laneX, targetPoint.y], [endX, targetPoint.y]];
+              if (edge.target === activeId) route.reverse();
+              return <path key={`${edge.source}:${edge.target}`} d={route.map(([x, y], index) => `${index ? "L" : "M"} ${x} ${y}`).join(" ")} fill="none" className={styles.edgeActive} markerEnd={`url(#${arrowId})`} />;
             })}
             {rendered.nodes.map((node) => {
               const location = point(node.id), isSelected = node.id === activeId, label = focusedLayout.labels[node.id];
