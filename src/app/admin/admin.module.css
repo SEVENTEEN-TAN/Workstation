@@ -2425,7 +2425,7 @@
 .activityToggle small { margin-top: 3px; color: #747f8b; font-size: 10px; font-weight: 500; }
 .activityList { display: grid; gap: 0; }
 
-.aiWorkspace { max-width: 1160px; }
+.aiWorkspace { width: 100%; }
 .aiHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
 .aiHeader h1 { margin: 0; color: #ffffff; font-size: 28px; }
 .aiHeader p { margin: 7px 0 0; color: #8e98a4; font-size: 12px; line-height: 1.6; }
