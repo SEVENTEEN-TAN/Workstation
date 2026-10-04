@@ -80,6 +80,14 @@ describe("knowledge graph browsing", () => {
     const single = layoutFocusedKnowledgeGraph({ ...graph, nodes: graph.nodes.slice(0, 1), edges: [] }, "a", 360);
     expect(single.points.a).toEqual({ x: 180, y: single.height / 2 });
   });
+  it("keeps a long title at the top of a small focused graph inside the canvas", () => {
+    const sample: KnowledgeGraph = { ...graph, nodes: [graph.nodes[0], ...Array.from({ length: 3 }, (_, i) => ({ id: `n${i}`, title: i ? `关联笔记${i}` : "05_Positional Encoding 位置编码", category: "AI" }))], edges: [] };
+    const focused = layoutFocusedKnowledgeGraph(sample, "a", 920);
+    const point = focused.points.n0, label = focused.labels.n0;
+    expect(label.lines.length).toBeGreaterThan(1);
+    expect(point.y + label.offsetY - 14).toBeGreaterThanOrEqual(24);
+    expect(point.y + label.offsetY + label.height).toBeLessThan(focused.height);
+  });
   it("fills a round network rather than category islands or an empty ring", () => {
     const grouped: KnowledgeGraph = { ...graph, nodes: Array.from({ length: 160 }, (_, i) => ({ id: `${i}`, title: `Note ${i}`, category: i < 80 ? "AI" : "Java" })), edges: [] };
     const points = layoutKnowledgeGraph(grouped);

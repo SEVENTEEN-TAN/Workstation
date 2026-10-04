@@ -54,7 +54,7 @@ export function layoutFocusedKnowledgeGraph(graph: KnowledgeGraph, id: string, w
   neighbors.forEach((node, index) => {
     const angle = -Math.PI / 2 + index * Math.PI * 2 / neighbors.length;
     points[node.id] = { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius };
-    if (points[node.id].y < center.y - 1) labels[node.id].offsetY = 2 - labels[node.id].height;
+    if (points[node.id].y < center.y - 1 && points[node.id].y > labels[node.id].height + 24) labels[node.id].offsetY = 2 - labels[node.id].height;
   });
   return { points, labels, height };
 }
