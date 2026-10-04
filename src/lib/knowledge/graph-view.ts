@@ -31,37 +31,32 @@ export function focusKnowledgeGraph(graph: KnowledgeGraph, id: string): Knowledg
 
 export function layoutFocusedKnowledgeGraph(graph: KnowledgeGraph, id: string, width: number) {
   const points: Record<string, GraphPoint> = {};
-  const labels: Record<string, { lines: string[]; width: number; height: number }> = {};
-  const columns = Math.max(1, Math.floor((width - 24) / 250));
-  const cardWidth = (width - 24 - (columns - 1) * 24) / columns;
-  const ordered = [...graph.nodes.filter((node) => node.id === id), ...graph.nodes.filter((node) => node.id !== id)];
-  for (const node of ordered) {
-    const nodeWidth = node.id === id ? Math.min(width - 24, 440) : cardWidth;
+  const labels: Record<string, { lines: string[]; width: number; height: number; offsetY: number }> = {};
+  const height = Math.max(380, Math.min(GRAPH_HEIGHT, width * 0.8));
+  const center = { x: width / 2, y: height / 2 };
+  for (const node of graph.nodes) {
+    const nodeWidth = Math.min(width - 48, 240);
     const lines: string[] = [];
     let line = "", units = 0;
     for (const character of node.title) {
       const size = character.charCodeAt(0) < 128 ? 0.6 : 1;
-      if (line && units + size > (nodeWidth - 48) / 14) { lines.push(line); line = ""; units = 0; }
+      if (line && units + size > nodeWidth / 14) { lines.push(line); line = ""; units = 0; }
       line += character; units += size;
     }
     lines.push(line);
-    labels[node.id] = { lines, width: nodeWidth, height: Math.max(52, lines.length * 21 + 20) };
+    labels[node.id] = { lines, width: nodeWidth, height: lines.length * 21, offsetY: 30 };
   }
-  let top = 70;
-  const selected = ordered[0];
-  if (selected) {
-    const label = labels[selected.id];
-    points[selected.id] = { x: (width - label.width) / 2 + 12, y: top + label.height / 2 };
-    top += label.height + 70;
-  }
-  for (let offset = 1; offset < ordered.length; offset += columns) {
-    const row = ordered.slice(offset, offset + columns);
-    const rowHeight = Math.max(...row.map((node) => labels[node.id].height));
-    const rowWidth = row.length * cardWidth + (row.length - 1) * 24;
-    row.forEach((node, column) => { points[node.id] = { x: (width - rowWidth) / 2 + column * (cardWidth + 24) + 12, y: top + rowHeight / 2 }; });
-    top += rowHeight + 32;
-  }
-  return { points, labels, height: Math.max(360, top + 40) };
+  if (labels[id]) points[id] = center;
+  const neighbors = graph.nodes.filter((node) => node.id !== id).sort((a, b) => a.id.localeCompare(b.id));
+  const spacing = Math.max(0, ...Object.values(labels).map((label) => Math.hypot(label.width, label.height))) + 40;
+  // Keep crowded labels apart in graph coordinates; zoom and pan reach notes beyond the viewport.
+  const radius = Math.max(Math.min(width, height) * 0.32, spacing, neighbors.length > 1 ? spacing / (2 * Math.sin(Math.PI / neighbors.length)) : 0);
+  neighbors.forEach((node, index) => {
+    const angle = -Math.PI / 2 + index * Math.PI * 2 / neighbors.length;
+    points[node.id] = { x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius };
+    if (points[node.id].y < center.y - 1) labels[node.id].offsetY = 2 - labels[node.id].height;
+  });
+  return { points, labels, height };
 }
 
 export function clampGraphZoom(value: number) { return Math.min(4, Math.max(0.5, value)); }

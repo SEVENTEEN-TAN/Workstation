@@ -58,20 +58,27 @@ describe("knowledge graph browsing", () => {
     expect(focusKnowledgeGraph(extended, "d").nodes.map((node) => node.id)).toEqual(["c", "d"]);
     expect(focusKnowledgeGraph({ ...extended, edges: [] }, "d")).toMatchObject({ nodes: [extended.nodes[3]], edges: [] });
   });
-  it("keeps full focus labels in separate rows and inside a phone-width viewport", () => {
+  it("keeps full focus labels separated around a centered note, including high-degree phone views", () => {
     const many: KnowledgeGraph = { ...graph, nodes: [{ id: "a", title: "中心笔记", category: "Java" }, ...Array.from({ length: 40 }, (_, i) => ({ id: `n${i}`, title: `很长的关联笔记标题_${i}_需要完整显示并且不能重叠`, category: "AI" }))], edges: Array.from({ length: 40 }, (_, i) => ({ source: "a", target: `n${i}` })) };
     const focused = layoutFocusedKnowledgeGraph(many, "a", 360);
-    expect(focused.height).toBeGreaterThan(640);
     expect(layoutFocusedKnowledgeGraph(many, "a", 360)).toEqual(focused);
+    expect(focused.points.a).toEqual({ x: 180, y: focused.height / 2 });
     const boxes = many.nodes.map((node) => {
       const point = focused.points[node.id], label = focused.labels[node.id];
       expect(label.lines.join("")).toBe(node.title);
-      expect(point.x - 12).toBeGreaterThanOrEqual(12);
-      expect(point.x - 12 + label.width).toBeLessThanOrEqual(348);
-      return { top: point.y - label.height / 2, bottom: point.y + label.height / 2 };
+      return { left: point.x - label.width / 2, right: point.x + label.width / 2, top: point.y + label.offsetY - 14, bottom: point.y + label.offsetY - 14 + label.height };
     });
-    for (let i = 1; i < boxes.length; i++) expect(boxes[i].top).toBeGreaterThan(boxes[i - 1].bottom);
-    expect(layoutFocusedKnowledgeGraph({ ...graph, nodes: graph.nodes.slice(0, 1), edges: [] }, "a", 360).points.a.x).toBeGreaterThan(0);
+    for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+      const a = boxes[i], b = boxes[j];
+      expect(a.right < b.left || b.right < a.left || a.bottom < b.top || b.bottom < a.top).toBe(true);
+    }
+    const neighbors = many.nodes.slice(1).map((node) => focused.points[node.id]);
+    expect(neighbors.some((point) => point.x < 180)).toBe(true);
+    expect(neighbors.some((point) => point.x > 180)).toBe(true);
+    expect(neighbors.some((point) => point.y < focused.height / 2)).toBe(true);
+    expect(neighbors.some((point) => point.y > focused.height / 2)).toBe(true);
+    const single = layoutFocusedKnowledgeGraph({ ...graph, nodes: graph.nodes.slice(0, 1), edges: [] }, "a", 360);
+    expect(single.points.a).toEqual({ x: 180, y: single.height / 2 });
   });
   it("fills a round network rather than category islands or an empty ring", () => {
     const grouped: KnowledgeGraph = { ...graph, nodes: Array.from({ length: 160 }, (_, i) => ({ id: `${i}`, title: `Note ${i}`, category: i < 80 ? "AI" : "Java" })), edges: [] };

@@ -117,13 +117,11 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
             {rendered.edges.map((edge) => {
               const source = point(edge.source), target = point(edge.target);
               if (!activeId) return <line key={`${edge.source}:${edge.target}`} x1={source.x} y1={source.y} x2={target.x} y2={target.y} className={styles.edge} />;
-              const selectedPoint = point(activeId), selectedLabel = focusedLayout.labels[activeId];
-              const targetPoint = edge.source === activeId ? target : source;
-              const startX = selectedPoint.x + selectedLabel.width / 2 - 12, startY = selectedPoint.y + selectedLabel.height / 2 + 4;
-              const laneX = targetPoint.x - 20, endX = targetPoint.x - 16, joinY = startY + 30;
-              const route = [[startX, startY], [startX, joinY], [laneX, joinY], [laneX, targetPoint.y], [endX, targetPoint.y]];
-              if (edge.target === activeId) route.reverse();
-              return <path key={`${edge.source}:${edge.target}`} d={route.map(([x, y], index) => `${index ? "L" : "M"} ${x} ${y}`).join(" ")} fill="none" className={styles.edgeActive} markerEnd={`url(#${arrowId})`} />;
+              const reciprocal = neighbors.outgoing.has(edge.target) && neighbors.incoming.has(edge.target);
+              if (edge.target === activeId && neighbors.outgoing.has(edge.source)) return null;
+              const dx = target.x - source.x, dy = target.y - source.y, distance = Math.hypot(dx, dy) || 1;
+              const startInset = edge.source === activeId ? 22 : 14, endInset = edge.target === activeId ? 22 : 14;
+              return <path key={`${edge.source}:${edge.target}`} d={`M ${source.x + dx / distance * startInset} ${source.y + dy / distance * startInset} L ${target.x - dx / distance * endInset} ${target.y - dy / distance * endInset}`} fill="none" className={styles.edgeActive} markerStart={reciprocal ? `url(#${arrowId})` : undefined} markerEnd={`url(#${arrowId})`} />;
             })}
             {rendered.nodes.map((node) => {
               const location = point(node.id), isSelected = node.id === activeId, label = focusedLayout.labels[node.id];
@@ -131,17 +129,17 @@ export function KnowledgeGraphView({ graph }: { graph: KnowledgeGraph }) {
               const labelOnLeft = location.x > width * 0.65;
               return <g key={node.id} data-node-id={node.id} className={`${styles.node} ${activeId ? styles.focusNode : ""}`} role="button" tabIndex={0} aria-label={`${node.title}，${node.category}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectNote(node.id); } }} onPointerEnter={() => setHoverId(node.id)} onPointerLeave={() => setHoverId("")}>
                 <title>{node.title} · {node.category}</title>
-                {activeId ? <rect x={location.x - 12} y={location.y - label.height / 2} width={label.width} height={label.height} rx={8} className={isSelected ? styles.focusCardSelected : styles.focusCard} /> : null}
-                {isSelected ? <circle cx={location.x} cy={location.y} r={14} className={styles.nodeHalo} /> : null}
-                <circle cx={location.x} cy={location.y} r={Math.min(9, 3.2 + Math.sqrt(degrees.get(node.id) ?? 0) * 0.65) * (activeId ? 1 : Math.min(1, width / 520))} fill={colors.get(node.category)} stroke={isSelected ? "#ffffff" : "#0d1116"} strokeWidth={isSelected ? 2 : 1} />
-                {showLabel ? activeId ? <text x={location.x + 20} y={location.y - (label.lines.length - 1) * 10.5 + 5}>{label.lines.map((line, index) => <tspan key={index} x={location.x + 20} dy={index ? 21 : 0}>{line}</tspan>)}</text> : <text x={location.x + (labelOnLeft ? -12 : 12)} y={location.y + 4} textAnchor={labelOnLeft ? "end" : "start"}>{node.title.length > 18 ? `${node.title.slice(0, 18)}…` : node.title}</text> : null}
+                {activeId ? <rect x={location.x - label.width / 2} y={location.y + Math.min(-16, label.offsetY - 16)} width={label.width} height={label.height + 48} rx={8} fill="transparent" /> : null}
+                {isSelected ? <circle cx={location.x} cy={location.y} r={20} className={styles.nodeHalo} /> : null}
+                <circle cx={location.x} cy={location.y} r={activeId ? isSelected ? 10 : 7 : Math.min(9, 3.2 + Math.sqrt(degrees.get(node.id) ?? 0) * 0.65) * Math.min(1, width / 520)} fill={colors.get(node.category)} stroke={isSelected ? "#ffffff" : "#0d1116"} strokeWidth={isSelected ? 2 : 1} />
+                {showLabel ? activeId ? <text x={location.x} y={location.y + label.offsetY} textAnchor="middle" style={{ stroke: "#0c161a", strokeWidth: 5, paintOrder: "stroke" }}>{label.lines.map((line, index) => <tspan key={index} x={location.x} dy={index ? 21 : 0}>{line}</tspan>)}</text> : <text x={location.x + (labelOnLeft ? -12 : 12)} y={location.y + 4} textAnchor={labelOnLeft ? "end" : "start"}>{node.title.length > 18 ? `${node.title.slice(0, 18)}…` : node.title}</text> : null}
               </g>;
             })}
           </g>
         </svg>
         </div>
         {!visible.nodes.length ? <div className={styles.noResults}><Search size={24} /><strong>没有匹配的笔记</strong><button type="button" onClick={() => { setQuery(""); setCategory(""); }}>清除筛选</button></div> : null}
-        <div className={styles.canvasFooter}><span>{activeId ? "滚轮缩放 · 拖动平移 · 滚动条浏览更多" : "滚轮缩放 · 拖动节点或空白区域"}</span><div className={styles.zoomControls}><button type="button" aria-label="缩小图谱" onClick={() => zoomBy(1 / 1.25)} disabled={view.zoom <= 0.5}><ZoomOut size={17} /></button><span aria-label="当前缩放">{Math.round(view.zoom * 100)}%</span><button type="button" aria-label="放大图谱" onClick={() => zoomBy(1.25)} disabled={view.zoom >= 4}><ZoomIn size={17} /></button><button type="button" aria-label="重置图谱视图" onClick={() => { setView({ zoom: 1, x: 0, y: 0 }); setMovedPoints({}); stage.current?.scrollTo({ top: 0 }); }}><Focus size={17} /></button></div></div>
+        <div className={styles.canvasFooter}><span>{activeId ? "滚轮缩放 · 拖动平移 · 箭头指向被引用笔记" : "滚轮缩放 · 拖动节点或空白区域"}</span><div className={styles.zoomControls}><button type="button" aria-label="缩小图谱" onClick={() => zoomBy(1 / 1.25)} disabled={view.zoom <= 0.5}><ZoomOut size={17} /></button><span aria-label="当前缩放">{Math.round(view.zoom * 100)}%</span><button type="button" aria-label="放大图谱" onClick={() => zoomBy(1.25)} disabled={view.zoom >= 4}><ZoomIn size={17} /></button><button type="button" aria-label="重置图谱视图" onClick={() => { setView({ zoom: 1, x: 0, y: 0 }); setMovedPoints({}); stage.current?.scrollTo({ top: 0 }); }}><Focus size={17} /></button></div></div>
       </div>
       <aside className={styles.sidebar} aria-label="笔记与关联">
         <label className={styles.notePicker}><span>选择笔记</span><select aria-label="选择笔记" value={activeId} onChange={(event) => selectNote(event.target.value)}><option value="">点击节点或选择笔记</option>{visible.nodes.map((node) => <option key={node.id} value={node.id}>{node.title} · {node.category}</option>)}</select></label>
